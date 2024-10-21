@@ -11,7 +11,7 @@ typedef enum{
     RIGHT,
     TOGGLE_SHOOT,
     JUMP,
-    CHANGE_WEAPON,
+    CHANGE_WEAPON, // estos 3 serian pickups no change no?
     CHANGE_HELMET,
     CHANGE_ARMOR,
 }action_t;
