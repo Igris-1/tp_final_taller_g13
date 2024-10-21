@@ -34,8 +34,8 @@ nitial implementation of foo function and SDL example
 *.exe
 *.out
 *.app
-client
-server
+Client
+Server
 
 # Mac
 .DS_Store
