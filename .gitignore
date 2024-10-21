@@ -49,3 +49,6 @@ nitial implementation of foo function and SDL example
 
 # VS Code
 .vscode
+
+# .CLion
+.idea

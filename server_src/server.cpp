@@ -7,12 +7,12 @@
 
 Server::Server(const char* port): port(port) { run(); }
 
+
 void Server::run() {
 
     Socket socket_server = Socket(port);
-
     Socket socket = socket_server.accept();
-
+    
     std::string input;
     while (input != STOP_CODE) {
         std::getline(std::cin, input);

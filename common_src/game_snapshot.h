@@ -19,15 +19,16 @@ typedef struct {
 // Estado del pato
 typedef struct{
     uint8_t duck_id; // id del color del pato?
-    uint8_t duck_hp;
+    Position pos;
+    /*uint8_t duck_hp;
     bool shooting;
     bool running;
     bool jumping;
     bool weapon_equipped;
     bool helmet_equipped;
     bool armor_equipped;
-    Position pos;
-    int id_arma; // 1 = pistola / 2 = escopeta
+    
+    int id_arma;*/ // 1 = pistola / 2 = escopeta
 }Duck;
 
 // Objetos en el suelo
@@ -50,8 +51,8 @@ typedef struct{
 
 typedef struct{
     std::vector <Duck> ducks;
-    std::vector <Bullet> bullets;
-    std::vector <Item> map_items;
+    //std::vector <Bullet> bullets;
+    //std::vector <Item> map_items;
 } snapshot;
 
 

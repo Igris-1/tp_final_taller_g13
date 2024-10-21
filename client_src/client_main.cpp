@@ -22,7 +22,6 @@ int main(int argc, const char* argv[]) {
         return ERROR;
     } catch (...) {
         std::cerr << "Unknown exception caught." << std::endl;
-
         return ERROR;
     }
 }

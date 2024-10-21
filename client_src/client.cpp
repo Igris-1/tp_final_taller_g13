@@ -11,7 +11,6 @@ Client::Client(const char* host, const char* port):
 
 void Client::move(int direction) {
     std::cout << "Moving ";
-
     if (direction == 0) {
         std::cout << "left" << std::endl;
     } else {
