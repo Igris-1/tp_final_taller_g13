@@ -17,39 +17,25 @@
 
 GameThread::GameThread(Queue<CommandInfo*>& receiverQueue,
                        ThreadSafeList<ClientHandler>* clientHandlerQueues):
-        game(), clientHandlerQueues(clientHandlerQueues), receiverQueue(receiverQueue) {
+        duck(0,4,4), clientHandlerQueues(clientHandlerQueues), receiverQueue(receiverQueue) {
 
     start();
 }
 
 
-void GameThread::sendCommands(Command* command) {
-    clientHandlerQueues->for_each([command](ClientHandler& handler) {
-        Command* commands = command->clone();
-        handler.push(commands);  // push here cause it's unlikely the queue is full
+void GameThread::send_snapshots(GameSnapshot* gs) {
+    clientHandlerQueues->for_each([gs](ClientHandler& handler) {
+        GameSnapshot* gss = gs->clone();
+        handler.push(gss);  // push here cause it's unlikely the queue is full
     });
-    delete command;
+    delete gs;
 }
 
-void GameThread::pickUpBox(const std::string& name, int box_id) {
-    try {
-        int reward_id = game.pickUpBox(box_id);
-        if (reward_id) {
-            std::string reward = game.getReward(reward_id);
-            std::cout << name.data() << " picked up a " << reward << std::endl;
-
-            Command* command = new ReadPickUpCommand(name, reward_id);
-
-
-            sendCommands(command);
-        }
-    } catch (const std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
-    }
-}
-
-void GameThread::move_duck(int duck_id, int amount){
-    duck.move(int amount, 0);
+void GameThread::move_duck(int amount){
+    duck.move(amount, 0);
+    GameSnapshot* gs = new GameSnapshot();
+    gs->add_duck(duck);
+    send_snapshots(gs);
 }
 
 void GameThread::execute_commands() {
@@ -59,8 +45,11 @@ void GameThread::execute_commands() {
     while (receiverQueue.try_pop(command_info) && command_info) {
         action_t action = command_info->get_action();
         if (action == LEFT){
-            int duck_id = command_info->get_duck_id();
-            move_duck(duck_id, -1);
+            move_duck(-1);
+            delete command_info;
+        }
+        if (action == RIGHT){
+            move_duck(1);
             delete command_info;
         }
     }

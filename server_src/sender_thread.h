@@ -5,7 +5,6 @@
 #include <string>
 #include <variant>
 
-#include "../common_src/command.h"
 #include "../common_src/protocol.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
@@ -13,18 +12,18 @@
 
 class SenderThread: public Thread {
 private:
-    Queue<Command*>& queue;
+    Queue<GameSnapshot*>& queue;
     Protocol& protocol;
 
     void run() override {
 
         while (_keep_running) {
             try {
-                Command* command = queue.pop();
+                GameSnapshot* gs = queue.pop();
 
-                command->execute(protocol);
+                protocol.send_game_snapshot(*gs);
 
-                delete command;
+                delete gs;
 
             } catch (const ClosedQueue& e) {
 
@@ -38,7 +37,7 @@ private:
     }
 
 public:
-    SenderThread(Queue<Command*>& queue, Protocol& protocol): queue(queue), protocol(protocol) {
+    SenderThread(Queue<GameSnapshot*>& queue, Protocol& protocol): queue(queue), protocol(protocol) {
         try {
             start();
         } catch (const std::exception& e) {

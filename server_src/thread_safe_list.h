@@ -1,5 +1,4 @@
-#ifndef THREAD_SAFE_LIST_H_
-#define THREAD_SAFE_LIST_H_
+#pragma once
 
 #include <algorithm>
 #include <list>
@@ -58,5 +57,3 @@ public:
         }
     }
 };
-
-#endif

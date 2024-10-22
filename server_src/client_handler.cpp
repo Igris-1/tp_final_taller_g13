@@ -10,10 +10,10 @@ ClientHandler::ClientHandler(Socket&& socket, Queue<CommandInfo*>& receiverQueue
         senderThread(senderQueue, protocol),
         receiverThread(receiverQueue, protocol) {}
 
-void ClientHandler::push(Command* command) {
+void ClientHandler::push(GameSnapshot* gs) {
     try {
         if (is_alive()) {
-            senderQueue.push(command);
+            senderQueue.push(gs);
         }
     } catch (const ClosedQueue& e) {
 
@@ -21,7 +21,7 @@ void ClientHandler::push(Command* command) {
             std::cerr << "Closed sneder queue in client handler" << e.what()
                       << std::endl;  // if client is alive, then it's a bug
         }
-        delete command;  // if the client is not alive, then acceptor should delete it in reap_dead
+        delete gs;  // if the client is not alive, then acceptor should delete it in reap_dead
     }
 }
 
@@ -29,9 +29,9 @@ bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThrea
 
 ClientHandler::~ClientHandler() {
 
-    Command* command;
-    while (senderQueue.try_pop(command) && command) {
-        delete command;
+    GameSnapshot* gs;
+    while (senderQueue.try_pop(gs) && gs) {
+        delete gs;
     }
 
     protocol.kill_socket();
