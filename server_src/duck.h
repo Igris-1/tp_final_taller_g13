@@ -1,10 +1,6 @@
 #pragma once
 #include <string>
-
-typedef struct {
-    int x;
-    int y;
-} Position;
+#include "../common_src/game_snapshot.h"
 
 class Duck {
 
@@ -14,14 +10,12 @@ class Duck {
 
     public:
         Duck(int duck_id, int x, int y);
-        
-        int get_duck_id();
-        Position get_pos();
-
-        std::string serialize() ;
-
-        Duck deserialize(std::string& data);
 
         void move(int x, int y);
+        Position get_pos();
+
+        //std::string serialize();
+
+        //Duck deserialize(std::string& data);
 
 };

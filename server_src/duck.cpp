@@ -12,7 +12,7 @@ Position Duck::get_pos(){
     return pos;
 }
 
-std::string Duck::serialize() {
+/*std::string Duck::serialize() {
     std::ostringstream oss;
     oss << duck_id << " " << pos.x << " " << pos.y;
     return oss.str();
@@ -24,4 +24,4 @@ Duck Duck::deserialize(std::string& data) {
     float x, y;
     iss >> id >> x >> y;
     return Duck(id, x, y);
-}
+}*/

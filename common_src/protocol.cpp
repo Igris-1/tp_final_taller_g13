@@ -11,8 +11,8 @@ void Protocol::kill_socket() {
 }
 
 void Protocol::send_game_snapshot(GameSnapshot& gs) {
-    std::string serialized = gs.serialize();
-    socket.sendall(serialized.c_str(), serialized.size(), &socket_is_closed);
+    /*std::string serialized = gs.serialize();
+    socket.sendall(serialized.c_str(), serialized.size(), &socket_is_closed);*/
 }
 
 Protocol::~Protocol() { socket.close(); }

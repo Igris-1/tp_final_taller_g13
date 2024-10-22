@@ -1,21 +1,34 @@
 #pragma once
 
 #include <vector>
-#include "../server_src/duck.h"
+#include <string>
 
-typedef struct {
-    std::vector<Duck> ducks;
-} snapshot;
+struct Position {
+    int x;
+    int y;
+
+    Position(int x, int y) : x(x), y(y) {}
+} ;
+
+struct SimpleDuck{
+    Position pos;
+
+    SimpleDuck(Position position) : pos(position) {}
+};
+
+struct Snapshot{
+    std::vector<SimpleDuck> ducks;
+};
 
 class GameSnapshot {
     private:
-        snapshot snapshot_data;
+        Snapshot snapshot_data;
 
     public:
         GameSnapshot* clone();
-        snapshot get_snapshot();
-        void add_duck(Duck duck);
-        Duck get_duck();
+        Snapshot get_snapshot();
+        void add_duck(SimpleDuck duck);
+        SimpleDuck get_duck();
         std::string serialize();
-        GameSnapshot deserialize(std::string& data);
+        //GameSnapshot deserialize(std::string& data);
 };

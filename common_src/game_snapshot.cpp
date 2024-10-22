@@ -5,28 +5,27 @@ GameSnapshot* GameSnapshot::clone() {
     return new GameSnapshot();
 }
 
-snapshot GameSnapshot::get_snapshot() {
+Snapshot GameSnapshot::get_snapshot() {
     return snapshot_data;
 }
 
-void GameSnapshot::add_duck(Duck duck) {
+void GameSnapshot::add_duck(SimpleDuck duck) {
     snapshot_data.ducks.push_back(duck);
 }
 
-Duck GameSnapshot::get_duck() {
+SimpleDuck GameSnapshot::get_duck() {
     return snapshot_data.ducks.at(0);
 }
 
-std::string GameSnapshot::serialize() {
+std::string GameSnapshot::serialize(){
     std::ostringstream oss;
     oss << snapshot_data.ducks.size() << " ";
-    for (Duck& duck : snapshot_data.ducks) {
-        oss << duck.serialize() << " ";
-    }
+    SimpleDuck duck = get_duck();
+    oss << duck.pos.x << " " << duck.pos.y << " ";
     return oss.str();
 }
 
-GameSnapshot GameSnapshot::deserialize(std::string& data) {
+/*GameSnapshot GameSnapshot::deserialize(std::string& data) {
     std::istringstream iss(data);
     GameSnapshot game_snapshot;
     size_t duck_count;
@@ -40,4 +39,4 @@ GameSnapshot GameSnapshot::deserialize(std::string& data) {
     }
 
     return game_snapshot;
-}
+}*/

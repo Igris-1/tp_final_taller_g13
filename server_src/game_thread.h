@@ -8,9 +8,11 @@
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 
+#include "../common_src/game_snapshot.h"
+#include "duck.h"
 #include "client_handler.h"
 #include "thread_safe_list.h"
-#include "duck.h"
+
 
 class GameThread: public Thread {
 private:

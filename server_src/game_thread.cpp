@@ -34,7 +34,8 @@ void GameThread::send_snapshots(GameSnapshot* gs) {
 void GameThread::move_duck(int amount){
     duck.move(amount, 0);
     GameSnapshot* gs = new GameSnapshot();
-    gs->add_duck(duck);
+    SimpleDuck sduck = SimpleDuck((duck.get_pos()));
+    gs->add_duck(sduck);
     send_snapshots(gs);
 }
 
