@@ -35,8 +35,6 @@ nitial implementation of foo function and SDL example
 *.out
 *.app
 
-# agregar los futuros ejecutables que se creen
-
 # Mac
 .DS_Store
 .AppleDouble
@@ -47,8 +45,6 @@ nitial implementation of foo function and SDL example
 .*.swp
 *~
 
-# VS Code
+# Configuración de IDEs
 .vscode
-
-# .CLion
 .idea
