@@ -57,3 +57,6 @@ include_directories_for_target(${CLIENT_EXECUTABLE})
 # Crear el ejecutable del servidor
 add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
 include_directories_for_target(${SERVER_EXECUTABLE})
+
+# Añade el subdirectorio de pruebas
+add_subdirectory(tests)
