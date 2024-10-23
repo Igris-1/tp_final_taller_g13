@@ -3,7 +3,7 @@
 // 0x00 -> conectarse al server -> (cant_jugadores | name | segundo name) 
 // 0x01 -> durante la partida -> (id_player | id_accion)
 
-
+/*
 typedef enum{
     LEFT = 0,
     RIGHT,
@@ -14,8 +14,8 @@ typedef enum{
     JUMP,
     CHANGE_WEAPON, // estos 3 serian pickups no change no?
     CHANGE_HELMET,
-    CHANGE_ARMOR,*/
-}action_t;
+    CHANGE_ARMOR,
+}action_t;*/
 
 
 //COSAS A RECIBIR

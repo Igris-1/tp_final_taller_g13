@@ -4,13 +4,13 @@
 
 #define QUEUE_MAX_SIZE 200
 
-ClientHandler::ClientHandler(Socket&& socket, Queue<CommandInfo*>& receiverQueue):
+ClientHandler::ClientHandler(Socket&& socket, Queue<action_t>& gameQueue):
         protocol(std::move(socket)),
         senderQueue(QUEUE_MAX_SIZE),
         senderThread(senderQueue, protocol),
-        receiverThread(receiverQueue, protocol) {}
+        receiverThread(gameQueue, protocol) {}
 
-void ClientHandler::push(GameSnapshot* gs) {
+void ClientHandler::push(game_snapshot_t gs) {
     try {
         if (is_alive()) {
             senderQueue.push(gs);
@@ -19,9 +19,9 @@ void ClientHandler::push(GameSnapshot* gs) {
 
         if (is_alive()) {
             std::cerr << "Closed sneder queue in client handler" << e.what()
-                      << std::endl;  // if client is alive, then it's a bug
+                      << std::endl;
         }
-        delete gs;  // if the client is not alive, then acceptor should delete it in reap_dead
+        //delete gs;  // 
     }
 }
 
@@ -29,12 +29,12 @@ bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThrea
 
 ClientHandler::~ClientHandler() {
 
-    GameSnapshot* gs;
-    while (senderQueue.try_pop(gs) && gs) {
+    game_snapshot_t* gs;
+    /*while (senderQueue.try_pop(gs) && gs) {
         delete gs;
-    }
+    }*/ // no es necesario pq game snapshot no es un struct simplon
 
-    protocol.kill_socket();
+    protocol.shutDown();
 
     senderQueue.close();
 

@@ -9,13 +9,12 @@
 #include <unistd.h>
 #include "receiver_thread.h"
 #include "sender_thread.h"
-#include "../common_src/protocol_client.h"
 
 
 #define BOX_RESPAWNED_TEXT "A new box has appeared"
 #define SLEEP_TIME 200000
-
-GameThread::GameThread(Queue<CommandInfo*>& receiverQueue,
+/*
+GameThread::GameThread(Queue<action_t>& receiverQueue,
                        ThreadSafeList<ClientHandler>* clientHandlerQueues):
         duck(0,4,4), clientHandlerQueues(clientHandlerQueues), receiverQueue(receiverQueue) {
 
@@ -68,4 +67,4 @@ void GameThread::run() {
 
         usleep(SLEEP_TIME);
     }
-}
+}*/

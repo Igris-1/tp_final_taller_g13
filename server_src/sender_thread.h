@@ -12,18 +12,18 @@
 
 class SenderThread: public Thread {
 private:
-    Queue<GameSnapshot*>& queue;
-    Protocol& protocol;
+    Queue<game_snapshot_t>& queue;
+    ProtocolServer& protocol;
 
     void run() override {
-
-        while (_keep_running) {
+        bool was_closed = false;
+        while (_keep_running && !was_closed) {
             try {
-                GameSnapshot* gs = queue.pop();
+                game_snapshot_t gs = queue.pop();
 
-                protocol.send_game_snapshot(*gs);
+                protocol.sendGameInfo(gs, &was_closed);
 
-                delete gs;
+                //delete gs; ya no, gs es un struct simple
 
             } catch (const ClosedQueue& e) {
 
@@ -37,7 +37,7 @@ private:
     }
 
 public:
-    SenderThread(Queue<GameSnapshot*>& queue, Protocol& protocol): queue(queue), protocol(protocol) {
+    SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol): queue(queue), protocol(protocol) {
         try {
             start();
         } catch (const std::exception& e) {

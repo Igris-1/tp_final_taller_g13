@@ -12,13 +12,18 @@ struct Position {
 
 struct SimpleDuck{
     Position pos;
-
     SimpleDuck(Position position) : pos(position) {}
 };
 
 struct Snapshot{
     std::vector<SimpleDuck> ducks;
+    //std::vector<bullets> boxes;
+    //std::vector<items> bullets;
 };
+
+
+
+
 
 class GameSnapshot {
     private:
