@@ -36,7 +36,10 @@ set(TEST_SOURCES
 add_executable(runTests ${TEST_SOURCES})
 
 # Enlazar Google Test y otras bibliotecas necesarias
-target_link_libraries(runTests GTest::GTest GTest::GMock pthread)
+
+# esta no funciona porque no sabe que es GTest::GTest y GTest::GMock
+# target_link_libraries(runTests GTest::GTest GTest::GMock GTest::Main)
+target_link_libraries(runTests GTest::gtest_main)
 
 # Opcional: Si deseas que se ejecuten las pruebas automáticamente al compilar
 add_test(NAME DuckGameTests COMMAND runTests)
