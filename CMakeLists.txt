@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16.3)
 
-if (POLICY CMP0135)
+if (POLICY CMP0138)
     cmake_policy(SET CMP0138 NEW)
 endif()
 
@@ -20,6 +20,15 @@ project(DuckGame
     LANGUAGES CXX
     )
 
+
+
+# Enable / Disable client, server, testings, algun uso le vamos a dar
+option(TESTS "Enable / disable tests." ON)
+option(CLIENT "Enable / disable client program." ON)
+option(SERVER "Enable / disable server program." ON)
+option(EDITOR "Enable / disable editor program." OFF)
+
+
 # Función para incluir directorios
 function(include_directories_for_target target)
     include_directories(${target} PRIVATE
@@ -33,30 +42,60 @@ endfunction()
 # Incluir el archivo de advertencias de compilación
 include(cmake/CompilerWarnings.cmake)
 
-# Variables para los ejecutables
-set(CLIENT_EXECUTABLE client_exec)
-set(SERVER_EXECUTABLE server_exec)
 
-# Agregar archivos fuente para el cliente
-file(GLOB CLIENT_SOURCES
+# ---------------- CLIENT SECTION ----------------
+if (CLIENT)
+    # Nombre del ejecutable del cliente
+    set(CLIENT_EXECUTABLE client_exec)
+    
+    # Agregar archivos fuente para el cliente
+    file(GLOB CLIENT_SOURCES
     "client_src/*.cpp"
     "common_src/*.cpp"
-)
+    )
 
-# Agregar archivos fuente para el servidor
-file(GLOB SERVER_SOURCES
+    # Crear el ejecutable del cliente
+    add_executable(${CLIENT_EXECUTABLE} ${CLIENT_SOURCES})
+    include_directories_for_target(${CLIENT_EXECUTABLE})
+endif()
+
+# ---------------- SERVER SECTION ----------------
+if (SERVER)
+    # Nombre del ejecutable del servidor
+    set(SERVER_EXECUTABLE server_exec)
+
+    # Agregar archivos fuente para el servidor
+    file(GLOB SERVER_SOURCES
     "server_src/*.cpp"
     "server_src/game_model/*.cpp"
     "common_src/*.cpp"
-)
+    )
 
-# Crear el ejecutable del cliente
-add_executable(${CLIENT_EXECUTABLE} ${CLIENT_SOURCES})
-include_directories_for_target(${CLIENT_EXECUTABLE})
+    # Crear el ejecutable del servidor
+    add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
+    include_directories_for_target(${SERVER_EXECUTABLE})
+endif()
 
-# Crear el ejecutable del servidor
-add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
-include_directories_for_target(${SERVER_EXECUTABLE})
+# ---------------- EDITOR SECTION ----------------
+if (EDITOR)
+    # Nombre del ejecutable del editor
+    set(EDITOR_EXECUTABLE editor_exec)
 
-# Añade el subdirectorio de pruebas
-add_subdirectory(tests)
+    # Agregar archivos fuente para el editor
+    file(GLOB EDITOR_SOURCES
+    "editor_src/*.cpp"
+    "common_src/*.cpp"
+    )
+
+    # Crear el ejecutable del editor
+    add_executable(editor_exec ${EDITOR_SOURCES})
+    include_directories_for_target(editor_exec)
+endif()
+
+#  ------ TEST SECTION -----------
+if (TESTS)
+    # El CMakeLists.txt de tests_src compila los tests, 
+    # crea un exec en tests_src y lo ejecuta autimaticamente
+    add_subdirectory(tests_src)
+    
+endif()
