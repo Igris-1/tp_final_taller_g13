@@ -1,4 +1,3 @@
 #include "weapon.h"
 
-Weapon::Weapon(int damage) : damage(damage), Positionable() {
-}
+Weapon::Weapon(int damage): damage(damage), Positionable() {}
