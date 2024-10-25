@@ -3,16 +3,16 @@
 #include <vector>
 #include <string>
 
-struct Position {
+struct image_position {
     int x;
     int y;
 
-    Position(int x, int y) : x(x), y(y) {}
+    image_position(int x, int y) : x(x), y(y) {}
 } ;
 
 struct SimpleDuck{
-    Position pos;
-    SimpleDuck(Position position) : pos(position) {}
+    image_position pos;
+    SimpleDuck(image_position position) : pos(position) {}
 };
 
 struct Snapshot{
@@ -20,9 +20,6 @@ struct Snapshot{
     //std::vector<bullets> boxes;
     //std::vector<items> bullets;
 };
-
-
-
 
 
 class GameSnapshot {

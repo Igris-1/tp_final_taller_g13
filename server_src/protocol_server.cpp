@@ -13,7 +13,7 @@
 //3ER     NICO  PTS 06
 //4TO     FEDE  PTS 00
 
-#include "ProtocolServer.h"
+#include "protocol_server.h"
 #include <cstdint>
 #include "../common_src/liberror.h"
 #include <string.h>
@@ -54,6 +54,7 @@ action_t ProtocolServer::receiveDataFromClient(bool* was_closed) {
 
     //un receive pedorro temporal para recibir 4 ints q represtenan direcciones
     int direcciones[4];
+    
     for (int i = 0; i < 4; i++) {
         if (connection.recvall(&code, ONE_BYTE, was_closed) != 1) {
             return nullAction;
@@ -82,3 +83,4 @@ void ProtocolServer::shutDown() {
 }
 
 ProtocolServer::~ProtocolServer(){}
+

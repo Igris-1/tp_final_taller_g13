@@ -1,5 +1,5 @@
 #include "server.h"
-#include "Acceptor.h"
+#include "acceptor.h"
 
 #define RDWR 2
 #define QUEUE_MAX_SIZE 200
@@ -13,14 +13,17 @@ Server::~Server() {
 }
 
 void Server::start() {
+
     try {
 
         Queue<action_t> gameQueue = Queue<action_t>(QUEUE_MAX_SIZE);
         ListOfClientsMonitor clients;
 
         Acceptor acceptor(port, gameQueue, &clients);
-        //GameThread gameThread(gameQueue, clients); lo comentopq por ahora no quier usar esto
 
+        //hasta que no pase algo que diga que empieza el juego
+
+        GameThread gameThread(gameQueue);
         std::string input;
         while (input != STOP_CODE) {
             std::getline(std::cin, input);
@@ -28,8 +31,8 @@ void Server::start() {
         acceptor.close();    
         acceptor.stop();
         acceptor.join();
-        //gameThread.stop(); comentado pq no lo uso todavia
-        //gameThread.join();
+        gameThread.stop();
+        gameThread.join();
 
     } catch (const std::bad_alloc& e) {
         std::cerr << "No se pudo allocar memoria en el server: " << e.what() << std::endl;

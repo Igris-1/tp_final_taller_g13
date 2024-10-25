@@ -2,12 +2,12 @@
 
 #include <cstdint>
 #include <string>
-#include "../common_src/protocol.h"
+#include "protocol_client.h"
 
 
 class Client {
 private:
-    Protocol protocol;
+    ProtocolClient protocol;
     void move(int direction);
 
 public:

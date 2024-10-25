@@ -1,4 +1,10 @@
 #pragma once
+
+
+
+
+
+
 //COSAS A ENVIAR AL SERVIDOR
 // 0x00 -> conectarse al server -> (cant_jugadores | name | segundo name) 
 // 0x01 -> durante la partida -> (id_player | id_accion)

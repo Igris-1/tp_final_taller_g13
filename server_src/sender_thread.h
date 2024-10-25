@@ -5,7 +5,6 @@
 #include <string>
 #include <variant>
 
-#include "../common_src/protocol.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 
@@ -23,8 +22,6 @@ private:
 
                 protocol.sendGameInfo(gs, &was_closed);
 
-                //delete gs; ya no, gs es un struct simple
-
             } catch (const ClosedQueue& e) {
 
                 stop();
@@ -39,7 +36,7 @@ private:
 public:
     SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol): queue(queue), protocol(protocol) {
         try {
-            start();
+            //start();  no quiero enviar nada todavia
         } catch (const std::exception& e) {
             std::cerr << "Failed to start sendert hread: " << e.what() << std::endl;
         } catch (...) {

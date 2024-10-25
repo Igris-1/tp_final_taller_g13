@@ -1,5 +1,4 @@
-#ifndef PROTOCOLSERVER_HPP
-#define PROTOCOLSERVER_HPP
+#pragma once
 
 #include "../common_src/socket.h"
 #include <string>
@@ -45,9 +44,3 @@ public:
 
     ~ProtocolServer();
 };
-
-
-
-
-
-#endif  // PROTOCOLSERVER_HPP

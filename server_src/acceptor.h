@@ -1,11 +1,7 @@
-//
-// Created by pedro on 10/13/24.
-//
-
 #ifndef ACCEPTOR_H
 #define ACCEPTOR_H
 
-#include "ListOfClientsMonitor.h"
+#include "list_of_clients_monitor.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 #include "../common_src/socket.h"

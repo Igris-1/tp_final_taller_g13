@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ProtocolServer.h"
+#include "protocol_server.h"
 #include "../common_src/queue.h"
 #include "../common_src/socket.h"
 
@@ -13,10 +13,10 @@ private:
     ProtocolServer protocol;
     Queue<game_snapshot_t> senderQueue;
     SenderThread senderThread;
-    ReceiverThread receiverThread;
+    ReceiverThread gameThread;
 
 public:
-    ClientHandler(Socket&& socket, Queue<action_t>& receiverQueue);
+    ClientHandler(Socket&& socket, Queue<action_t>& gameQueue);
     void push(game_snapshot_t gs);
     bool is_alive();
     ~ClientHandler();

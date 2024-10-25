@@ -1,7 +1,3 @@
-//
-// Created by pedro on 10/1/24.
-//
-
 #ifndef LISTOFCLIENTSMONITOR_H
 #define LISTOFCLIENTSMONITOR_H
 #include <list>

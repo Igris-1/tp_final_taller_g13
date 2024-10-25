@@ -12,5 +12,10 @@ Position& Position::operator=(const Position& other) {
     return *this;
 }
 
+Position& Position::operator+(const Position& other) const {
+    Position newPosition(this->x + other.x, this->y + other.y);
+    return newPosition;
+}
+
 // implementar destructor
 Position::~Position() {}

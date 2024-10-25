@@ -12,11 +12,10 @@ public:
     explicit Positionable(bool valid): position(-1, -1), valid(valid) {}
     Positionable(): position(-1, -1), valid(false) {}
 
-    // devuelve la posicion actual y setea la nueva posicion
-    Position move_to(Position new_position) {
-        Position aux = position;
-        position = new_position;
-        return aux;
+    // devuelve la posicion final y setea la nueva posicion
+    Position move_to(Position& position_movement) {
+        this->position = position_movement + this->position;
+        return this->position; 
     }
     bool is_in_a_live_position() { return this->position == Position(-1, -1); }
 

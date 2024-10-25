@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "../common_src/protocol.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+#include "protocol_server.h"
 
 class ReceiverThread: public Thread {
 private:
@@ -18,8 +17,6 @@ private:
         bool was_closed = false;
         while (!was_closed && _keep_running) {
             try {
-                /*CommandInfo* command_info = protocol.read_command();
-                queue.push(command_info);*/
                 action_t action = protocol.receiveDataFromClient(&was_closed);
                 queue.push(action);
             } catch (const std::exception& e) {

@@ -13,44 +13,28 @@
 
 #define BOX_RESPAWNED_TEXT "A new box has appeared"
 #define SLEEP_TIME 200000
-/*
-GameThread::GameThread(Queue<action_t>& receiverQueue,
-                       ThreadSafeList<ClientHandler>* clientHandlerQueues):
-        duck(0,4,4), clientHandlerQueues(clientHandlerQueues), receiverQueue(receiverQueue) {
 
+GameThread::GameThread(Queue<action_t>& gameQueue):
+        duck(1), gameQueue(gameQueue) {
     start();
 }
 
-
-void GameThread::send_snapshots(GameSnapshot* gs) {
-    clientHandlerQueues->for_each([gs](ClientHandler& handler) {
-        GameSnapshot* gss = gs->clone();
-        handler.push(gss);  // push here cause it's unlikely the queue is full
-    });
-    delete gs;
-}
-
-void GameThread::move_duck(int amount){
-    duck.move(amount, 0);
-    GameSnapshot* gs = new GameSnapshot();
-    SimpleDuck sduck = SimpleDuck((duck.get_pos()));
-    gs->add_duck(sduck);
-    send_snapshots(gs);
+void GameThread::move_duck(Position& position){
+    duck.move_to(position);
 }
 
 void GameThread::execute_commands() {
 
-    CommandInfo* command_info;
+    action_t action;
 
-    while (receiverQueue.try_pop(command_info) && command_info) {
-        action_t action = command_info->get_action();
-        if (action == LEFT){
-            move_duck(-1);
-            delete command_info;
+    while (gameQueue.try_pop(action)) {
+        if (action.right){
+            Position pos(1,0);
+            move_duck(pos);
         }
-        if (action == RIGHT){
-            move_duck(1);
-            delete command_info;
+        if (action.left){
+            Position pos(-1,0);
+            move_duck(pos);
         }
     }
 }
@@ -67,4 +51,4 @@ void GameThread::run() {
 
         usleep(SLEEP_TIME);
     }
-}*/
+}

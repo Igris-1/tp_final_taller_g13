@@ -1,20 +1,12 @@
 #include "duck.h"
 
-Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1) {}
+Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Position Duck::move_to(Position new_position){
-    Position aux = this->position;
-    this->position = new_position;
-    this->armor.move_to(new_position);
-    this->helmet.move_to(new_position);
-    this->weapon.move_to(new_position);
-    return aux;
-}
+Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(id) {}
 
+//comento para q compile
 void Duck::throw_weapon_to(Position position){
-    if (this->weapon.is_in_a_live_position()) {
-        this->weapon.move_to(position);
-    }
+       this->weapon.move_to(position);
 }
 
 Weapon& Duck::take_weapon(Weapon weapon){
@@ -49,3 +41,15 @@ Armor& Duck::get_armor(){
 Helmet& Duck::get_helmet(){
     return this->helmet;
 }
+
+bool Duck::is_alive(){
+    return !(this->health == 0);
+}
+
+void Duck::receive_damage(int damage){
+    this->health -= damage;
+    if (this->health < 0){
+        this->health = 0;
+    }
+}
+

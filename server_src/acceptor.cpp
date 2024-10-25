@@ -1,5 +1,5 @@
 
-#include "Acceptor.h"
+#include "acceptor.h"
 
 #include <queue>
 #include <utility>
@@ -8,8 +8,8 @@
 #include "../common_src/socket.h"
 
 #include "client_handler.h"
-#include "ListOfClientsMonitor.h"
-#include "ProtocolServer.h"
+#include "list_of_clients_monitor.h"
+#include "protocol_server.h"
 
 #define SHUT_DOWN_TWO 2
 

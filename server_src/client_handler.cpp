@@ -8,7 +8,7 @@ ClientHandler::ClientHandler(Socket&& socket, Queue<action_t>& gameQueue):
         protocol(std::move(socket)),
         senderQueue(QUEUE_MAX_SIZE),
         senderThread(senderQueue, protocol),
-        receiverThread(gameQueue, protocol) {}
+        gameThread(gameQueue, protocol) {}
 
 void ClientHandler::push(game_snapshot_t gs) {
     try {
@@ -21,27 +21,23 @@ void ClientHandler::push(game_snapshot_t gs) {
             std::cerr << "Closed sneder queue in client handler" << e.what()
                       << std::endl;
         }
-        //delete gs;  // 
     }
 }
 
-bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThread.is_alive(); }
+bool ClientHandler::is_alive() { return senderThread.is_alive() && gameThread.is_alive(); }
 
 ClientHandler::~ClientHandler() {
 
     game_snapshot_t* gs;
-    /*while (senderQueue.try_pop(gs) && gs) {
-        delete gs;
-    }*/ // no es necesario pq game snapshot no es un struct simplon
 
     protocol.shutDown();
 
     senderQueue.close();
 
     senderThread.stop();
-    receiverThread.stop();
+    gameThread.stop();
 
     senderThread.join();
 
-    receiverThread.join();
+    gameThread.join();
 }
