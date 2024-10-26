@@ -76,6 +76,9 @@ if (SERVER)
     include_directories_for_target(${SERVER_EXECUTABLE})
 endif()
 
+# ---------------- GUI SECTION----------------
+add_subdirectory(gui)
+
 # ---------------- EDITOR SECTION ----------------
 if (EDITOR)
     # Nombre del ejecutable del editor
