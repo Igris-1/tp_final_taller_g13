@@ -7,7 +7,7 @@
 
 class Client {
 private:
-    ProtocolClient protocol;
+    //ProtocolClient protocol;
     void move(int direction);
 
 public:

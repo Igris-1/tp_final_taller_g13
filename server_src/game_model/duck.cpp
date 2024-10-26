@@ -1,6 +1,6 @@
 #include "duck.h"
 
-Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
+//Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
 Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(id) {}
 
@@ -53,3 +53,4 @@ void Duck::receive_damage(int damage){
     }
 }
 
+bool Duck::is_this_duck(int id) { return this->duck_id == id; }

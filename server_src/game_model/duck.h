@@ -17,7 +17,6 @@ private:
 public:
     // por defecto empieza en la posicion -1,-1 (fuera del mapa), con una armadura, casco y arma
     // nula (osea posicion -1,-1)
-    explicit Duck(int health);
     explicit Duck(int health, int id);
 
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
@@ -32,7 +31,7 @@ public:
     Helmet& get_helmet();
 
     bool is_alive();
-
+    bool is_this_duck(int id);
     void receive_damage(int damage);
     ~Duck() {}
 };

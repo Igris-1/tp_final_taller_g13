@@ -4,8 +4,8 @@
 
 #define EXIT_CODE "q"
 
-Client::Client(const char* host, const char* port):
-        protocol(Socket(host, port)){
+Client::Client(const char* host, const char* port)
+        /*: protocol(Socket(host, port))*/{
             run();
         }
 
@@ -20,9 +20,9 @@ void Client::move(int direction) {
 
 void Client::run() {
 
-    bool socket_closed = protocol.socket_closed();
+    //bool socket_closed = protocol.socket_closed();
 
-    while (not socket_closed) {
+    /*while (not socket_closed) {
         std::string orders;
         std::getline(std::cin, orders);
 
@@ -37,5 +37,5 @@ void Client::run() {
         }
 
         socket_closed = protocol.socket_closed();
-    }
+    }*/
 }

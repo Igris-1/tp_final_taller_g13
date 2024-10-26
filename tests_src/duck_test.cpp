@@ -8,7 +8,7 @@
 
 
 TEST(DuckTest, MoveToNewPosition) {
-    Duck duck(100);
+    Duck duck(100, 0);
     Position new_position(10, 20);
     Position old_position = duck.move_to(new_position);
 
@@ -17,7 +17,7 @@ TEST(DuckTest, MoveToNewPosition) {
 }
 
 TEST(DuckTest, ThrowWeaponToPosition) {
-    Duck duck(100);
+    Duck duck(100, 1);
     Weapon weapon(1);
     duck.take_weapon(weapon);
     Position new_position(10, 20);
@@ -28,7 +28,7 @@ TEST(DuckTest, ThrowWeaponToPosition) {
 }
 
 TEST(DuckTest, TakeWeapon) {
-    Duck duck(100);
+    Duck duck(100, 1);
     Weapon weapon(1);
     Position initial_position = duck.get_position();
 
@@ -39,7 +39,7 @@ TEST(DuckTest, TakeWeapon) {
 }
 
 TEST(DuckTest, TakeArmor) {
-    Duck duck(100);
+    Duck duck(100,0);
     Armor armor(1);
     Position initial_position = duck.get_position();
 
@@ -50,7 +50,7 @@ TEST(DuckTest, TakeArmor) {
 }
 
 TEST(DuckTest, TakeHelmet) {
-    Duck duck(100);
+    Duck duck(100,0);
     Helmet helmet(1);
     Position initial_position = duck.get_position();
 

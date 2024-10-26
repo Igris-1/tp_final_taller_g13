@@ -13,9 +13,13 @@ public:
     Positionable(): position(-1, -1), valid(false) {}
 
     // devuelve la posicion final y setea la nueva posicion
-    Position move_to(Position& position_movement) {
+    Position move_relative_to(const Position& position_movement) {
         this->position = position_movement + this->position;
         return this->position; 
+    }
+    Position move_to(const Position& new_position) {
+        this->position = new_position;
+        return new_position;
     }
     bool is_in_a_live_position() { return this->position == Position(-1, -1); }
 
