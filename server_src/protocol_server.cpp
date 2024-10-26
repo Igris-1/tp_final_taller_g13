@@ -70,9 +70,9 @@ action_t ProtocolServer::receiveDataFromClient(bool* was_closed) {
     return action;
 }
 
-void ProtocolServer::sendGameInfo(game_snapshot_t command, bool* was_closed) {
+// void ProtocolServer::sendGameInfo(game_snapshot_t command, bool* was_closed) {
 
-}
+// }
 
 
 void ProtocolServer::shutDown() {

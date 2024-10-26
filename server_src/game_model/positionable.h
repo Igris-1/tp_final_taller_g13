@@ -1,4 +1,5 @@
-#pragma once
+#ifndef POSITIONABLE_H
+#define POSITIONABLE_H
 
 #include "position.h"
 
@@ -27,3 +28,5 @@ public:
 
     Position get_position() { return this->position; }
 };
+
+#endif

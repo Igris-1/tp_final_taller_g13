@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef ARMOR_H
+#define ARMOR_H
 #include "positionable.h"
 class Armor: public Positionable {
 private:
@@ -10,3 +10,5 @@ public:
     explicit Armor(int defense);
     ~Armor() {}
 };
+
+#endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef WEAPON_H
+#define WEAPON_H
+
 #include "positionable.h"
 
 class Weapon: public Positionable {
@@ -10,3 +12,5 @@ public:
     explicit Weapon(int damage);
     ~Weapon();
 };
+
+#endif

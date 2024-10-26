@@ -38,7 +38,7 @@ public:
 
     action_t receiveDataFromClient(bool* was_closed);
 
-    void sendGameInfo(game_snapshot_t command, bool* was_closed);
+    //void sendGameInfo(game_snapshot_t command, bool* was_closed);
 
     void shutDown();
 

@@ -42,4 +42,4 @@ add_executable(runTests ${TEST_SOURCES})
 target_link_libraries(runTests GTest::gtest_main)
 
 # Opcional: Si deseas que se ejecuten las pruebas automáticamente al compilar
-add_test(NAME DuckGameTests COMMAND runTests)
+add_test(NAME runTests COMMAND runTests)

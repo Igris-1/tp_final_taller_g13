@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUCK_H 
+#define DUCK_H
 
 #include "armor.h"
 #include "helmet.h"
@@ -35,3 +36,5 @@ public:
     void receive_damage(int damage);
     ~Duck() {}
 };
+
+#endif

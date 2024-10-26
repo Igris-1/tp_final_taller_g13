@@ -11,16 +11,16 @@
 
 class SenderThread: public Thread {
 private:
-    Queue<game_snapshot_t>& queue;
+    //Queue<game_snapshot_t>& queue;
     ProtocolServer& protocol;
 
     void run() override {
         bool was_closed = false;
         while (_keep_running && !was_closed) {
             try {
-                game_snapshot_t gs = queue.pop();
+                //game_snapshot_t gs = queue.pop();
 
-                protocol.sendGameInfo(gs, &was_closed);
+                //protocol.sendGameInfo(gs, &was_closed);
 
             } catch (const ClosedQueue& e) {
 

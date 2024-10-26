@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HELMET_H
+#define HELMET_H
 
 #include "positionable.h"
 class Helmet: public Positionable {
@@ -10,3 +11,5 @@ public:
     explicit Helmet(int defense);
     ~Helmet() {}
 };
+
+#endif
