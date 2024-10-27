@@ -14,10 +14,10 @@ private:
     ProtocolServer& protocol;
 
     void run() override {
-        bool was_closed = false;
-        while (!was_closed && _keep_running) {
+        bool socket_closed = protocol.socket_closed();
+        while (!socket_closed && _keep_running) {
             try {
-                action_t action = protocol.receiveDataFromClient(&was_closed);
+                action_t action = protocol.read_action();
                 queue.push(action);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;

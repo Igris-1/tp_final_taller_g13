@@ -19,44 +19,28 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-#define TWO_BYTES 2
 #define ONE_BYTE 1
-#define NULL_COMMAND 0
-
 #define SHUT_DOWN_TWO 2
 
 
-ProtocolServer::ProtocolServer(Socket client):connection(std::move(client)) {}
+ProtocolServer::ProtocolServer(Socket&& client) 
+        : connection(std::move(client)), socket_is_closed(false) {}
 
-
-ProtocolServer::ProtocolServer(ProtocolServer&& other) noexcept: connection(std::move(other.connection)) {}
-
-
-void ProtocolServer::sendStringToClient(const char* message, bool* was_closed) {
-
-    int len = strlen(message);
-    uint16_t bigendian = htons(len);
-    connection.sendall(&bigendian, TWO_BYTES, was_closed); //send del tamaño del string
-    connection.sendall(message, len, was_closed); //send del string
-
+bool ProtocolServer::socket_closed(){
+    return socket_is_closed;
 }
 
-void ProtocolServer::sendOneByteToClient(const uint8_t* data, bool* was_closed) {
-    connection.sendall(data, ONE_BYTE, was_closed);
-}
-
-action_t ProtocolServer::receiveDataFromClient(bool* was_closed) {
+action_t ProtocolServer::read_action() {
 
     uint8_t code;
     action_t action;
 
     action_t nullAction;
 
-    //un receive pedorro temporal para recibir 4 ints q represtenan direcciones
     int direcciones[4];
     
     for (int i = 0; i < 4; i++) {
-        if (connection.recvall(&code, ONE_BYTE, was_closed) != 1) {
+        if (connection.recvall(&code, ONE_BYTE, &socket_is_closed) != 1) {
             return nullAction;
         }
         direcciones[i] = code;
@@ -70,17 +54,16 @@ action_t ProtocolServer::receiveDataFromClient(bool* was_closed) {
     return action;
 }
 
-// void ProtocolServer::sendGameInfo(game_snapshot_t command, bool* was_closed) {
-
-// }
+//void ProtocolServer::sendGameInfo(game_snapshot_t command, bool* was_closed) {}
 
 
 void ProtocolServer::shutDown() {
-    try {
+    if (!socket_is_closed) {
         connection.shutdown(SHUT_DOWN_TWO);
-        connection.close();
-    } catch (const LibError&) {}
+    }
 }
 
-ProtocolServer::~ProtocolServer(){}
+ProtocolServer::~ProtocolServer(){
+    connection.close();
+}
 

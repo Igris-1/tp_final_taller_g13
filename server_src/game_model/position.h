@@ -12,8 +12,8 @@ public:
     Position(int x, int y);
 
     bool operator==(const Position& other) const;
-    Position& operator=(const Position& other);
-    Position& operator+(const Position& other) const;
+    Position operator=(const Position& other);
+    Position operator+(const Position& other) const;
     int get_x();
     int get_y();
     ~Position();

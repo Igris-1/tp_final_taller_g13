@@ -14,6 +14,7 @@ int main(int argc, char* argv[]) {
             return ERROR;
         }
 
+
         Server server(argv[PORT_ARG]);
         return SUCCESS;
 

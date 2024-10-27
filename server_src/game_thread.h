@@ -11,6 +11,7 @@
 #include "../common_src/game_snapshot.h"
 #include "game_model/duck.h"
 #include "client_handler.h"
+#include "../common_src/action_t.h"
 
 
 

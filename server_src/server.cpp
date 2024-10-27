@@ -5,20 +5,19 @@
 #define QUEUE_MAX_SIZE 200
 #define STOP_CODE "q"
 
-Server::Server(const char* port) {
-    this->port = port;
+Server::Server(const char* port) 
+        : port(port) {
+    start();
 }
 
 Server::~Server() {
 }
 
 void Server::start() {
-
     try {
 
         Queue<action_t> gameQueue = Queue<action_t>(QUEUE_MAX_SIZE);
         ListOfClientsMonitor clients;
-
         Acceptor acceptor(port, gameQueue, &clients);
 
         //hasta que no pase algo que diga que empieza el juego

@@ -29,10 +29,12 @@ void GameThread::execute_commands() {
 
     while (gameQueue.try_pop(action)) {
         if (action.right){
+            std::cout << "Moving right" << std::endl;
             Position pos(1,0);
             move_duck(pos);
         }
         if (action.left){
+            std::cout << "Moving left" << std::endl;
             Position pos(-1,0);
             move_duck(pos);
         }

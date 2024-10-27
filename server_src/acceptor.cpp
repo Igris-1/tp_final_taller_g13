@@ -19,12 +19,13 @@ Acceptor::Acceptor(const char* port, Queue<action_t>& gameQueue, ListOfClientsMo
 
 void Acceptor::run(){
     try {
-        while (true) {
+        while (_keep_running) {
             Socket ss = socket.accept();
             clients->addClient(std::move(ss), gameQueue);
         }
     } catch (const LibError& e) {
-        return;
+        
+        stop();
     }
 }
 
