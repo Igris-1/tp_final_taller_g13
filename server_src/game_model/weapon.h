@@ -10,7 +10,7 @@ private:
 
 public:
     explicit Weapon(int damage);
-    ~Weapon();
+    ~Weapon(){}
 };
 
 #endif

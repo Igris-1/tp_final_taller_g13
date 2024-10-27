@@ -1,4 +1,4 @@
-#include "map_game.h"
+/*#include "map_game.h"
 
 MapGame::MapGame(int high, int width): high(high), width(width) {}
 
@@ -9,7 +9,7 @@ bool MapGame::position_in_range(Position position){
 bool MapGame::position_is_valid(Position position){
     bool is_valid = this->invalid_positions.find(position) == this->invalid_positions.end();
     return is_valid && position_in_range(position);
-}
+} // para usar find hay que hacerle un operator< a Position
 
 bool MapGame::add_duck(Duck duck){
     Position position = duck.get_position();
@@ -17,6 +17,7 @@ bool MapGame::add_duck(Duck duck){
         return false;
     }
     this->ducks.push_back(duck);
+    return true;
 }
 
 bool MapGame::add_invalid_position(Position position){
@@ -26,8 +27,6 @@ bool MapGame::add_invalid_position(Position position){
     this->invalid_positions.insert(position);
     return true;
 }
-
-
 
 bool MapGame::move_duck(int duck_id, Position movement){
     for (int i = 0; i < this->ducks.size(); i++){
@@ -50,4 +49,4 @@ bool MapGame::add_gun_or_box(Positionable gun_or_box){
     }
     this->guns_and_boxes.push_back(gun_or_box);
     return true;
-}
+}*/

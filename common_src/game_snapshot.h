@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include <vector>
 #include <string>
@@ -33,4 +33,4 @@ class GameSnapshot {
         SimpleDuck get_duck();
         std::string serialize();
         //GameSnapshot deserialize(std::string& data);
-};
+};*/

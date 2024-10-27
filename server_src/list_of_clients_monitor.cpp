@@ -6,6 +6,7 @@
 
 #include "../common_src/liberror.h"
 #include "../common_src/socket.h"
+#include "../common_src/game_snapshot_t.h"
 
 ListOfClientsMonitor::ListOfClientsMonitor() {}
 

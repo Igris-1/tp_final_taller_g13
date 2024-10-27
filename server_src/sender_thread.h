@@ -7,11 +7,12 @@
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+#include "../common_src/game_snapshot_t.h"
 
 
 class SenderThread: public Thread {
 private:
-    //Queue<game_snapshot_t>& queue;
+    Queue<game_snapshot_t>& queue;
     ProtocolServer& protocol;
 
     void run() override {
@@ -35,13 +36,13 @@ private:
 
 public:
     SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol): queue(queue), protocol(protocol) {
-        try {
+        /*try {
             //start();  no quiero enviar nada todavia
         } catch (const std::exception& e) {
             std::cerr << "Failed to start sendert hread: " << e.what() << std::endl;
         } catch (...) {
             std::cerr << "Unknown error occurred while starting sender thread." << std::endl;
-        }
+        }*/
     }
 
     ~SenderThread() override { _is_alive = false; }

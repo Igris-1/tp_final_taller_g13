@@ -6,7 +6,7 @@
 
 #include "receiver_thread.h"
 #include "sender_thread.h"
-#include "../common_src/game_snapshot.h"
+#include "../common_src/game_snapshot_t.h"
 
 class ClientHandler {
 private:

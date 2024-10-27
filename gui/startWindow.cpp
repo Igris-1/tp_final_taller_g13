@@ -2,6 +2,7 @@
 
 #include <QPalette>
 #include <QPixmap>
+#include <QDebug>
 
 #include "ui_startWindow.h"  // Archivo generado por uic
 

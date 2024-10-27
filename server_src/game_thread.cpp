@@ -15,7 +15,7 @@
 #define SLEEP_TIME 200000
 
 GameThread::GameThread(Queue<action_t>& gameQueue):
-        duck(1), gameQueue(gameQueue) {
+        duck(1,1), gameQueue(gameQueue) {
     start();
 }
 
