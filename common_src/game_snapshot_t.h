@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdint>
 #include <vector>
-#include "duck_info_t.h"
+#include "duck_DTO.h"
 
 
 /*
@@ -16,8 +16,8 @@ typedef struct game_snapshot {
 
 typedef struct game_snapshot {
     
-    uint16_t ducks_len; //2 bytes
-    duck_TDO ducks[]; // sizeof(ducks) * ducks_len
+    uint8_t ducks_len; //2 bytes
+    std::vector<duck_DTO> ducks; // sizeof(ducks) * ducks_len
     
     //uint16_t bullets_len; //2 bytes
     //Bullet bullets[]; // sizeof(bullet) * bullets_len
@@ -28,6 +28,6 @@ typedef struct game_snapshot {
 
 } game_snapshot_t;
 
-
+//__attribute__((packed))
 
 #endif  // GAME_SNAPSHOT_T_H

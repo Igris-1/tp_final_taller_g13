@@ -3,14 +3,14 @@
 #include <cstdint>
 
 
-typedef struct duck_info {
+typedef struct duck_DTO {
     
     uint8_t duck_id; // id del color del pato?
-    uint16_t x;
-    uint16_t y;
+    uint8_t x;
+    uint8_t y;
+    bool running;
     //uint8_t duck_hp;
     //bool shooting;
-    bool running;
     //bool jumping;
     //bool weapon_equipped;
     //bool helmet_equipped;
@@ -18,8 +18,6 @@ typedef struct duck_info {
 
     //int id_arma; // 1 = pistola / 2 = escopeta
 
-} duck_TDO;
-
-
+}duck_DTO; 
 
 #endif  // DUCK_INFO_T_H

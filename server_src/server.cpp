@@ -16,13 +16,13 @@ Server::~Server() {
 void Server::start() {
     try {
 
-        Queue<action_t> gameQueue = Queue<action_t>(QUEUE_MAX_SIZE);
+        Queue<client_action_t> gameQueue = Queue<client_action_t>(QUEUE_MAX_SIZE);
         ListOfClientsMonitor clients;
-        Acceptor acceptor(port, gameQueue, &clients);
+        Acceptor acceptor(port, gameQueue, clients);
 
         //hasta que no pase algo que diga que empieza el juego
 
-        GameThread gameThread(gameQueue);
+        GameThread gameThread(gameQueue, clients);
         std::string input;
         while (input != STOP_CODE) {
             std::getline(std::cin, input);

@@ -58,3 +58,15 @@ void Duck::receive_damage(int damage){
 }
 
 bool Duck::is_this_duck(int id) { return this->duck_id == id; }
+
+duck_DTO Duck::to_DTO(){
+    duck_DTO dto;
+    dto.duck_id = this->duck_id;
+    uint8_t x = this->position.get_x();
+    uint8_t y = this->position.get_y();
+    //uint8_t duck_hp = this->health;
+    //bool weapon_equipped;
+    //bool helmet_equipped;
+    //bool armor_equipped;
+    return dto;
+}

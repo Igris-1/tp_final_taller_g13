@@ -10,24 +10,24 @@
 
 #include "game_model/duck.h"
 #include "client_handler.h"
-#include "../common_src/action_t.h"
-
-
-
+#include "client_action_t.h"
+#include "../game_model/map_game.h"
 
 class GameThread: public Thread {
 private:
-    Duck duck;
-    Queue<action_t>& gameQueue;
+    MapGame map;
+    Queue<client_action_t>& gameQueue;
+    ListOfClientsMonitor& clients;
+    
 
-    void make_snapshots(action_t gs);
+    void send_snapshots();
     void pickUpBox(const std::string& name, int box_id);
     void move_duck(Position& position);
     void execute_commands();
     void run() override;
 
 public:
-    explicit GameThread(Queue<action_t>& gameQueue);
+    explicit GameThread(Queue<client_action_t>& gameQueue, ListOfClientsMonitor& clients);
 };
 
 #endif

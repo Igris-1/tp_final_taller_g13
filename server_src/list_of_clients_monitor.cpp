@@ -11,13 +11,13 @@
 ListOfClientsMonitor::ListOfClientsMonitor() {}
 
 void ListOfClientsMonitor::addClient(Socket&& client,
-                                     Queue<action_t>& gameQueue) {
+                                     Queue<client_action_t>& gameQueue, int idCount) {
     std::lock_guard<std::mutex> lock(mutex);
     Queue<game_snapshot_t> senderQueue;
-    this->clientsList.emplace_back(std::move(client), gameQueue);
+    this->clientsList.emplace_back(std::move(client), gameQueue, idCount);
 }
 // cppcheck-suppress passedByValue
-void ListOfClientsMonitor::enqueueCommand(game_snapshot_t command) {
+void ListOfClientsMonitor::enqueue_snapshot(game_snapshot_t command) {
     std::lock_guard<std::mutex> lock(mutex);
     for (auto it = clientsList.begin(); it != clientsList.end();) {
         if (it->is_alive()) {

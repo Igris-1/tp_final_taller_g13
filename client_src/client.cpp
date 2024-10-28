@@ -1,6 +1,7 @@
 #include "client.h"
 #include <iostream>
 #include "../common_src/action_t.h"
+#include "../common_src/game_snapshot_t.h"
 
 #define EXIT_CODE "q"
 
@@ -12,12 +13,19 @@ Client::Client(const char* host, const char* port)
 void Client::move(int direction) {
     action_t action;
     if (direction == 0) {
-        action = action_t(true, false, false, false);
+        action.left = true;
     } else {
-        action = action_t(false, true, false, false);
+        action.right = true;
     }
     protocol.send_action(action);
-    //protocol.read_snapshot();
+    game_snapshot_t snapshot = protocol.read_snapshot();
+    std::cout << "Hay " << snapshot.ducks_len << " patos" << std::endl;
+
+    for (int i=0; i<snapshot.ducks_len; i++){
+        duck_DTO duck = snapshot.ducks[i];
+        std::cout << "El pato " << duck.duck_id << " esta en " << duck.x << " " << duck.y << std::endl;
+    }
+    
 }
 
 void Client::run() {

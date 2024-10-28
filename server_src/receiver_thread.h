@@ -7,17 +7,20 @@
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 #include "protocol_server.h"
+#include "client_action_t.h"
 
 class ReceiverThread: public Thread {
 private:
-    Queue<action_t>& queue;
+    Queue<client_action_t>& queue;
     ProtocolServer& protocol;
+    int clientId;
 
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
                 action_t action = protocol.receive_action();
-                queue.push(action);
+                client_action_t c_action{clientId, action};
+                queue.push(c_action);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;
             }
@@ -25,7 +28,7 @@ private:
     }
 
 public:
-    ReceiverThread(Queue<action_t>& queue, ProtocolServer& protocol):
+    ReceiverThread(Queue<client_action_t>& queue, ProtocolServer& protocol, int id):
             queue(queue), protocol(protocol) {
         start();
     }

@@ -14,9 +14,10 @@ private:
     Queue<game_snapshot_t> senderQueue;
     SenderThread senderThread;
     ReceiverThread receiverThread;
+    int clientID;
 
 public:
-    ClientHandler(Socket&& socket, Queue<action_t>& gameQueue);
+    ClientHandler(Socket&& socket, Queue<client_action_t>& gameQueue, int id);
     void push(game_snapshot_t gs);
     bool is_alive();
     ~ClientHandler();

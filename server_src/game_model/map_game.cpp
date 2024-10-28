@@ -42,6 +42,10 @@ bool MapGame::move_duck(int duck_id, Position movement){
     return false;
 }
 
+// bool MapGame::is_this_duck(int id){
+    
+// }
+
 bool MapGame::add_gun_or_box(Positionable gun_or_box){
     Position position = gun_or_box.get_position();
     if(!position_is_valid(position)){
@@ -49,4 +53,14 @@ bool MapGame::add_gun_or_box(Positionable gun_or_box){
     }
     this->guns_and_boxes.push_back(gun_or_box);
     return true;
+}
+
+std::vector<duck_DTO> MapGame::get_duck_DTO_list(){ 
+    std::vector<duck_DTO> list_DTO;
+    int size_list = this->ducks.size();
+    list_DTO.resize(0);
+    for(int i=0; i<size_list; i++){
+        list_DTO.push_back(this->ducks[i].to_DTO());
+    }
+    return list_DTO;
 }

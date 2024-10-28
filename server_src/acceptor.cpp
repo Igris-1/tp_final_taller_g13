@@ -13,18 +13,19 @@
 
 #define SHUT_DOWN_TWO 2
 
-Acceptor::Acceptor(const char* port, Queue<action_t>& gameQueue, ListOfClientsMonitor* clients): socket(port), gameQueue(gameQueue), clients(clients){
+Acceptor::Acceptor(const char* port, Queue<client_action_t>& gameQueue, ListOfClientsMonitor& clients): socket(port), gameQueue(gameQueue), clients(clients){
     start();
 }
 
 void Acceptor::run(){
     try {
+        int idCount = 0;
         while (_keep_running) {
             Socket ss = socket.accept();
-            clients->addClient(std::move(ss), gameQueue);
+            clients.addClient(std::move(ss), gameQueue, idCount);
+            idCount++;
         }
     } catch (const LibError& e) {
-        
         stop();
     }
 }

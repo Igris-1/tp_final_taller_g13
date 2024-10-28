@@ -19,8 +19,10 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <iostream>
+#include "duck_DTO.h"
 
 #define ONE_BYTE 1
+#define TWO_BYTES 2
 #define SHUT_DOWN_TWO 2
 
 
@@ -52,10 +54,15 @@ action_t ProtocolServer::receive_action() {
 
     return action;
 }
-//ver si dejamos el was_closed o lo sacamos a la mierda
-void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
-    
 
+void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
+
+    connection.sendall(&game_snapshot.ducks_len, ONE_BYTE, &socket_is_closed);
+
+
+    for(uint8_t i = 0; i<game_snapshot.ducks_len; i++){
+        connection.sendall(&game_snapshot.ducks[i], sizeof(duck_DTO), &socket_is_closed);
+    }
 
 }
 

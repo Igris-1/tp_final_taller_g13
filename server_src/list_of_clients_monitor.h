@@ -18,9 +18,9 @@ private:
 public:
     ListOfClientsMonitor();
 
-    void addClient(Socket&& client, Queue<action_t>& gameQueue);
+    void addClient(Socket&& client, Queue<client_action_t>& gameQueue, int idCount);
 
-    void enqueueCommand(game_snapshot_t command);
+    void enqueue_snapshot(game_snapshot_t command);
 
     ~ListOfClientsMonitor();
 };

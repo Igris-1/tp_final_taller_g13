@@ -5,6 +5,7 @@
 #include "helmet.h"
 #include "positionable.h"
 #include "weapon.h"
+#include "../../common_src/duck_DTO.h"
 
 class Duck: public Positionable {
 private:
@@ -37,6 +38,10 @@ public:
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
+
+    /*  devuelve los estados internos del duck en un dto (vida, id, posicion). 
+        no sabe nada de estados de jumping, running, ni nada*/
+    duck_DTO to_DTO();
     ~Duck() {}
 };
 
