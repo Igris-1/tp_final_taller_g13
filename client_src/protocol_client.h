@@ -19,6 +19,8 @@ public:
 
     bool socket_closed();
 
+    bool read_snapshot();
+
     void shutDown();
 
     ~ProtocolClient();

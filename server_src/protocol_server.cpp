@@ -18,6 +18,7 @@
 #include "../common_src/liberror.h"
 #include <string.h>
 #include <arpa/inet.h>
+#include <iostream>
 
 #define ONE_BYTE 1
 #define SHUT_DOWN_TWO 2
@@ -31,7 +32,7 @@ bool ProtocolServer::socket_closed(){
 }
 
 action_t ProtocolServer::read_action() {
-
+    
     uint8_t code;
     action_t action;
 
@@ -40,9 +41,7 @@ action_t ProtocolServer::read_action() {
     int direcciones[4];
     
     for (int i = 0; i < 4; i++) {
-        if (connection.recvall(&code, ONE_BYTE, &socket_is_closed) != 1) {
-            return nullAction;
-        }
+        connection.recvall(&code, ONE_BYTE, &socket_is_closed);
         direcciones[i] = code;
     }
 

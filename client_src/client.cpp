@@ -11,15 +11,13 @@ Client::Client(const char* host, const char* port)
 
 void Client::move(int direction) {
     action_t action;
-    std::cout << "Moving ";
     if (direction == 0) {
-        std::cout << "left" << std::endl;
         action = action_t(true, false, false, false);
     } else {
-        std::cout << "right" << std::endl;
         action = action_t(false, true, false, false);
     }
     protocol.send_action(action);
+    //protocol.read_snapshot();
 }
 
 void Client::run() {

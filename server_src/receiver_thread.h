@@ -14,8 +14,7 @@ private:
     ProtocolServer& protocol;
 
     void run() override {
-        bool socket_closed = protocol.socket_closed();
-        while (!socket_closed && _keep_running) {
+        while (!protocol.socket_closed() && _keep_running) {
             try {
                 action_t action = protocol.read_action();
                 queue.push(action);
@@ -31,7 +30,9 @@ public:
         start();
     }
 
-    ~ReceiverThread() override { _is_alive = false; }
+    ~ReceiverThread() override { 
+        _is_alive = false;
+        }
 };
 
 #endif

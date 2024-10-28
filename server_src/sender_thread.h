@@ -16,15 +16,13 @@ private:
     ProtocolServer& protocol;
 
     void run() override {
-        bool was_closed = false;
-        while (_keep_running && !was_closed) {
+        while (!protocol.socket_closed() && _keep_running){
             try {
-                //game_snapshot_t gs = queue.pop();
+                queue.pop();
 
                 //protocol.sendGameInfo(gs, &was_closed);
 
             } catch (const ClosedQueue& e) {
-
                 stop();
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in sender thread: " << e.what() << std::endl;
@@ -36,16 +34,12 @@ private:
 
 public:
     SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol): queue(queue), protocol(protocol) {
-        /*try {
-            //start();  no quiero enviar nada todavia
-        } catch (const std::exception& e) {
-            std::cerr << "Failed to start sendert hread: " << e.what() << std::endl;
-        } catch (...) {
-            std::cerr << "Unknown error occurred while starting sender thread." << std::endl;
-        }*/
+        start();
     }
 
-    ~SenderThread() override { _is_alive = false; }
+    ~SenderThread() override { 
+        _is_alive = false; 
+    }
 };
 
 #endif

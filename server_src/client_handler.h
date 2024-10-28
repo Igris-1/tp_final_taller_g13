@@ -13,7 +13,7 @@ private:
     ProtocolServer protocol;
     Queue<game_snapshot_t> senderQueue;
     SenderThread senderThread;
-    ReceiverThread gameThread;
+    ReceiverThread receiverThread;
 
 public:
     ClientHandler(Socket&& socket, Queue<action_t>& gameQueue);

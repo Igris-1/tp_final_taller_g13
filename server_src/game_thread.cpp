@@ -10,7 +10,6 @@
 #include "receiver_thread.h"
 #include "sender_thread.h"
 
-
 #define BOX_RESPAWNED_TEXT "A new box has appeared"
 #define SLEEP_TIME 200000
 
@@ -50,6 +49,7 @@ void GameThread::run() {
         } catch (const ClosedQueue& e) {
             stop();
         }
+        
 
         usleep(SLEEP_TIME);
     }
