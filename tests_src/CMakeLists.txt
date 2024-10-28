@@ -37,6 +37,7 @@ set(TEST_SOURCES
     ../server_src/game_model/armor.cpp
     ../server_src/game_model/weapon.cpp
     ../server_src/game_model/helmet.cpp
+    test_duck.cpp
     
 )
 
