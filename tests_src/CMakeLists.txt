@@ -34,6 +34,10 @@ set(TEST_SOURCES
     test_position.cpp
     ../server_src/game_model/position.cpp # Asegúrate de que el nombre del archivo sea correcto
     ../server_src/game_model/duck.cpp
+    ../server_src/game_model/armor.cpp
+    ../server_src/game_model/weapon.cpp
+    ../server_src/game_model/helmet.cpp
+    
 )
 
 # Crear un ejecutable para las pruebas

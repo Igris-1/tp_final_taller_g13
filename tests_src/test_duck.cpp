@@ -1,10 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "../server_src/game_model/duck.h"
-#include "../server_src/game_model/weapon.h"
-#include "../server_src/game_model/armor.h"
-#include "../server_src/game_model/helmet.h"
-#include "../server_src/game_model/position.h"
 
 TEST(MathTest, duckLifeAndConstructor) {
         Duck duck(100, 1);
@@ -22,6 +18,6 @@ TEST(MathTest, duckLifeAndConstructor) {
         EXPECT_FALSE(duck.is_alive());
 }
 
-TEST(MathTest, duckMove) {
-        Duck duck(100, 1);
-}
+// TEST(MathTest, duckMove) {
+//         Duck duck(100, 1);
+// }
