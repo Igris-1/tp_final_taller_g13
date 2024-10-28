@@ -1,4 +1,4 @@
-/*#ifndef MAP_H
+#ifndef MAP_H
 #define MAP_H
 
 #include <vector>
@@ -24,4 +24,4 @@ class MapGame{
     bool add_gun_or_box(Positionable gun_or_box);
 };
 
-#endif*/
+#endif

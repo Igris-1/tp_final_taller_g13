@@ -1,4 +1,4 @@
-/*#include "map_game.h"
+#include "map_game.h"
 
 MapGame::MapGame(int high, int width): high(high), width(width) {}
 
@@ -49,4 +49,4 @@ bool MapGame::add_gun_or_box(Positionable gun_or_box){
     }
     this->guns_and_boxes.push_back(gun_or_box);
     return true;
-}*/
+}
