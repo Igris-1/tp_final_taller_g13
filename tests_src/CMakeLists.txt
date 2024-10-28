@@ -22,24 +22,26 @@ if (NOT GTEST_FOUND)
     include(FetchContent)
     FetchContent_Declare(
       googletest
-      URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+      #URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+      URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
     )
     FetchContent_MakeAvailable(googletest)
 endif()
 
 # Agregar todos los archivos de prueba a una lista
 set(TEST_SOURCES
-    test_main.cpp  # Asegúrate de que el nombre del archivo sea correcto
+    test_main.cpp
+    test_position.cpp
+    ../server_src/game_model/position.cpp # Asegúrate de que el nombre del archivo sea correcto
+    ../server_src/game_model/duck.cpp
 )
 
 # Crear un ejecutable para las pruebas
 add_executable(runTests ${TEST_SOURCES})
 
 # Enlazar Google Test y otras bibliotecas necesarias
-
-# esta no funciona porque no sabe que es GTest::GTest y GTest::GMock
-# target_link_libraries(runTests GTest::GTest GTest::GMock GTest::Main)
-target_link_libraries(runTests GTest::gtest_main)
+target_link_libraries(runTests GTest::gtest GTest::gtest_main)
 
 # Opcional: Si deseas que se ejecuten las pruebas automáticamente al compilar
+enable_testing()
 add_test(NAME runTests COMMAND runTests)

@@ -26,6 +26,7 @@ bool ProtocolClient::socket_closed(){
 bool ProtocolClient::read_snapshot() {
     bool code;
     connection.recvall(&code, ONE_BYTE, &socket_is_closed);
+    return code;
 }
 
 void ProtocolClient::shutDown() {

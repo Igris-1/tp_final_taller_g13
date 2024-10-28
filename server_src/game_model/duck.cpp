@@ -9,6 +9,10 @@ void Duck::throw_weapon_to(Position position){
        this->weapon.move_to(position);
 }
 
+int Duck::get_health(){
+    return this->health;
+}
+
 Weapon& Duck::take_weapon(Weapon weapon){
     Weapon& aux = this->weapon;
     this->weapon = weapon;

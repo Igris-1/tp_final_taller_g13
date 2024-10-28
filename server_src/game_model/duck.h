@@ -20,6 +20,8 @@ public:
     // nula (osea posicion -1,-1)
     explicit Duck(int health, int id);
 
+    
+
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
     // arma)
     void throw_weapon_to(Position position);
@@ -30,6 +32,7 @@ public:
     Weapon& get_weapon();
     Armor& get_armor();
     Helmet& get_helmet();
+    int get_health();
 
     bool is_alive();
     bool is_this_duck(int id);

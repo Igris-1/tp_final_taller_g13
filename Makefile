@@ -18,3 +18,6 @@ $(BUILD_DIR):
 # Limpiar la compilación
 clean:
 	rm -rf $(BUILD_DIR)
+
+test:
+	./$(BUILD_DIR)/tests_src/runTests 
