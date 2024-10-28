@@ -18,10 +18,10 @@ private:
     void run() override {
         while (!protocol.socket_closed() && _keep_running){
             try {
-                queue.pop();
 
-                //protocol.sendGameInfo(gs, &was_closed);
-
+                game_snapshot_t gs = queue.pop();
+                protocol.sendGameInfo(gs);
+ 
             } catch (const ClosedQueue& e) {
                 stop();
             } catch (const std::exception& e) {

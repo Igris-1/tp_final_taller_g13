@@ -3,7 +3,6 @@
 #include "../common_src/socket.h"
 #include <string>
 #include <cstdint>
-#include "../common_src/game_snapshot.h"
 #include "game_snapshot_t.h"
 #include "../common_src/action_t.h"
 
@@ -16,11 +15,13 @@ private:
 public:
     ProtocolServer(Socket&& client);
 
-    action_t read_action();
+    action_t receive_action();
 
     bool socket_closed();
 
     void shutDown();
+
+    void sendGameInfo(game_snapshot_t game_snapshot);
 
     ~ProtocolServer();
 };

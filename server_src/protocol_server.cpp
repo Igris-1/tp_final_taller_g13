@@ -31,7 +31,7 @@ bool ProtocolServer::socket_closed(){
     return socket_is_closed;
 }
 
-action_t ProtocolServer::read_action() {
+action_t ProtocolServer::receive_action() {
     
     uint8_t code;
     action_t action;
@@ -52,8 +52,12 @@ action_t ProtocolServer::read_action() {
 
     return action;
 }
+//ver si dejamos el was_closed o lo sacamos a la mierda
+void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
+    
 
-//void ProtocolServer::sendGameInfo(game_snapshot_t command, bool* was_closed) {}
+
+}
 
 
 void ProtocolServer::shutDown() {
