@@ -4,7 +4,7 @@
 #include "armor.h"
 #include "helmet.h"
 #include "positionable.h"
-#include "weapon.h"
+#include "weapon/weapon.h"
 #include "../../common_src/duck_DTO.h"
 
 class Duck: public Positionable {

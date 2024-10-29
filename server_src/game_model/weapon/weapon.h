@@ -1,10 +1,10 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include "positionable.h"
+#include "../positionable.h"
 
 class Weapon: public Positionable {
-private:
+protected:
     // cppcheck-suppress unusedStructMember
     int damage;
 

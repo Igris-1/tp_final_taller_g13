@@ -27,9 +27,9 @@ project(DuckGame
 
 # Enable / Disable client, server, testings, algun uso le vamos a dar
 option(TESTS "Enable / disable tests." ON)
-option(CLIENT "Enable / disable client program." ON)
-option(SERVER "Enable / disable server program." ON)
-option(EDITOR "Enable / disable editor program." OFF)
+# option(CLIENT "Enable / disable client program." ON)
+# option(SERVER "Enable / disable server program." ON)
+# option(EDITOR "Enable / disable editor program." OFF)
 
 # Función para incluir directorios
 function(include_directories_for_target target)
@@ -38,6 +38,7 @@ function(include_directories_for_target target)
         client_src
         server_src
         server_src/game_model
+        server_src/game_model/weapon
     )
 endfunction()
 
@@ -139,7 +140,7 @@ if (SERVER)
 endif()
 
 # ---------------- GUI SECTION----------------
-add_subdirectory(gui)
+# add_subdirectory(gui)
 
 
 # ---------------- EDITOR SECTION ----------------
