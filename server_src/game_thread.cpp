@@ -14,12 +14,12 @@
 #define SLEEP_TIME 200000
 
 GameThread::GameThread(Queue<client_action_t>& gameQueue, ListOfClientsMonitor& clients):
-        map(50,50), gameQueue(gameQueue), clients(clients) {
+        game(50,50), gameQueue(gameQueue), clients(clients) {
     start();
 }
 
 void GameThread::send_snapshots(){
-    std::vector<duck_DTO> ducks = map.get_duck_DTO_list();
+    std::vector<duck_DTO> ducks = game.get_duck_DTO_list();
     game_snapshot_t snapshot{ static_cast<uint8_t>(ducks.size()), ducks};
     clients.enqueue_snapshot(snapshot); 
 }
@@ -32,12 +32,12 @@ void GameThread::execute_commands() {
         if (action.right){
             std::cout << "Moving right" << std::endl;
             Position pos(1,0);
-            map.move_duck(c_action.id, pos);
+            game.move_duck(c_action.id, pos);
         }
         if (action.left){
             std::cout << "Moving left" << std::endl;
             Position pos(-1,0);
-            map.move_duck(c_action.id, pos);
+            game.move_duck(c_action.id, pos);
         }
     }
 }

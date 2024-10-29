@@ -11,11 +11,11 @@
 #include "game_model/duck.h"
 #include "client_handler.h"
 #include "client_action_t.h"
-#include "../game_model/map_game.h"
+#include "../game_model/game.h"
 
 class GameThread: public Thread {
 private:
-    MapGame map;
+    Game game;
     Queue<client_action_t>& gameQueue;
     ListOfClientsMonitor& clients;
     

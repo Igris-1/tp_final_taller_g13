@@ -34,6 +34,7 @@ public:
     Armor& get_armor();
     Helmet& get_helmet();
     int get_health();
+    int get_id();
 
     bool is_alive();
     bool is_this_duck(int id);
