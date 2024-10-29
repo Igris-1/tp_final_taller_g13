@@ -37,8 +37,11 @@ set(TEST_SOURCES
     ../server_src/game_model/armor.cpp
     ../server_src/game_model/weapon/weapon.cpp
     ../server_src/game_model/helmet.cpp
+    ../server_src/game_model/game.cpp
+    ../server_src/game_model/map_game.cpp
+    ../server_src/game_model/positionable.h
+    test_game.cpp
     test_duck.cpp
-    
 )
 
 # Crear un ejecutable para las pruebas

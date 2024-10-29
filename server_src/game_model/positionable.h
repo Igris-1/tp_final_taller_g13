@@ -23,6 +23,7 @@ public:
     }
     bool is_in_a_live_position() { return this->position == Position(-1, -1); }
     //virtual bool is_valid() {return true;}
+    
     Position get_position() { return this->position; }
 };
 

@@ -19,6 +19,7 @@ class MapGame{
     public:
     explicit MapGame(int high, int width);
     bool add_invalid_position(Position position);
+    bool set_duck_start_position(std::shared_ptr<Duck> duck, Position position);
     bool move_duck(std::shared_ptr<Duck> duck, Position movement);
 };
 

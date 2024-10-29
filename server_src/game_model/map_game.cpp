@@ -27,3 +27,11 @@ bool MapGame::move_duck(std::shared_ptr<Duck> duck, Position movement){
         }
     return false;
 }
+
+bool MapGame::set_duck_start_position(std::shared_ptr<Duck> duck, Position position){
+    if(!position_is_valid(position)){
+        return false;
+    }
+    duck->move_to(position);
+    return true;
+}

@@ -12,6 +12,7 @@ private:
 
 public:
     Position(int x, int y);
+    Position();
 
     bool operator==(const Position& other) const;
     bool operator<(const Position& other) const;

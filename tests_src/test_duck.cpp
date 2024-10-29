@@ -6,7 +6,7 @@
 #include "../server_src/game_model/helmet.h"
 
 
-TEST(MathTest, duckLifeAndConstructor) {
+TEST(DuckTest, duckLifeAndConstructor) {
         Duck duck(100, 1);
         EXPECT_TRUE(duck.is_alive());
         EXPECT_EQ(duck.get_health(), 100);
@@ -22,7 +22,7 @@ TEST(MathTest, duckLifeAndConstructor) {
         EXPECT_FALSE(duck.is_alive());
 }
 
-TEST(MathTest, duckMove) {
+TEST(DuckTest, duckMove) {
         Duck duck(100, 1);
         duck.move_to(Position(1,1));
         EXPECT_EQ(duck.get_position(), Position(1,1));
@@ -39,7 +39,7 @@ TEST(MathTest, duckMove) {
         EXPECT_EQ(duck.get_position(), Position(10,10));
 }
 
-TEST(MathTest, duckItems) {
+TEST(DuckTest, duckItems) {
         Duck duck(100, 1);
         Weapon weapon(1);
         Armor armor(1);

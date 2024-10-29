@@ -9,14 +9,35 @@ int Game::add_duck(int health) {
     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
     id++;
     this->ducks[id] = new_duck;
+    this->ducks_states.emplace(id, duck_state{Position(0,0), false, false, false});
     return id -1;
+}
+
+void Game::run_duck(int id, Position movement){
+    if(this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id not found");
+    }
+    this->ducks_states[id].is_running = true;
+    this->ducks_states[id].relative_movement = movement;
+}
+
+void Game::set_duck_start_position(int id, Position position){
+    if(this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id not found");
+    }
+    if(!this->map.set_duck_start_position(this->ducks[id], position)){
+        throw GameError("Duck start position is invalid");
+    }
+        this->ducks_states[id].is_running = false;
 }
 
 void Game::move_duck(int id, Position movement) {
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    this->map.move_duck(this->ducks[id], movement);
+    if(!this->map.move_duck(this->ducks[id], movement)){
+        throw GameError("Duck movement is invalid");
+    }
 }
 
 std::vector<duck_DTO> Game::get_duck_DTO_list(){
@@ -44,4 +65,11 @@ void Game::stop_duck(int id){
         throw GameError("Duck id not found");
     }
     this->ducks_states[id].is_running = false;
+}
+
+Position Game::position_duck(int id){
+    if(this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id not found");
+    }
+    return this->ducks[id]->get_position();
 }

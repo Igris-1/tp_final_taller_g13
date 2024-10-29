@@ -2,6 +2,8 @@
 
 Position::Position(int x, int y): x(x), y(y) {}
 
+Position::Position(): x(0), y(0) {}
+
 bool Position::operator==(const Position& other) const { return (x == other.x && y == other.y); }
 
 Position Position::operator=(const Position& other) {

@@ -2,7 +2,7 @@
 
 #include "../server_src/game_model/position.h"
 
-TEST(MathTest, PositionCompareEquals) {
+TEST(PositionTest, PositionCompareEquals) {
         Position pos1(1, 1);
         Position pos2(1, 1);
         Position pos3(2, 2);
@@ -12,7 +12,7 @@ TEST(MathTest, PositionCompareEquals) {
         EXPECT_FALSE(pos2 == pos3);
 }
 
-TEST(MathTest, PositionCompareLess) {
+TEST(PositionTest, PositionCompareLess) {
     Position pos1(1, 1);
     Position pos2(1, 1);
     Position pos3(2, 2);
@@ -24,7 +24,7 @@ TEST(MathTest, PositionCompareLess) {
     EXPECT_TRUE(pos3 < pos4);
 }
 
-TEST(MathTest, PositionCompareLessEquals) {
+TEST(PositionTest, PositionCompareLessEquals) {
     Position pos1(1, 1);
     Position pos2(1, 1);
     Position pos3(2, 2);
@@ -36,7 +36,7 @@ TEST(MathTest, PositionCompareLessEquals) {
     EXPECT_TRUE(pos3 <= pos4);
 }
 
-TEST(MathTest, PositionCompareGreater) {
+TEST(PositionTest, PositionCompareGreater) {
     Position pos1(1, 1);
     Position pos2(1, 1);
     Position pos3(2, 2);
@@ -48,7 +48,7 @@ TEST(MathTest, PositionCompareGreater) {
     EXPECT_TRUE(pos4 > pos3);
 }
 
-TEST(MathTest, PositionCompareGreaterEquals) {
+TEST(PositionTest, PositionCompareGreaterEquals) {
     Position pos1(1, 1);
     Position pos2(1, 1);
     Position pos3(2, 2);
@@ -60,7 +60,7 @@ TEST(MathTest, PositionCompareGreaterEquals) {
     EXPECT_TRUE(pos4 >= pos3);
 }
 
-TEST(MathTest, PositionSum) {
+TEST(PositionTest, PositionSum) {
     Position pos1(1, 1);
     Position pos2(1, 2);
     Position pos3(-1, 2);
@@ -75,7 +75,7 @@ TEST(MathTest, PositionSum) {
     EXPECT_TRUE(pos7 == Position(0, 4));
 }
 
-TEST(MathTest, PositionGetters) {
+TEST(PositionTest, PositionGetters) {
     Position pos2(1, 2);
     Position pos3(-1, 2);
 
