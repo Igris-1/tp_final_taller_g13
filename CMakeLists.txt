@@ -27,8 +27,8 @@ project(DuckGame
 
 # Enable / Disable client, server, testings, algun uso le vamos a dar
 option(TESTS "Enable / disable tests." ON)
-option(CLIENT "Enable / disable client program." ON)
-option(SERVER "Enable / disable server program." ON)
+option(CLIENT "Enable / disable client program." OFF)
+option(SERVER "Enable / disable server program." OFF)
 option(EDITOR "Enable / disable editor program." OFF)
 
 # Función para incluir directorios
@@ -45,6 +45,13 @@ endfunction()
 include(cmake/CompilerWarnings.cmake)
 
 # ---------------- SDL2 SECTION ------------------
+# HEY!! TODO XXX: you need to install some runtime and dev libraries *before*
+# compiling the client/editor code.
+#
+# In xubuntu 24.04 these are:
+#
+# sudo apt-get install libopus-dev libopusfile-dev libxmp-dev libfluidsynth-dev fluidsynth libwavpack1 libwavpack-dev libfreetype-dev wavpack
+#
 # Install libSDL2 and libSDL2pp (for client or editor)
 # HEY!! TODO XXX: add more dependendies (either for client, server or editor)
 if(CLIENT OR EDITOR)
@@ -118,6 +125,9 @@ if (CLIENT)
 
     # Link the taller_common lib target
     target_link_libraries(${CLIENT_EXECUTABLE} SDL2pp::SDL2pp)
+
+    # add subdirecotire gui
+    add_subdirectory(gui)
 endif()
 
 
@@ -137,9 +147,6 @@ if (SERVER)
     add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
     include_directories_for_target(${SERVER_EXECUTABLE})
 endif()
-
-# ---------------- GUI SECTION----------------
-add_subdirectory(gui)
 
 
 # ---------------- EDITOR SECTION ----------------
