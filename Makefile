@@ -20,4 +20,10 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 test:
-	./$(BUILD_DIR)/tests_src/runTests 
+	./$(BUILD_DIR)/tests_src/runTests
+
+super:
+	make clean
+	make
+	make test
+

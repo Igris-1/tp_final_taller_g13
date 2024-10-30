@@ -22,11 +22,11 @@ project(DuckGame
 
 
 
-# Enable / Disable client, server, testings, algun uso le vamos a dar
+# ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
 option(TESTS "Enable / disable tests." OFF)
 option(CLIENT "Enable / disable client program." ON)
 option(SDL "Enable / disable sdl program." ON)
-option(SERVER "Enable / disable server program." OFF)
+option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 
 
@@ -67,6 +67,7 @@ if (CLIENT)
     # Crear el ejecutable del cliente
     add_executable(${CLIENT_EXECUTABLE} ${CLIENT_SOURCES})
     include_directories_for_target(${CLIENT_EXECUTABLE})
+
    
     if (SDL)
          # Encontrar la biblioteca SDL2
@@ -79,7 +80,7 @@ if (CLIENT)
          target_link_libraries(${CLIENT_EXECUTABLE} SDL2pp::SDL2pp)
     
          # add subdirecotire gui
-         add_subdirectory(gui)
+         # add_subdirectory(gui)
     endif()
 endif()
 

@@ -91,14 +91,14 @@ TEST(GameTest, GameDuckDTO) {
     list =  game.get_duck_DTO_list();
     EXPECT_EQ(list.size(), 2);
 
-    // EXPECT_EQ(list[0].duck_id, 1);
-    // EXPECT_EQ(list[0].x, 2);
-    // EXPECT_EQ(list[0].y, 0);
-    // EXPECT_EQ(list[0].running, false);
+    EXPECT_EQ(list[0].duck_id, 1);
+    EXPECT_EQ(list[0].x, 2);
+    EXPECT_EQ(list[0].y, 0);
+    EXPECT_EQ(list[0].running, false);
 
 
-    // EXPECT_EQ(list[1].duck_id, 2);
-    // EXPECT_EQ(list[1].x, 6);
-    // EXPECT_EQ(list[1].y, 5);
-    //EXPECT_EQ(list[1].running, true);
+    EXPECT_EQ(list[1].duck_id, 2);
+    EXPECT_EQ(list[1].x, 6);
+    EXPECT_EQ(list[1].y, 5);
+    EXPECT_EQ(list[1].running, true);
 }

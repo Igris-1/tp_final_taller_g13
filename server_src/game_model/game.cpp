@@ -43,14 +43,13 @@ void Game::set_duck_start_position(int id, Position position){
     if(!this->map.set_duck_start_position(this->ducks[id], position)){
         throw GameError("Duck start position is invalid");
     }
-        this->ducks_states[id]->is_running = false;
 }
 
 void Game::move_duck(int id, Position movement) {
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    
+    this->ducks_states[id]->relative_movement = movement;
     if(!this->map.move_duck(this->ducks[id], movement)){
         throw GameError("Duck movement is invalid");
     }
@@ -63,7 +62,7 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
         new_dto.running = this->ducks_states[it->first]->is_running;
         //new_dto.jumping = this->ducks_states[it->first].is_jumping;
         //new_dto.shooting = this->ducks_states[it->first].is_shooting;
-        list_DTO.push_back(it->second->to_DTO());
+        list_DTO.push_back(new_dto);
     }
     return list_DTO;
 }
