@@ -8,24 +8,13 @@
 #define EXIT_CODE "q"
 
 Client::Client(const char* host, const char* port)
-        : protocol(Socket(host, port)){
-            run();
-        }
-
-//levantar imagenes en cada itreracion del juego <-- NO HACERLO
-//HAY QUE CARGAR IMAGENES FUERA DE LOOP
-// NO DIBUJAR COSAS QNO ESTAN EN LA PANTALLA
-game_snapshot_t Client::get_snapshot(){
-
-    game_snapshot_t snapshot = protocol.read_snapshot();
-
-    for (int i=0; i<snapshot.ducks_len; i++){
-        duck_DTO duck = snapshot.ducks[i];
-    }
-
-    return snapshot;// despues se lo pasa al front
+    : protocol(Socket(host, port)),
+      receiver_queue(),
+      sender_queue(),
+      receiver(protocol, receiver_queue),
+      sender(protocol, sender_queue) {
+    run();
 }
-
 
 void Client::command(char pressed_key) {
     action_t action;
@@ -34,7 +23,18 @@ void Client::command(char pressed_key) {
     } else if (pressed_key == 'd') {
         action.right = true;
     }
-    protocol.send_action(action);    
+    protocol.send_action(action);
+}
+
+Client::~Client() {
+    protocol.shutDown();
+    sender_queue.close();
+    
+    receiver.stop();
+    sender.stop();
+
+    receiver.join();
+    sender.join();
 }
 
 void Client::run() {
@@ -48,6 +48,5 @@ void Client::run() {
         }
 
         command(orders[0]);
-        game_snapshot_t snapshot = get_snapshot();
     }
 }

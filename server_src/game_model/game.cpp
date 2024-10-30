@@ -1,9 +1,6 @@
 #include "game.h"
 
-Game::Game(int high, int width): map(high, width) {
-    id = 0;
-}
-
+Game::Game(int high, int width): map(high, width), id(0), ducks_states(), ducks() {}
 
 int Game::add_duck(int health) {
     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
@@ -43,6 +40,7 @@ void Game::move_duck(int id, Position movement) {
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
+    
     if(!this->map.move_duck(this->ducks[id], movement)){
         throw GameError("Duck movement is invalid");
     }

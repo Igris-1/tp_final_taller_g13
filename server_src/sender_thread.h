@@ -23,8 +23,6 @@ private:
                 game_snapshot_t gs = queue.pop();
                 protocol.sendGameInfo(gs);
  
-            } catch (const LibError& e) {
-                stop();
             } catch (const ClosedQueue& e) {
                 stop();
             } catch (const std::exception& e) {

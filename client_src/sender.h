@@ -16,6 +16,8 @@ private:
             try {
                 action_t action = queue.pop();
                 protocol.send_action(action);
+            } catch (const ClosedQueue& e) {
+                stop();
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client sender thread: " << e.what() << std::endl;
             }

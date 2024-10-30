@@ -24,9 +24,7 @@ private:
                 action_t action = protocol.receive_action();
                 std::shared_ptr<Action> command = std::make_shared<PlayerCommands>(clientId, action);
                 queue.push(command);
-            } catch (const LibError& e) {
-                stop();
-            } catch (const std::exception& e) {
+            }catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;
             }
         }
@@ -34,7 +32,7 @@ private:
 
 public:
     ReceiverThread(Queue<std::shared_ptr<Action>>& queue, ProtocolServer& protocol, int id):
-            queue(queue), protocol(protocol) {
+            queue(queue), protocol(protocol), clientId(id) {
         start();
     }
 

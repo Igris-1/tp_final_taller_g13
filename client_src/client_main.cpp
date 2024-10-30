@@ -13,7 +13,7 @@ int main(int argc, const char* argv[]) {
         if (argc != REQUIRED_ARGC) {
             return ERROR;
         }
-    
+        
         Client client(argv[HOST_ARG], argv[PORT_ARG]);
         return SUCCESS;
 

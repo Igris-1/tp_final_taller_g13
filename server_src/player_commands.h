@@ -9,10 +9,12 @@ class PlayerCommands: public Action{
 public:
     action_t action_to_execute;
 
-PlayerCommands(int id, action_t action){
-    this->client_id = id;
-    this->action_to_execute = action;   
+PlayerCommands(int id, action_t action) 
+    : Action(id),
+      action_to_execute(action) {
 }
+
+
 
 void execute(Game& game) override{
     if (action_to_execute.right){
@@ -25,11 +27,7 @@ void execute(Game& game) override{
             Position pos(-1,0);
             game.move_duck(this->client_id, pos);
         }
-}
-
-
+    }
 };
-
-
 
 #endif
