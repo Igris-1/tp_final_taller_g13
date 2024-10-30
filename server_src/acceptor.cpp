@@ -28,7 +28,7 @@ void Acceptor::run(){
 
             //encola a la gameQueue el comando para crear un duck con el id del nuevo cliente
             std::shared_ptr<Action> create_duck = std::make_shared<DuckCreator>(idCount);
-            gameQueue.push2(create_duck);
+            gameQueue.push(create_duck);
             idCount++;
         }
     } catch (const LibError& e) {

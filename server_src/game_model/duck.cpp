@@ -2,7 +2,7 @@
 
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(id) {}
+Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(0,0), duck_id(id) {}
 
 //comento para q compile
 void Duck::throw_weapon_to(Position position){

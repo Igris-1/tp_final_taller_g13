@@ -34,29 +34,32 @@ bool ProtocolServer::socket_closed(){
 }
 
 action_t ProtocolServer::receive_action() {
-    
-    uint8_t code;
-    action_t action;
+    try{ 
+        uint8_t code;
+        action_t action;
 
-    action_t nullAction;
+        action_t nullAction;
 
-    int direcciones[4];
-    
-    for (int i = 0; i < 4; i++) {
-        connection.recvall(&code, ONE_BYTE, &socket_is_closed);
-        direcciones[i] = code;
+        int direcciones[4];
+        
+        for (int i = 0; i < 4; i++) {
+            connection.recvall(&code, ONE_BYTE, &socket_is_closed);
+            direcciones[i] = code;
+        }
+
+        action.left = direcciones[0];
+        action.right = direcciones[1];
+        action.up = direcciones[2];
+        action.down = direcciones[3];
+
+        return action;
+    } catch (const LibError& e) {
+        socket_is_closed = true;
+        throw;
     }
-
-    action.left = direcciones[0];
-    action.right = direcciones[1];
-    action.up = direcciones[2];
-    action.down = direcciones[3];
-
-    return action;
 }
 
 void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
-
     connection.sendall(&game_snapshot.ducks_len, ONE_BYTE, &socket_is_closed);
 
 

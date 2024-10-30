@@ -79,7 +79,7 @@ public:
         return true;
     }
 
-    bool try_pop2(std::shared_ptr<Action>& val) {
+    /*bool try_pop2(std::shared_ptr<Action>& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
         if (q.empty()) {
@@ -96,7 +96,7 @@ public:
         val = std::move(q.front());
         q.pop();
         return true;
-    }
+    } dejen la falopa*/
 
     void push(T const& val) {
         std::unique_lock<std::mutex> lck(mtx);
@@ -116,7 +116,7 @@ public:
         q.push(val);
     }
 
-    void push2(const std::shared_ptr<Action>& val) {
+    /*void push2(const std::shared_ptr<Action>& val) {
     std::unique_lock<std::mutex> lck(mtx);
 
     if (closed) {
@@ -132,7 +132,7 @@ public:
     }
 
     q.push(val);
-}
+} dejen la falopa*/
 
     T pop() {
         std::unique_lock<std::mutex> lck(mtx);

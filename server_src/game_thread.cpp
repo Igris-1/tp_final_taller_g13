@@ -20,13 +20,16 @@ GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsM
 
 void GameThread::send_snapshots(){
     game_snapshot_t snapshot = game.get_snapshot();
-    clients.enqueue_snapshot(snapshot); 
+    if (snapshot.ducks_len!=0){
+        clients.enqueue_snapshot(snapshot); 
+    }
+    
 }
 
 void GameThread::execute_commands() {
 
     std::shared_ptr<Action> c_action;
-    while (gameQueue.try_pop2(c_action)) {
+    while (gameQueue.try_pop(c_action)) {
         // action_t action = c_action.action;
         // if (action.right){
         //     std::cout << "Moving right" << std::endl;

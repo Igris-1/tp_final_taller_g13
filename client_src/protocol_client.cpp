@@ -39,7 +39,10 @@ game_snapshot_t ProtocolClient::read_snapshot(){
     duck_DTO duck;
     game_snapshot_t game_snapshot;
     game_snapshot.ducks_len = n;
-    for (uint8_t i=0; i<n;i++){
+    game_snapshot.ducks.resize(n);
+
+    int cant = static_cast<int>(n);
+    for (int i=0; i<cant; i++){
         connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
         game_snapshot.ducks[i] = duck; //deberia pasarse con move? para evitar copiar
     }

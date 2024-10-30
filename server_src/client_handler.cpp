@@ -27,7 +27,6 @@ bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThrea
 
 ClientHandler::~ClientHandler() {
     game_snapshot_t* gs;
-
     protocol.shutDown();
 
     senderQueue.close();

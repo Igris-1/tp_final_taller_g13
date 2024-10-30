@@ -18,11 +18,9 @@ Client::Client(const char* host, const char* port)
 game_snapshot_t Client::get_snapshot(){
 
     game_snapshot_t snapshot = protocol.read_snapshot();
-    std::cout << "Hay " << snapshot.ducks_len << " patos" << std::endl;
 
     for (int i=0; i<snapshot.ducks_len; i++){
         duck_DTO duck = snapshot.ducks[i];
-        std::cout << "El pato " << duck.duck_id << " esta en " << duck.x << " " << duck.y << std::endl;
     }
 
     return snapshot;// despues se lo pasa al front
@@ -41,9 +39,7 @@ void Client::command(char pressed_key) {
 
 void Client::run() {
 
-    bool socket_closed = protocol.socket_closed();
-
-    while (!socket_closed) {
+    while (!protocol.socket_closed()) {
         std::string orders;
         std::getline(std::cin, orders);
 
@@ -53,7 +49,5 @@ void Client::run() {
 
         command(orders[0]);
         game_snapshot_t snapshot = get_snapshot();
-
-        socket_closed = protocol.socket_closed();
     }
 }

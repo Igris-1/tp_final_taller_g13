@@ -10,6 +10,7 @@
 #include "protocol_server.h"
 #include "client_action_t.h"
 #include "player_commands.h"
+#include <liberror.h>
 
 class ReceiverThread: public Thread {
 private:
@@ -22,7 +23,9 @@ private:
             try {
                 action_t action = protocol.receive_action();
                 std::shared_ptr<Action> command = std::make_shared<PlayerCommands>(clientId, action);
-                queue.push2(command);
+                queue.push(command);
+            } catch (const LibError& e) {
+                stop();
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;
             }
