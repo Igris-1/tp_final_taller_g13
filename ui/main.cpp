@@ -36,4 +36,4 @@ int main() try {
 	// If case of error, print it and exit with error
 	std::cerr << e.what() << std::endl;
 	return 1;
-}*/
+}/**/

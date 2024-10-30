@@ -1,67 +1,76 @@
-/*#include <SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include <SDL2pp/SDL.hh>
+#include <SDL2pp/Window.hh>
+#include <SDL2pp/Renderer.hh>
+#include <SDL2pp/Texture.hh>
+#include <SDL2pp/Exception.hh>
+#include <iostream>
+#include "../common_src/queue.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+extern Queue<SDL_Event> eventQueue;
+
+const int SCREEN_WIDTH = 820;
+const int SCREEN_HEIGHT = 500;
+const int MY_CUSTOM_EVENT_TYPE = SDL_RegisterEvents(1); // Registrar evento personalizado
+
+struct MyCustomEvent {
+    int x;
+};
 
 int main(int argc, char* args[]) {
-    SDL_Window* window = NULL;
-    SDL_Renderer* renderer = NULL;
-    SDL_Texture* backgroundTexture = NULL;
-    SDL_Texture* duckTexture = NULL;
+    try {
+        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+        SDL2pp::Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
+        SDL2pp::Texture backgroundTexture(renderer, "game.png");
+        SDL2pp::Texture duckTexture(renderer, "duck.png");
 
-    window = SDL_CreateWindow("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    if (window == NULL) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
+        int bgWidth, bgHeight;
+        SDL_QueryTexture(backgroundTexture.Get(), nullptr, nullptr, &bgWidth, &bgHeight);
+        float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
+        int bgScaledWidth = SCREEN_WIDTH;
+        int bgScaledHeight = static_cast<int>(SCREEN_WIDTH / bgAspectRatio);
+        bgScaledWidth = static_cast<int>(SCREEN_HEIGHT * bgAspectRatio);
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL) {
-        printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
+        int duckWidth, duckHeight;
+        SDL_QueryTexture(duckTexture.Get(), nullptr, nullptr, &duckWidth, &duckHeight);
+        float duckAspectRatio = static_cast<float>(duckWidth) / static_cast<float>(duckHeight);
+        int duckScaledWidth = 64;
+        int duckScaledHeight = static_cast<int>(duckScaledWidth / duckAspectRatio);
 
-    backgroundTexture = IMG_LoadTexture(renderer, "game.png");
-    duckTexture = IMG_LoadTexture(renderer, "duck.png");
+        bool quit = false;
+        SDL_Event e;
 
-    if (backgroundTexture == NULL || duckTexture == NULL) {
-        printf("Failed to load texture! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
+        SDL_Rect duckRect = { 300, 370, duckScaledWidth, duckScaledHeight };
 
-    bool quit = false;
-    SDL_Event e;
-
-    while (!quit) {
-        while (SDL_PollEvent(&e) != 0) {
-            if (e.type == SDL_QUIT) {
-                quit = true;
+        while (!quit) {
+            while (SDL_PollEvent(&e) != 0) {
+                if (e.type == SDL_QUIT) {
+                    quit = true;
+                } else if (e.type == SDL_KEYDOWN) {
+                    if (e.key.keysym.sym == SDLK_d) {
+                        duckRect.x += 20;
+                    } else if (e.key.keysym.sym == SDLK_a) {
+                        duckRect.x -= 20;
+                    }
+                }/* else if (e.type == MY_CUSTOM_EVENT_TYPE) {
+                    MyCustomEvent* myData = reinterpret_cast<MyCustomEvent*>(&e.user.data1);
+                    duckRect.x = 300 + myData->x; 
+                }*/
             }
+
+            renderer.Clear();
+            renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
+            renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, duckRect);
+            renderer.Present();
         }
 
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, backgroundTexture, NULL, NULL);
-        
-        SDL_Rect duckRect = { 300, 370, 64, 64 };
-        SDL_RenderCopy(renderer, duckTexture, NULL, &duckRect);
-
-        SDL_RenderPresent(renderer);
+    } catch (const SDL2pp::Exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
     }
-
-    SDL_DestroyTexture(backgroundTexture);
-    SDL_DestroyTexture(duckTexture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 
     return 0;
 }
-*/

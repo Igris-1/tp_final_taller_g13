@@ -11,7 +11,7 @@ Client::Client(const char* host, const char* port)
     : protocol(Socket(host, port)),
       receiver_queue(),
       sender_queue(),
-      receiver(protocol, receiver_queue),
+      receiver(protocol),
       sender(protocol, sender_queue) {
     run();
 }
