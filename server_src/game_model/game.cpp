@@ -13,6 +13,14 @@ int Game::add_duck(int health) {
     return id -1;
 }
 
+int Game::add_duck(int health, int id) {
+    std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
+    //id++;
+    this->ducks[id] = new_duck;
+    this->ducks_states.emplace(id, duck_state{Position(0,0), false, false, false});
+    return id;
+}
+
 void Game::run_duck(int id, Position movement){
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
@@ -72,4 +80,11 @@ Position Game::position_duck(int id){
         throw GameError("Duck id not found");
     }
     return this->ducks[id]->get_position();
+}
+
+game_snapshot_t Game::get_snapshot(){
+    game_snapshot_t snapshot;
+    snapshot.ducks_len = this->ducks.size();
+    snapshot.ducks = this->get_duck_DTO_list();
+    return snapshot;
 }

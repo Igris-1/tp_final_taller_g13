@@ -7,6 +7,7 @@
 #include <mutex>
 #include <queue>
 #include <stdexcept>
+#include "../server_src/action.h"
 
 struct ClosedQueue: public std::runtime_error {
     ClosedQueue(): std::runtime_error("The queue is closed") {}
@@ -78,6 +79,25 @@ public:
         return true;
     }
 
+    bool try_pop2(std::shared_ptr<Action>& val) {
+        std::unique_lock<std::mutex> lck(mtx);
+
+        if (q.empty()) {
+            if (closed) {
+                throw ClosedQueue(); 
+            }
+            return false;
+        }
+
+        if (q.size() == this->max_size) {
+            is_not_full.notify_all();
+        }
+
+        val = std::move(q.front());
+        q.pop();
+        return true;
+    }
+
     void push(T const& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -95,6 +115,24 @@ public:
 
         q.push(val);
     }
+
+    void push2(const std::shared_ptr<Action>& val) {
+    std::unique_lock<std::mutex> lck(mtx);
+
+    if (closed) {
+        throw ClosedQueue();
+    }
+
+    while (q.size() == this->max_size) {
+        is_not_full.wait(lck);
+    }
+
+    if (q.empty()) {
+        is_not_empty.notify_all();
+    }
+
+    q.push(val);
+}
 
     T pop() {
         std::unique_lock<std::mutex> lck(mtx);

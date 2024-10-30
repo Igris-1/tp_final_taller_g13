@@ -14,7 +14,6 @@ private:
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
-                // implementar
                 action_t action = queue.pop();
                 protocol.send_action(action);
             } catch (const std::exception& e) {

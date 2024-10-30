@@ -17,7 +17,7 @@ private:
     int clientID;
 
 public:
-    ClientHandler(Socket&& socket, Queue<client_action_t>& gameQueue, int id);
+    ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& gameQueue, int id);
     void push(game_snapshot_t gs);
     bool is_alive();
     ~ClientHandler();

@@ -4,14 +4,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "action.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 #include "protocol_server.h"
 #include "client_action_t.h"
+#include "player_commands.h"
 
 class ReceiverThread: public Thread {
 private:
-    Queue<client_action_t>& queue;
+    Queue<std::shared_ptr<Action>>& queue;
     ProtocolServer& protocol;
     int clientId;
 
@@ -19,8 +21,8 @@ private:
         while (!protocol.socket_closed() && _keep_running) {
             try {
                 action_t action = protocol.receive_action();
-                client_action_t c_action{clientId, action};
-                queue.push(c_action);
+                std::shared_ptr<Action> command = std::make_shared<PlayerCommands>(clientId, action);
+                queue.push2(command);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;
             }
@@ -28,7 +30,7 @@ private:
     }
 
 public:
-    ReceiverThread(Queue<client_action_t>& queue, ProtocolServer& protocol, int id):
+    ReceiverThread(Queue<std::shared_ptr<Action>>& queue, ProtocolServer& protocol, int id):
             queue(queue), protocol(protocol) {
         start();
     }

@@ -1,14 +1,14 @@
 #include "client_handler.h"
 #include <utility>
+#include "action.h"
 #define QUEUE_MAX_SIZE 200
 
-ClientHandler::ClientHandler(Socket&& socket, Queue<client_action_t>& gameQueue, int id):
+ClientHandler::ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& gameQueue, int id):
         protocol(std::move(socket)),
         senderQueue(QUEUE_MAX_SIZE),
         senderThread(senderQueue, protocol),
         receiverThread(gameQueue, protocol, id),
         clientID(id) {}
-
 void ClientHandler::push(game_snapshot_t gs) {
     try {
         if (is_alive()) {

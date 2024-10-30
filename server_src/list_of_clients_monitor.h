@@ -3,7 +3,7 @@
 #include <list>
 #include <mutex>
 #include "../common_src/queue.h"
-
+#include "action.h"
 #include "client_handler.h"
 
 
@@ -18,7 +18,7 @@ private:
 public:
     ListOfClientsMonitor();
 
-    void addClient(Socket&& client, Queue<client_action_t>& gameQueue, int idCount);
+    void addClient(Socket&& client, Queue<std::shared_ptr<Action>>& gameQueue, int idCount);
 
     void enqueue_snapshot(game_snapshot_t command);
 

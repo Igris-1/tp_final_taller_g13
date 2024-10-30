@@ -9,6 +9,8 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include "../../common_src/duck_DTO.h"
+#include "../../common_src/game_snapshot_t.h"
 
 
 typedef struct{
@@ -17,7 +19,6 @@ typedef struct{
     bool is_running;
     bool is_shooting;
 }duck_state;
-
 
 class Game {
     private:
@@ -29,6 +30,7 @@ class Game {
         Game(int high, int width);
         // crea el duck y lo agrega al juego. devuelve el id del duck creado
         int add_duck(int health);
+        int add_duck(int health, int id);
         Position position_duck(int id);
         void move_duck(int id, Position movement);
         void run_duck(int id, Position movement);
@@ -36,6 +38,7 @@ class Game {
         void stop_duck(int id);
         void continue_movements();
         std::vector<duck_DTO> get_duck_DTO_list();
+        game_snapshot_t get_snapshot();
 };
 
 class GameError: public std::exception {

@@ -19,9 +19,7 @@ public:
 
     bool socket_closed();
 
-    int read_number();
-
-    duck_DTO read_duck();
+    uint8_t read_number();
 
     game_snapshot_t read_snapshot();
 

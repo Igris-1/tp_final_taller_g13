@@ -21,7 +21,7 @@ void ProtocolClient::send_action(action_t& action) {
     connection.sendall(&code, ONE_BYTE, &socket_is_closed);
 }
 
-int ProtocolClient::read_number() {
+uint8_t ProtocolClient::read_number() {
 
     uint8_t buffer;
 
@@ -34,23 +34,14 @@ bool ProtocolClient::socket_closed(){
     return socket_is_closed;
 }
 
-duck_DTO ProtocolClient::read_duck(){
-    
-    duck_DTO buffer;
-
-    connection.recvall(&buffer, sizeof(uint8_t), &socket_is_closed);
-
-    return buffer;
-}
-
 game_snapshot_t ProtocolClient::read_snapshot(){
-    int n = read_number();
+    uint8_t n = read_number();
     duck_DTO duck;
     game_snapshot_t game_snapshot;
     game_snapshot.ducks_len = n;
-    for (int i=0; i<n;i++){
+    for (uint8_t i=0; i<n;i++){
         connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
-        game_snapshot.ducks[i] = duck;
+        game_snapshot.ducks[i] = duck; //deberia pasarse con move? para evitar copiar
     }
 
     return game_snapshot;

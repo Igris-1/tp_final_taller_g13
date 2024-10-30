@@ -1,5 +1,6 @@
 #include "server.h"
 #include "acceptor.h"
+#include "action.h"
 
 #define RDWR 2
 #define QUEUE_MAX_SIZE 200
@@ -16,7 +17,7 @@ Server::~Server() {
 void Server::start() {
     try {
 
-        Queue<client_action_t> gameQueue = Queue<client_action_t>(QUEUE_MAX_SIZE);
+        Queue<std::shared_ptr<Action>> gameQueue = Queue<std::shared_ptr<Action>>(QUEUE_MAX_SIZE);
         ListOfClientsMonitor clients;
         Acceptor acceptor(port, gameQueue, clients);
 

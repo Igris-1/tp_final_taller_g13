@@ -10,7 +10,8 @@
 class Client {
 private:
     ProtocolClient protocol;
-    void move(int direction);
+    void command (char pressed_key);
+    game_snapshot_t get_snapshot();
 
 public:
     void run();

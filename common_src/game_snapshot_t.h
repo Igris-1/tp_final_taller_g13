@@ -16,7 +16,7 @@ typedef struct game_snapshot {
 
 typedef struct game_snapshot {
     
-    uint8_t ducks_len; //2 bytes
+    uint8_t ducks_len; //1 byte
     std::vector<duck_DTO> ducks; // sizeof(ducks) * ducks_len
     
     //uint16_t bullets_len; //2 bytes

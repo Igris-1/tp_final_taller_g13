@@ -2,6 +2,8 @@
 #include <iostream>
 #include "../common_src/action_t.h"
 #include "../common_src/game_snapshot_t.h"
+#include "../common_src/queue.h"
+#include "../common_src/thread.h"
 
 #define EXIT_CODE "q"
 
@@ -10,14 +12,11 @@ Client::Client(const char* host, const char* port)
             run();
         }
 
-void Client::move(int direction) {
-    action_t action;
-    if (direction == 0) {
-        action.left = true;
-    } else {
-        action.right = true;
-    }
-    protocol.send_action(action);
+//levantar imagenes en cada itreracion del juego <-- NO HACERLO
+//HAY QUE CARGAR IMAGENES FUERA DE LOOP
+// NO DIBUJAR COSAS QNO ESTAN EN LA PANTALLA
+game_snapshot_t Client::get_snapshot(){
+
     game_snapshot_t snapshot = protocol.read_snapshot();
     std::cout << "Hay " << snapshot.ducks_len << " patos" << std::endl;
 
@@ -25,7 +24,19 @@ void Client::move(int direction) {
         duck_DTO duck = snapshot.ducks[i];
         std::cout << "El pato " << duck.duck_id << " esta en " << duck.x << " " << duck.y << std::endl;
     }
-    
+
+    return snapshot;// despues se lo pasa al front
+}
+
+
+void Client::command(char pressed_key) {
+    action_t action;
+    if (pressed_key == 'a') {
+        action.left = true;
+    } else if (pressed_key == 'd') {
+        action.right = true;
+    }
+    protocol.send_action(action);    
 }
 
 void Client::run() {
@@ -40,11 +51,8 @@ void Client::run() {
             break;
         }
 
-        if (orders == "a") {
-            move(0);
-        } else if (orders == "d") {
-            move(1);
-        }
+        command(orders[0]);
+        game_snapshot_t snapshot = get_snapshot();
 
         socket_closed = protocol.socket_closed();
     }
