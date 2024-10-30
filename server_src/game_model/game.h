@@ -23,14 +23,15 @@ typedef struct{
 class Game {
     private:
         int id;
-        std::map<int, duck_state> ducks_states;
+        std::map<int, std::shared_ptr<duck_state>> ducks_states;
         MapGame map;
         std::map<int, std::shared_ptr<Duck>> ducks;
     public:
         Game(int high, int width);
         // crea el duck y lo agrega al juego. devuelve el id del duck creado
-        int add_duck(int health);
+        //int add_duck(int health);
         int add_duck(int health, int id);
+        void remove_duck(int id);
         Position position_duck(int id);
         void move_duck(int id, Position movement);
         void run_duck(int id, Position movement);
