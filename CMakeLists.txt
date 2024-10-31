@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3)
-
+#CMAKE DE PITOS
 if (POLICY CMP0138)
     cmake_policy(SET CMP0138 NEW)
 endif()
@@ -23,7 +23,7 @@ project(DuckGame
 
 
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
-option(TESTS "Enable / disable tests." OFF)
+option(TESTS "Enable / disable tests." ON)
 option(CLIENT "Enable / disable client program." ON)
 option(SDL "Enable / disable sdl program." ON)
 option(SERVER "Enable / disable server program." ON)

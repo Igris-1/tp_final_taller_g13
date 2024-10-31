@@ -2,21 +2,13 @@
 
 Game::Game(int high, int width): map(high, width), id(0), ducks_states(), ducks() {}
 
-// int Game::add_duck(int health) {
-//     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
-//     id++;
-//     this->ducks[id] = new_duck;
-//     this->ducks_states.emplace(id, duck_state{Position(0,0), false, false, false});
-//     return id -1;
-// }
-
 int Game::add_duck(int health, int id) {
     if (this->ducks.find(id) != this->ducks.end()){
         throw GameError("Duck id already exists");
     }
     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
     this->ducks[id] = new_duck;
-     ducks_states.emplace(id, std::make_shared<duck_state>(duck_state{Position(0, 0), false, false, false}));
+     ducks_states.emplace(id, std::make_shared<duck_state>());
     return id;
 }
 
@@ -35,6 +27,7 @@ void Game::run_duck(int id, Position movement){
     this->ducks_states[id]->is_running = true;
     this->ducks_states[id]->relative_movement = movement;
 }
+
 
 void Game::set_duck_start_position(int id, Position position){
     if(this->ducks.find(id) == this->ducks.end()){
@@ -72,10 +65,16 @@ void Game::continue_movements(){
         if(this->ducks_states[it->first]->is_running){
             this->map.move_duck(it->second, this->ducks_states[it->first]->relative_movement);
         }
+        if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
+            this->map.move_duck(it->second, Position(0,-1));
+            this->ducks_states[it->first]->tiles_to_jump --;
+        }else{
+            this->map.move_duck(it->second, Position(0, 1));
+        }
     }
 }
 
-void Game::stop_duck(int id){
+void Game::stop_run_duck(int id){
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
@@ -94,4 +93,18 @@ game_snapshot_t Game::get_snapshot(){
     snapshot.ducks_len = this->ducks.size();
     snapshot.ducks = this->get_duck_DTO_list();
     return snapshot;
+}
+
+void Game::jump_duck(int id, int jump_size){
+    if(this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id not found");
+    }
+    this->ducks_states[id]->is_jumping = true;
+    this->ducks_states[id]->tiles_to_jump = jump_size;
+}
+
+void Game::add_invalid_position(Position invalid_position){
+    if(!this->map.add_invalid_position(invalid_position)){
+        throw GameError("game can't add invalid position");
+    }
 }

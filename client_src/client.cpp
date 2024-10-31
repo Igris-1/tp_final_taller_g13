@@ -2,7 +2,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2pp/SDL.hh>
+#include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Window.hh>
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/Texture.hh>
@@ -17,6 +17,8 @@
 #define SCREEN_WIDTH 820
 #define SCREEN_HEIGHT 500
 
+using namespace SDL2pp;
+
 Client::Client(const char* host, const char* port):
         protocol(Socket(host, port)),
         receiver_queue(){
@@ -28,12 +30,12 @@ Client::~Client(){}
 void Client::run(){
     try {
         std::cout << "Press 'q' to quit" << std::endl;
-        SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-        SDL2pp::Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+        SDL sdl(SDL_INIT_VIDEO);
+        Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-        SDL2pp::Texture backgroundTexture(renderer, "../client_src/game.png");
-        SDL2pp::Texture duckTexture(renderer, "../client_src/duck.png");
+        Texture backgroundTexture(renderer, "../client_src/game.png");
+        Texture duckTexture2(renderer, "../client_src/duck_sprites.png");
 
         int bgWidth, bgHeight;
         SDL_QueryTexture(backgroundTexture.Get(), nullptr, nullptr, &bgWidth, &bgHeight);
@@ -42,18 +44,13 @@ void Client::run(){
         int bgScaledHeight = static_cast<int>(SCREEN_WIDTH / bgAspectRatio);
         bgScaledWidth = static_cast<int>(SCREEN_HEIGHT * bgAspectRatio);
 
-        int duckWidth, duckHeight;
-        SDL_QueryTexture(duckTexture.Get(), nullptr, nullptr, &duckWidth, &duckHeight);
-        float duckAspectRatio = static_cast<float>(duckWidth) / static_cast<float>(duckHeight);
-        int duckScaledWidth = 64;
-        int duckScaledHeight = static_cast<int>(duckScaledWidth / duckAspectRatio);
-
         bool quit = false;
-        SDL_Event e;
 
         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol);
-
+        int j[2];
+        int x[2];
+        int dir[2];
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
             
@@ -63,8 +60,26 @@ void Client::run(){
                 renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
                 //std::cout << "Ducks: " << gs.ducks.size() << std::endl;
                 for (int i=0; i < gs.ducks.size(); i++) {
-                    renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, SDL_Rect{gs.ducks[i].x, 370, duckScaledWidth, duckScaledHeight});
+                    //renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, SDL_Rect{gs.ducks[i].x, 370, duckScaledWidth, duckScaledHeight});
+                    if (x[i] > gs.ducks[i].x){
+                        dir[i] = 1;
+                    } else if (x[i] < gs.ducks[i].x){
+                        dir[i] = 0;
+                    } else {
+                        j[i]=0;
+                    }
+                    x[i] = gs.ducks[i].x,
+                    renderer.Copy(duckTexture2, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{x[i], 370, 64, 64}, 0, NullOpt, dir[i]);
+
+                    if (j[i] < 5){
+                        j[i]++;
+                    } else {
+                        j[i] = 1;
+                    }
                 }
+                
+                   
+                
                 renderer.Present();
             }
         }
@@ -76,7 +91,7 @@ void Client::run(){
 
         sender.stop();
         sender.join();
-    } catch (const SDL2pp::Exception& e) {
+    } catch (const Exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return;
     }

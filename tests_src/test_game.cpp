@@ -41,31 +41,50 @@ TEST(GameTest, GameDucksetPositionAndMovement) {
 
 TEST(GameTest, GameDuckRun) {
     Game game(10,10);
-    int id = game.add_duck(100,1 );
+    int id = game.add_duck(100, 1);
     game.set_duck_start_position(id, Position(0,0));
+    
+    game.add_invalid_position(Position(0,1)); 
+    game.add_invalid_position(Position(1,1));
+    game.add_invalid_position(Position(2,1));
+    game.add_invalid_position(Position(3,1));
+
+    /*
+     0,0 1,0 2,0 3,0
+     0,1 1,1 2,1 3,1 
+
+
+
+                                10,10
+    */
     
     game.run_duck(id, Position(1,0));
     Position pos = game.position_duck(id);
     EXPECT_EQ(pos, Position(0,0));
-
+    std::cout << "x: " + std::to_string(pos.get_x())  + "y: " + std::to_string(pos.get_y()) << std::endl;
     game.continue_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos, Position(1,0));
 
-    game.continue_movements();
-    pos = game.position_duck(id);
-    EXPECT_EQ(pos, Position(2,0));
-
-    game.stop_duck(id);
-    game.continue_movements();
-    pos = game.position_duck(id);
-    EXPECT_EQ(pos, Position(2,0));
+    std::cout << "\nx: " + std::to_string(pos.get_x())  + "y: " + std::to_string(pos.get_y()) << std::endl;
 
     game.continue_movements();
+    pos = game.position_duck(id);
+    EXPECT_EQ(pos, Position(2,0));
+    std::cout << "x: " + std::to_string(pos.get_x())  + "y: " + std::to_string(pos.get_y()) << std::endl;
+
+    game.stop_run_duck(id);
+    game.continue_movements();
+    pos = game.position_duck(id);
+    EXPECT_EQ(pos, Position(2,0));
+    std::cout << "x: " + std::to_string(pos.get_x())  + "y: " + std::to_string(pos.get_y()) << std::endl;
+
+    game.continue_movements();
     game.continue_movements();
     game.continue_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos, Position(2,0));
+    std::cout << "x: " + std::to_string(pos.get_x())  + "y: " + std::to_string(pos.get_y()) << std::endl;
 }
 
 TEST(GameTest, GameDuckDTO) {

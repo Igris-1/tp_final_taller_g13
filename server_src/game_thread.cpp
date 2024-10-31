@@ -30,17 +30,6 @@ void GameThread::execute_commands() {
 
     std::shared_ptr<Action> c_action;
     while (gameQueue.try_pop(c_action)) {
-        // action_t action = c_action.action;
-        // if (action.right){
-        //     std::cout << "Moving right" << std::endl;
-        //     Position pos(1,0);
-        //     game.move_duck(c_action.id, pos);
-        // }
-        // if (action.left){
-        //     std::cout << "Moving left" << std::endl;
-        //     Position pos(-1,0);
-        //     game.move_duck(c_action.id, pos);
-        // }
         c_action->execute(game);
     }
 }
