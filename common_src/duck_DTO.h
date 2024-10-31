@@ -6,8 +6,8 @@
 typedef struct duck_DTO {
     
     uint8_t duck_id; // id del color del pato?
-    uint8_t x;
-    uint8_t y;
+    uint16_t x;
+    uint16_t y;
     bool running;
     //uint8_t duck_hp;
     //bool shooting;

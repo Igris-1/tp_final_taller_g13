@@ -2,6 +2,7 @@
 #define POSITIONABLE_H
 
 #include "position.h"
+#include <iostream>
 
 class Positionable {
 protected:
@@ -15,6 +16,7 @@ public:
     // devuelve la posicion final y setea la nueva posicion
     Position move_relative_to(const Position& position_movement) {
         this->position = position_movement + this->position;
+        std::cout << "Positionable::move_relative_to: " << this->position.get_x() << std::endl;
         return this->position; 
     }
     Position move_to(const Position& new_position) {

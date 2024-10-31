@@ -29,7 +29,7 @@ private:
                     std::cout << "Duck " << i << " at (" << x << ", " << y << ")" << std::endl;
                 }*/
 
-                usleep(SLEEP_TIME);
+                //usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;
             }

@@ -1,6 +1,6 @@
 #include "map_game.h"
 
-MapGame::MapGame(int high, int width): high(high), width(width) {}
+MapGame::MapGame(int width, int high): high(high), width(width) {}
 
 bool MapGame::position_in_range(Position position){
     return (position.get_x() >= 0 && position.get_y() >= 0) && (position.get_x() < this->width && position.get_y() < this->high);

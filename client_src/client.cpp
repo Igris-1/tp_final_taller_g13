@@ -51,26 +51,22 @@ void Client::run(){
         bool quit = false;
         SDL_Event e;
 
-        SDL_Rect duckRect;
-
-        Sender sender(protocol);
         Receiver receiver(protocol, receiver_queue);
+        Sender sender(protocol);
 
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
-            if(receiver_queue.try_pop(gs)){
-                if (gs.ducks_len > 0) {
-                    int x = static_cast<int>(gs.ducks[0].x);
-                    std::cout << "Duck at (" << x << ", 0)" << std::endl;
-                    duckRect = { x, 370, duckScaledWidth, duckScaledHeight };
-                }
-            }
             
-        
-            renderer.Clear();
-            renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
-            renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, duckRect);
-            renderer.Present();
+            if (receiver_queue.try_pop(gs)){
+
+                renderer.Clear();
+                renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
+                //std::cout << "Ducks: " << gs.ducks.size() << std::endl;
+                for (int i=0; i < gs.ducks.size(); i++) {
+                    renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, SDL_Rect{gs.ducks[i].x, 370, duckScaledWidth, duckScaledHeight});
+                }
+                renderer.Present();
+            }
         }
         protocol.shutDown();
     
