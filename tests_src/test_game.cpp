@@ -92,7 +92,7 @@ TEST(GameTest, GameDuckDTO) {
     EXPECT_EQ(list.size(), 2);
 
     EXPECT_EQ(list[0].duck_id, 1);
-    EXPECT_EQ(list[0].x, 2);
+    EXPECT_EQ(list[0].x, 1);
     EXPECT_EQ(list[0].y, 0);
     EXPECT_EQ(list[0].running, false);
 

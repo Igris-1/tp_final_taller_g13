@@ -16,7 +16,7 @@ int Game::add_duck(int health, int id) {
     }
     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
     this->ducks[id] = new_duck;
-    this->ducks_states.emplace(id, std::make_shared<duck_state>(Position(0,0), false, false, false));
+     ducks_states.emplace(id, std::make_shared<duck_state>(duck_state{Position(0, 0), false, false, false}));
     return id;
 }
 
