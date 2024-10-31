@@ -61,7 +61,8 @@ void Client::run(){
             if(receiver_queue.try_pop(gs)){
                 if (gs.ducks_len > 0) {
                     int x = static_cast<int>(gs.ducks[0].x);
-                    duckRect = { x+64, 370, duckScaledWidth, duckScaledHeight };
+                    std::cout << "Duck at (" << x << ", 0)" << std::endl;
+                    duckRect = { x, 370, duckScaledWidth, duckScaledHeight };
                 }
             }
             
