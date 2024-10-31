@@ -19,12 +19,12 @@ PlayerCommands(int id, action_t action)
 void execute(Game& game) override{
     if (action_to_execute.right){
             std::cout << "Moving right" << std::endl;
-            Position pos(1,0);
+            Position pos(15,0);
             game.move_duck(this->client_id, pos);
         }
         if (action_to_execute.left){
             std::cout << "Moving left" << std::endl;
-            Position pos(-1,0);
+            Position pos(-15,0);
             game.move_duck(this->client_id, pos);
         }
     }

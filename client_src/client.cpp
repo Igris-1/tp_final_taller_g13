@@ -51,7 +51,7 @@ void Client::run(){
         bool quit = false;
         SDL_Event e;
 
-        SDL_Rect duckRect = { 80, 370, duckScaledWidth, duckScaledHeight };
+        SDL_Rect duckRect;
 
         Sender sender(protocol);
         Receiver receiver(protocol, receiver_queue);
@@ -61,11 +61,11 @@ void Client::run(){
             if(receiver_queue.try_pop(gs)){
                 if (gs.ducks_len > 0) {
                     int x = static_cast<int>(gs.ducks[0].x);
-                    duckRect.x += x*20;
+                    duckRect = { x+64, 370, duckScaledWidth, duckScaledHeight };
                 }
             }
+            
         
-
             renderer.Clear();
             renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
             renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, duckRect);

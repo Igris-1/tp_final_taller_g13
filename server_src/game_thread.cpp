@@ -14,7 +14,7 @@
 #define SLEEP_TIME 200000
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
-        game(50,50), gameQueue(gameQueue), clients(clients) {
+        game(820,500), gameQueue(gameQueue), clients(clients) {
     start();
 }
 

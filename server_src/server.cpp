@@ -21,8 +21,6 @@ void Server::start() {
         ListOfClientsMonitor clients;
         Acceptor acceptor(port, gameQueue, clients);
 
-        //hasta que no pase algo que diga que empieza el juego
-
         GameThread gameThread(gameQueue, clients);
         std::string input;
         while (input != STOP_CODE) {

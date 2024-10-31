@@ -25,8 +25,7 @@ void Acceptor::run(){
         while (_keep_running) {
             Socket ss = socket.accept();
             clients.addClient(std::move(ss), gameQueue, idCount);
-
-            //encola a la gameQueue el comando para crear un duck con el id del nuevo cliente
+            
             std::shared_ptr<Action> create_duck = std::make_shared<DuckCreator>(idCount);
             gameQueue.push(create_duck);
             idCount++;
