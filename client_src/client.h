@@ -7,14 +7,12 @@
 #include "protocol_client.h"
 #include "receiver.h"
 #include "sender.h"
+#include "../common_src/thread.h"
 
-class Client {
+class Client: public Thread {
 private:
     ProtocolClient protocol;
-    Receiver receiver;
-    Sender sender;
     Queue<game_snapshot_t> receiver_queue;
-    Queue<action_t> sender_queue;
 
     void command (char pressed_key);
     game_snapshot_t get_snapshot();

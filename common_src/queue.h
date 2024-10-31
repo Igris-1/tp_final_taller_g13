@@ -79,25 +79,6 @@ public:
         return true;
     }
 
-    /*bool try_pop2(std::shared_ptr<Action>& val) {
-        std::unique_lock<std::mutex> lck(mtx);
-
-        if (q.empty()) {
-            if (closed) {
-                throw ClosedQueue(); 
-            }
-            return false;
-        }
-
-        if (q.size() == this->max_size) {
-            is_not_full.notify_all();
-        }
-
-        val = std::move(q.front());
-        q.pop();
-        return true;
-    } dejen la falopa*/
-
     void push(T const& val) {
         std::unique_lock<std::mutex> lck(mtx);
 
@@ -115,24 +96,6 @@ public:
 
         q.push(val);
     }
-
-    /*void push2(const std::shared_ptr<Action>& val) {
-    std::unique_lock<std::mutex> lck(mtx);
-
-    if (closed) {
-        throw ClosedQueue();
-    }
-
-    while (q.size() == this->max_size) {
-        is_not_full.wait(lck);
-    }
-
-    if (q.empty()) {
-        is_not_empty.notify_all();
-    }
-
-    q.push(val);
-} dejen la falopa*/
 
     T pop() {
         std::unique_lock<std::mutex> lck(mtx);

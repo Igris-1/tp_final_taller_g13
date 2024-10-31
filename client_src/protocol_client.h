@@ -15,6 +15,8 @@ private:
 public:
     explicit ProtocolClient(Socket&& client);
 
+     ProtocolClient(ProtocolClient&& protocol) noexcept;
+
     void send_action(action_t& action);
 
     bool socket_closed();

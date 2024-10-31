@@ -9,6 +9,10 @@
 ProtocolClient::ProtocolClient(Socket&& client) 
         : connection(std::move(client)), socket_is_closed(false) {}
 
+ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept
+    : connection(std::move(protocol.connection)), 
+      socket_is_closed(protocol.socket_is_closed) {}
+
 void ProtocolClient::send_action(action_t& action) {
     bool code;
     code = action.left;
