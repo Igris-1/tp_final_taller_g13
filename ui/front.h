@@ -15,7 +15,7 @@ const int SCREEN_WIDTH = 820;
 const int SCREEN_HEIGHT = 500;
 
 //using namespace SDL2pp;
-class Receiver: public Thread {
+class Receiver {
     void start(){
         try {
             SDL2pp::SDL sdl(SDL_INIT_VIDEO);
@@ -64,10 +64,10 @@ class Receiver: public Thread {
 
         } catch (const SDL2pp::Exception& e) {
             std::cerr << "Error: " << e.what() << std::endl;
-            return 1;
+            return;
         }
 
-        return 0;
+        return;
     }
-
+};
 #endif  // FRONT_H_
