@@ -12,9 +12,10 @@
 #include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 
-#define RIGHT_MOVEMENT 10
-#define LEFT_MOVEMENT -10
-#define JUMP_SIZE 40
+#define RIGHT_MOVEMENT 1
+#define LEFT_MOVEMENT -1
+#define JUMP_SIZE -1
+#define GRAVITY 1
 
 typedef struct{
     bool is_jumping = false;

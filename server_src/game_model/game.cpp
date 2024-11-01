@@ -81,10 +81,10 @@ void Game::continue_movements(){
         }
         
         if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
-            this->map.move_duck(it->second, Position(0,-1));
+            this->map.move_duck(it->second, Position(0, JUMP_SIZE));
             this->ducks_states[it->first]->tiles_to_jump --;
         }else{
-            this->map.move_duck(it->second, Position(0, 1));
+            this->map.move_duck(it->second, Position(0, GRAVITY));
         }
     }
 }
@@ -94,11 +94,9 @@ void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
         throw GameError("Duck id not found");
     }
     if(stop_left){
-        std::cout << " STOP Moving left" << std::endl;
         this->ducks_states[id]->is_moving_left = !stop_left;
     }
     if(stop_right){
-        std::cout << " STOP Moving right" << std::endl;
         this->ducks_states[id]->is_moving_right = !stop_right;
     }
 }

@@ -4,6 +4,7 @@
 #include "../server_src/game_model/weapon/weapon.h"
 #include "../server_src/game_model/armor.h"
 #include "../server_src/game_model/helmet.h"
+#include "../server_src/game_model/map_game.h"
 
 
 TEST(DuckTest, duckLifeAndConstructor) {
@@ -53,4 +54,15 @@ TEST(DuckTest, duckItems) {
         duck.throw_weapon_to(Position(2,1));
 
         EXPECT_EQ(duck.get_weapon().get_position(), Position(2,1));     
+}
+
+TEST(DuckTest, duckGravity) {
+        MapGame map(10,10);
+        std::shared_ptr<Duck> duck =  std::make_shared<Duck>(10, 1);
+        map.set_duck_start_position(duck, Position(0,0));
+        map.add_invalid_position(Position(0,1));
+        bool err = map.move_duck(duck, Position(0,1));
+        EXPECT_FALSE(err);
+        EXPECT_EQ(duck->get_position().get_x(), 0);
+        EXPECT_EQ(duck->get_position().get_y(), 0);
 }

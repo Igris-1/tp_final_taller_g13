@@ -1,4 +1,5 @@
 #include "map_game.h"
+#include <iostream>
 
 MapGame::MapGame(int width, int high): high(high), width(width) {}
 
