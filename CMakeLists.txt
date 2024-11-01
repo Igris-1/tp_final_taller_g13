@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16.3)
-#CMAKE DE PITOS
+
 if (POLICY CMP0138)
     cmake_policy(SET CMP0138 NEW)
 endif()
@@ -23,11 +23,10 @@ project(DuckGame
 
 
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
-option(TESTS "Enable / disable tests." ON)
 option(CLIENT "Enable / disable client program." ON)
-option(SDL "Enable / disable sdl program." ON)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
+option(TESTS "Enable / disable tests." OFF)
 
 
 # Función para incluir directorios
@@ -45,16 +44,15 @@ endfunction()
 include(cmake/CompilerWarnings.cmake)
 
 
-# ---------------- SDL2 SECTION ------------------
-if(SDL)
-    # incluir static sdl2pp /third_party/libSDL2pp
-    add_subdirectory(third_party/libSDL2pp)
-endif()
-
-
-
 # ---------------- CLIENT SECTION ----------------
 if (CLIENT)
+    set(SDL2PP_WITH_IMAGE ON)
+    set(SDL2PP_WITH_MIXER ON)
+    set(SDL2PP_WITH_TTF ON)
+    
+    # incluir static sdl2pp /third_party/libSDL2pp
+    add_subdirectory(third_party/libSDL2pp)
+
     # Nombre del ejecutable del cliente
     set(CLIENT_EXECUTABLE client_exec)
     
@@ -68,21 +66,16 @@ if (CLIENT)
     add_executable(${CLIENT_EXECUTABLE} ${CLIENT_SOURCES})
     include_directories_for_target(${CLIENT_EXECUTABLE})
 
-   
-    if (SDL)
-         # Encontrar la biblioteca SDL2
-         find_package(SDL2 REQUIRED)
+    # Encontrar la biblioteca SDL2
+    find_package(SDL2 REQUIRED)
 
-         # add libSDL2pp's headers
-         target_include_directories(${CLIENT_EXECUTABLE} PRIVATE ${libSDL2pp_SOURCE_DIR})
-    
-         # Link the taller_common lib target
-         target_link_libraries(${CLIENT_EXECUTABLE} SDL2pp::SDL2pp)
-    
-         # add subdirecotire gui
-         # add_subdirectory(gui)
-    endif()
+    # add libSDL2pp's headers
+    target_include_directories(${CLIENT_EXECUTABLE} PRIVATE ${libSDL2pp_SOURCE_DIR})
+
+    # Link the taller_common lib target
+    target_link_libraries(${CLIENT_EXECUTABLE} SDL2pp::SDL2pp)
 endif()
+
 
 # ---------------- SERVER SECTION ----------------
 if (SERVER)
@@ -95,7 +88,7 @@ if (SERVER)
     "server_src/game_model/*.cpp"
     "server_src/game_model/weapon/*.cpp"
     "common_src/*.cpp"
-    )#CMake se la come
+    )
 
     # Crear el ejecutable del servidor
     add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
@@ -118,6 +111,7 @@ if (EDITOR)
     add_executable(editor_exec ${EDITOR_SOURCES})
     include_directories_for_target(editor_exec)
 endif()
+
 
 #  ------ TEST SECTION -----------
 if (TESTS)

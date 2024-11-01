@@ -17,9 +17,6 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 	option(SDL2PP_ENABLE_LIVE_TESTS "Enable live tests (require X11 display and audio device)" ON)
 	option(SDL2PP_STATIC "Build static library instead of shared one" OFF)
 else()
-	set(SDL2PP_WITH_IMAGE ON)
-	set(SDL2PP_WITH_MIXER ON)
-	set(SDL2PP_WITH_TTF ON)
 	# please set SDL2PP_WITH_IMAGE, SDL2PP_WITH_TTF, SDL2PP_WITH_MIXER in parent project as needed
 endif()
 

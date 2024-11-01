@@ -1,10 +1,10 @@
 #include <QApplication>
 
-#include "startWindow.h"
+#include "connectionwindow.h"
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
-    StartWindow w;
+    ConnectionWindow w;
     w.show();
     return a.exec();
 }
