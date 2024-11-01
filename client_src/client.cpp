@@ -1,5 +1,6 @@
 #include "client.h"
 #include <iostream>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2pp/SDL2pp.hh>
@@ -45,11 +46,11 @@ void Client::run(){
 
         bool quit = false;
 
-        Receiver receiver(protocol, receiver_queue);
+         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol);
-        int j[2];
-        int x[2];
-        int dir[2];
+        std::vector<int> j;
+        std::vector<int> x;
+        std::vector<int> dir;
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
             
@@ -58,8 +59,12 @@ void Client::run(){
                 renderer.Clear();
                 renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
                 //std::cout << "Ducks: " << gs.ducks.size() << std::endl;
+                if (j.size() != gs.ducks.size()){
+                    j.resize(gs.ducks.size());
+                    x.resize(gs.ducks.size());
+                    dir.resize(gs.ducks.size());
+                }
                 for (int i=0; i < gs.ducks.size(); i++) {
-                    //renderer.Copy(duckTexture, SDL_Rect{0, 0, duckWidth, duckHeight}, SDL_Rect{gs.ducks[i].x, 370, duckScaledWidth, duckScaledHeight});
                     if (x[i] > gs.ducks[i].x){
                         dir[i] = 1;
                     } else if (x[i] < gs.ducks[i].x){
