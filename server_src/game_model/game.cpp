@@ -73,20 +73,18 @@ void Game::continue_movements(){
         if(this->ducks_states[it->first]->is_moving_left){
             Position movement(LEFT_MOVEMENT, 0);
             this->map.move_duck(it->second, movement);
-            std::cout << "Moving left" << std::endl;
         }
         //se mueve para la right si is_moving_right is true
         if(this->ducks_states[it->first]->is_moving_right){
             Position movement(RIGHT_MOVEMENT, 0);
             this->map.move_duck(it->second, movement);
-            std::cout << "Moving right" << std::endl;
         }
         
         if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
             this->map.move_duck(it->second, Position(0,-1));
             this->ducks_states[it->first]->tiles_to_jump --;
         }else{
-            //this->map.move_duck(it->second, Position(0, 1));
+            this->map.move_duck(it->second, Position(0, 1));
         }
     }
 }

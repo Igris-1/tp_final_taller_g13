@@ -23,10 +23,17 @@ project(DuckGame
 
 
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
-option(CLIENT "Enable / disable client program." ON)
-option(SERVER "Enable / disable server program." ON)
+option(CLIENT "Enable / disable client program." OFF)
+option(SERVER "Enable / disable server program." OFF)
 option(EDITOR "Enable / disable editor program." OFF)
-option(TESTS "Enable / disable tests." OFF)
+option(TESTS "Enable / disable tests." ON)
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
+
+include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
 
 
 # Función para incluir directorios

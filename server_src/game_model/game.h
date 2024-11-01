@@ -9,7 +9,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
-#include "duck_DTO.h"
+#include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 
 #define RIGHT_MOVEMENT 10
