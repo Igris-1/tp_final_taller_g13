@@ -42,7 +42,7 @@ action_t ProtocolServer::receive_action() {
 
         int direcciones[4];
         
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) { //cambiar a 7 para incluir el jump
             connection.recvall(&code, ONE_BYTE, &socket_is_closed);
             direcciones[i] = code;
         }
@@ -51,6 +51,9 @@ action_t ProtocolServer::receive_action() {
         action.right = direcciones[1];
         action.up = direcciones[2];
         action.down = direcciones[3];
+        action.stop_right = direcciones[4];
+        action.stop_left = direcciones[5];
+        // action.jump = direcciones[6];
 
         return action;
     } catch (const LibError& e) {

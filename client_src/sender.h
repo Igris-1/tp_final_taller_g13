@@ -12,16 +12,41 @@
 class Sender: public Thread {
 private:
     ProtocolClient& protocol;
+    SDL_Event last_event;
 
     void run() override {
         try {
             bool quit = false;
             SDL_Event e;
+            last_event.type = 0;
+
             while (!quit && !protocol.socket_closed() && _keep_running) {
                 if (SDL_PollEvent(&e)!=0){
                     if (e.type == SDL_QUIT) {
                         quit = true;
+                    } else if (e.type == SDL_KEYUP) { // ES IMPORTANTE QUE EL EVENTO DE KEY_UP SE CHEQUE ANTES QUE EL DE KEY_DOWN
+                        last_event = e;
+                        action_t action;
+                        switch (e.key.keysym.sym) {
+                            case SDLK_a:
+                                action.stop_left = true;
+                                protocol.send_action(action);
+                                break;
+                            case SDLK_d:
+                                action.stop_right = true;
+                                protocol.send_action(action);
+                                break;
+                            default:
+                                break;
+                        }
                     } else if (e.type == SDL_KEYDOWN) {
+                      
+                        if (last_event.type == SDL_KEYDOWN &&
+                            last_event.key.keysym.sym == e.key.keysym.sym) {
+                            continue;
+                        }
+                        last_event = e;
+
                         action_t action;
                         switch (e.key.keysym.sym) {
                             case SDLK_a:
@@ -32,10 +57,15 @@ private:
                                 action.right = true;
                                 protocol.send_action(action);
                                 break;
+                            // case SDLK_w:
+                            //     action.jump = true;
+                            //     protocol.send_action(action);
+                            //     break;
                             default:
                                 break;
                         }
                     }
+
                 }
             }   
         } catch (const ClosedQueue& e) {

@@ -45,7 +45,7 @@ void GameThread::run() {
         }
 
         send_snapshots();
-
+        game.continue_movements();
         usleep(SLEEP_TIME);
     }
 }

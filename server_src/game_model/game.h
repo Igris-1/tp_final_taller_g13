@@ -12,16 +12,16 @@
 #include "duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 
-#define MOVEMENT 15
+#define RIGHT_MOVEMENT 30
+#define LEFT_MOVEMENT -30
+#define JUMP_SIZE 40
 
 typedef struct{
-    //Position relative_movement = Position(0,0);
     bool is_jumping = false;
     int tiles_to_jump = 0;
-    bool is_running = false;
     
-    bool moving_right = false;
-    bool moving_left = false; 
+    bool is_moving_right = false;
+    bool is_moving_left = false; 
 
     bool is_shooting = false;
 }duck_state;
@@ -39,11 +39,13 @@ class Game {
         void remove_duck(int id);
         Position position_duck(int id);
         void move_duck(int id, Position movement);
-        void run_duck(int id, Position movement);
+        
+        void run_duck(int duck_id, bool left, bool right);
         void set_duck_start_position(int id, Position position);
-        void stop_run_duck(int id);
+        
+        void stop_run_duck(int id, bool stop_left, bool stop_right);
         void continue_movements();
-        void jump_duck(int id, int jump_size);
+        //void jump_duck(int id, bool jump);
 
         void add_invalid_position(Position position);
 

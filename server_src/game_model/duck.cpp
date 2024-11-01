@@ -69,7 +69,6 @@ duck_DTO Duck::to_DTO(){
     uint16_t y = this->position.get_y();
     dto.x = x;
     dto.y = y;
-    dto.running = false;
     //uint8_t duck_hp = this->health;
     //bool weapon_equipped;
     //bool helmet_equipped;
