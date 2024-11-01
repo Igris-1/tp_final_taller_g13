@@ -11,7 +11,7 @@
 #include "sender_thread.h"
 
 #define BOX_RESPAWNED_TEXT "A new box has appeared"
-#define SLEEP_TIME 200000
+#define SLEEP_TIME 40000
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(820,500), gameQueue(gameQueue), clients(clients) {
@@ -44,8 +44,8 @@ void GameThread::run() {
             stop();
         }
 
-        send_snapshots();
         game.continue_movements();
+        send_snapshots();
         usleep(SLEEP_TIME);
     }
 }

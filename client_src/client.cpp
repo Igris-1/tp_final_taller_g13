@@ -29,7 +29,6 @@ Client::~Client(){}
 
 void Client::run(){
     try {
-        std::cout << "Press 'q' to quit" << std::endl;
         SDL sdl(SDL_INIT_VIDEO);
         Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);

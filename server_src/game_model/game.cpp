@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(int high, int width): map(high, width), id(0), ducks_states(), ducks() {}
+Game::Game(int high, int width): map(high, width), ducks_states(), ducks() {}
 
 int Game::add_duck(int health, int id) {
     if (this->ducks.find(id) != this->ducks.end()){
@@ -22,14 +22,14 @@ void Game::remove_duck(int id){
 
 
 void Game::run_duck(int duck_id, bool left, bool right){
-    if(this->ducks.find(id) == this->ducks.end()){
+    if(this->ducks.find(duck_id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    if(!this->ducks_states[id]->is_moving_left){
-        this->ducks_states[id]->is_moving_left = left;
+    if(!this->ducks_states[duck_id]->is_moving_left){
+        this->ducks_states[duck_id]->is_moving_left = left;
     }
-    if(!this->ducks_states[id]->is_moving_right){
-        this->ducks_states[id]->is_moving_right = right;
+    if(!this->ducks_states[duck_id]->is_moving_right){
+        this->ducks_states[duck_id]->is_moving_right = right;
     }
 }
 

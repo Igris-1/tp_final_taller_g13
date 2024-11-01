@@ -12,8 +12,8 @@
 #include "duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 
-#define RIGHT_MOVEMENT 30
-#define LEFT_MOVEMENT -30
+#define RIGHT_MOVEMENT 10
+#define LEFT_MOVEMENT -10
 #define JUMP_SIZE 40
 
 typedef struct{
@@ -28,7 +28,6 @@ typedef struct{
 
 class Game {
     private:
-        int id;
         std::map<int, std::shared_ptr<duck_state>> ducks_states;
         MapGame map;
         std::map<int, std::shared_ptr<Duck>> ducks;
