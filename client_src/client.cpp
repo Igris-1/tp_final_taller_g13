@@ -1,24 +1,13 @@
 #include "client.h"
 #include <iostream>
 #include <vector>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2pp/SDL2pp.hh>
-#include <SDL2pp/Window.hh>
-#include <SDL2pp/Renderer.hh>
-#include <SDL2pp/Texture.hh>
-#include <SDL2pp/Exception.hh>
 #include "../common_src/action_t.h"
 #include "../common_src/game_snapshot_t.h"
 #include "../common_src/queue.h"
-#include "../common_src/thread.h"
-#include "protocol_client.h"
 
 #define EXIT_CODE "q"
 #define SCREEN_WIDTH 820
 #define SCREEN_HEIGHT 500
-
-using namespace SDL2pp;
 
 Client::Client(const char* host, const char* port):
         protocol(Socket(host, port)),
@@ -34,8 +23,11 @@ void Client::run(){
         Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+
+        Surface s = Surface("../client_src/duck_sprites.png");
+
         Texture backgroundTexture(renderer, "../client_src/game.png");
-        Texture duckTexture2(renderer, "../client_src/duck_sprites.png");
+        Texture duckTexture(renderer, s);
 
         int bgWidth, bgHeight;
         SDL_QueryTexture(backgroundTexture.Get(), nullptr, nullptr, &bgWidth, &bgHeight);
@@ -46,11 +38,10 @@ void Client::run(){
 
         bool quit = false;
 
-         Receiver receiver(protocol, receiver_queue);
+        Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol);
-        std::vector<int> j;
-        std::vector<int> x;
-        std::vector<int> dir;
+        std::vector<int> j(0);
+        std::vector<int> dir(0);
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
             
@@ -58,22 +49,25 @@ void Client::run(){
 
                 renderer.Clear();
                 renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
-                //std::cout << "Ducks: " << gs.ducks.size() << std::endl;
                 if (j.size() != gs.ducks.size()){
-                    j.resize(gs.ducks.size());
-                    x.resize(gs.ducks.size());
-                    dir.resize(gs.ducks.size());
+                    j.resize(gs.ducks.size(),1);
+                    dir.resize(gs.ducks.size(),0);
                 }
                 for (int i=0; i < gs.ducks.size(); i++) {
-                    if (x[i] > gs.ducks[i].x){
-                        dir[i] = 1;
-                    } else if (x[i] < gs.ducks[i].x){
+                    if (gs.ducks[i].is_moving_right){
                         dir[i] = 0;
-                    } else {
-                        j[i]=0;
+                    } else if (gs.ducks[i].is_moving_left){
+                        dir[i] = 1;
                     }
-                    x[i] = gs.ducks[i].x,
-                    renderer.Copy(duckTexture2, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{x[i], gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
+                    if (gs.ducks[i].jumping){
+                        renderer.Copy(duckTexture, SDL_Rect{1*32+1, 44, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
+                    } else if (gs.ducks[i].falling){
+                        renderer.Copy(duckTexture, SDL_Rect{3*32+1, 44, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
+                    } else if (gs.ducks[i].is_moving_right || gs.ducks[i].is_moving_left){
+                        renderer.Copy(duckTexture, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
+                    } else {
+                        renderer.Copy(duckTexture, SDL_Rect{1, 8, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
+                    }
 
                     if (j[i] < 5){
                         j[i]++;

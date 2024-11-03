@@ -23,8 +23,8 @@ project(DuckGame
 
 
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
-option(CLIENT "Enable / disable client program." OFF)
-option(SERVER "Enable / disable server program." OFF)
+option(CLIENT "Enable / disable client program." ON)
+option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 option(TESTS "Enable / disable tests." ON)
 

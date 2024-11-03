@@ -32,7 +32,15 @@ void GameThread::execute_commands() {
     }
 }
 
+// void GameThread::send_initial_info(){
+
+    
+
+// }
+
 void GameThread::run() {
+
+    // send_initial_info();
 
     for(int i = 0; i<820; i++){
         game.add_invalid_position(Position(i, 379));
@@ -49,7 +57,9 @@ void GameThread::run() {
             stop();
         }
 
-        game.continue_movements(10);
+        game.continue_horizontal_movements(10);
+        game.continue_vertical_movements(10);
+        //game.continue_bullets_movements(10);
 
         send_snapshots();
         usleep(SLEEP_TIME);

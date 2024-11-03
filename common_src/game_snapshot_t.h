@@ -22,11 +22,18 @@ typedef struct game_snapshot {
     //uint16_t bullets_len; //2 bytes
     //Bullet bullets[]; // sizeof(bullet) * bullets_len
     
-   
+    //uint16_t platforms_len;
+    //std::vector<platform_DTO> platforms;
+
     //uint16_t items_len; //2 bytes
     //Item items[]; // sizeof(item) * items_len
 
 } game_snapshot_t;
+
+typedef struct{
+    uint16_t platforms_len;
+    std::vector<platform_DTO> platforms;
+}map_structure_t;
 
 //__attribute__((packed))
 

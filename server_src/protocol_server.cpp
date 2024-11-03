@@ -16,15 +16,17 @@
 #include "protocol_server.h"
 #include <cstdint>
 #include "../common_src/liberror.h"
+#include "../common_src/translator_actions.h"
 #include <string.h>
 #include <arpa/inet.h>
 #include <iostream>
 #include "duck_DTO.h"
+#include <bitset>
 
 #define ONE_BYTE 1
 #define TWO_BYTES 2
 #define SHUT_DOWN_TWO 2
-#define ACTION_SIZE 7
+#define ACTION_SIZE 8
 
 
 ProtocolServer::ProtocolServer(Socket&& client) 
@@ -38,23 +40,11 @@ action_t ProtocolServer::receive_action() {
     try{ 
         uint8_t code;
         action_t action;
-
-        action_t nullAction;
-
-        int actions_vector[ACTION_SIZE];// OJO ESTO
         
-        for (int i = 0; i < ACTION_SIZE ; i++) { //cambiar a 7 para incluir el jump
-            connection.recvall(&code, ONE_BYTE, &socket_is_closed);
-            actions_vector[i] = code;
-        }
-        
-        action.left = actions_vector[0];
-        action.right = actions_vector[1];
-        action.up = actions_vector[2];
-        action.down = actions_vector[3];
-        action.stop_right = actions_vector[4];
-        action.stop_left = actions_vector[5];
-        action.jump = actions_vector[6];
+        uint16_t action_16bits;
+        connection.recvall(&action_16bits, 2, &socket_is_closed);
+        TranslatorActions translator;
+        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump);
 
         return action;
     } catch (const LibError& e) {
@@ -66,6 +56,7 @@ action_t ProtocolServer::receive_action() {
 void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     connection.sendall(&game_snapshot.ducks_len, ONE_BYTE, &socket_is_closed);
 
+    //std::cout << "x: " << game_snapshot.ducks[0].x << "y: " << game_snapshot.ducks[0].y << std::endl;
 
     for(uint8_t i = 0; i<game_snapshot.ducks_len; i++){
         connection.sendall(&game_snapshot.ducks[i], sizeof(duck_DTO), &socket_is_closed);

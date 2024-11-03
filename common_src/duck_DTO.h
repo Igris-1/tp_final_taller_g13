@@ -12,7 +12,8 @@ typedef struct duck_DTO {
     bool is_moving_left = false; 
     //uint8_t duck_hp;
     //bool shooting;
-    bool jumping;
+    bool jumping = false;
+    bool falling = false;
     //bool weapon_equipped;
     //bool helmet_equipped;
     //bool armor_equipped;
@@ -23,4 +24,11 @@ typedef struct duck_DTO {
                                     //va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding al struct, entonces
                                     //si no se pone packed, el padding puede hacer que el tamanio de la estructura que se recibe sea distinto 
                                     // al que estoy recibiendo, pero como es todo en una sola pc, no deberia haber problema. igual, no lo saquemos.
+
+
+typedef struct platform_DTO{
+        uint16_t x;
+        uint16_t y;
+}__attribute__((packed)) platform_DTO;
+
 #endif  // DUCK_INFO_T_H

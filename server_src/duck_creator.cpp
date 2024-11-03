@@ -10,7 +10,7 @@ DuckCreator::DuckCreator(int id)
 void DuckCreator::execute(Game& game){
     std::cout << "Creating duck for client " << client_id << std::endl;
     game.add_duck(1, this->client_id);
-    Position pos = Position(client_id+1,0);
+    Position pos = Position(client_id+100,300);
     game.set_duck_start_position(this->client_id, pos);
     
     //no entiendo que se supone q hace todo lo q esta aca abajo

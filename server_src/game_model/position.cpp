@@ -19,9 +19,6 @@ int Position::get_x() { return x; }
 
 int Position::get_y() { return y; }
 
-int Position::get_x2() const { return x; } // estos dos existen pq el metodo
-int Position::get_y2() const { return y; } // para imprimir posiciones invalidad q me dio chatgpt los necestia
-
 Position Position::operator+(const Position& other) const {
     Position newPosition(this->x + other.x, this->y + other.y);
     return newPosition;

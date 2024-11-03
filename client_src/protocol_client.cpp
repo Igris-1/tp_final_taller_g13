@@ -1,6 +1,9 @@
 #include "protocol_client.h"
+#include "../common_src/translator_actions.h"
 #include <cstdint>
 #include <vector>
+#include <iostream>
+#include <bitset>
 
 #define ONE_BYTE 1
 #define SHUT_DOWN_TWO 2
@@ -14,21 +17,10 @@ ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept
       socket_is_closed(protocol.socket_is_closed) {}
 
 void ProtocolClient::send_action(action_t& action) {
-    bool code;
-    code = action.left;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.right;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.up;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.down;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.stop_right;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.stop_left;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    code = action.jump;
-    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
+
+    TranslatorActions translator;
+    uint16_t action_16bits = translator.create_flag(action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump);
+    connection.sendall(&action_16bits, 2, &socket_is_closed);
 }
 
 uint8_t ProtocolClient::read_number() {

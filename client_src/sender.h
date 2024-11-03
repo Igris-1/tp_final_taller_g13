@@ -36,9 +36,14 @@ private:
                                 action.stop_right = true;
                                 protocol.send_action(action);
                                 break;
+                            case SDLK_SPACE:
+                                action.stop_jump = true;
+                                protocol.send_action(action);
+                                break;
                             default:
                                 break;
                         }
+                        protocol.send_action(action);
                     } else if (e.type == SDL_KEYDOWN) {
                       
                         if (last_event.type == SDL_KEYDOWN &&
@@ -51,19 +56,20 @@ private:
                         switch (e.key.keysym.sym) {
                             case SDLK_a:
                                 action.left = true;
-                                protocol.send_action(action);
+                                //protocol.send_action(action);
                                 break;
                             case SDLK_d:
                                 action.right = true;
-                                protocol.send_action(action);
+                                //protocol.send_action(action);
                                 break;
-                            case SDLK_w:
+                            case SDLK_SPACE:
                                 action.jump = true;
-                                protocol.send_action(action);
+                                //protocol.send_action(action);
                                 break;
                             default:
                                 break;
                         }
+                        protocol.send_action(action);
                     }
 
                 }

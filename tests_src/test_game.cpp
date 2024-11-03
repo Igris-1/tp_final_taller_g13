@@ -64,26 +64,26 @@ TEST(GameTest, GameDuckRun) {
     EXPECT_EQ(pos.get_x(), 0);
     EXPECT_EQ(pos.get_y(), 99);
    
-    game.continue_movements();
+    game.continue_horizontal_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos.get_x(), 1);
     EXPECT_EQ(pos.get_y(), 99);
 
 
-    game.continue_movements();
+    game.continue_horizontal_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos.get_x(), 2);
     EXPECT_EQ(pos.get_y(), 99);
 
     game.stop_run_duck(id, true, true);
-    game.continue_movements();
+    game.continue_horizontal_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos.get_x(), 2);
     EXPECT_EQ(pos.get_y(), 99);
 
-    game.continue_movements();
-    game.continue_movements();
-    game.continue_movements();
+    game.continue_horizontal_movements();
+    game.continue_horizontal_movements();
+    game.continue_horizontal_movements();
     pos = game.position_duck(id);
     EXPECT_EQ(pos.get_x(), 2);
     EXPECT_EQ(pos.get_y(), 99);
@@ -109,7 +109,7 @@ TEST(GameTest, GameDuckDTO) {
     game.add_duck(10, 2);
     game.set_duck_start_position(2, Position(5,9));
     game.run_duck(2, false, true);
-    game.continue_movements();
+    game.continue_horizontal_movements();
     list =  game.get_duck_DTO_list();
     EXPECT_EQ(list.size(), 2);
 
@@ -125,3 +125,4 @@ TEST(GameTest, GameDuckDTO) {
     EXPECT_EQ(list[1].y, 9);
     //EXPECT_EQ(list[1].running, true); no se si deberia poner left true o right true, no tengo ganas d leer y entnederlo ahora
 }
+

@@ -12,16 +12,30 @@
 #include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 
+// movimientos laterales
 #define RIGHT_MOVEMENT 1
 #define LEFT_MOVEMENT -1
-#define JUMP_SIZE -10
+
+// movimientos verticales
 #define GRAVITY 1
-#define PRODUCT_FACTOR_JUMP 2  // estos so re falopas, pero basicamente hace q la gravedad sea mas fuerte
+#define GRAVITY 1
+#define JUMP_DIRECTION -1
+
+// factores para el salto y gravedad
+#define TILES_FOR_JUMP 175
+#define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
 #define ADD_FACTOR_JUMP 3
+#define PRODUCT_FACTOR_GRAVITY 2
+#define ADD_FACTOR_GRAVITY 8
+#define ADD_FACTOR_SLOW_GRAVITY 8
 
 typedef struct{
     bool is_jumping = false;
+    bool falling_with_style = false;
+
     int tiles_to_jump = 0;
+    int air_time = 0;
+    bool is_falling = false;
     
     bool is_moving_right = false;
     bool is_moving_left = false; 
@@ -46,13 +60,17 @@ class Game {
         void set_duck_start_position(int id, Position position);
         
         void stop_run_duck(int id, bool stop_left, bool stop_right);
-        void continue_movements(int count=1);
+        void continue_horizontal_movements(int count=1);
+        void continue_vertical_movements(int count=1);
+        
         void jump_duck(int id, bool jump);
+        void stop_jump_duck(int id, bool stop_jump);
 
         void add_invalid_position(Position position);
 
         std::vector<duck_DTO> get_duck_DTO_list();
         game_snapshot_t get_snapshot();
+        map_structure_t get_map_structure();
 };
 
 class GameError: public std::exception {

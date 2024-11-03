@@ -25,6 +25,7 @@ private:
     void move_duck(Position& position);
     void execute_commands();
     void run() override;
+    void send_initial_info();
 
 public:
     explicit GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients);

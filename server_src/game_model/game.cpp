@@ -63,13 +63,14 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
         new_dto.is_moving_right = this->ducks_states[it->first]->is_moving_right;
         
         new_dto.jumping = this->ducks_states[it->first]->is_jumping;
+        new_dto.falling = this->ducks_states[it->first]->is_falling;
         //new_dto.shooting = this->ducks_states[it->first].is_shooting;
         list_DTO.push_back(new_dto);
     }
     return list_DTO;
 }
 
-void Game::continue_movements(int count){
+void Game::continue_horizontal_movements(int count){
     for(int i=0; i< count; i++){
         for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
             //se mueve para la left si is_moving_left is true
@@ -83,22 +84,42 @@ void Game::continue_movements(int count){
                 Position movement(RIGHT_MOVEMENT, 0);
                 if(!this->map.move_duck(it->second, movement)){
                 }
-            }
-            
+            }  
         }
     }
-    for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
-        for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
-            if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
-                    this->map.move_duck(it->second, Position(0, JUMP_SIZE));
+}
+
+void Game::continue_vertical_movements(int count){
+    for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+        if(this->ducks_states[it->first]->is_jumping){
+            for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
+                if(this->ducks_states[it->first]->tiles_to_jump > 0){
+                    this->map.move_duck(it->second, Position(0, JUMP_DIRECTION));
                     this->ducks_states[it->first]->tiles_to_jump --;
-                }else{
-                    this->map.move_duck(it->second, Position(0, GRAVITY));
                 }
-        //chequear colision con balas
-    }
+                if(this->ducks_states[it->first]->tiles_to_jump == 0){
+                    this->ducks_states[it->first]->air_time --;
+                }
+                if(this->ducks_states[it->first]->tiles_to_jump == 0 && this->ducks_states[it->first]->air_time == 0){         
+                    this->ducks_states[it->first]->is_jumping = false;
+                    this->ducks_states[it->first]->is_falling = true;
+                }
+            }
+        }else if(this->ducks_states[it->first]->falling_with_style){
+            for(int i=0; i< (count) + ADD_FACTOR_GRAVITY; i++){    
+                if(this->ducks_states[it->first]->falling_with_style && i%2 == 0){//
+                    this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, Position(0, GRAVITY));
+                }
+            }
+        }
+        else{
+            for(int i=0; i< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++){
+                this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, Position(0, GRAVITY));
+            }
+        }
     }
 }
+
 
 void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
     if(this->ducks.find(id) == this->ducks.end()){
@@ -126,13 +147,37 @@ game_snapshot_t Game::get_snapshot(){
     return snapshot;
 }
 
+map_structure_t Game::get_map_structure(){
+    map_structure_t map_structure;
+    map_structure.platforms = this->map.get_platforms_DTO();
+    map_structure.platforms_len = sizeof(map_structure.platforms);
+    return map_structure;
+}
+
 void Game::jump_duck(int id, bool jump){
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    this->ducks_states[id]->is_jumping = true;
-    this->ducks_states[id]->tiles_to_jump = JUMP_SIZE;
+    if(jump){
+        this->ducks_states[id]->falling_with_style = true;
+    }
+    if(!this->ducks_states[id]->is_jumping && jump && !this->ducks_states[id]->is_falling){//esto no es suficiente para evitar que vuele
+        
+        this->ducks_states[id]->is_jumping = true;
+        this->ducks_states[id]->tiles_to_jump = TILES_FOR_JUMP;
+        this->ducks_states[id]->air_time = 80;
+    }
+    if(jump && this->ducks_states[id]->is_falling){
+        this->ducks_states[id]->falling_with_style = true;
+    }
 }
+
+void Game::stop_jump_duck(int id, bool stop_jump){
+    if(stop_jump){
+        this->ducks_states[id]->falling_with_style = false;
+    }
+}
+
 
 void Game::add_invalid_position(Position invalid_position){
     if(!this->map.add_invalid_position(invalid_position)){
