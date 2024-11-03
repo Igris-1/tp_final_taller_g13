@@ -73,7 +73,7 @@ void Client::run(){
                         j[i]=0;
                     }
                     x[i] = gs.ducks[i].x,
-                    renderer.Copy(duckTexture2, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{x[i], 370, 64, 64}, 0, NullOpt, dir[i]);
+                    renderer.Copy(duckTexture2, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{x[i], gs.ducks[i].y, 64, 64}, 0, NullOpt, dir[i]);
 
                     if (j[i] < 5){
                         j[i]++;
@@ -81,11 +81,9 @@ void Client::run(){
                         j[i] = 1;
                     }
                 }
-                
-                   
-                
                 renderer.Present();
             }
+            usleep(1000);
         }
         protocol.shutDown();
     

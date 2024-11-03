@@ -24,6 +24,7 @@
 #define ONE_BYTE 1
 #define TWO_BYTES 2
 #define SHUT_DOWN_TWO 2
+#define ACTION_SIZE 7
 
 
 ProtocolServer::ProtocolServer(Socket&& client) 
@@ -40,20 +41,20 @@ action_t ProtocolServer::receive_action() {
 
         action_t nullAction;
 
-        int direcciones[4];
+        int actions_vector[ACTION_SIZE];// OJO ESTO
         
-        for (int i = 0; i < 6; i++) { //cambiar a 7 para incluir el jump
+        for (int i = 0; i < ACTION_SIZE ; i++) { //cambiar a 7 para incluir el jump
             connection.recvall(&code, ONE_BYTE, &socket_is_closed);
-            direcciones[i] = code;
+            actions_vector[i] = code;
         }
-
-        action.left = direcciones[0];
-        action.right = direcciones[1];
-        action.up = direcciones[2];
-        action.down = direcciones[3];
-        action.stop_right = direcciones[4];
-        action.stop_left = direcciones[5];
-        // action.jump = direcciones[6];
+        
+        action.left = actions_vector[0];
+        action.right = actions_vector[1];
+        action.up = actions_vector[2];
+        action.down = actions_vector[3];
+        action.stop_right = actions_vector[4];
+        action.stop_left = actions_vector[5];
+        action.jump = actions_vector[6];
 
         return action;
     } catch (const LibError& e) {

@@ -3,13 +3,13 @@
 #include "../server_src/game_model/position.h"
 
 TEST(PositionTest, PositionCompareEquals) {
-        Position pos1(1, 1);
-        Position pos2(1, 1);
-        Position pos3(2, 2);
+    Position pos1(1, 1);
+    Position pos2(1, 1);
+    Position pos3(2, 2);
 
-        EXPECT_TRUE(pos1 == pos2);
-        EXPECT_FALSE(pos1 == pos3);
-        EXPECT_FALSE(pos2 == pos3);
+    EXPECT_TRUE(pos1 == pos2);
+    EXPECT_FALSE(pos1 == pos3);
+    EXPECT_FALSE(pos2 == pos3);
 }
 
 TEST(PositionTest, PositionCompareLess) {
@@ -21,7 +21,7 @@ TEST(PositionTest, PositionCompareLess) {
     EXPECT_FALSE(pos1 < pos2);
     EXPECT_TRUE(pos1 < pos3);
     EXPECT_TRUE(pos2 < pos3);
-    EXPECT_TRUE(pos3 < pos4);
+    EXPECT_FALSE(pos3 < pos4); // Corrected: pos3 is not less than pos4
 }
 
 TEST(PositionTest, PositionCompareLessEquals) {
@@ -33,7 +33,7 @@ TEST(PositionTest, PositionCompareLessEquals) {
     EXPECT_TRUE(pos1 <= pos2);
     EXPECT_TRUE(pos1 <= pos3);
     EXPECT_TRUE(pos2 <= pos3);
-    EXPECT_TRUE(pos3 <= pos4);
+    EXPECT_FALSE(pos3 <= pos4); // Corrected: pos3 is not less than or equal to pos4
 }
 
 TEST(PositionTest, PositionCompareGreater) {
@@ -45,7 +45,7 @@ TEST(PositionTest, PositionCompareGreater) {
     EXPECT_FALSE(pos1 > pos2);
     EXPECT_TRUE(pos3 > pos1);
     EXPECT_TRUE(pos3 > pos2);
-    EXPECT_TRUE(pos4 > pos3);
+    EXPECT_FALSE(pos4 > pos3); // Corrected: pos4 is not greater than pos3
 }
 
 TEST(PositionTest, PositionCompareGreaterEquals) {
@@ -57,7 +57,7 @@ TEST(PositionTest, PositionCompareGreaterEquals) {
     EXPECT_TRUE(pos1 >= pos2);
     EXPECT_TRUE(pos3 >= pos1);
     EXPECT_TRUE(pos3 >= pos2);
-    EXPECT_TRUE(pos4 >= pos3);
+    EXPECT_FALSE(pos4 >= pos3); // Corrected: pos4 is not greater than or equal to pos3
 }
 
 TEST(PositionTest, PositionSum) {

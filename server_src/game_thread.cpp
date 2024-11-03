@@ -14,7 +14,7 @@
 #define SLEEP_TIME 40000
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
-        game(820,500), gameQueue(gameQueue), clients(clients) {
+        game(380,820), gameQueue(gameQueue), clients(clients) {
     start();
 }
 
@@ -23,11 +23,9 @@ void GameThread::send_snapshots(){
     if (snapshot.ducks_len!=0){
         clients.enqueue_snapshot(snapshot); 
     }
-    
 }
 
 void GameThread::execute_commands() {
-
     std::shared_ptr<Action> c_action;
     while (gameQueue.try_pop(c_action)) {
         c_action->execute(game);
@@ -35,6 +33,13 @@ void GameThread::execute_commands() {
 }
 
 void GameThread::run() {
+
+    for(int i = 0; i<820; i++){
+        game.add_invalid_position(Position(i, 379));
+    }
+    for(int i = 0; i<100; i++){
+        game.add_invalid_position(Position(i, 200));
+    }
 
     while (_keep_running) {
         try {
@@ -44,7 +49,8 @@ void GameThread::run() {
             stop();
         }
 
-        game.continue_movements();
+        game.continue_movements(10);
+
         send_snapshots();
         usleep(SLEEP_TIME);
     }

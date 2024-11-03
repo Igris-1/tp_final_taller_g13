@@ -19,10 +19,12 @@ public:
     bool operator<=(const Position& other) const;
     bool operator>(const Position& other) const;
     bool operator>=(const Position& other) const;
-    Position operator=(const Position& other);
+    Position& operator=(const Position& other);
     Position operator+(const Position& other) const;
     int get_x();
     int get_y();
+    int get_x2() const;
+    int get_y2() const;
     ~Position();
 };
 

@@ -57,10 +57,10 @@ private:
                                 action.right = true;
                                 protocol.send_action(action);
                                 break;
-                            // case SDLK_w:
-                            //     action.jump = true;
-                            //     protocol.send_action(action);
-                            //     break;
+                            case SDLK_w:
+                                action.jump = true;
+                                protocol.send_action(action);
+                                break;
                             default:
                                 break;
                         }

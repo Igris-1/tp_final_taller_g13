@@ -27,8 +27,8 @@ void ProtocolClient::send_action(action_t& action) {
     connection.sendall(&code, ONE_BYTE, &socket_is_closed);
     code = action.stop_left;
     connection.sendall(&code, ONE_BYTE, &socket_is_closed);
-    // code = action.jump;
-    // connection.sendall(&code, ONE_BYTE, &socket_is_closed);
+    code = action.jump;
+    connection.sendall(&code, ONE_BYTE, &socket_is_closed);
 }
 
 uint8_t ProtocolClient::read_number() {

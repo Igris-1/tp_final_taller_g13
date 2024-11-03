@@ -12,7 +12,7 @@ typedef struct duck_DTO {
     bool is_moving_left = false; 
     //uint8_t duck_hp;
     //bool shooting;
-    //bool jumping;
+    bool jumping;
     //bool weapon_equipped;
     //bool helmet_equipped;
     //bool armor_equipped;

@@ -1,5 +1,5 @@
 #include "duck.h"
-
+#include <iostream>
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
 Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(id) {}

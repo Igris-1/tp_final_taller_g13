@@ -9,7 +9,7 @@ typedef struct action { //comento lo q no se usa todavia
     bool down = false;
     bool stop_right = false;
     bool stop_left = false;
-    //bool jump = false;
+    bool jump = false;
     //bool create_duck = false;
     //representar con un solo byte 
     //int press_action_button = 0; // capaz estos 2 se puedan...

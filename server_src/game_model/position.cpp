@@ -4,9 +4,10 @@ Position::Position(int x, int y): x(x), y(y) {}
 
 Position::Position(): x(0), y(0) {}
 
-bool Position::operator==(const Position& other) const { return (x == other.x && y == other.y); }
+bool Position::operator==(const Position& other) const {
+     return (x == other.x && y == other.y); }
 
-Position Position::operator=(const Position& other) {
+Position& Position::operator=(const Position& other) {
     if (this != &other) {
         x = other.x;
         y = other.y;
@@ -18,41 +19,33 @@ int Position::get_x() { return x; }
 
 int Position::get_y() { return y; }
 
+int Position::get_x2() const { return x; } // estos dos existen pq el metodo
+int Position::get_y2() const { return y; } // para imprimir posiciones invalidad q me dio chatgpt los necestia
+
 Position Position::operator+(const Position& other) const {
     Position newPosition(this->x + other.x, this->y + other.y);
     return newPosition;
 }
 
-bool Position::operator<(const Position& other) const{
-    int abs_this , abs_other;
-    if (this == &other) return false;
-    abs_this = std::abs(this->x) + std::abs(this->y);
-    abs_other = std::abs(other.x) + std::abs(other.y);
-    return abs_this < abs_other;
+bool Position::operator<(const Position& other) const {
+    if (this->x == other.x) {
+        return this->y < other.y;
+    }
+    return this->x < other.x;
 }
 
-bool Position::operator>(const Position& other) const{
-    int abs_this , abs_other;
-    if (this == &other) return false;
-    abs_this = std::abs(this->x) + std::abs(this->y);
-    abs_other = std::abs(other.x) + std::abs(other.y);
-    return abs_this > abs_other;
+bool Position::operator>(const Position& other) const {
+    if (this->x == other.x) {
+        return this->y > other.y;
+    }
+    return this->x > other.x;
 }
 
-bool Position::operator<=(const Position& other) const{
-    int abs_this , abs_other;
-    if (this == &other) return true;
-    abs_this = std::abs(this->x) + std::abs(this->y);
-    abs_other = std::abs(other.x) + std::abs(other.y);
-    return abs_this <= abs_other;
+bool Position::operator<=(const Position& other) const {
+    return !(*this > other);
 }
 
-bool Position::operator>=(const Position& other) const{
-    int abs_this , abs_other;
-    if (this == &other) return true;
-    abs_this = std::abs(this->x) + std::abs(this->y);
-    abs_other = std::abs(other.x) + std::abs(other.y);
-    return abs_this >= abs_other;
+bool Position::operator>=(const Position& other) const {
+    return !(*this < other);
 }
-// implementar destructor
 Position::~Position() {}

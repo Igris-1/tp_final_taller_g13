@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(int high, int width): map(high, width), ducks_states(), ducks() {}
+Game::Game(int height, int width): map(width, height), ducks_states(), ducks() {}
 
 int Game::add_duck(int health, int id) {
     if (this->ducks.find(id) != this->ducks.end()){
@@ -47,10 +47,12 @@ void Game::move_duck(int id, Position movement) {
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
+    this->map.move_duck(this->ducks[id], movement);
+
     //this->ducks_states[id]->relative_movement = movement;
-    if(!this->map.move_duck(this->ducks[id], movement)){
-        throw GameError("Duck movement is invalid");
-    }
+    // if(!this->map.move_duck(this->ducks[id], movement)){
+    //     throw GameError("Duck movement is invalid");
+    // } //quiero comentar esta exception pq que map.move_duck devuelva false ya no es un error.
 }
 
 std::vector<duck_DTO> Game::get_duck_DTO_list(){
@@ -60,32 +62,41 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
         new_dto.is_moving_left = this->ducks_states[it->first]->is_moving_left;
         new_dto.is_moving_right = this->ducks_states[it->first]->is_moving_right;
         
-        //new_dto.jumping = this->ducks_states[it->first].is_jumping;
+        new_dto.jumping = this->ducks_states[it->first]->is_jumping;
         //new_dto.shooting = this->ducks_states[it->first].is_shooting;
         list_DTO.push_back(new_dto);
     }
     return list_DTO;
 }
 
-void Game::continue_movements(){
-    for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
-        //se mueve para la left si is_moving_left is true
-        if(this->ducks_states[it->first]->is_moving_left){
-            Position movement(LEFT_MOVEMENT, 0);
-            this->map.move_duck(it->second, movement);
+void Game::continue_movements(int count){
+    for(int i=0; i< count; i++){
+        for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+            //se mueve para la left si is_moving_left is true
+            if(this->ducks_states[it->first]->is_moving_left){
+                Position movement(LEFT_MOVEMENT, 0);
+                if(!this->map.move_duck(it->second, movement)){
+                }
+            }
+            //se mueve para la right si is_moving_right is true
+            if(this->ducks_states[it->first]->is_moving_right){
+                Position movement(RIGHT_MOVEMENT, 0);
+                if(!this->map.move_duck(it->second, movement)){
+                }
+            }
+            
         }
-        //se mueve para la right si is_moving_right is true
-        if(this->ducks_states[it->first]->is_moving_right){
-            Position movement(RIGHT_MOVEMENT, 0);
-            this->map.move_duck(it->second, movement);
-        }
-        
-        if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
-            this->map.move_duck(it->second, Position(0, JUMP_SIZE));
-            this->ducks_states[it->first]->tiles_to_jump --;
-        }else{
-            this->map.move_duck(it->second, Position(0, GRAVITY));
-        }
+    }
+    for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
+        for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+            if(this->ducks_states[it->first]->is_jumping && this->ducks_states[it->first]->tiles_to_jump > 0){
+                    this->map.move_duck(it->second, Position(0, JUMP_SIZE));
+                    this->ducks_states[it->first]->tiles_to_jump --;
+                }else{
+                    this->map.move_duck(it->second, Position(0, GRAVITY));
+                }
+        //chequear colision con balas
+    }
     }
 }
 
@@ -115,13 +126,13 @@ game_snapshot_t Game::get_snapshot(){
     return snapshot;
 }
 
-// void Game::jump_duck(int id, bool jump){
-//     if(this->ducks.find(id) == this->ducks.end()){
-//         throw GameError("Duck id not found");
-//     }
-//     this->ducks_states[id]->is_jumping = true;
-//     this->ducks_states[id]->tiles_to_jump = JUMP_SIZE;
-// }
+void Game::jump_duck(int id, bool jump){
+    if(this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id not found");
+    }
+    this->ducks_states[id]->is_jumping = true;
+    this->ducks_states[id]->tiles_to_jump = JUMP_SIZE;
+}
 
 void Game::add_invalid_position(Position invalid_position){
     if(!this->map.add_invalid_position(invalid_position)){

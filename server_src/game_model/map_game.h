@@ -9,7 +9,7 @@
 
 class MapGame{
     private:
-    int high;
+    int height;
     int width;
     std::set<Position> invalid_positions;
 
@@ -17,7 +17,7 @@ class MapGame{
     bool position_is_valid(Position position);
 
     public:
-    explicit MapGame(int width, int high);
+    explicit MapGame(int width, int height);
     bool add_invalid_position(Position position);
     bool set_duck_start_position(std::shared_ptr<Duck> duck, Position position);
     bool move_duck(std::shared_ptr<Duck> duck, Position movement);

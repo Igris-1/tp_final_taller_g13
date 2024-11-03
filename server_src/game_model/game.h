@@ -14,8 +14,10 @@
 
 #define RIGHT_MOVEMENT 1
 #define LEFT_MOVEMENT -1
-#define JUMP_SIZE -1
+#define JUMP_SIZE -10
 #define GRAVITY 1
+#define PRODUCT_FACTOR_JUMP 2  // estos so re falopas, pero basicamente hace q la gravedad sea mas fuerte
+#define ADD_FACTOR_JUMP 3
 
 typedef struct{
     bool is_jumping = false;
@@ -44,8 +46,8 @@ class Game {
         void set_duck_start_position(int id, Position position);
         
         void stop_run_duck(int id, bool stop_left, bool stop_right);
-        void continue_movements();
-        //void jump_duck(int id, bool jump);
+        void continue_movements(int count=1);
+        void jump_duck(int id, bool jump);
 
         void add_invalid_position(Position position);
 
