@@ -23,11 +23,11 @@
 
 // factores para el salto y gravedad
 #define TILES_FOR_JUMP 175
-#define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
+#define PRODUCT_FACTOR_JUMP 1  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
 #define ADD_FACTOR_JUMP 3
 #define PRODUCT_FACTOR_GRAVITY 2
-#define ADD_FACTOR_GRAVITY 8
-#define ADD_FACTOR_SLOW_GRAVITY 8
+#define ADD_FACTOR_GRAVITY 1
+#define ADD_FACTOR_SLOW_GRAVITY 1
 
 typedef struct duck_state{
     bool is_jumping = false;
