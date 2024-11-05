@@ -1,5 +1,5 @@
 #ifndef PLAYER_COMMANDS_H
-#define DUCK_COMMANDS_H
+#define PLAYER_COMMANDS_H
 
 #include "action.h"
 #include "../common_src/action_t.h"

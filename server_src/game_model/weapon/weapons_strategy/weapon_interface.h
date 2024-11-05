@@ -6,11 +6,21 @@
 #include "../../positionable.h"
 #include <vector>
 
+/*
+    todas las armas deben tener dispersion, retroceso y tiempo de recarga, 
+    PERO no todas las armas son afectadas por estos o de la misma forma.
+    todas las armas devuelven una lista de balas que disparan con una direccion y distancia establecida.
+*/
+
 class WeaponInterface {
-    private:
+    protected:
+        int dispersion;
+        int recoil;
+        int recharge_time;
+
 
     public:
-        virtual std::vector<BulletInterface> fire(Position star_position, Position direction);
+        virtual std::vector<BulletInterface> fire(Position start_position, Position direction);
 };
 
 #endif

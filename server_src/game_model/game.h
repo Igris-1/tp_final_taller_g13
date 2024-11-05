@@ -29,7 +29,7 @@
 #define ADD_FACTOR_GRAVITY 8
 #define ADD_FACTOR_SLOW_GRAVITY 8
 
-typedef struct{
+typedef struct duck_state{
     bool is_jumping = false;
     bool falling_with_style = false;
 
