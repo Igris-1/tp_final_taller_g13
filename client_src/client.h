@@ -23,11 +23,11 @@ class Client: public Thread {
 private:
     ProtocolClient protocol;
     Queue<game_snapshot_t> receiver_queue;
+    map_structure_t map;
 
     void command (char pressed_key);
     game_snapshot_t get_snapshot();
     
-
 public:
     void run();
     Client(const char* host, const char* port);

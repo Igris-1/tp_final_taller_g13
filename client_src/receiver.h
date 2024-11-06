@@ -19,6 +19,7 @@ private:
             try {
                 
                 game_snapshot_t gs = protocol.read_snapshot();
+                
                 queue.push(gs);
                 
                 

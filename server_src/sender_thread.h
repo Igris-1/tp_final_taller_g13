@@ -17,6 +17,7 @@ private:
     ProtocolServer& protocol;
 
     void run() override {
+        
         while (!protocol.socket_closed() && _keep_running){
             try {
 

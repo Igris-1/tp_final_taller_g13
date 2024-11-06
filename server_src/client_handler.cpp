@@ -8,7 +8,8 @@ ClientHandler::ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& ga
         senderQueue(QUEUE_MAX_SIZE),
         senderThread(senderQueue, protocol),
         receiverThread(gameQueue, protocol, id),
-        clientID(id) {}
+        clientID(id) {
+        }
 void ClientHandler::push(game_snapshot_t gs) {
     try {
         if (is_alive()) {
@@ -21,6 +22,10 @@ void ClientHandler::push(game_snapshot_t gs) {
                       << std::endl;
         }
     }
+}
+
+void ClientHandler::send_map(map_structure_t map){
+    protocol.sendGameStartInfo(map);
 }
 
 bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThread.is_alive(); }

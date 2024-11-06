@@ -30,4 +30,16 @@ void ListOfClientsMonitor::enqueue_snapshot(game_snapshot_t command) {
     }
 }
 
+void ListOfClientsMonitor::send_map(map_structure_t map) {
+    std::lock_guard<std::mutex> lock(mutex);
+    for (auto it = clientsList.begin(); it != clientsList.end();) {
+        if (it->is_alive()) {
+            it->send_map(map);
+            ++it;
+        } else {
+            it = clientsList.erase(it);
+        }
+    }
+}
+
 ListOfClientsMonitor::~ListOfClientsMonitor() {}

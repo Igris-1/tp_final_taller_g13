@@ -18,16 +18,14 @@
 
 // movimientos verticales
 #define GRAVITY 1
-#define GRAVITY 1
 #define JUMP_DIRECTION -1
 
 // factores para el salto y gravedad
 #define TILES_FOR_JUMP 175
-#define PRODUCT_FACTOR_JUMP 1  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
+#define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
 #define ADD_FACTOR_JUMP 3
 #define PRODUCT_FACTOR_GRAVITY 2
-#define ADD_FACTOR_GRAVITY 1
-#define ADD_FACTOR_SLOW_GRAVITY 1
+#define ADD_FACTOR_GRAVITY 8
 
 typedef struct duck_state{
     bool is_jumping = false;
@@ -67,6 +65,8 @@ class Game {
         void stop_jump_duck(int id, bool stop_jump);
 
         void add_invalid_position(Position position);
+        void add_new_platform(Position position);
+        
 
         std::vector<duck_DTO> get_duck_DTO_list();
         game_snapshot_t get_snapshot();

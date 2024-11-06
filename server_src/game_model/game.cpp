@@ -8,7 +8,7 @@ int Game::add_duck(int health, int id) {
     }
     std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(health, id);
     this->ducks[id] = new_duck;
-     ducks_states.emplace(id, std::make_shared<duck_state>());
+    ducks_states.emplace(id, std::make_shared<duck_state>());
     return id;
 }
 
@@ -76,14 +76,12 @@ void Game::continue_horizontal_movements(int count){
             //se mueve para la left si is_moving_left is true
             if(this->ducks_states[it->first]->is_moving_left){
                 Position movement(LEFT_MOVEMENT, 0);
-                if(!this->map.move_duck(it->second, movement)){
-                }
+                this->map.move_duck(it->second, movement);
             }
             //se mueve para la right si is_moving_right is true
             if(this->ducks_states[it->first]->is_moving_right){
                 Position movement(RIGHT_MOVEMENT, 0);
-                if(!this->map.move_duck(it->second, movement)){
-                }
+                this->map.move_duck(it->second, movement);               
             }  
         }
     }
@@ -150,7 +148,7 @@ game_snapshot_t Game::get_snapshot(){
 map_structure_t Game::get_map_structure(){
     map_structure_t map_structure;
     map_structure.platforms = this->map.get_platforms_DTO();
-    map_structure.platforms_len = sizeof(map_structure.platforms);
+    map_structure.platforms_len = static_cast<uint16_t>(map_structure.platforms.size());
     return map_structure;
 }
 
@@ -165,7 +163,7 @@ void Game::jump_duck(int id, bool jump){
         
         this->ducks_states[id]->is_jumping = true;
         this->ducks_states[id]->tiles_to_jump = TILES_FOR_JUMP;
-        this->ducks_states[id]->air_time = 80;
+        this->ducks_states[id]->air_time = 40;
     }
     if(jump && this->ducks_states[id]->is_falling){
         this->ducks_states[id]->falling_with_style = true;
@@ -181,6 +179,12 @@ void Game::stop_jump_duck(int id, bool stop_jump){
 
 void Game::add_invalid_position(Position invalid_position){
     if(!this->map.add_invalid_position(invalid_position)){
+        throw GameError("game can't add invalid position");
+    }
+}
+
+void Game::add_new_platform(Position position){
+    if(!this->map.add_platform(position)){
         throw GameError("game can't add invalid position");
     }
 }

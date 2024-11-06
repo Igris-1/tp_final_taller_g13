@@ -8,6 +8,7 @@
 
 #include "protocol_client.h"
 #include <unistd.h>
+#define SLEEP_TIME_SENDER 2000
 
 class Sender: public Thread {
 private:
@@ -71,8 +72,9 @@ private:
                         }
                         protocol.send_action(action);
                     }
-
+                    
                 }
+            usleep(SLEEP_TIME_SENDER);
             }   
         } catch (const ClosedQueue& e) {
             stop();

@@ -23,7 +23,11 @@ public:
 
     uint8_t read_number();
 
+    uint16_t read_long_number();
+
     game_snapshot_t read_snapshot();
+
+    map_structure_t receive_map();
 
     void shutDown();
 

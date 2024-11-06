@@ -30,7 +30,7 @@ typedef struct game_snapshot {
 
 } game_snapshot_t;
 
-typedef struct{
+typedef struct map_structure_t{
     uint16_t platforms_len;
     std::vector<platform_DTO> platforms;
 }map_structure_t;

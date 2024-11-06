@@ -19,6 +19,7 @@ private:
 public:
     ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& gameQueue, int id);
     void push(game_snapshot_t gs);
+    void send_map(map_structure_t map);
     bool is_alive();
     ~ClientHandler();
 };
