@@ -2,30 +2,34 @@
 #define POSITIONABLE_H
 
 #include "position.h"
+#include "hitbox.h"
 
 class Positionable {
 protected:
-    Position position;
+    Hitbox hitbox;
 
 public:
-    Positionable(const Position& position): position(position) {}
-    Positionable(int x, int y): position(x, y) {}
-    //explicit Positionable(bool valid): position(-1, -1), valid(valid) {}
-    Positionable(): position(-1, -1) {}
+    Positionable(const Hitbox& Hitbox): hitbox(hitbox) {}
+    Positionable(int x, int y, int width, int height): hitbox(x, y, width, height) {}
+    Positionable(): hitbox(-1, -1, 10, 10) {}
 
-    // devuelve la posicion final y setea la nueva posicion
-    Position move_relative_to(const Position& position_movement) {
-        this->position = position_movement + this->position;
-        return this->position; 
+    void move_relative_to(Position& position_movement) {
+        this->hitbox.move_relative(position_movement.get_x(), position_movement.get_y()); 
     }
-    Position move_to(const Position& new_position) {
-        this->position = new_position;
-        return new_position;
+    void move_relative_to(const int dx, const int dy) {
+        this->hitbox.move_relative(dx, dy); 
     }
-    bool is_in_a_live_position() { return this->position == Position(-1, -1); }
-    //virtual bool is_valid() {return true;}
-    
-    Position get_position() { return this->position; }
+    void move_to(Position& new_position) {
+        this->hitbox.move(new_position.get_x(), new_position.get_y());
+    }
+    void move_to(int x, int y) {
+        this->hitbox.move(x, y);
+    }
+    int get_x() { return this->hitbox.get_x(); }
+    int get_y() { return this->hitbox.get_y(); }
+    Position get_position() { return Position(this->hitbox.get_x(), this->hitbox.get_y());}
+    int get_width() { return this->hitbox.get_width(); }
+    int get_height() { return this->hitbox.get_height(); }
 };
 
 #endif

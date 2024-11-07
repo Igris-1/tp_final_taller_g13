@@ -38,7 +38,7 @@ void Game::set_duck_start_position(int id, Position position){
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    if(!this->map.set_duck_start_position(this->ducks[id], position)){
+    if(!this->map.set_duck_start_position(this->ducks[id], position.get_x(), position.get_y())){
         throw GameError("Duck start position is invalid");
     }
 }
@@ -47,7 +47,7 @@ void Game::move_duck(int id, Position movement) {
     if(this->ducks.find(id) == this->ducks.end()){
         throw GameError("Duck id not found");
     }
-    this->map.move_duck(this->ducks[id], movement);
+    this->map.move_duck(this->ducks[id], movement.get_x(), movement.get_y());
 
     //this->ducks_states[id]->relative_movement = movement;
     // if(!this->map.move_duck(this->ducks[id], movement)){
@@ -75,13 +75,13 @@ void Game::continue_horizontal_movements(int count){
         for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
             //se mueve para la left si is_moving_left is true
             if(this->ducks_states[it->first]->is_moving_left){
-                Position movement(LEFT_MOVEMENT, 0);
-                this->map.move_duck(it->second, movement);
+                //Position movement(LEFT_MOVEMENT, 0);
+                this->map.move_duck(it->second, LEFT_MOVEMENT, 0);
             }
             //se mueve para la right si is_moving_right is true
             if(this->ducks_states[it->first]->is_moving_right){
-                Position movement(RIGHT_MOVEMENT, 0);
-                this->map.move_duck(it->second, movement);               
+                //Position movement(RIGHT_MOVEMENT, 0);
+                this->map.move_duck(it->second, RIGHT_MOVEMENT, 0);               
             }  
         }
     }
@@ -92,7 +92,7 @@ void Game::continue_vertical_movements(int count){
         if(this->ducks_states[it->first]->is_jumping){
             for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
                 if(this->ducks_states[it->first]->tiles_to_jump > 0){
-                    this->map.move_duck(it->second, Position(0, JUMP_DIRECTION));
+                    this->map.move_duck(it->second, 0, JUMP_DIRECTION);
                     this->ducks_states[it->first]->tiles_to_jump --;
                 }
                 if(this->ducks_states[it->first]->tiles_to_jump == 0){
@@ -106,13 +106,13 @@ void Game::continue_vertical_movements(int count){
         }else if(this->ducks_states[it->first]->falling_with_style){
             for(int i=0; i< (count) + ADD_FACTOR_GRAVITY; i++){    
                 if(this->ducks_states[it->first]->falling_with_style && i%2 == 0){//
-                    this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, Position(0, GRAVITY));
+                    this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0, GRAVITY);
                 }
             }
         }
         else{
             for(int i=0; i< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++){
-                this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, Position(0, GRAVITY));
+                this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0, GRAVITY);
             }
         }
     }
@@ -177,14 +177,14 @@ void Game::stop_jump_duck(int id, bool stop_jump){
 }
 
 
-void Game::add_invalid_position(Position invalid_position){
-    if(!this->map.add_invalid_position(invalid_position)){
+void Game::add_invalid_position(Hitbox hitbox){
+    if(!this->map.add_invalid_position(hitbox)){
         throw GameError("game can't add invalid position");
     }
 }
 
-void Game::add_new_platform(Position position){
-    if(!this->map.add_platform(position)){
+void Game::add_new_platform(Hitbox hitbox){
+    if(!this->map.add_platform(hitbox)){
         throw GameError("game can't add invalid position");
     }
 }

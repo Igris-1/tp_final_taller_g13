@@ -21,8 +21,49 @@ class Hitbox {
                 (this->y < other.y + other.height && this->y + this->height > other.y);
         // deberian ser <= y >=   ???
     }
+    Hitbox& operator=(const Hitbox& other){
+        if (this != &other) {
+        x = other.x;
+        y = other.y;
+        width = other.width;
+        height = other.height;
+        }
+        return *this;
+    }
+    bool operator==(const Hitbox& other) const {
+        return (x == other.x && y == other.y && width == other.width && height == other.height);
+    }
+
+    bool operator<(const Hitbox& other) const {
+        if (x != other.x) return x < other.x;
+        if (y != other.y) return y < other.y;
+        if (width != other.width) return width < other.width;
+        return height < other.height;
+    }
+
+    bool operator>(const Hitbox& other) const {
+        return other < *this;
+    }
+
+    bool operator<=(const Hitbox& other) const {
+        return !(other < *this);
+    }
+
+    bool operator>=(const Hitbox& other) const {
+        return !(*this < other);
+    }
+    void move_relative(int x, int y) {
+        this->x += x;
+        this->y += y;
+    }
+    void move(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
+
     int get_x() { return this->x; }
     int get_y() { return this->y; }
+    Position get_position() { return Position(this->x, this->y); }
     int get_width() { return this->width; }
     int get_height() { return this->height; }
 };

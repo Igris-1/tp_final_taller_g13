@@ -7,6 +7,9 @@
 #include "weapon/weapon.h"
 #include "../../common_src/duck_DTO.h"
 
+#define DUCK_WIDTH 30
+#define DUCK_HEIGHT 30
+
 class Duck: public Positionable {
 private:
     // cppcheck-suppress unusedStructMember
@@ -20,8 +23,6 @@ public:
     // por defecto empieza en la posicion -1,-1 (fuera del mapa), con una armadura, casco y arma
     // nula (osea posicion -1,-1)
     explicit Duck(int health, int id);
-
-    
 
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
     // arma)
@@ -39,6 +40,7 @@ public:
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
+    Hitbox get_hitbox();
 
     /*  devuelve los estados internos del duck en un dto (vida, id, posicion). 
         no sabe nada de estados de jumping, running, ni nada*/

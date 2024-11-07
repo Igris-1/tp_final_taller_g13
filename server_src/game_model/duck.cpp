@@ -2,11 +2,10 @@
 #include <iostream>
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(id) {}
+Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
 
-//comento para q compile
 void Duck::throw_weapon_to(Position position){
-       this->weapon.move_to(position);
+       //this->weapon.move_to(position);
 }
 
 int Duck::get_health(){
@@ -19,21 +18,21 @@ int Duck::get_id(){
 Weapon& Duck::take_weapon(Weapon weapon){
     Weapon& aux = this->weapon;
     this->weapon = weapon;
-    this->weapon.move_to(this->position);
+    //this->weapon.move_to(this->position);
     return aux;
 }
 
 Armor& Duck::take_armor(Armor armor){
     Armor& aux = this->armor;
     this->armor = armor;
-    this->armor.move_to(this->position);
+    //this->armor.move_to(this->position);
     return aux;
 }
 
 Helmet& Duck::take_helmet(Helmet helmet){
     Helmet& aux = this->helmet;
     this->helmet = helmet;
-    this->helmet.move_to(this->position);
+    //this->helmet.move_to(this->position);
     return aux;
 }
 
@@ -60,13 +59,17 @@ void Duck::receive_damage(int damage){
     }
 }
 
+Hitbox Duck::get_hitbox(){
+    return this->hitbox;
+}
+
 bool Duck::is_this_duck(int id) { return this->duck_id == id; }
 
 duck_DTO Duck::to_DTO(){
     duck_DTO dto;
     dto.duck_id = this->duck_id;
-    uint16_t x = this->position.get_x();
-    uint16_t y = this->position.get_y();
+    uint16_t x = this->hitbox.get_x();
+    uint16_t y = this->hitbox.get_y();
     dto.x = x;
     dto.y = y;
     //uint8_t duck_hp = this->health;

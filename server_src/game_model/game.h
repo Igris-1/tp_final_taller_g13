@@ -64,8 +64,8 @@ class Game {
         void jump_duck(int id, bool jump);
         void stop_jump_duck(int id, bool stop_jump);
 
-        void add_invalid_position(Position position);
-        void add_new_platform(Position position);
+        void add_invalid_position(Hitbox hitbox);
+        void add_new_platform(Hitbox hitbox);
         
 
         std::vector<duck_DTO> get_duck_DTO_list();
