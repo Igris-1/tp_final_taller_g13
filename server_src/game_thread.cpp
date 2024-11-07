@@ -33,13 +33,14 @@ void GameThread::execute_commands() {
     }
 }
 
-// void GameThread::send_initial_info(){
 
-// }
 
 void GameThread::run() {    
     
     game.add_new_platform(Hitbox(0,350,192,16));
+    game.add_new_platform(Hitbox(350,240,469,16));
+    game.add_new_platform(Hitbox(500,100,240,16));
+    game.add_new_platform(Hitbox(0,100,230,16));
 
     game.add_invalid_position(Hitbox(0,430, 820, 2));
     
