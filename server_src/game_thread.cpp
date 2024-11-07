@@ -39,17 +39,10 @@ void GameThread::execute_commands() {
 
 void GameThread::run() {    
     
-    for(int i = 0; i<819; i++){
-        game.add_invalid_position(Position(i,440));
-    }
-    for(int i = 0; i<499; i++){
-        game.add_invalid_position(Position(790,i));
-    }
-    ////no deberia hasta q haya un pato
-    for(int i = 0; i<100; i++){
-        game.add_new_platform(Position(i,280));
-    }
+    game.add_new_platform(Hitbox(0,350,192,16));
 
+    game.add_invalid_position(Hitbox(0,430, 820, 2));
+    
     clients.send_map(game.get_map_structure());
     while (_keep_running) {
         try {
@@ -62,8 +55,8 @@ void GameThread::run() {
         game.continue_horizontal_movements(10);
         game.continue_vertical_movements(10);
         //game.continue_bullets_movements(10);
-       
-        usleep(SLEEP_TIME);
+        
         send_snapshots();
+        usleep(SLEEP_TIME);
     }
 }

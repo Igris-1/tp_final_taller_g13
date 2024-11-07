@@ -14,6 +14,8 @@ typedef struct duck_DTO {
     //bool shooting;
     bool jumping = false;
     bool falling = false;
+    uint16_t width;
+    uint16_t height;
     //bool weapon_equipped;
     //bool helmet_equipped;
     //bool armor_equipped;
@@ -27,8 +29,10 @@ typedef struct duck_DTO {
 
 
 typedef struct platform_DTO{
-        uint16_t x;
-        uint16_t y;
+    uint16_t x;
+    uint16_t y;
+    uint16_t width;
+    uint16_t height;
 }__attribute__((packed)) platform_DTO;
 
 #endif  // DUCK_INFO_T_H

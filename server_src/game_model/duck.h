@@ -7,8 +7,8 @@
 #include "weapon/weapon.h"
 #include "../../common_src/duck_DTO.h"
 
-#define DUCK_WIDTH 30
-#define DUCK_HEIGHT 30
+#define DUCK_WIDTH 32
+#define DUCK_HEIGHT 48
 
 class Duck: public Positionable {
 private:

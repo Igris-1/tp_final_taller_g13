@@ -58,9 +58,8 @@ void Client::run(){
                 renderer.Clear();
                 renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
                 for (int i=0; i<map.platforms_len;i++){
-                    if(i%32 == 0){
-                        renderer.Copy(platformTexture, SDL_Rect{0, 11*7, 16, 8}, SDL_Rect{map.platforms[i].x, map.platforms[i].y-16, 32, 16});
-                    }
+                    platform_DTO platform = map.platforms[i];
+                    renderer.Copy(platformTexture, SDL_Rect{0, 11*7, 16, 8}, SDL_Rect{platform.x, platform.y, platform.width, platform.height});
                 }
                 
 
@@ -70,34 +69,36 @@ void Client::run(){
                     dir.resize(gs.ducks.size(),0);
                 }
                 for (int i=0; i < gs.ducks.size(); i++) {
-                    if (gs.ducks[i].is_moving_right){
+                    duck_DTO duck = gs.ducks[i];
+                    std::cout << "Duck at " << duck.x << ", " << duck.y << std::endl;
+                    if (duck.is_moving_right){
                         dir[i] = 0;
-                    } else if (gs.ducks[i].is_moving_left){
+                    } else if (duck.is_moving_left){
                         dir[i] = 1;
                     }
-                    if (gs.ducks[i].jumping){
-                        renderer.Copy(duckTexture, SDL_Rect{1*32+1, 44, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y-64, 64, 64}, 0, NullOpt, dir[i]);
-                    } else if (gs.ducks[i].falling){
+                    if (duck.jumping){
+                        renderer.Copy(duckTexture, SDL_Rect{1*32+1, 44, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
+                    } else if (duck.falling){
                         int ai = 10;
                         if (dir[i]){
                             ai = 22;
                         }
-                        renderer.Copy(duckTexture, SDL_Rect{3*32+1, 44, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y-64, 64, 64}, 0, NullOpt, dir[i]);
-                        renderer.Copy(wingTexture, SDL_Rect{ja[i]*16, 32, 16, 16}, SDL_Rect{gs.ducks[i].x-16+ai, gs.ducks[i].y+15-64, 32, 32}, 0, NullOpt, dir[i]);
-                    } else if (gs.ducks[i].is_moving_right ^ gs.ducks[i].is_moving_left){
+                        renderer.Copy(duckTexture, SDL_Rect{3*32+1, 44, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
+                        renderer.Copy(wingTexture, SDL_Rect{ja[i]*16, 32, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
+                    } else if (duck.is_moving_right ^ duck.is_moving_left){
                         int ai = 10;
                         if (dir[i]){
                             ai = 22;
                         }
-                        renderer.Copy(duckTexture, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y-64, 64, 64}, 0, NullOpt, dir[i]);
-                        renderer.Copy(wingTexture, SDL_Rect{16, 0, 16, 16}, SDL_Rect{gs.ducks[i].x-16+ai, gs.ducks[i].y+25-64, 32, 32}, 0, NullOpt, dir[i]);
+                        renderer.Copy(duckTexture, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
+                        renderer.Copy(wingTexture, SDL_Rect{16, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
                     } else {
-                        renderer.Copy(duckTexture, SDL_Rect{1, 8, 32, 32}, SDL_Rect{gs.ducks[i].x-16, gs.ducks[i].y-64, 64, 64}, 0, NullOpt, dir[i]);
+                        renderer.Copy(duckTexture, SDL_Rect{1, 8, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
                         int ai = 10;
                         if (dir[i]){
                             ai = 22;
                         }
-                        renderer.Copy(wingTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{gs.ducks[i].x-16+ai, gs.ducks[i].y+25-64, 32, 32}, 0, NullOpt, dir[i]);
+                        renderer.Copy(wingTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
                     }
 
                     if (ja[i]<5){

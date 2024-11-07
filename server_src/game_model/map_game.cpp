@@ -85,7 +85,7 @@ std::vector<platform_DTO> MapGame::get_platforms_DTO(){
     std::vector<platform_DTO> vector_platforms;
     vector_platforms.resize(0);
     for(Hitbox p: this->platforms){
-        platform_DTO dto = {static_cast<uint16_t>(p.get_x()), static_cast<uint16_t>(p.get_y())};
+        platform_DTO dto = {static_cast<uint16_t>(p.get_x()), static_cast<uint16_t>(p.get_y()), static_cast<uint16_t>(p.get_width()), static_cast<uint16_t>(p.get_height())};
         vector_platforms.push_back(dto);
     }
     return vector_platforms;

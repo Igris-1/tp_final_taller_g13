@@ -36,7 +36,7 @@ typedef struct duck_state{
     bool is_falling = false;
     
     bool is_moving_right = false;
-    bool is_moving_left = false; 
+    bool is_moving_left = false;
 
     bool is_shooting = false;
 }duck_state;

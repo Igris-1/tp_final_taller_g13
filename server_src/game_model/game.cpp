@@ -63,7 +63,9 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
         new_dto.is_moving_right = this->ducks_states[it->first]->is_moving_right;
         
         new_dto.jumping = this->ducks_states[it->first]->is_jumping;
-        new_dto.falling = this->ducks_states[it->first]->is_falling;
+        new_dto.falling = this->ducks_states[it->first]->is_falling;   
+        
+
         //new_dto.shooting = this->ducks_states[it->first].is_shooting;
         list_DTO.push_back(new_dto);
     }

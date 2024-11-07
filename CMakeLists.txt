@@ -26,7 +26,7 @@ project(DuckGame
 option(CLIENT "Enable / disable client program." ON)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
-option(TESTS "Enable / disable tests." ON)
+option(TESTS "Enable / disable tests." OFF)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)

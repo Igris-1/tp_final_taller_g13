@@ -72,6 +72,8 @@ duck_DTO Duck::to_DTO(){
     uint16_t y = this->hitbox.get_y();
     dto.x = x;
     dto.y = y;
+    dto.width = this->hitbox.get_width();
+    dto.height = this->hitbox.get_height();
     //uint8_t duck_hp = this->health;
     //bool weapon_equipped;
     //bool helmet_equipped;
