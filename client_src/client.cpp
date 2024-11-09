@@ -6,17 +6,13 @@
 #include "../common_src/queue.h"
 
 #define EXIT_CODE "q"
-#define SCREEN_WIDTH 820
-#define SCREEN_HEIGHT 500
 #define SLEEP_TIME_CLIENT 2000
 
 Client::Client(const char* host, const char* port):
         protocol(Socket(host, port)),
-        receiver_queue(){
-            this->map = protocol.receive_map();
-            
-            for(int i=0; i<map.platforms_len; i++){
-            }
+        receiver_queue(),
+        game_view(protocol.receive_map()){
+ 
             run();
         }
 
@@ -24,111 +20,28 @@ Client::~Client(){}
 
 void Client::run(){
     try {
-        SDL sdl(SDL_INIT_VIDEO);
-        Window window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-        Surface s = Surface("../client_src/duck_sprites.png");
-
-
-        Texture backgroundTexture(renderer, "../client_src/game.png");
-        Texture platformTexture(renderer, "../client_src/platform.png");
-        Texture duckTexture(renderer, s);
-        Texture wingTexture(renderer, "../client_src/alas.png");
-
-        int bgWidth, bgHeight;
-        SDL_QueryTexture(backgroundTexture.Get(), nullptr, nullptr, &bgWidth, &bgHeight);
-        float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
-        int bgScaledWidth = SCREEN_WIDTH;
-        int bgScaledHeight = static_cast<int>(SCREEN_WIDTH / bgAspectRatio);
-        bgScaledWidth = static_cast<int>(SCREEN_HEIGHT * bgAspectRatio);
-
-        bool quit = false;
-
         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol);
-        std::vector<int> j(0);
-        std::vector<int> ja(0);
-        std::vector<int> dir(0);
+
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
             
             if (receiver_queue.try_pop(gs)){
-
-                renderer.Clear();
-                renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
-                for (int i=0; i<map.platforms_len;i++){
-                    platform_DTO platform = map.platforms[i];
-                    renderer.Copy(platformTexture, SDL_Rect{0, 11*7, 16, 8}, SDL_Rect{platform.x, platform.y, platform.width, platform.height});
-                }
-                
-
-                if (j.size() != gs.ducks.size()){
-                    j.resize(gs.ducks.size(),1);
-                    ja.resize(gs.ducks.size(),2);
-                    dir.resize(gs.ducks.size(),0);
-                }
-                for (int i=0; i < gs.ducks.size(); i++) {
-                    duck_DTO duck = gs.ducks[i];
-                    std::cout << "Duck at " << duck.x << ", " << duck.y << std::endl;
-                    if (duck.is_moving_right){
-                        dir[i] = 0;
-                    } else if (duck.is_moving_left){
-                        dir[i] = 1;
-                    }
-                    if (duck.jumping){
-                        renderer.Copy(duckTexture, SDL_Rect{1*32+1, 44, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-                    } else if (duck.falling){
-                        int ai = 10;
-                        if (dir[i]){
-                            ai = 22;
-                        }
-                        renderer.Copy(duckTexture, SDL_Rect{3*32+1, 44, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-                        renderer.Copy(wingTexture, SDL_Rect{ja[i]*16, 32, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
-                    } else if (duck.is_moving_right ^ duck.is_moving_left){
-                        int ai = 10;
-                        if (dir[i]){
-                            ai = 22;
-                        }
-                        renderer.Copy(duckTexture, SDL_Rect{j[i]*32+1, 8, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-                        renderer.Copy(wingTexture, SDL_Rect{16, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-                    } else {
-                        renderer.Copy(duckTexture, SDL_Rect{1, 8, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-                        int ai = 10;
-                        if (dir[i]){
-                            ai = 22;
-                        }
-                        renderer.Copy(wingTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-                    }
-
-                    if (ja[i]<5){
-                        ja[i]++;
-                    } else {
-                        ja[i] = 2;
-                    }
-
-                    if (j[i] < 5){
-                        j[i]++;
-                    } else {
-                        j[i] = 1;
-                    }
-                }
-                renderer.Present();
+                game_view.load_game(gs);
             }
             usleep(SLEEP_TIME_CLIENT);
         }
         protocol.shutDown();
     
         receiver.stop();
-
         receiver.join();
 
         sender.stop();
         sender.join();
+        
     } catch (const Exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return;
     }
-
-    return;
+    
 }

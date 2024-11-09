@@ -4,8 +4,12 @@
 #include "armor.h"
 #include "helmet.h"
 #include "positionable.h"
-#include "weapon/weapon.h"
+#include "weapon/weapons_strategy/weapon.h"
+#include "weapon/weapons_strategy/no_weapon.h"
+#include "weapon/weapons_strategy/cowboy_pistol.h"
 #include "../../common_src/duck_DTO.h"
+#include <vector>
+#include "weapon/bullets_strategy/bullet_interface.h"
 
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 48
@@ -27,15 +31,17 @@ public:
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
     // arma)
     void throw_weapon_to(Position position);
-    Weapon& take_weapon(Weapon weapon);
+    //Weapon& take_weapon(Weapon weapon);
     Armor& take_armor(Armor armor);
     Helmet& take_helmet(Helmet helmet);
 
-    Weapon& get_weapon();
+    //Weapon& get_weapon();
     Armor& get_armor();
     Helmet& get_helmet();
     int get_health();
     int get_id();
+
+    std::vector<BulletInterface> fire_weapon(int x_direction, int y_direction);
 
     bool is_alive();
     bool is_this_duck(int id);

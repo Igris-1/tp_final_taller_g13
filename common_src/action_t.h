@@ -11,10 +11,11 @@ typedef struct action { //comento lo q no se usa todavia
     bool stop_left = false;
     bool jump = false;
     bool stop_jump = false;
+    bool press_action_button = false; 
+    bool unpress_action_button = false;
     //bool create_duck = false;
     //representar con un solo byte 
-    //int press_action_button = 0; // capaz estos 2 se puedan...
-    //int unpress_action_button = 0;//...cambiar por uno solo q haga toggle
+    
 } action_t;
 
 #endif  // ACTION_T_H

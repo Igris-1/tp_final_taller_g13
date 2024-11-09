@@ -55,9 +55,9 @@ void GameThread::run() {
         
         game.continue_horizontal_movements(10);
         game.continue_vertical_movements(10);
-        //game.continue_bullets_movements(10);
         
         send_snapshots();
+        
         usleep(SLEEP_TIME);
     }
 }

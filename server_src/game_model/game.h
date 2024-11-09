@@ -2,15 +2,17 @@
 #define GAME_H
 
 #include <map>
+#include <list>
 #include "duck.h"
 #include "position.h"
-#include "weapon/weapon.h"
+#include "weapon/weapons_strategy/weapon.h"
 #include "map_game.h"
 #include <memory>
 #include <iostream>
 #include <vector>
 #include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
+#include "weapon/bullets_strategy/bullet_interface.h"
 
 // movimientos laterales
 #define RIGHT_MOVEMENT 1
@@ -28,6 +30,7 @@
 #define ADD_FACTOR_GRAVITY 8
 
 typedef struct duck_state{
+
     bool is_jumping = false;
     bool falling_with_style = false;
 
@@ -38,7 +41,11 @@ typedef struct duck_state{
     bool is_moving_right = false;
     bool is_moving_left = false;
 
+    bool facing_direction = true; // true  -> derecha
+                                  // false -> izquierda
+
     bool is_shooting = false;
+
 }duck_state;
 
 class Game {
@@ -46,6 +53,8 @@ class Game {
         std::map<int, std::shared_ptr<duck_state>> ducks_states;
         MapGame map;
         std::map<int, std::shared_ptr<Duck>> ducks;
+        std::list<BulletInterface> bullets;
+
     public:
         Game(int high, int width);
         
@@ -63,6 +72,10 @@ class Game {
         
         void jump_duck(int id, bool jump);
         void stop_jump_duck(int id, bool stop_jump);
+
+        void fire_duck_weapon(int id, bool fire);
+        void keep_shooting(int id);
+        void stop_duck_weapon(int id, bool stop_fire);
 
         void add_invalid_position(Hitbox hitbox);
         void add_new_platform(Hitbox hitbox);

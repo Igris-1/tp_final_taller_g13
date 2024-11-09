@@ -5,9 +5,9 @@
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 #include "../common_src/socket.h"
-#include "client_action_t.h"
+#include "actions/client_action_t.h"
 #include "../common_src/action_t.h"
-#include "action.h"
+#include "actions/action.h"
 
 
 class Acceptor: public Thread{

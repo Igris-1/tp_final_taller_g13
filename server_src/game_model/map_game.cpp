@@ -71,6 +71,24 @@ bool MapGame::move_duck(std::shared_ptr<Duck> duck, int dx, int dy){
     return false;
 }
 
+// bool MapGame::move_bullet(BulletInterface* bullet, int dx, int dy){
+//     Hitbox aux = bullet->get_hitbox();
+//     aux.move_relative(dx, dy);
+//         if(position_is_valid(aux)){  
+//             bullet->move_relative_to(dx, dy); 
+//             return true;
+//         }
+//     return false;
+// }
+
+bool MapGame::can_move_hitbox(Hitbox hitbox, int dx, int dy){
+    hitbox.move_relative(dx, dy);
+        if(position_is_valid(hitbox)){  
+            return true;
+        }
+    return false;
+}
+
 bool MapGame::set_duck_start_position(std::shared_ptr<Duck> duck, int x, int y){
     Hitbox aux = duck->get_hitbox();
     aux.move(x, y);

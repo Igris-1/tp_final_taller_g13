@@ -4,12 +4,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "action.h"
+#include "actions/action.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
 #include "protocol_server.h"
-#include "client_action_t.h"
-#include "player_commands.h"
+#include "actions/client_action_t.h"
+#include "actions/player_commands.h"
 #include <liberror.h>
 
 class ReceiverThread: public Thread {

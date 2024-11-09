@@ -42,9 +42,9 @@ action_t ProtocolServer::receive_action() {
         action_t action;
         
         uint16_t action_16bits;
-        connection.recvall(&action_16bits, 2, &socket_is_closed);
+        connection.recvall(&action_16bits, TWO_BYTES, &socket_is_closed);
         TranslatorActions translator;
-        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump);
+        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button);
 
         return action;
     } catch (const LibError& e) {

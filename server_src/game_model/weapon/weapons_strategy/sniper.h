@@ -5,11 +5,11 @@
 #include "../bullets_strategy/bullet_interface.h"
 #include "../bullets_strategy/bullet.h"
 
-class Sniper : public WeaponInterface{
-    private:
+// class Sniper : public WeaponInterface{
+//     private:
 
-    public:
+//     public:
     
-};
+// };
 
 #endif

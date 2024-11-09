@@ -9,18 +9,16 @@
 /*
     todas las armas deben tener dispersion, retroceso y tiempo de recarga, 
     PERO no todas las armas son afectadas por estos o de la misma forma.
-    todas las armas devuelven una lista de balas que disparan con una direccion y distancia establecida.
+    todas las armas devuelven una lista de balas que se disparan con una direccion y distancia establecida.
 */
 
 class WeaponInterface {
-    protected:
-        int dispersion;
-        int recoil;
-        int recharge_time;
-
-
     public:
-        virtual std::vector<BulletInterface> fire(Position start_position, Position direction);
-};
+        virtual std::vector<BulletInterface> fire(int x_position, int y_position, int x_direction, int y_direction, int dispersion) = 0;
+        bool is_real(){
+            return true;
+        }
+        virtual ~WeaponInterface(){}
+}; 
 
 #endif

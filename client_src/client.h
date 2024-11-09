@@ -4,7 +4,9 @@
 #include <cstdint>
 #include <string>
 #include "../common_src/socket.h"
+#include "game_view.h"
 #include "protocol_client.h"
+#include "game_view.h"
 #include "receiver.h"
 #include "sender.h"
 #include "../common_src/thread.h"
@@ -23,11 +25,11 @@ class Client: public Thread {
 private:
     ProtocolClient protocol;
     Queue<game_snapshot_t> receiver_queue;
-    map_structure_t map;
 
     void command (char pressed_key);
     game_snapshot_t get_snapshot();
-    
+    GameView game_view;
+
 public:
     void run();
     Client(const char* host, const char* port);

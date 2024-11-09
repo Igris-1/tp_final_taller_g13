@@ -20,8 +20,8 @@ ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept
 void ProtocolClient::send_action(action_t& action) {
 
     TranslatorActions translator;
-    uint16_t action_16bits = translator.create_flag(action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump);
-    connection.sendall(&action_16bits, 2, &socket_is_closed);
+    uint16_t action_16bits = translator.create_flag(action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button);
+    connection.sendall(&action_16bits, TWO_BYTES, &socket_is_closed);
 }
 
 uint8_t ProtocolClient::read_number() {

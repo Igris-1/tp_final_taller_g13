@@ -41,6 +41,10 @@ private:
                                 action.stop_jump = true;
                                 protocol.send_action(action);
                                 break;
+                            case SDLK_f:
+                                action.unpress_action_button = true;
+                                //protocol.send_action(action);
+                                break;
                             default:
                                 break;
                         }
@@ -65,6 +69,10 @@ private:
                                 break;
                             case SDLK_SPACE:
                                 action.jump = true;
+                                //protocol.send_action(action);
+                                break;
+                            case SDLK_f:
+                                action.press_action_button = true;
                                 //protocol.send_action(action);
                                 break;
                             default:

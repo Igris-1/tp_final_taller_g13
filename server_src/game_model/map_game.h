@@ -7,6 +7,7 @@
 #include <set>
 #include <memory>
 #include "../common_src/duck_DTO.h"
+#include "weapon/bullets_strategy/bullet_interface.h"
 #include "hitbox.h"
 
 class MapGame{
@@ -28,6 +29,7 @@ class MapGame{
     bool add_platform(Hitbox hitbox);
     bool set_duck_start_position(std::shared_ptr<Duck> duck, int x, int y);
     bool move_duck(std::shared_ptr<Duck> duck, int dx, int dy);
+    bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
     std::vector<platform_DTO> get_platforms_DTO();
 };
 

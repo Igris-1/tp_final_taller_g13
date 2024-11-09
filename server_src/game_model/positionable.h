@@ -9,14 +9,14 @@ protected:
     Hitbox hitbox;
 
 public:
-    Positionable(const Hitbox& Hitbox): hitbox(hitbox) {}
+    Positionable(Hitbox& Hitbox): hitbox(hitbox) {}
     Positionable(int x, int y, int width, int height): hitbox(x, y, width, height) {}
     Positionable(): hitbox(-1, -1, 10, 10) {}
 
     void move_relative_to(Position& position_movement) {
         this->hitbox.move_relative(position_movement.get_x(), position_movement.get_y()); 
     }
-    void move_relative_to(const int dx, const int dy) {
+    void move_relative_to(int dx,  int dy) {
         this->hitbox.move_relative(dx, dy); 
     }
     void move_to(Position& new_position) {

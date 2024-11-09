@@ -11,7 +11,7 @@
 #include "list_of_clients_monitor.h"
 #include "protocol_server.h"
 #include "../common_src/action_t.h"
-#include "duck_creator.h"
+#include "actions/duck_creator.h"
 
 #define SHUT_DOWN_TWO 2
 

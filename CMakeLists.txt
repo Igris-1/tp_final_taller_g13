@@ -45,6 +45,8 @@ function(include_directories_for_target target)
         server_src
         server_src/game_model
         server_src/game_model/weapon
+        server_src/game_model/weapon/bullets_strategy
+        server_src/game_model/weapon/weapons_strategy
     )
 endfunction()
 
@@ -94,8 +96,11 @@ if (SERVER)
     file(GLOB SERVER_SOURCES
     "server_src/*.cpp"
     "server_src/game_model/*.cpp"
+    "server_src/actions/*.cpp"
     "server_src/game_model/weapon/*.cpp"
     "common_src/*.cpp"
+    "server_src/game_model/weapon/bullets_strategy/*.cpp"
+    "server_src/game_model/weapon/weapons_strategy*.cpp"
     )
 
     # Crear el ejecutable del servidor

@@ -7,7 +7,6 @@
 #include <mutex>
 #include <queue>
 #include <stdexcept>
-#include "../server_src/action.h"
 
 struct ClosedQueue: public std::runtime_error {
     ClosedQueue(): std::runtime_error("The queue is closed") {}

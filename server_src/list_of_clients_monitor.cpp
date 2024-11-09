@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
-#include "action.h"
+#include "actions/action.h"
 
 #include "../common_src/liberror.h"
 #include "../common_src/socket.h"

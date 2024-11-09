@@ -10,9 +10,9 @@
 
 #include "game_model/duck.h"
 #include "client_handler.h"
-#include "client_action_t.h"
+#include "actions/client_action_t.h"
 #include "game_model/game.h"
-#include "action.h"
+#include "actions/action.h"
 
 class GameThread: public Thread {
 private:
