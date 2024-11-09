@@ -24,6 +24,9 @@ class Weapon : public Positionable {
             is_real = false;
             return weapon_strategy->fire(x_position, y_position, x_direction, y_direction, dispersion);
         }
+        Weapon::~Weapon(){
+            delete weapon_strategy;
+        }
 
 };
 

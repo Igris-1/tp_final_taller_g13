@@ -2,7 +2,7 @@
 #include <iostream>
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(Weapon(0, 0, 0, new CowboyPistol())), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
+Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(WeaponFactory::createWeapon("cowboy")), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
 
 void Duck::throw_weapon_to(Position position){
        //this->weapon.move_to(position);
