@@ -69,7 +69,7 @@ game_snapshot_t ProtocolClient::read_snapshot(){
     
     uint8_t protocol_code;
     connection.recvall(&protocol_code, ONE_BYTE, &socket_is_closed);
-
+    //if(protocol_code == 0x01){ // no flaco ya se que es un snapshot
     uint8_t n = read_number();
     duck_DTO duck;
     game_snapshot_t game_snapshot;
@@ -78,14 +78,21 @@ game_snapshot_t ProtocolClient::read_snapshot(){
 
     int number_of_ducks = static_cast<int>(n);
 
-
-    if(protocol_code == 0x01){
-
-        for (int i=0; i<number_of_ducks; i++){
-            connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
-            game_snapshot.ducks[i] = duck; //deberia pasarse con move? para evitar copiar
-        }
+    for (int i=0; i<number_of_ducks; i++){
+        connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
+        game_snapshot.ducks[i] = duck; //deberia pasarse con move? para evitar copiar
     }
+
+    uint16_t m = read_long_number();
+    bullet_DTO bullet;
+    game_snapshot.bullets_len = m;
+    game_snapshot.bullets.resize(m);
+    int number_of_bullets = static_cast<int>(m);
+    for (int i=0; i<number_of_bullets; i++){
+        connection.recvall(&bullet, sizeof(bullet_DTO), &socket_is_closed);
+        game_snapshot.bullets[i] = bullet;
+    }
+
     return game_snapshot;
 }
 

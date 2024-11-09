@@ -39,6 +39,7 @@ class GameView {
         void set_up_game();
         void load_map();
         void load_ducks(game_snapshot_t gs);
+        void load_bullets(game_snapshot_t gs);
         
     public:
         GameView(map_structure_t map);

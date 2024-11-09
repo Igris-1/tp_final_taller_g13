@@ -57,10 +57,15 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     std::lock_guard<std::mutex> lock(mutex);
     uint8_t protocol_name = 0x01;
     connection.sendall(&protocol_name, ONE_BYTE, &socket_is_closed);
+
     connection.sendall(&game_snapshot.ducks_len, ONE_BYTE, &socket_is_closed);
-    
     for(uint8_t i = 0; i<game_snapshot.ducks_len; i++){
         connection.sendall(&game_snapshot.ducks[i], sizeof(duck_DTO), &socket_is_closed);
+    }
+    
+    connection.sendall(&game_snapshot.bullets_len, TWO_BYTES, &socket_is_closed);
+    for(uint16_t i = 0; i<game_snapshot.bullets_len; i++){
+        connection.sendall(&game_snapshot.bullets[i], sizeof(bullet_DTO), &socket_is_closed);
     }
 }
 

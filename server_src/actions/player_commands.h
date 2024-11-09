@@ -27,8 +27,6 @@ class PlayerCommands: public Action{
         game.fire_duck_weapon(this->client_id, action_to_execute.press_action_button);
         game.stop_duck_weapon(this->client_id, action_to_execute.unpress_action_button);
         
-        
-
     }
 };
 

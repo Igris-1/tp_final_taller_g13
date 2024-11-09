@@ -35,4 +35,13 @@ typedef struct platform_DTO{
     uint16_t height;
 }__attribute__((packed)) platform_DTO;
 
+typedef struct bullet_DTO{
+    uint16_t x;
+    uint16_t y;
+    uint16_t width;
+    uint16_t height;
+    uint16_t x_direction;
+    uint16_t y_direction;
+}__attribute__((packed)) bullet_DTO;
+
 #endif  // DUCK_INFO_T_H

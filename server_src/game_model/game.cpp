@@ -75,6 +75,15 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
     return list_DTO;
 }
 
+std::vector<bullet_DTO> Game::get_bullet_DTO_list(){
+    std::vector<bullet_DTO> list_DTO;
+    for(auto it = this->bullets.begin(); it != this->bullets.end(); it++){
+        bullet_DTO new_dto = it->to_DTO();
+        list_DTO.push_back(new_dto);
+    }
+    return list_DTO;
+}
+
 void Game::continue_horizontal_movements(int count){
     
     for(int i=0; i< count; i++){
@@ -101,7 +110,6 @@ void Game::continue_horizontal_movements(int count){
         for (auto it = bullets.begin(); it != bullets.end(); ) {
             if (this->map.can_move_hitbox(it->get_hitbox(), it->get_x_direction(), 0)) {
                 it->move_relative_to(it->get_x_direction(), 0);
-                it->print_position();
                 ++it; 
             } else {
                 it = bullets.erase(it);
@@ -183,6 +191,8 @@ game_snapshot_t Game::get_snapshot(){
     game_snapshot_t snapshot;
     snapshot.ducks_len = this->ducks.size();
     snapshot.ducks = this->get_duck_DTO_list();
+    snapshot.bullets_len = this->bullets.size();
+    snapshot.bullets = this->get_bullet_DTO_list();
     return snapshot;
 }
 

@@ -82,6 +82,7 @@ class Game {
         
 
         std::vector<duck_DTO> get_duck_DTO_list();
+        std::vector<bullet_DTO> get_bullet_DTO_list();
         game_snapshot_t get_snapshot();
         map_structure_t get_map_structure();
 };
