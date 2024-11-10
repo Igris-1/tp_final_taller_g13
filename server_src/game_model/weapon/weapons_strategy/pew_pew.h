@@ -4,7 +4,6 @@
 #include "../bullets_strategy/laser.h"
 #include "../bullets_strategy/bullet_interface.h"
 
-#define TILES_LASER_DISTANCE 300
 
 // class PewPew : public WeaponInterface {
 //     private:

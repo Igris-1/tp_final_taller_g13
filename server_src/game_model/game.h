@@ -53,7 +53,7 @@ class Game {
         std::map<int, std::shared_ptr<duck_state>> ducks_states;
         MapGame map;
         std::map<int, std::shared_ptr<Duck>> ducks;
-        std::list<BulletInterface> bullets;
+        std::list<std::shared_ptr<BulletInterface>> bullets;
 
     public:
         Game(int high, int width);
@@ -74,11 +74,13 @@ class Game {
         void stop_jump_duck(int id, bool stop_jump);
 
         void fire_duck_weapon(int id, bool fire);
-        void keep_shooting(int id);
+        void keep_shooting();
         void stop_duck_weapon(int id, bool stop_fire);
 
         void add_invalid_position(Hitbox hitbox);
         void add_new_platform(Hitbox hitbox);
+
+        void respawner();
         
 
         std::vector<duck_DTO> get_duck_DTO_list();

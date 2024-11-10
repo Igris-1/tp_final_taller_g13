@@ -5,7 +5,6 @@
 #include "../bullets_strategy/pellet.h"
 #include "../bullets_strategy/bullet_interface.h"
 
-#define TILES_PELLET_DISTANCE 100
 
 // class Shotgun : public WeaponInterface{
 //     private:

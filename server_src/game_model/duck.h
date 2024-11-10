@@ -20,6 +20,7 @@ private:
     // cppcheck-suppress unusedStructMember
     int duck_id;
     int health;
+    int respawn_time = 100;
     Armor armor;
     Helmet helmet;
     Weapon weapon; 
@@ -41,13 +42,18 @@ public:
     Helmet& get_helmet();
     int get_health();
     int get_id();
+    
+    void tick_respawn_time();
+    int get_respawn_time();
+    void set_health(int health);
 
-    std::vector<BulletInterface> fire_weapon(int x_direction, int y_direction);
+    std::vector<std::shared_ptr<BulletInterface>>  fire_weapon(int x_direction, int y_direction);
 
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
     Hitbox get_hitbox();
+    void continue_fire_rate();
 
     /*  devuelve los estados internos del duck en un dto (vida, id, posicion). 
         no sabe nada de estados de jumping, running, ni nada*/

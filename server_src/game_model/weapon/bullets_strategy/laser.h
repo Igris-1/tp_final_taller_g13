@@ -2,18 +2,18 @@
 #define LASER_H
 
 #include "bullet_interface.h"
+#include <cmath>
 
-// class Laser: public BulletInterface{
-//     private:
+#define TILES_LASER_DISTANCE 9000
 
-//     public:
-//         // Laser(Position start_position, Position direction, int tiles_acount) : BulletInterface(start_position, direction, tiles_acount) {
-//         // }
-//         // Position next_position() {
-//         //     if(this->tiles_acount == 0) return this->position;
-//         //     return this->position + this->direction;
-//         //     this->tiles_acount--;
-//         // }
-// };
+class MapGame;
+
+class Laser: public BulletInterface{
+    private:
+
+    public:
+        explicit Laser(int x, int y, int x_direction, int y_direction);
+        bool next_position(MapGame& map) override;
+};
 
 #endif

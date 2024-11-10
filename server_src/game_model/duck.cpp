@@ -1,8 +1,9 @@
 #include "duck.h"
 #include <iostream>
+
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(WeaponFactory::createWeapon("cowboy")), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
+Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(WeaponFactory::createWeapon("laser_rifle")), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
 
 void Duck::throw_weapon_to(Position position){
        //this->weapon.move_to(position);
@@ -11,6 +12,7 @@ void Duck::throw_weapon_to(Position position){
 int Duck::get_health(){
     return this->health;
 }
+
 int Duck::get_id(){
     return this->duck_id;
 }
@@ -49,7 +51,7 @@ Helmet& Duck::get_helmet(){
 }
 
 bool Duck::is_alive(){
-    return !(this->health == 0);
+    return !(this->health <= 0);
 }
 
 void Duck::receive_damage(int damage){
@@ -81,7 +83,29 @@ duck_DTO Duck::to_DTO(){
     return dto;
 }
 
-std::vector<BulletInterface> Duck::fire_weapon(int x_direction, int y_direction){
+void Duck::continue_fire_rate(){
+    this->weapon.fire_rate_down();
+}
+
+std::vector<std::shared_ptr<BulletInterface>>  Duck::fire_weapon(int x_direction, int y_direction){
     bool is_real;
-    return this->weapon.fire(is_real,this->hitbox.get_x() + this->hitbox.get_width(), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+    if(x_direction > 0){
+        return this->weapon.fire(is_real,this->hitbox.get_x() + (this->hitbox.get_width()), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+    }
+    return this->weapon.fire(is_real,this->hitbox.get_x() , this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+}
+
+
+void Duck::tick_respawn_time(){
+    if(this->respawn_time > 0){
+        this->respawn_time--;
+    }
+}
+
+int Duck::get_respawn_time(){
+    return this->respawn_time;
+}
+
+void Duck::set_health(int health){
+    this->health = health;
 }

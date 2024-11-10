@@ -27,12 +27,13 @@ class WeaponFactory {
             // if(weapon_name == "pew_pew"){
             //     return Weapon(0, 0, 0, new PewPew());
             // }
-            // if(weapon_name == "laser_rifle"){
-            //     return Weapon(0, 0, 0, new LaserRifle());
-            // }
-            if(weapon_name == ""){
-                return Weapon(0, 0, 0, new NoWeapon());
+            if(weapon_name == "laser_rifle"){
+                return Weapon(0, 0, 0, new LaserRifle());
             }
+            // if(weapon_name == ""){
+            //     return Weapon(0, 0, 0, new NoWeapon());
+            // }
+            return Weapon(0, 0, 0, new NoWeapon());
         }
 };
 

@@ -21,7 +21,6 @@ project(DuckGame
     )
 
 
-
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
 option(CLIENT "Enable / disable client program." ON)
 option(SERVER "Enable / disable server program." ON)
@@ -33,9 +32,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
-
 
 # Función para incluir directorios
 function(include_directories_for_target target)
@@ -64,7 +61,7 @@ if (CLIENT)
     add_subdirectory(third_party/libSDL2pp)
 
     # Nombre del ejecutable del cliente
-    set(CLIENT_EXECUTABLE client_exec)
+    set(CLIENT_EXECUTABLE client)
     
     # Agregar archivos fuente para el cliente
     file(GLOB CLIENT_SOURCES
@@ -90,7 +87,7 @@ endif()
 # ---------------- SERVER SECTION ----------------
 if (SERVER)
     # Nombre del ejecutable del servidor
-    set(SERVER_EXECUTABLE server_exec)
+    set(SERVER_EXECUTABLE server)
 
     # Agregar archivos fuente para el servidor
     file(GLOB SERVER_SOURCES

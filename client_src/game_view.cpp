@@ -28,7 +28,7 @@ void GameView::set_up_game(){
     
     duck_sprites.push_back(Texture(renderer, "../game_ui/duck_sprites.png"));
 
-    wing_sprites.push_back(Texture (renderer, "../game_ui/alas.png"));
+    wing_sprites.push_back(Texture(renderer, "../game_ui/alas.png"));
 
     weapon_sprites.push_back(Texture(renderer, "../game_ui/cowboyPistol.png"));
 

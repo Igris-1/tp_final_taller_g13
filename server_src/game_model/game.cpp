@@ -60,15 +60,18 @@ void Game::move_duck(int id, Position movement) {
 std::vector<duck_DTO> Game::get_duck_DTO_list(){
     std::vector<duck_DTO> list_DTO;
     for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+        if(!it->second->is_alive()){
+            //continue;
+            std::cout << "Duck is dead" << std::endl;
+        }
         duck_DTO new_dto = it->second->to_DTO();
         new_dto.duck_id = 0;
         new_dto.is_moving_left = this->ducks_states[it->first]->is_moving_left;
         new_dto.is_moving_right = this->ducks_states[it->first]->is_moving_right;
         
         new_dto.jumping = this->ducks_states[it->first]->is_jumping;
-        new_dto.falling = this->ducks_states[it->first]->is_falling;   
-        
-
+        new_dto.falling = this->ducks_states[it->first]->is_falling; 
+        new_dto.is_alive = it->second->is_alive();  
         //new_dto.shooting = this->ducks_states[it->first].is_shooting;
         list_DTO.push_back(new_dto);
     }
@@ -78,20 +81,35 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
 std::vector<bullet_DTO> Game::get_bullet_DTO_list(){
     std::vector<bullet_DTO> list_DTO;
     for(auto it = this->bullets.begin(); it != this->bullets.end(); it++){
-        bullet_DTO new_dto = it->to_DTO();
+        bullet_DTO new_dto = (*it)->to_DTO();
         list_DTO.push_back(new_dto);
     }
     return list_DTO;
 }
 
+
+void Game::respawner(){
+    //  for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+    //     if(!it->second->is_alive() && it->second->get_respawn_time() == 0){
+    //         it->second->set_health(100);
+    //     }
+    //     else{
+    //         it->second->tick_respawn_time();
+    //     }
+    //  }
+}
+
+
 void Game::continue_horizontal_movements(int count){
     
     for(int i=0; i< count; i++){
         for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+            if(!it->second->is_alive()){
+                continue;
+            }
             //se mueve para la left si is_moving_left is true
             if(this->ducks_states[it->first]->is_moving_left){
                 this->ducks_states[it->first]->facing_direction = false;
-                //this->map.move_duck(it->second, LEFT_MOVEMENT, 0);
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), LEFT_MOVEMENT,0)){
                     it->second->move_relative_to(LEFT_MOVEMENT,0);
                 }
@@ -99,24 +117,32 @@ void Game::continue_horizontal_movements(int count){
             //se mueve para la right si is_moving_right is true
             if(this->ducks_states[it->first]->is_moving_right){
                 this->ducks_states[it->first]->facing_direction = true;
-                //this->map.move_duck(it->second, RIGHT_MOVEMENT, 0);
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), RIGHT_MOVEMENT,0)){
                     it->second->move_relative_to(RIGHT_MOVEMENT,0);
                 }            
             }  
         }        
     }
-    for(int j=0; j<count*3; j++){
+    for(int j=0; j<count*4; j++){
         for (auto it = bullets.begin(); it != bullets.end(); ) {
-            if (this->map.can_move_hitbox(it->get_hitbox(), it->get_x_direction(), 0)) {
-                it->move_relative_to(it->get_x_direction(), 0);
+            if ((*it)->next_position(this->map)) {
+                for (auto& duck : this->ducks) {
+                    if(duck.second->get_hitbox().has_collision((*it)->get_hitbox())){
+                        duck.second->receive_damage((*it)->damage_generated());
+                        it = bullets.erase(it);
+                    }
+                }
                 ++it; 
             } else {
-                it = bullets.erase(it);
+                // if((*it)->can_bounce()){
+                    
+                // }
+                // else{
+                    it = bullets.erase(it);
+                //}
             }
         }
     }
-
 }
 
 void Game::continue_vertical_movements(int count){
@@ -235,28 +261,28 @@ void Game::fire_duck_weapon(int id, bool fire){
 
 }
 
-void Game::keep_shooting(int id){
-    std::vector<BulletInterface> new_bullets;
-    if(this->ducks_states[id]->facing_direction){
-        new_bullets = this->ducks[id]->fire_weapon(1, 0);
-    }
-    if(!this->ducks_states[id]->facing_direction){
-        new_bullets = this->ducks[id]->fire_weapon(-1, 0);
-    }
-    int size = new_bullets.size();
-    for(int i = 0; i < size; i++){
-        this->bullets.push_back(new_bullets[i]);
+void Game::keep_shooting(){
+    
+    for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+        it->second->continue_fire_rate();
+        std::vector<std::shared_ptr<BulletInterface>> new_bullets;
+        if(this->ducks_states[it->first]->is_shooting && this->ducks_states[it->first]->facing_direction){
+            new_bullets = it->second->fire_weapon(1, 0);
+        }
+        if(this->ducks_states[it->first]->is_shooting && !this->ducks_states[it->first]->facing_direction){
+            new_bullets = it->second->fire_weapon(-1, 0);
+        }
+        int size = new_bullets.size();
+        for(int i = 0; i < size; i++){
+            this->bullets.push_back(new_bullets[i]);
+        }
     }
 }
 
 void Game::stop_duck_weapon(int id, bool stop_fire){
-
     if(stop_fire){
         this->ducks_states[id]->is_shooting = false;
         return;
-    }
-    if(ducks_states[id]->is_shooting){
-        keep_shooting(id);
     }
 }
 
@@ -272,3 +298,34 @@ void Game::add_new_platform(Hitbox hitbox){
         throw GameError("game can't add invalid position");
     }
 }
+
+
+
+/// /DUCK MOVEMENTS SACAR CODIGO REPETIDO, NO TIENE LAS BALAS
+
+// void Game::move_duck_if_possible(Duck* duck, DuckState* duck_state, int direction, bool facing_direction) {
+//     duck_state->facing_direction = facing_direction;
+//     if (this->map.can_move_hitbox(duck->get_hitbox(), direction, 0)) {
+//         duck->move_relative_to(direction, 0);
+//     }
+// }
+
+// void Game::continue_horizontal_movements(int count) {
+//     for (int i = 0; i < count; i++) {
+//         for (auto it = this->ducks.begin(); it != this->ducks.end(); ++it) {
+//             if (!it->second->is_alive()) {
+//                 continue;
+//             }
+//             auto duck_state = this->ducks_states[it->first];
+//             auto duck = it->second;
+
+//             if (duck_state->is_moving_left) {
+//                 move_duck_if_possible(duck, duck_state, LEFT_MOVEMENT, false);
+//             }
+//             if (duck_state->is_moving_right) {
+//                 move_duck_if_possible(duck, duck_state, RIGHT_MOVEMENT, true);
+//             }
+//         }
+
+//     }
+// }

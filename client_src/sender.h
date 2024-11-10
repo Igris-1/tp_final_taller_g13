@@ -55,6 +55,7 @@ private:
                             last_event.key.keysym.sym == e.key.keysym.sym) {
                             continue;
                         }
+                                                
                         last_event = e;
 
                         action_t action;

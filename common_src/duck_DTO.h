@@ -16,6 +16,7 @@ typedef struct duck_DTO {
     bool falling = false;
     uint16_t width;
     uint16_t height;
+    bool is_alive = true;
     //bool weapon_equipped;
     //bool helmet_equipped;
     //bool armor_equipped;

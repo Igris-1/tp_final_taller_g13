@@ -43,7 +43,6 @@ void GameThread::run() {
     game.add_new_platform(Hitbox(0,100,230,16));
 
     game.add_invalid_position(Hitbox(0,430, 820, 2));
-    
     clients.send_map(game.get_map_structure());
     while (_keep_running) {
         try {
@@ -55,6 +54,9 @@ void GameThread::run() {
         
         game.continue_horizontal_movements(10);
         game.continue_vertical_movements(10);
+        game.keep_shooting();
+        
+        game.respawner();
         
         send_snapshots();
         

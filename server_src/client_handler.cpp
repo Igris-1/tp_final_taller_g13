@@ -16,8 +16,7 @@ void ClientHandler::push(game_snapshot_t gs) {
             senderQueue.push(gs);
         }
     } catch (const ClosedQueue& e) {
-
-        if (is_alive()) {
+        if (is_alive()){
             std::cerr << "Closed sender queue in client handler" << e.what()
                       << std::endl;
         }

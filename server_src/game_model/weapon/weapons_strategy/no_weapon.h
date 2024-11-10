@@ -10,8 +10,8 @@ class NoWeapon : public WeaponInterface {
 
     public:
         NoWeapon(){};
-        std::vector<BulletInterface> fire(int x_position, int y_position, int x_direction, int y_direction, int dispersion) override {
-            return std::vector<BulletInterface>();
+        std::vector<std::shared_ptr<BulletInterface>>  fire(int x_position, int y_position, int x_direction, int y_direction, int dispersion) override {
+            return std::vector<std::shared_ptr<BulletInterface>> ();
         }
         bool no_real(){
             return false;
