@@ -2,7 +2,7 @@
 #define CONNECTIONWINDOW_H
 
 #include <QMainWindow>
-//#include "chooseoptionwindow.h"
+#include "chooseoptionwindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ConnectionWindow; }
@@ -19,8 +19,10 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_exitGameButton_clicked();
+
 private:
     Ui::ConnectionWindow *ui;
-    //ChooseOptionWindow *chooseOptionWindow;
+    ChooseOptionWindow *chooseOptionWindow;
 };
 #endif // CONNECTIONWINDOW_H

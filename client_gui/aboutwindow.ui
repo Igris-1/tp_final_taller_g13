@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AboutWindow</class>
+ <widget class="QDialog" name="AboutWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>717</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>717</width>
+    <height>411</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>717</width>
+    <height>411</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>AboutWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">border-image: url(:/assets/images/image_5.png);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>721</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;
+background-image: transparent;
+border-image: transparent;</string>
+   </property>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);</string>
+    </property>
+    <property name="text">
+     <string>Back</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="franButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>280</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: red;              
+    color: white;                            
+    font-family: 'Arial Black';    
+    font: bold 18px;                       
+    border: 2px solid red;                   
+    padding: 0px 0px;                      
+    border-radius: 3px;                      
+    qproperty-alignment: 'AlignCenter';       
+}
+QPushButton:hover {
+    background-color: darkred;             
+    border: 2px solid darkred;             
+}</string>
+    </property>
+    <property name="text">
+     <string>FRANCISCO ZIMBIMBAKIS</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nicoButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>210</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: red;              
+    color: white;                            
+    font-family: 'Arial Black';    
+    font: bold 18px;                       
+    border: 2px solid red;                   
+    padding: 0px 0px;                      
+    border-radius: 3px;                      
+    qproperty-alignment: 'AlignCenter';       
+}
+QPushButton:hover {
+    background-color: darkred;             
+    border: 2px solid darkred;             
+}</string>
+    </property>
+    <property name="text">
+     <string>NICOLAS NATALE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="fedeButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>140</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: red;              
+    color: white;                            
+    font-family: 'Arial Black';    
+    font: bold 18px;                       
+    border: 2px solid red;                   
+    padding: 0px 0px;                      
+    border-radius: 3px;                      
+    qproperty-alignment: 'AlignCenter';       
+}
+QPushButton:hover {
+    background-color: darkred;             
+    border: 2px solid darkred;             
+}</string>
+    </property>
+    <property name="text">
+     <string>FEDERICO PERALTA</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pedroButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>70</y>
+      <width>231</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: red;              
+    color: white;                            
+    font-family: 'Arial Black';    
+    font: bold 18px;                       
+    border: 2px solid red;                   
+    padding: 0px 0px;                      
+    border-radius: 3px;                      
+    qproperty-alignment: 'AlignCenter';       
+}
+QPushButton:hover {
+    background-color: darkred;             
+    border: 2px solid darkred;             
+}</string>
+    </property>
+    <property name="text">
+     <string>PEDRO BUBULI</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="gameRepoButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>340</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: red;              
+    color: white;                            
+    font-family: 'Arial Black';    
+    font: bold 18px;                       
+    border: 2px solid red;                   
+    padding: 0px 0px;                      
+    border-radius: 3px;                      
+    qproperty-alignment: 'AlignCenter';       
+}
+QPushButton:hover {
+    background-color: darkred;             
+    border: 2px solid darkred;             
+}</string>
+    </property>
+    <property name="text">
+     <string>GAME REPO</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
