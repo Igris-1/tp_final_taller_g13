@@ -9,11 +9,99 @@
 #include "protocol_client.h"
 #include <unistd.h>
 #define SLEEP_TIME_SENDER 2000
+#define PLAYER_1 1
+#define PLAYER_2 2
 
 class Sender: public Thread {
 private:
     ProtocolClient& protocol;
     SDL_Event last_event;
+    int localPlayers;
+
+    // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
+    void map_key_to_action_1(const SDL_Event& e, action_t& action) {
+        action.player_id = PLAYER_1;
+
+        if (e.type == SDL_KEYDOWN) {
+            switch (e.key.keysym.sym) {
+                // Player 1 controls (w,a,s,d)
+                case SDLK_a:
+                    action.left = true;
+                    break;
+                case SDLK_d:
+                    action.right = true;
+                    break;
+                case SDLK_SPACE:
+                    action.jump = true;
+                    break;
+                case SDLK_f:
+                    action.press_action_button = true;
+                    break;
+                default:
+                    break;
+            }
+        } else if (e.type == SDL_KEYUP) {
+            switch (e.key.keysym.sym) {
+                // Player 1 controls
+                case SDLK_a:
+                    action.stop_left = true;
+                    break;
+                case SDLK_d:
+                    action.stop_right = true;
+                    break;
+                case SDLK_SPACE:
+                    action.stop_jump = true;
+                    break;
+                case SDLK_f:
+                    action.unpress_action_button = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    void map_key_to_action_2(const SDL_Event& e, action_t& action) {
+        action.player_id = PLAYER_2;
+
+        if (e.type == SDL_KEYDOWN) {
+            switch (e.key.keysym.sym) {
+                // Player 2 controls
+                case SDLK_LEFT:
+                    action.left = true;
+                    break;
+                case SDLK_RIGHT:
+                    action.right = true;
+                    break;
+                case SDLK_RCTRL:
+                    action.jump = true;
+                    break;
+                case SDLK_RSHIFT:
+                    action.press_action_button = true;
+                    break;
+                default:
+                    break;
+            }
+        } else if (e.type == SDL_KEYUP) {
+            switch (e.key.keysym.sym) {
+                // Player 2 controls
+                case SDLK_LEFT:
+                    action.stop_left = true;
+                    break;
+                case SDLK_RIGHT:
+                    action.stop_right = true;
+                    break;
+                case SDLK_RCTRL:
+                    action.stop_jump = true;
+                    break;
+                case SDLK_RSHIFT:
+                    action.unpress_action_button = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     void run() override {
         try {
@@ -22,69 +110,33 @@ private:
             last_event.type = 0;
 
             while (!quit && !protocol.socket_closed() && _keep_running) {
-                if (SDL_PollEvent(&e)!=0){
+                if (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT) {
                         quit = true;
-                    } else if (e.type == SDL_KEYUP) { // ES IMPORTANTE QUE EL EVENTO DE KEY_UP SE CHEQUE ANTES QUE EL DE KEY_DOWN
-                        last_event = e;
-                        action_t action;
-                        switch (e.key.keysym.sym) {
-                            case SDLK_a:
-                                action.stop_left = true;
-                                protocol.send_action(action);
-                                break;
-                            case SDLK_d:
-                                action.stop_right = true;
-                                protocol.send_action(action);
-                                break;
-                            case SDLK_SPACE:
-                                action.stop_jump = true;
-                                protocol.send_action(action);
-                                break;
-                            case SDLK_f:
-                                action.unpress_action_button = true;
-                                //protocol.send_action(action);
-                                break;
-                            default:
-                                break;
-                        }
-                        protocol.send_action(action);
-                    } else if (e.type == SDL_KEYDOWN) {
-                      
-                        if (last_event.type == SDL_KEYDOWN &&
+                    } else if (e.type == SDL_KEYUP || e.type == SDL_KEYDOWN) {
+                        // Evitar el procesamiento de un evento si ya está registrado como el último evento
+                        if (e.type == SDL_KEYDOWN && last_event.type == SDL_KEYDOWN &&
                             last_event.key.keysym.sym == e.key.keysym.sym) {
                             continue;
                         }
-                                                
+                        
                         last_event = e;
 
-                        action_t action;
-                        switch (e.key.keysym.sym) {
-                            case SDLK_a:
-                                action.left = true;
-                                //protocol.send_action(action);
-                                break;
-                            case SDLK_d:
-                                action.right = true;
-                                //protocol.send_action(action);
-                                break;
-                            case SDLK_SPACE:
-                                action.jump = true;
-                                //protocol.send_action(action);
-                                break;
-                            case SDLK_f:
-                                action.press_action_button = true;
-                                //protocol.send_action(action);
-                                break;
-                            default:
-                                break;
+                        // Procesar para Player 1
+                        action_t action1;
+                        map_key_to_action_1(e, action1);
+                        protocol.send_action(action1);
+
+                        // Procesar para Player 2
+                        if (localPlayers == 2) {
+                            action_t action2;
+                            map_key_to_action_2(e, action2);
+                            protocol.send_action(action2);
                         }
-                        protocol.send_action(action);
                     }
-                    
                 }
-            usleep(SLEEP_TIME_SENDER);
-            }   
+                usleep(SLEEP_TIME_SENDER);
+            }
         } catch (const ClosedQueue& e) {
             stop();
         } catch (const std::exception& e) {
@@ -93,7 +145,7 @@ private:
     }
 
 public:
-    Sender(ProtocolClient& protocol): protocol(protocol) {
+    Sender(ProtocolClient& protocol, int localPlayers): protocol(protocol), localPlayers(localPlayers) {
         start();
     }
 

@@ -2,7 +2,7 @@
 #define ACTION_T_H
 
 typedef struct action { //comento lo q no se usa todavia
-    //int player_id = 0; 
+    int player_id = 0;
     bool left = false;
     bool right = false;
     bool up = false;

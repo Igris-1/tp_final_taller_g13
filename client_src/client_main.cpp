@@ -2,9 +2,10 @@
 #include <iostream>
 #define ERROR -1
 #define SUCCESS 0
-#define REQUIRED_ARGC 3
+#define REQUIRED_ARGC 4
 #define HOST_ARG 1
 #define PORT_ARG 2
+#define LOCAL_PLAYERS 3
 
 
 int main(int argc, const char* argv[]) {
@@ -14,7 +15,7 @@ int main(int argc, const char* argv[]) {
             return ERROR;
         }
         
-        Client client(argv[HOST_ARG], argv[PORT_ARG]);
+        Client client(argv[HOST_ARG], argv[PORT_ARG], argv[LOCAL_PLAYERS]);
         return SUCCESS;
 
     } catch (const std::exception& e) {

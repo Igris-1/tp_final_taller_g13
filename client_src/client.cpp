@@ -8,7 +8,8 @@
 #define EXIT_CODE "q"
 #define SLEEP_TIME_CLIENT 2000
 
-Client::Client(const char* host, const char* port):
+Client::Client(const char* host, const char* port, const char* localPlayers):
+        localPlayers(localPlayers),
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view(protocol.receive_map()){
@@ -21,7 +22,7 @@ Client::~Client(){}
 void Client::run(){
     try {
         Receiver receiver(protocol, receiver_queue);
-        Sender sender(protocol);
+        Sender sender(protocol, std::atoi(localPlayers));
 
         while(sender.is_alive() && receiver.is_alive()){
             game_snapshot_t gs;
