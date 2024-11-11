@@ -109,6 +109,7 @@ void Game::continue_horizontal_movements(int count){
             }
             //se mueve para la left si is_moving_left is true
             if(this->ducks_states[it->first]->is_moving_left){
+                std::cout << "pato se mueve a la izq" << std::endl;
                 this->ducks_states[it->first]->facing_direction = false;
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), LEFT_MOVEMENT,0)){
                     it->second->move_relative_to(LEFT_MOVEMENT,0);
@@ -116,6 +117,7 @@ void Game::continue_horizontal_movements(int count){
             }
             //se mueve para la right si is_moving_right is true
             if(this->ducks_states[it->first]->is_moving_right){
+                std::cout << "pato se mueve a la der" << std::endl;
                 this->ducks_states[it->first]->facing_direction = true;
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), RIGHT_MOVEMENT,0)){
                     it->second->move_relative_to(RIGHT_MOVEMENT,0);
@@ -130,16 +132,12 @@ void Game::continue_horizontal_movements(int count){
                     if(duck.second->get_hitbox().has_collision((*it)->get_hitbox())){
                         duck.second->receive_damage((*it)->damage_generated());
                         it = bullets.erase(it);
+                        break;
                     }
                 }
                 ++it; 
             } else {
-                // if((*it)->can_bounce()){
-                    
-                // }
-                // else{
-                    it = bullets.erase(it);
-                //}
+                it = bullets.erase(it);
             }
         }
     }

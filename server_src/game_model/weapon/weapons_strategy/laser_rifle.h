@@ -23,7 +23,7 @@ class LaserRifle : public WeaponInterface {
          }
          return bullets;
       }
-
+      
       ~LaserRifle() override {}
 };
 

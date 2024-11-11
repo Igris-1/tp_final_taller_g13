@@ -51,14 +51,17 @@ void GameThread::run() {
         } catch (const ClosedQueue& e) {
             stop();
         }
-        
+        //std::cout << "1" << std::endl;
         game.continue_horizontal_movements(10);
+        //std::cout << "2" << std::endl;
         game.continue_vertical_movements(10);
+        //std::cout << "3" << std::endl;
         game.keep_shooting();
-        
+        //std::cout << "4" << std::endl;
         game.respawner();
-        
+        //std::cout << "5" << std::endl;
         send_snapshots();
+        //std::cout << "6" << std::endl;
         
         usleep(SLEEP_TIME);
     }
