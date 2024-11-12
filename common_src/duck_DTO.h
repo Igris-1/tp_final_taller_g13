@@ -5,7 +5,7 @@
 
 typedef struct duck_DTO {
     
-    uint8_t duck_id; // id del color del pato?
+    uint8_t duck_id; // id del color del pato
     uint16_t x;
     uint16_t y;
     bool is_moving_right = false;
@@ -37,6 +37,7 @@ typedef struct platform_DTO{
 }__attribute__((packed)) platform_DTO;
 
 typedef struct bullet_DTO{
+    uint8_t bullet_id; // id del tipo de bala
     uint16_t x;
     uint16_t y;
     uint16_t width;
@@ -47,10 +48,10 @@ typedef struct bullet_DTO{
 
 
 typedef struct weapon_DTO{
+    uint8_t weapon_id; // id del tipo de arma
     uint16_t x;
     uint16_t y;
     uint16_t width;
     uint16_t height;
-    uint16_t weapon_id;
 }__attribute__((packed)) weapon_DTO;
 #endif  // DUCK_INFO_T_H

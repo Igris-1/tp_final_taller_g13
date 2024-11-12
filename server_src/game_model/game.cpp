@@ -44,15 +44,18 @@ void Game::run_duck(int duck_id, bool left, bool right){
 void Game::pick_up_item(int id, bool pick_up){
     this->duck_exist(id);
     if(pick_up){
-        for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
+        for (auto it = weapons_on_map.begin(); it != weapons_on_map.end();){
+            std::cout << "pruebo con un arma.. ";
             if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
                 std::shared_ptr<Weapon> other_weapon = ducks[id]->take_weapon(*it);
                 if(other_weapon != nullptr){
+                    other_weapon->move_to((*it)->get_x(), (*it)->get_y());
                     weapons_on_map.push_back(other_weapon);
                 }
                 it = weapons_on_map.erase(it);
                 break;
             }
+            ++it;
         }
     }
 }
@@ -240,6 +243,8 @@ game_snapshot_t Game::get_snapshot(){
     snapshot.ducks = this->get_duck_DTO_list();
     snapshot.bullets_len = this->bullets.size();
     snapshot.bullets = this->get_bullet_DTO_list();
+    snapshot.weapons = this->get_weapon_DTO_list();
+    snapshot.weapons_len = snapshot.weapons.size();
     return snapshot;
 }
 

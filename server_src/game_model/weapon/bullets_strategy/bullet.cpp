@@ -16,3 +16,7 @@ bool Bullet::next_position(MapGame& map){
             }
                 return false;
 }
+
+int Bullet::get_id(){
+    return 1;
+}

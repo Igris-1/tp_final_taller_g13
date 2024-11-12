@@ -16,7 +16,9 @@ class Weapon : public Positionable {
         bool is_not_a_weapon();
     public:
         Weapon(int dispersion, int recoil, int reload_time, WeaponInterface* weapon_strategy);
-        std::vector<std::shared_ptr<BulletInterface>> fire(int duck_id, int x_position, int y_position, int x_direction, int y_direction);
+
+        // devuelvo por x_direction e y_direction el retroceso del pato
+        std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger, int x_position, int y_position, int& x_direction, int& y_direction);
         void fire_rate_down();
         weapon_DTO to_DTO();
         ~Weapon();

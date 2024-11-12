@@ -74,6 +74,10 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     for(uint16_t i = 0; i<game_snapshot.bullets_len; i++){
         connection.sendall(&game_snapshot.bullets[i], sizeof(bullet_DTO), &socket_is_closed);
     }
+    connection.sendall(&game_snapshot.weapons_len, TWO_BYTES, &socket_is_closed);
+    for(uint16_t i = 0; i< game_snapshot.weapons_len; i++){
+        connection.sendall(&game_snapshot.weapons[i], sizeof(weapon_DTO), &socket_is_closed);
+    }
 }
 
 void ProtocolServer::sendGameStartInfo(map_structure_t map_structure){

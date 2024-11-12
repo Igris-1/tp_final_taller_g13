@@ -93,9 +93,9 @@ std::vector<std::shared_ptr<BulletInterface>>  Duck::fire_weapon(int x_direction
     std::cout << "fire_weapon" << std::endl;
     if(x_direction > 0){
         std::cout << "fire_weapon?" << std::endl;
-        return this->weapon->fire(this->duck_id, this->hitbox.get_x() + (this->hitbox.get_width()), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+        return this->weapon->fire(shared_from_this(), this->hitbox.get_x() + (this->hitbox.get_width()), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
     }
-    return this->weapon->fire(this->duck_id, this->hitbox.get_x() , this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+    return this->weapon->fire(shared_from_this(), this->hitbox.get_x() , this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
 }
 
 

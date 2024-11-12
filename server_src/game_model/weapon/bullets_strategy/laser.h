@@ -13,6 +13,7 @@ class Laser: public BulletInterface{
     public:
         explicit Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction);
         bool next_position(MapGame& map) override;
+        int get_id() override;
 };
 
 #endif

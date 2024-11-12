@@ -30,6 +30,7 @@ class BulletInterface : public Positionable{
 
         // devuelve true si se puede mover. false si no se puede mover mas
         virtual bool next_position(MapGame& map) = 0;
+        virtual int get_id() = 0;
             
         int damage_generated(int duck_id);
 };

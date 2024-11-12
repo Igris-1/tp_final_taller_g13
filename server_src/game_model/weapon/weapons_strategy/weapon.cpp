@@ -1,5 +1,6 @@
 #include "weapon.h"
 #include "../../../../common_src/duck_DTO.h"
+#include "../../duck.h"
 
 bool Weapon::is_not_a_weapon(){
             return this->weapon_strategy == nullptr;
@@ -8,12 +9,11 @@ bool Weapon::is_not_a_weapon(){
 Weapon::Weapon(int dispersion, int recoil, int reload_time, WeaponInterface* weapon_strategy)
         : Positionable(), weapon_strategy(weapon_strategy), dispersion(dispersion), recoil(recoil), reload_time(reload_time) {}
             
-std::vector<std::shared_ptr<BulletInterface>> Weapon::fire(int duck_id, int x_position, int y_position, int x_direction, int y_direction){
+std::vector<std::shared_ptr<BulletInterface>> Weapon::fire(std::shared_ptr<Duck> duck_trigger, int x_position, int y_position, int& x_direction, int& y_direction){
     if(this->is_not_a_weapon()){
         return std::vector<std::shared_ptr<BulletInterface>>();
     }
-    
-    return weapon_strategy->fire(duck_id, x_position, y_position, x_direction, y_direction);
+    return weapon_strategy->fire(duck_trigger, x_position, y_position, x_direction, y_direction);
 }
 void Weapon::fire_rate_down(){
     if(this->is_not_a_weapon()) return;

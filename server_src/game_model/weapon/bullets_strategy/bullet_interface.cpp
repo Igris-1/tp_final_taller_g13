@@ -20,6 +20,7 @@
             dto.height = this->hitbox.get_height();
             dto.x_direction = this->x_direction;
             dto.y_direction = this->y_direction;
+            dto.bullet_id = static_cast<uint8_t>(this->get_id());
             return dto;
         }
             

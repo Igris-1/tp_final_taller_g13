@@ -97,6 +97,15 @@ game_snapshot_t ProtocolClient::read_snapshot(){
         connection.recvall(&bullet, sizeof(bullet_DTO), &socket_is_closed);
         game_snapshot.bullets[i] = bullet;
     }
+    m = read_long_number();
+    weapon_DTO weapon;
+    game_snapshot.weapons_len = m;
+    game_snapshot.weapons.resize(m);
+    int number_of_weapons = static_cast<int>(m);
+    for (int i=0; i<number_of_weapons; i++){
+        connection.recvall(&weapon, sizeof(weapon_DTO), &socket_is_closed);
+        game_snapshot.weapons[i] = weapon;
+    }
 
     return game_snapshot;
 }
