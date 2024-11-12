@@ -58,8 +58,10 @@ void GameView::set_up_game(){
     wing_sprites.push_back(std::move(wing4Texture));
 
     weapon_sprites.push_back(Texture(renderer, "../game_ui/cowboyPistol.png"));
+    weapon_sprites.push_back(Texture(renderer, "../game_ui/laserRifle.png"));
 
     bullet_sprites.push_back(Texture(renderer, "../game_ui/pistolShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../game_ui/laserBeam.png"));
   
     SDL_QueryTexture(Texture(renderer, "../game_ui/game.png").Get(), nullptr, nullptr, &bgWidth, &bgHeight);
     float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
@@ -80,20 +82,41 @@ void GameView::load_game(game_snapshot_t gs){
     load_map();
     load_ducks(gs);
     load_bullets(gs);
+    load_weapons(gs);
     renderer.Present();
 }
 
+void GameView::load_weapons(game_snapshot_t gs){
+    for (int i=0; i < gs.weapons.size(); i++){
+        weapon_DTO weapon = gs.weapons[i];
+        int weapon_id = weapon.weapon_id;
+        Texture& weaponTexture = weapon_sprites[weapon_id-1];
+        if (weapon_id==1){
+            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{weapon.x-14, weapon.y-7, 36, 18}, 0, NullOpt, 0);
+        } else if (weapon_id==2){
+            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{weapon.x-8, weapon.y-8, weapon.width+16, weapon.width+16}, 0, NullOpt, 0);
+        }
+    }
+}
+
 void GameView::load_bullets(game_snapshot_t gs){
-    Texture& bulletTexture = bullet_sprites[0];
     for (int i=0; i < gs.bullets.size(); i++) {
         bullet_DTO bullet = gs.bullets[i];
-
-         renderer.SetDrawColor(Color(143, 142, 137, 0));
+        int bullet_id = bullet.bullet_id;
+        Texture& bulletTexture = bullet_sprites[bullet_id-1];
+        if (bullet_id==1){
+            renderer.SetDrawColor(Color(143, 142, 137, 0));
         
-        int yellow_x = (bullet.x_direction == 1) ? bullet.x - bullet.width * 4 : bullet.x;
+            int yellow_x = (bullet.x_direction == 1) ? bullet.x - bullet.width * 4 : bullet.x;
 
-        renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height},0, NullOpt, bullet.x_direction);
-        renderer.FillRect(SDL_Rect{yellow_x, bullet.y+8, bullet.width * 4, bullet.height/8});
+            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height},0, NullOpt, bullet.x_direction);
+            renderer.FillRect(SDL_Rect{yellow_x, bullet.y+8, bullet.width * 4, bullet.height/8});
+        } else if (bullet.bullet_id==2){
+            for (int x=0;x<16;x++){
+                renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8}, SDL_Rect{bullet.x-x, bullet.y-x, 1, bullet.height},0, NullOpt, bullet.x_direction);
+            }
+        }
+        
 
     }
 }
@@ -110,14 +133,13 @@ void GameView::load_map(){
 
 void GameView::load_ducks(game_snapshot_t gs){
     
-
     for (int i=0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
+        int weapon_id = duck.weapon_id;
         int duck_id = static_cast<int>(duck.duck_id);
-        //std::cout << "Duck id: " << duck_id << std::endl;
         Texture& duckTexture = duck_sprites[duck_id];
         Texture& wingTexture = wing_sprites[duck_id];
-        Texture& weaponTexture = weapon_sprites[0];
+        Texture& weaponTexture = weapon_sprites[weapon_id-1];
         if (duck.is_moving_right){
             dir[i] = 0;
         } else if (duck.is_moving_left){
@@ -136,8 +158,14 @@ void GameView::load_ducks(game_snapshot_t gs){
             if (dir[i]){
                 ai2 = 10;
             }
+            
             renderer.Copy(duckTexture, SDL_Rect{1*32, 40, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+15, 36, 18}, 0, NullOpt, dir[i]);
+            if (weapon_id==1){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+15, 36, 18}, 0, NullOpt, dir[i]);
+            } else if (weapon_id==2){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+8, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
+            }
+            
             renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
             
         } else if (duck.falling){
@@ -151,7 +179,11 @@ void GameView::load_ducks(game_snapshot_t gs){
             }
 
             renderer.Copy(duckTexture, SDL_Rect{3*32, 40, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+18, 36, 18}, 0, NullOpt, dir[i]);
+            if (weapon_id==1){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+15, 36, 18}, 0, NullOpt, dir[i]);
+            } else if (weapon_id==2){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+8, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
+            }
             renderer.Copy(wingTexture, SDL_Rect{wing_views[i]*16, 32, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
             renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+18, 32, 32}, 0, NullOpt, dir[i]);
             
@@ -166,7 +198,12 @@ void GameView::load_ducks(game_snapshot_t gs){
             }
             renderer.Copy(duckTexture, SDL_Rect{duck_views[i]*32, 0, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
             //renderer.Copy(wingTexture, SDL_Rect{10, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
+            if (weapon_id==1){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
+            } else if (weapon_id==2){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+16, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
+            }
+            
             renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+27, 32, 32}, 0, NullOpt, dir[i]);
             
         } else{
@@ -183,7 +220,11 @@ void GameView::load_ducks(game_snapshot_t gs){
             SDL_Rect rect = SDL_Rect{0, 0, 16, 16};
             SDL_Rect duckRect = SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16};
             //renderer.Copy(wingTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
+            if (weapon_id==1){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
+            } else if (weapon_id==2){
+                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+16, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
+            }
             renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+27, 32, 32}, 0, NullOpt, dir[i]);
             
         } 

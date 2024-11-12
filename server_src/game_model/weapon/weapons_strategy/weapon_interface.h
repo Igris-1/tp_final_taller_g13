@@ -20,10 +20,10 @@ class WeaponInterface {
     int fire_rate = 0;
     public:
         virtual std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger, int x_position, int y_position, int x_direction, int y_direction) = 0;
-        bool is_real();
-        void fire_rate_down();
+        virtual void fire_rate_down();
         virtual int recoil_produced() = 0;
         virtual int get_id() = 0;
+        virtual bool is_explosive();
         virtual ~WeaponInterface(){}
 
 }; 

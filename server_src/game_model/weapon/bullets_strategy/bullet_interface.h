@@ -4,7 +4,8 @@
 #include "../../position.h"
 #include "../../positionable.h"
 #include <iostream>
-#include "../../common_src/duck_DTO.h"
+#include "../../../../common_src/duck_DTO.h" 
+// "../../../../common_src/duck_DTO.h" esto esta bien
 
 class MapGame;
 

@@ -15,21 +15,21 @@ class WeaponFactory {
         // "cowboy", "sniper", "shotgun", "pew_pew", "laser_rifle", "" (no weapon)
         static Weapon createWeapon(std::string weapon_name = ""){
             if (weapon_name == "cowboy") {
-                return Weapon(0, 0, 0, new CowboyPistol());
+                return Weapon (new CowboyPistol(), 36, 18);
             }
             // if(weapon_name == "sniper"){
-            //     return Weapon(0, 0, 0, new Sniper());
+            //     return Weapon(new Sniper());
             // }
             // if(weapon_name == "shotgun"){
-            //     return Weapon(0, 0, 0, new Shotgun());
+            //     return Weapon(new Shotgun());
             // }
             // if(weapon_name == "pew_pew"){
-            //     return Weapon(0, 0, 0, new PewPew());
+            //     return Weapon(new PewPew());
             // }
             if(weapon_name == "laser_rifle"){
-                return Weapon(0, 0, 0, new LaserRifle());
+                return Weapon(new LaserRifle(), 36, 18);
             }
-            return Weapon(0, 0, 0, nullptr);
+            return Weapon(nullptr, 0, 0);
         }
 };
 

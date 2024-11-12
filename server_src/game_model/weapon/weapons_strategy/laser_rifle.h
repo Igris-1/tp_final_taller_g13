@@ -6,7 +6,7 @@
 #include "../bullets_strategy/bullet_interface.h"
 
 #define FIRE_RATE_LASER 5
-#define LASER_ID 1
+#define LASER_ID 2
 
 class LaserRifle : public WeaponInterface {
 

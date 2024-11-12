@@ -4,7 +4,7 @@ Game::Game(int height, int width): map(width, height), ducks_states(), ducks() {
 
 void Game::duck_exist(int id){
     if (this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id errorf ran la pqtp");
+        throw GameError("Duck id error");
     }
     return;
 }
@@ -45,7 +45,6 @@ void Game::pick_up_item(int id, bool pick_up){
     this->duck_exist(id);
     if(pick_up){
         for (auto it = weapons_on_map.begin(); it != weapons_on_map.end();){
-            std::cout << "pruebo con un arma.. ";
             if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
                 std::shared_ptr<Weapon> other_weapon = ducks[id]->take_weapon(*it);
                 if(other_weapon != nullptr){
@@ -55,15 +54,34 @@ void Game::pick_up_item(int id, bool pick_up){
                 it = weapons_on_map.erase(it);
                 break;
             }
+            else{
+                if(ducks[id]->has_weapon()){
+                    std::shared_ptr<Weapon> weapon = ducks[id]->throw_weapon();
+                    if(weapon == nullptr){
+                    }else{
+                        std::cout << "devolvio un arma" << std::endl;
+                    }
+                    weapon->move_to(ducks[id]->get_x(), ducks[id]->get_y());
+                    // if(ducks_states[id]->facing_direction){
+                    //     for(int i = 0; i<20; i++){
+                    //         std::cout << "tiro a la der" << std::endl;
+                    //         weapon->move_relative_to(1, -1);
+                    //     }
+                    // }else{
+                    //     for(int i = 0; i<20; i++){
+                    //         std::cout << "tiro a la izq" << std::endl;
+                    //         weapon->move_relative_to(-1, -1);
+                    //     }
+                    // }
+                    weapons_on_map.push_back(weapon);
+                    return;
+                }
+            }
             ++it;
         }
     }
 }
 
-// void Game::throw_weapon(){
-
-
-// }
 
 
 void Game::set_duck_start_position(int id, Position position){
@@ -217,6 +235,16 @@ void Game::continue_vertical_movements(int count){
                 }
             }
         }
+
+        for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+            for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ) {
+                if(this->map.can_move_hitbox((*it)->get_hitbox(),0, GRAVITY)){
+                    (*it)->move_relative_to(0, GRAVITY);       
+                }
+                ++it; 
+            }
+        }   
+        
     }
 }
 
@@ -280,11 +308,9 @@ void Game::stop_jump_duck(int id, bool stop_jump){
 }
 
 void Game::fire_duck_weapon(int id, bool fire){
-
     if(fire && this->ducks[id]->is_alive()){
         this->ducks_states[id]->is_shooting = true;
     }
-
 }
 
 void Game::keep_shooting(){
@@ -293,10 +319,10 @@ void Game::keep_shooting(){
         it->second->continue_fire_rate();
         std::vector<std::shared_ptr<BulletInterface>> new_bullets;
         if(this->ducks_states[it->first]->is_shooting && this->ducks_states[it->first]->facing_direction){
-            new_bullets = it->second->fire_weapon(1, 0);
+            new_bullets = it->second->fire_weapon(1, 0, this->map);
         }
         if(this->ducks_states[it->first]->is_shooting && !this->ducks_states[it->first]->facing_direction){
-            new_bullets = it->second->fire_weapon(-1, 0);
+            new_bullets = it->second->fire_weapon(-1, 0, this->map);
         }
         int size = new_bullets.size();
         for(int i = 0; i < size; i++){

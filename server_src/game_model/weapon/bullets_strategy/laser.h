@@ -3,7 +3,7 @@
 
 #include "bullet_interface.h"
 
-#define TILES_LASER_DISTANCE 9000
+#define TILES_LASER_DISTANCE 1000
 
 class MapGame;
 

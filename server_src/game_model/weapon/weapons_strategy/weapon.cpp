@@ -6,8 +6,7 @@ bool Weapon::is_not_a_weapon(){
             return this->weapon_strategy == nullptr;
         }
 
-Weapon::Weapon(int dispersion, int recoil, int reload_time, WeaponInterface* weapon_strategy)
-        : Positionable(), weapon_strategy(weapon_strategy), dispersion(dispersion), recoil(recoil), reload_time(reload_time) {}
+Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height) : Positionable(0, 0, width, height), weapon_strategy(weapon_strategy){}
             
 std::vector<std::shared_ptr<BulletInterface>> Weapon::fire(std::shared_ptr<Duck> duck_trigger, int x_position, int y_position, int& x_direction, int& y_direction){
     if(this->is_not_a_weapon()){
@@ -33,6 +32,31 @@ weapon_DTO Weapon::to_DTO(){
     dto.weapon_id = this->weapon_strategy->get_id();
     return dto;
 }
+int Weapon::recoil_produced(){
+    return this->weapon_strategy->recoil_produced();
+}
+
+int Weapon::get_id(){
+    if(this->weapon_strategy == nullptr){
+        return 0;
+    }
+    return this->weapon_strategy->get_id();
+}
+
+bool Weapon::is_explosive(){
+    if(this->weapon_strategy == nullptr){
+        return false;
+    }
+    return this->weapon_strategy->is_explosive();
+}
+
+void Weapon::keep_moving(){
+    if(this->weapon_strategy == nullptr){
+        return;
+    }
+    
+}
+
 Weapon::~Weapon(){
     
 }

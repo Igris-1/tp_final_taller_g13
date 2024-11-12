@@ -46,13 +46,14 @@ public:
     int get_respawn_time();
     void set_health(int health);
 
-    std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction);
+    std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction, MapGame& map);
 
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
     Hitbox get_hitbox();
     void continue_fire_rate();
+    bool has_weapon();
 
     /*  devuelve los estados internos del duck en un dto (vida, id, posicion). 
         no sabe nada de estados de jumping, running, ni nada*/
