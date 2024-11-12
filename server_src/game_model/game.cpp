@@ -88,7 +88,6 @@ std::vector<duck_DTO> Game::get_duck_DTO_list(){
     for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
        
         duck_DTO new_dto = it->second->to_DTO();
-        new_dto.duck_id = 0;
         new_dto.is_moving_left = this->ducks_states[it->first]->is_moving_left;
         new_dto.is_moving_right = this->ducks_states[it->first]->is_moving_right;
         

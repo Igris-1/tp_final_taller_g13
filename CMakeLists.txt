@@ -23,6 +23,7 @@ project(DuckGame
 
 # ENABLE / DISABLE client, server, testings, algun uso le vamos a dar
 option(CLIENT "Enable / disable client program." ON)
+option(CLIENT_GUI "Enable / disable client GUI program." OFF)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 option(TESTS "Enable / disable tests." OFF)
@@ -82,6 +83,46 @@ if (CLIENT)
     # Link the taller_common lib target
     target_link_libraries(${CLIENT_EXECUTABLE} SDL2pp::SDL2pp)
 endif()
+
+# ---------------- CLIENT_GUI SECTION ----------------
+if (CLIENT_GUI)
+    # Encontrar el paquete de Qt necesario
+    find_package(Qt6 COMPONENTS Widgets REQUIRED)
+    find_package(Qt6 REQUIRED COMPONENTS Multimedia)
+
+    # Nombre del ejecutable del cliente
+    set(CLIENT_GUI_EXECUTABLE client_gui_exec)
+
+    # Ruta del directorio de fuentes
+    set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
+
+    # Buscar todos los archivos .cpp, .h, .ui y .qrc en la carpeta gui
+    file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")
+    file(GLOB_RECURSE SRC_FILES "${GUI_SRC_DIR}/*.cpp")
+    file(GLOB_RECURSE HEADER_FILES "${GUI_SRC_DIR}/*.h")
+    file(GLOB_RECURSE UI_FILES "${GUI_SRC_DIR}/*.ui")
+
+    # Procesar los archivos .ui para generar encabezados automáticamente
+    Qt6_wrap_ui(UI_HEADERS ${UI_FILES})
+
+    # Procesar los archivos de cabecera para generar el código de meta-objetos
+    Qt6_wrap_cpp(MOC_FILES ${HEADER_FILES})
+
+    # Agregar los archivos de recursos
+    Qt6_add_resources(RESOURCES_RCC ${RESOURCE_FILES})
+
+    list(REMOVE_ITEM CLIENT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/client_src/client_main.cpp")
+
+    # Crear el ejecutable
+    add_executable(${CLIENT_GUI_EXECUTABLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_FILES} ${RESOURCES_RCC} ${CLIENT_SOURCES})
+
+    # Configurar la inclusión de directorios de archivos generados automáticamente
+    target_include_directories(${CLIENT_GUI_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${GUI_SRC_DIR} ${libSDL2pp_SOURCE_DIR})
+
+    # Enlazar el ejecutable con las bibliotecas de Qt necesarias
+    target_link_libraries(${CLIENT_GUI_EXECUTABLE} Qt6::Widgets Qt6::Multimedia SDL2pp::SDL2pp)
+endif()
+
 
 
 # ---------------- SERVER SECTION ----------------

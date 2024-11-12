@@ -72,10 +72,8 @@ bool Duck::is_this_duck(int id) { return this->duck_id == id; }
 duck_DTO Duck::to_DTO(){
     duck_DTO dto;
     dto.duck_id = this->duck_id;
-    uint16_t x = this->hitbox.get_x();
-    uint16_t y = this->hitbox.get_y();
-    dto.x = x;
-    dto.y = y;
+    dto.x = this->hitbox.get_x();
+    dto.y = this->hitbox.get_y();
     dto.width = this->hitbox.get_width();
     dto.height = this->hitbox.get_height();
     //uint8_t duck_hp = this->health;

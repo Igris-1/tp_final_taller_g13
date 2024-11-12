@@ -28,7 +28,7 @@ void Acceptor::run(){
             
             std::shared_ptr<Action> create_duck = std::make_shared<DuckCreator>(idCount);
             gameQueue.push(create_duck);
-            idCount = idCount + 4;
+            idCount = idCount + 1;
         }
     } catch (const LibError& e) {
         stop();
