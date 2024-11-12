@@ -7,6 +7,7 @@
 #include "game_snapshot_t.h"
 #include "../common_src/action_t.h"
 
+
 class ProtocolServer {
 
 private:
@@ -18,6 +19,8 @@ public:
     ProtocolServer(Socket&& client);
 
     action_t receive_action();
+
+    int receive_number_of_players();
 
     bool socket_closed();
 

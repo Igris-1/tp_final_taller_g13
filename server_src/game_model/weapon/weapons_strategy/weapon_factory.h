@@ -8,7 +8,6 @@
 #include "sniper.h"
 #include "pew_pew.h"
 #include "laser_rifle.h"
-#include "no_weapon.h"
 
 
 class WeaponFactory {
@@ -30,10 +29,7 @@ class WeaponFactory {
             if(weapon_name == "laser_rifle"){
                 return Weapon(0, 0, 0, new LaserRifle());
             }
-            // if(weapon_name == ""){
-            //     return Weapon(0, 0, 0, new NoWeapon());
-            // }
-            return Weapon(0, 0, 0, new NoWeapon());
+            return Weapon(0, 0, 0, nullptr);
         }
 };
 

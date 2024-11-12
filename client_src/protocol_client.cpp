@@ -17,11 +17,16 @@ ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept
     : connection(std::move(protocol.connection)), 
       socket_is_closed(protocol.socket_is_closed) {}
 
+void ProtocolClient::send_number_of_players(int localPlayers){
+    connection.sendall(&localPlayers, ONE_BYTE, &socket_is_closed);
+}
+
 void ProtocolClient::send_action(action_t& action) {
 
     TranslatorActions translator;
-    uint16_t action_16bits = translator.create_flag(action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button);
+    uint16_t action_16bits = translator.create_flag(action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button, action.press_pick_up_button, action.unpress_pick_up_button);
     connection.sendall(&action_16bits, TWO_BYTES, &socket_is_closed);
+    connection.sendall(&action.player_id, ONE_BYTE, &socket_is_closed);
 }
 
 uint8_t ProtocolClient::read_number() {

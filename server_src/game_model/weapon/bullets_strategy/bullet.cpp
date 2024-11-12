@@ -1,7 +1,7 @@
 #include "bullet.h"
 #include "../../map_game.h"
 
-Bullet::Bullet(int x, int y, int x_direction, int y_direction) : BulletInterface(x, y, x_direction, y_direction){            
+Bullet::Bullet(int duck_trigger_id, int x, int y, int x_direction, int y_direction) : BulletInterface(duck_trigger_id, x, y, x_direction, y_direction){            
             this->travel_distance = TILES_BULLETS;
 }
 

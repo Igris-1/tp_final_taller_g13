@@ -2,6 +2,13 @@
 
 Game::Game(int height, int width): map(width, height), ducks_states(), ducks() {}
 
+void Game::duck_exist(int id){
+    if (this->ducks.find(id) == this->ducks.end()){
+        throw GameError("Duck id errorf ran la pqtp");
+    }
+    return;
+}
+
 int Game::add_duck(int health, int id) {
     if (this->ducks.find(id) != this->ducks.end()){
         throw GameError("Duck id already exists");
@@ -13,42 +20,58 @@ int Game::add_duck(int health, int id) {
 }
 
 void Game::remove_duck(int id){
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
-    }
+    this->duck_exist(id);
     this->ducks.erase(id);
     this->ducks_states.erase(id);
 }
 
 
 void Game::run_duck(int duck_id, bool left, bool right){
-    if(this->ducks.find(duck_id) == this->ducks.end()){
-        throw GameError("Duck id not found");
+    this->duck_exist(duck_id);
+    if(!this->ducks[duck_id]->is_alive()){
+        return;
     }
     if(!this->ducks_states[duck_id]->is_moving_left){
         this->ducks_states[duck_id]->is_moving_left = left;
          
     }
     if(!this->ducks_states[duck_id]->is_moving_right){
-        this->ducks_states[duck_id]->is_moving_right = right;
-         
+        this->ducks_states[duck_id]->is_moving_right = right;    
     }
 }
 
 
-void Game::set_duck_start_position(int id, Position position){
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
+void Game::pick_up_item(int id, bool pick_up){
+    this->duck_exist(id);
+    if(pick_up){
+        for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
+            if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
+                std::shared_ptr<Weapon> other_weapon = ducks[id]->take_weapon(*it);
+                if(other_weapon != nullptr){
+                    weapons_on_map.push_back(other_weapon);
+                }
+                it = weapons_on_map.erase(it);
+                break;
+            }
+        }
     }
+}
+
+// void Game::throw_weapon(){
+
+
+// }
+
+
+void Game::set_duck_start_position(int id, Position position){
+    this->duck_exist(id);
     if(!this->map.set_duck_start_position(this->ducks[id], position.get_x(), position.get_y())){
         throw GameError("Duck start position is invalid");
     }
 }
 
 void Game::move_duck(int id, Position movement) {
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
-    }
+    this->duck_exist(id);
     this->map.move_duck(this->ducks[id], movement.get_x(), movement.get_y());
 
     //this->ducks_states[id]->relative_movement = movement;
@@ -60,10 +83,7 @@ void Game::move_duck(int id, Position movement) {
 std::vector<duck_DTO> Game::get_duck_DTO_list(){
     std::vector<duck_DTO> list_DTO;
     for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
-        if(!it->second->is_alive()){
-            //continue;
-            std::cout << "Duck is dead" << std::endl;
-        }
+       
         duck_DTO new_dto = it->second->to_DTO();
         new_dto.duck_id = 0;
         new_dto.is_moving_left = this->ducks_states[it->first]->is_moving_left;
@@ -87,16 +107,25 @@ std::vector<bullet_DTO> Game::get_bullet_DTO_list(){
     return list_DTO;
 }
 
+std::vector<weapon_DTO> Game::get_weapon_DTO_list(){
+    std::vector<weapon_DTO> list_DTO;
+    for(auto it = this->weapons_on_map.begin(); it != this->weapons_on_map.end(); it++){
+        weapon_DTO new_dto = (*it)->to_DTO();
+        list_DTO.push_back(new_dto);
+    }
+    return list_DTO;
+}
+
 
 void Game::respawner(){
-    //  for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
-    //     if(!it->second->is_alive() && it->second->get_respawn_time() == 0){
-    //         it->second->set_health(100);
-    //     }
-    //     else{
-    //         it->second->tick_respawn_time();
-    //     }
-    //  }
+     for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
+        if(!it->second->is_alive() && it->second->get_respawn_time() == 0){
+            it->second->set_health(100);
+        }
+        else if(!it->second->is_alive()){
+            it->second->tick_respawn_time();
+        }
+     }
 }
 
 
@@ -109,7 +138,6 @@ void Game::continue_horizontal_movements(int count){
             }
             //se mueve para la left si is_moving_left is true
             if(this->ducks_states[it->first]->is_moving_left){
-                std::cout << "pato se mueve a la izq" << std::endl;
                 this->ducks_states[it->first]->facing_direction = false;
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), LEFT_MOVEMENT,0)){
                     it->second->move_relative_to(LEFT_MOVEMENT,0);
@@ -117,21 +145,20 @@ void Game::continue_horizontal_movements(int count){
             }
             //se mueve para la right si is_moving_right is true
             if(this->ducks_states[it->first]->is_moving_right){
-                std::cout << "pato se mueve a la der" << std::endl;
                 this->ducks_states[it->first]->facing_direction = true;
                 if(this->map.can_move_hitbox(it->second->get_hitbox(), RIGHT_MOVEMENT,0)){
                     it->second->move_relative_to(RIGHT_MOVEMENT,0);
                 }            
             }  
-        }        
+        }       
     }
     for(int j=0; j<count*4; j++){
         for (auto it = bullets.begin(); it != bullets.end(); ) {
             if ((*it)->next_position(this->map)) {
                 for (auto& duck : this->ducks) {
                     if(duck.second->get_hitbox().has_collision((*it)->get_hitbox())){
-                        duck.second->receive_damage((*it)->damage_generated());
-                        it = bullets.erase(it);
+                        int numerito = (*it)->damage_generated(duck.second->get_id());
+                        duck.second->receive_damage(numerito);
                         break;
                     }
                 }
@@ -193,9 +220,7 @@ void Game::continue_vertical_movements(int count){
 
 
 void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
-    }
+    this->duck_exist(id);
     if(stop_left){
         this->ducks_states[id]->is_moving_left = !stop_left;
     }
@@ -205,9 +230,7 @@ void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
 }
 
 Position Game::position_duck(int id){
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
-    }
+    this->duck_exist(id);
     return this->ducks[id]->get_position();
 }
 
@@ -228,9 +251,10 @@ map_structure_t Game::get_map_structure(){
 }
 
 void Game::jump_duck(int id, bool jump){
-    if(this->ducks.find(id) == this->ducks.end()){
-        throw GameError("Duck id not found");
+    if(!this->ducks[id]->is_alive()){
+        return;
     }
+    this->duck_exist(id);
     if(jump){
         this->ducks_states[id]->falling_with_style = true;
     }
@@ -253,7 +277,7 @@ void Game::stop_jump_duck(int id, bool stop_jump){
 
 void Game::fire_duck_weapon(int id, bool fire){
 
-    if(fire){
+    if(fire && this->ducks[id]->is_alive()){
         this->ducks_states[id]->is_shooting = true;
     }
 
@@ -296,6 +320,16 @@ void Game::add_new_platform(Hitbox hitbox){
         throw GameError("game can't add invalid position");
     }
 }
+
+void Game::add_weapon_on_map(std::string type_weapon, int x, int y){
+    std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(WeaponFactory::createWeapon(type_weapon));
+    if(!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)){
+        throw GameError("game can't add weapon to map");
+    }
+    weapon->move_to(x, y);
+    this->weapons_on_map.push_back(weapon);
+}
+
 
 
 

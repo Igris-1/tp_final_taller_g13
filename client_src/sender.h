@@ -9,8 +9,8 @@
 #include "protocol_client.h"
 #include <unistd.h>
 #define SLEEP_TIME_SENDER 2000
-#define PLAYER_1 1
-#define PLAYER_2 2
+#define PLAYER_1 0
+#define PLAYER_2 1
 
 class Sender: public Thread {
 private:
@@ -37,6 +37,9 @@ private:
                 case SDLK_f:
                     action.press_action_button = true;
                     break;
+                case SDLK_g:
+                    action.press_pick_up_button = true;
+                    break;
                 default:
                     break;
             }
@@ -54,6 +57,9 @@ private:
                     break;
                 case SDLK_f:
                     action.unpress_action_button = true;
+                    break;
+                case SDLK_g:
+                    action.unpress_pick_up_button = true;
                     break;
                 default:
                     break;
@@ -79,8 +85,12 @@ private:
                 case SDLK_RSHIFT:
                     action.press_action_button = true;
                     break;
+                case SDLK_l:
+                    action.press_pick_up_button = true;
+                    break;
                 default:
                     break;
+
             }
         } else if (e.type == SDL_KEYUP) {
             switch (e.key.keysym.sym) {
@@ -97,6 +107,9 @@ private:
                 case SDLK_RSHIFT:
                     action.unpress_action_button = true;
                     break;
+                case SDLK_l:
+                    action.unpress_pick_up_button = true;
+                    break;
                 default:
                     break;
             }
@@ -105,6 +118,7 @@ private:
 
     void run() override {
         try {
+            protocol.send_number_of_players(localPlayers);
             bool quit = false;
             SDL_Event e;
             last_event.type = 0;

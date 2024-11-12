@@ -43,6 +43,7 @@ void GameThread::run() {
     game.add_new_platform(Hitbox(0,100,230,16));
 
     game.add_invalid_position(Hitbox(0,430, 820, 2));
+    game.add_weapon_on_map("laser_rifle", 50, 150);
     clients.send_map(game.get_map_structure());
     while (_keep_running) {
         try {
@@ -51,17 +52,11 @@ void GameThread::run() {
         } catch (const ClosedQueue& e) {
             stop();
         }
-        //std::cout << "1" << std::endl;
         game.continue_horizontal_movements(10);
-        //std::cout << "2" << std::endl;
         game.continue_vertical_movements(10);
-        //std::cout << "3" << std::endl;
         game.keep_shooting();
-        //std::cout << "4" << std::endl;
         game.respawner();
-        //std::cout << "5" << std::endl;
         send_snapshots();
-        //std::cout << "6" << std::endl;
         
         usleep(SLEEP_TIME);
     }

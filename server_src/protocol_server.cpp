@@ -44,14 +44,21 @@ action_t ProtocolServer::receive_action() {
         uint16_t action_16bits;
         connection.recvall(&action_16bits, TWO_BYTES, &socket_is_closed);
         TranslatorActions translator;
-        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button);
-
+        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down, action.stop_right, action.stop_left, action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button, action.press_pick_up_button, action.unpress_pick_up_button);
+        connection.recvall(&action.player_id, ONE_BYTE, &socket_is_closed);
         return action;
     } catch (const LibError& e) {
         socket_is_closed = true;
         throw;
     }
 }
+
+int ProtocolServer::receive_number_of_players(){
+    uint8_t buffer;
+    connection.recvall(&buffer, ONE_BYTE, &socket_is_closed);
+    return buffer;
+}
+
 
 void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     std::lock_guard<std::mutex> lock(mutex);

@@ -9,10 +9,12 @@
 #include "map_game.h"
 #include <memory>
 #include <iostream>
+#include <string>
 #include <vector>
 #include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
+#include "weapon/weapons_strategy/weapon_factory.h"
 
 // movimientos laterales
 #define RIGHT_MOVEMENT 1
@@ -55,6 +57,11 @@ class Game {
         std::map<int, std::shared_ptr<Duck>> ducks;
         std::list<std::shared_ptr<BulletInterface>> bullets;
 
+        std::list<std::shared_ptr<Weapon>> weapons_on_map;
+        //std::list<std::shared_ptr<Armor>> armours_on_map;
+
+        void duck_exist(int id);
+
     public:
         Game(int high, int width);
         
@@ -77,14 +84,18 @@ class Game {
         void keep_shooting();
         void stop_duck_weapon(int id, bool stop_fire);
 
+        void pick_up_item(int id, bool pick_up);
+
         void add_invalid_position(Hitbox hitbox);
         void add_new_platform(Hitbox hitbox);
+        void add_weapon_on_map(std::string type_weapon, int x, int y);
 
         void respawner();
         
 
         std::vector<duck_DTO> get_duck_DTO_list();
         std::vector<bullet_DTO> get_bullet_DTO_list();
+        std::vector<weapon_DTO> get_weapon_DTO_list();
         game_snapshot_t get_snapshot();
         map_structure_t get_map_structure();
 };

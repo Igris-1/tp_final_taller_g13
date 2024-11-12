@@ -9,6 +9,7 @@ ClientHandler::ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& ga
         senderThread(senderQueue, protocol),
         receiverThread(gameQueue, protocol, id),
         clientID(id) {
+            
         }
 void ClientHandler::push(game_snapshot_t gs) {
     try {

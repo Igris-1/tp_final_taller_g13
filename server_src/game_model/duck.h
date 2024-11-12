@@ -5,25 +5,24 @@
 #include "helmet.h"
 #include "positionable.h"
 #include "weapon/weapons_strategy/weapon.h"
-#include "weapon/weapons_strategy/no_weapon.h"
-#include "weapon/weapons_strategy/cowboy_pistol.h"
 #include "../../common_src/duck_DTO.h"
 #include <vector>
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapons_strategy/weapon_factory.h"
+#include <memory>
 
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 48
 
-class Duck: public Positionable {
+class Duck: public Positionable, public std::enable_shared_from_this<Duck> {
 private:
     // cppcheck-suppress unusedStructMember
     int duck_id;
     int health;
     int respawn_time = 100;
-    Armor armor;
-    Helmet helmet;
-    Weapon weapon; 
+    std::shared_ptr<Armor> armor;
+    std::shared_ptr<Helmet> helmet;
+    std::shared_ptr<Weapon> weapon; 
 
 public:
     // por defecto empieza en la posicion -1,-1 (fuera del mapa), con una armadura, casco y arma
@@ -32,14 +31,14 @@ public:
 
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
     // arma)
-    void throw_weapon_to(Position position);
-    //Weapon& take_weapon(Weapon weapon);
-    Armor& take_armor(Armor armor);
-    Helmet& take_helmet(Helmet helmet);
+    std::shared_ptr<Weapon> throw_weapon();
+    std::shared_ptr<Weapon> take_weapon(std::shared_ptr<Weapon> weapon);
+    std::shared_ptr<Armor> take_armor(std::shared_ptr<Armor> armor);
+    std::shared_ptr<Helmet> take_helmet(std::shared_ptr<Helmet> helmet);
 
     //Weapon& get_weapon();
-    Armor& get_armor();
-    Helmet& get_helmet();
+    //Armor& get_armor();
+    //Helmet& get_helmet();
     int get_health();
     int get_id();
     
@@ -47,7 +46,7 @@ public:
     int get_respawn_time();
     void set_health(int health);
 
-    std::vector<std::shared_ptr<BulletInterface>>  fire_weapon(int x_direction, int y_direction);
+    std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction);
 
     bool is_alive();
     bool is_this_duck(int id);

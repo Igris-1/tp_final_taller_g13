@@ -3,10 +3,15 @@
 
 //Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1), duck_id(0) {}
 
-Duck::Duck(int health, int id) : health(health), armor(0), helmet(0), weapon(WeaponFactory::createWeapon("laser_rifle")), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
+Duck::Duck(int health, int id) : health(health), armor(nullptr), helmet(nullptr), weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon("laser_rifle"))), Positionable(-1,-1, DUCK_WIDTH, DUCK_HEIGHT), duck_id(id) {}
 
-void Duck::throw_weapon_to(Position position){
-       //this->weapon.move_to(position);
+std::shared_ptr<Weapon> Duck::throw_weapon(){
+   if(this->weapon == nullptr){
+       return nullptr;
+   }
+    std::shared_ptr<Weapon> aux = this->weapon;
+    this->weapon = nullptr;
+    return aux; 
 }
 
 int Duck::get_health(){
@@ -17,24 +22,21 @@ int Duck::get_id(){
     return this->duck_id;
 }
 
-/*Weapon& Duck::take_weapon(Weapon weapon){
-    Weapon& aux = this->weapon;
+std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon){
+    std::shared_ptr<Weapon> aux = this->weapon;
     this->weapon = weapon;
-    //this->weapon.move_to(this->position);
-    return aux;
-}*/
-
-Armor& Duck::take_armor(Armor armor){
-    Armor& aux = this->armor;
-    this->armor = armor;
-    //this->armor.move_to(this->position);
     return aux;
 }
 
-Helmet& Duck::take_helmet(Helmet helmet){
-    Helmet& aux = this->helmet;
+std::shared_ptr<Armor> Duck::take_armor(std::shared_ptr<Armor> armor){
+    std::shared_ptr<Armor> aux = this->armor;
+    this->armor = armor;
+    return aux;
+}
+
+std::shared_ptr<Helmet> Duck::take_helmet(std::shared_ptr<Helmet> helmet){
+    std::shared_ptr<Helmet> aux = this->helmet;
     this->helmet = helmet;
-    //this->helmet.move_to(this->position);
     return aux;
 }
 
@@ -42,13 +44,13 @@ Helmet& Duck::take_helmet(Helmet helmet){
     return this->weapon;
 }*/
 
-Armor& Duck::get_armor(){
-    return this->armor;
-}
+// Armor& Duck::get_armor(){
+//     return this->armor;
+// }
 
-Helmet& Duck::get_helmet(){
-    return this->helmet;
-}
+// Helmet& Duck::get_helmet(){
+//     return this->helmet;
+// }
 
 bool Duck::is_alive(){
     return !(this->health <= 0);
@@ -84,15 +86,16 @@ duck_DTO Duck::to_DTO(){
 }
 
 void Duck::continue_fire_rate(){
-    this->weapon.fire_rate_down();
+    this->weapon->fire_rate_down();
 }
 
 std::vector<std::shared_ptr<BulletInterface>>  Duck::fire_weapon(int x_direction, int y_direction){
-    bool is_real;
+    std::cout << "fire_weapon" << std::endl;
     if(x_direction > 0){
-        return this->weapon.fire(is_real,this->hitbox.get_x() + (this->hitbox.get_width()), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+        std::cout << "fire_weapon?" << std::endl;
+        return this->weapon->fire(this->duck_id, this->hitbox.get_x() + (this->hitbox.get_width()), this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
     }
-    return this->weapon.fire(is_real,this->hitbox.get_x() , this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
+    return this->weapon->fire(this->duck_id, this->hitbox.get_x() , this->hitbox.get_y() + (this->hitbox.get_height())/2, x_direction, y_direction);
 }
 
 
@@ -108,4 +111,5 @@ int Duck::get_respawn_time(){
 
 void Duck::set_health(int health){
     this->health = health;
+    this->respawn_time = 100;
 }

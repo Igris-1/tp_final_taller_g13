@@ -97,7 +97,7 @@ if (SERVER)
     "server_src/game_model/weapon/*.cpp"
     "common_src/*.cpp"
     "server_src/game_model/weapon/bullets_strategy/*.cpp"
-    "server_src/game_model/weapon/weapons_strategy*.cpp"
+    "server_src/game_model/weapon/weapons_strategy/*.cpp"
     )
 
     # Crear el ejecutable del servidor

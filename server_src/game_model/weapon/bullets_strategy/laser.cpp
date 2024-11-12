@@ -1,9 +1,9 @@
 #include "laser.h"
 #include "../../map_game.h"
-#include <ctime>
 
-Laser::Laser(int x, int y, int x_direction, int y_direction) : BulletInterface(x, y, x_direction, y_direction){            
+Laser::Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction) : BulletInterface(duck_trigger_id, x, y, x_direction, y_direction){            
             this->travel_distance = TILES_LASER_DISTANCE;
+            this->damage = 50;
 }
 bool Laser::next_position(MapGame& map){
     if(this->travel_distance == 0){

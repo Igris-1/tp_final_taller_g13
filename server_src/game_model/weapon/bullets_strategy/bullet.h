@@ -11,7 +11,7 @@ class Bullet : public BulletInterface{
     private:
         
     public:
-        Bullet(int x, int y, int x_direction, int y_direction);
+        Bullet(int duck_trigger_id, int x, int y, int x_direction, int y_direction);
         bool next_position(MapGame& map) override;
 };
 

@@ -88,6 +88,9 @@ void GameView::load_ducks(game_snapshot_t gs){
 
     for (int i=0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
+        if(!duck.is_alive){ //aca evito dibujarlo si esta muerto, pero deberiamos poner un fiambre xd
+            continue;
+        }
         if (duck.is_moving_right){
             dir[i] = 0;
         } else if (duck.is_moving_left){
