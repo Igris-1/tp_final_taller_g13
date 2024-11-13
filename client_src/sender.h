@@ -162,8 +162,8 @@ class Sender: public Thread {
                                 protocol.send_action(action);
                             }
                         }
-                    usleep(SLEEP_TIME_SENDER);
                     }
+                usleep(SLEEP_TIME_SENDER);
                 }
             } catch (const ClosedQueue& e) {
                 stop();
