@@ -8,6 +8,7 @@ Duck::Duck(int health, int id) : health(health), armor(nullptr), helmet(nullptr)
 
 std::shared_ptr<Weapon> Duck::throw_weapon(){
     std::cout << "entro a throw_weapon" << std::endl;
+
     return this->take_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon("")));
 //    if(this->weapon == nullptr){
 //        return nullptr;
@@ -29,6 +30,8 @@ int Duck::get_id(){
 std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon){
     std::shared_ptr<Weapon> aux = this->weapon;
     this->weapon = weapon;
+    this->weapon->set_falling(false);
+    this->weapon->set_moving(true);
     return aux;
 }
 

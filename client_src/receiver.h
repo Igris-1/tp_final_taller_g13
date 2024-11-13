@@ -7,7 +7,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#define SLEEP_TIME 200000
+#define SLEEP_TIME 2000
 
 class Receiver: public Thread {
 private:
@@ -30,7 +30,7 @@ private:
                     std::cout << "Duck " << i << " at (" << x << ", " << y << ")" << std::endl;
                 }*/
 
-                //usleep(SLEEP_TIME);
+                usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;
             }

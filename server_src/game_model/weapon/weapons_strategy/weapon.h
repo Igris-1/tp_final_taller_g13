@@ -10,8 +10,16 @@ class Weapon : public Positionable {
         int dispersion;
         int recoil;
         bool reload_time;
-        int air_time_x = 40;
-        int air_time_y = 25;
+        
+        int air_time_x = 300;
+        int air_time_y = 50;
+        
+        int x_direction = 0;
+        bool moving = true;
+
+        int y_direction = 0;
+        bool falling = false;
+
         std::shared_ptr<WeaponInterface> weapon_strategy; //deberia llamarse weapon_strategy la clase
 
         bool is_not_a_weapon();
@@ -25,7 +33,41 @@ class Weapon : public Positionable {
         int get_id();
         int recoil_produced();
         bool is_explosive();
-        void keep_moving();
+        void air_time_down();
+        void air_time_down_x(){
+            this->air_time_x--;
+            if(air_time_x == 0){
+                // if(this->falling){
+                //     std::cout << "resseteo airtime" << std::endl;
+                //     this->air_time_x = 50;
+                //     return;
+                // }
+                moving = false;
+            }
+        }
+        bool is_falling(){
+            return falling;
+        }
+        bool is_moving(){
+            return moving;
+        }
+
+        void set_falling(bool falling){
+            this->falling = falling;
+        }
+        void set_moving(bool moving){
+            this->moving = moving;
+            if(moving){
+                this->air_time_x = 300;
+            }
+        }
+        int get_air_time_y(){
+            return this->air_time_y;
+        }
+        int get_x_direction(){
+            return this->x_direction;
+        }
+        void set_direction(int x, int y);
         ~Weapon();
 
 };

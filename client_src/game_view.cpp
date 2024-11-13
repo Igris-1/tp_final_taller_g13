@@ -116,8 +116,6 @@ void GameView::load_bullets(game_snapshot_t gs){
                 renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8}, SDL_Rect{bullet.x-x, bullet.y-x, 1, bullet.height},0, NullOpt, bullet.x_direction);
             }
         }
-        
-
     }
 }
 

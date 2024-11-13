@@ -13,7 +13,6 @@ Client::Client(const char* host, const char* port, const char* localPlayers):
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view(protocol.receive_map()){
- 
             run();
         }
 

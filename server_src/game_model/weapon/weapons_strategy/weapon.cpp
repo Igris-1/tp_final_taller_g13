@@ -50,11 +50,24 @@ bool Weapon::is_explosive(){
     return this->weapon_strategy->is_explosive();
 }
 
-void Weapon::keep_moving(){
+void Weapon::air_time_down(){
     if(this->weapon_strategy == nullptr){
         return;
     }
-    
+    this->air_time_y--;
+    if(air_time_y == 0){
+        falling = true;
+    }
+}
+
+void Weapon::set_direction(int x, int y){
+    if(this->weapon_strategy == nullptr){
+        return;
+    }
+    this->x_direction = x;
+    this->y_direction = y;
+    this->air_time_y = 50;
+    this->air_time_x = 300;
 }
 
 Weapon::~Weapon(){

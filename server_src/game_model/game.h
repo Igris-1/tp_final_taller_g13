@@ -32,7 +32,6 @@
 #define ADD_FACTOR_GRAVITY 8
 
 typedef struct duck_state{
-
     bool is_jumping = false;
     bool falling_with_style = false;
 
@@ -43,9 +42,8 @@ typedef struct duck_state{
     bool is_moving_right = false;
     bool is_moving_left = false;
 
-    bool facing_direction = true; // true  -> derecha
-                                  // false -> izquierda
-
+    // true  -> derecha | false -> izquierda
+    bool facing_direction = true;
     bool is_shooting = false;
 
 }duck_state;
@@ -92,7 +90,6 @@ class Game {
 
         void respawner();
         
-
         std::vector<duck_DTO> get_duck_DTO_list();
         std::vector<bullet_DTO> get_bullet_DTO_list();
         std::vector<weapon_DTO> get_weapon_DTO_list();

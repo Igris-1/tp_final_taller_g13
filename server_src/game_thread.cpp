@@ -53,8 +53,9 @@ void GameThread::run() {
         } catch (const ClosedQueue& e) {
             stop();
         }
-        game.continue_horizontal_movements(10);
+
         game.continue_vertical_movements(10);
+        game.continue_horizontal_movements(10);
         game.keep_shooting();
         game.respawner();
         send_snapshots();

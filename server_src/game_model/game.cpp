@@ -62,17 +62,13 @@ void Game::pick_up_item(int id, bool pick_up){
                         std::cout << "devolvio un arma" << std::endl;
                     }
                     weapon->move_to(ducks[id]->get_x(), ducks[id]->get_y());
-                    // if(ducks_states[id]->facing_direction){
-                    //     for(int i = 0; i<20; i++){
-                    //         std::cout << "tiro a la der" << std::endl;
-                    //         weapon->move_relative_to(1, -1);
-                    //     }
-                    // }else{
-                    //     for(int i = 0; i<20; i++){
-                    //         std::cout << "tiro a la izq" << std::endl;
-                    //         weapon->move_relative_to(-1, -1);
-                    //     }
-                    // }
+                    if(ducks_states[id]->facing_direction){
+                        std::cout << "tiro a la der" << std::endl;
+                        weapon->set_direction(1, -1);
+                    }else{
+                        std::cout << "tiro a la izq" << std::endl;
+                        weapon->set_direction(-1, -1);
+                    }
                     weapons_on_map.push_back(weapon);
                     return;
                 }
@@ -188,9 +184,27 @@ void Game::continue_horizontal_movements(int count){
             }
         }
     }
+
+
+    for(int j=0; j< (count * 3); j++){
+            for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ) {
+                if((*it)->is_moving() && (*it)->get_x_direction() > 0 && this->map.can_move_hitbox((*it)->get_hitbox(),RIGHT_MOVEMENT,0)){
+                    (*it)->air_time_down_x();                    
+                    (*it)->move_relative_to(RIGHT_MOVEMENT, 0);
+                }
+                else if((*it)->is_moving() && (*it)->get_x_direction() < 0 && this->map.can_move_hitbox((*it)->get_hitbox(),LEFT_MOVEMENT, 0)){
+                    (*it)->air_time_down_x();                    
+                    (*it)->move_relative_to(LEFT_MOVEMENT,0);       
+                }
+                
+                ++it; 
+            }
+    } 
+
 }
 
 void Game::continue_vertical_movements(int count){
+
     for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
         if(this->ducks_states[it->first]->is_jumping){
             for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
@@ -234,18 +248,24 @@ void Game::continue_vertical_movements(int count){
                     this->ducks_states[it->first]->is_falling = false;
                 }
             }
-        }
-
-        for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
-            for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ) {
-                if(this->map.can_move_hitbox((*it)->get_hitbox(),0, GRAVITY)){
+        }  
+    }
+    
+        for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
+             for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+                (*it)->air_time_down();
+                if(!(*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0, JUMP_DIRECTION)){//
+                    
+                    (*it)->move_relative_to(0, JUMP_DIRECTION);
+                    continue;                    
+                }
+                if((*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0, GRAVITY)){
+                    std::cout << "se cae" << std::endl;
                     (*it)->move_relative_to(0, GRAVITY);       
                 }
-                ++it; 
             }
-        }   
-        
-    }
+            ++it; 
+        }    
 }
 
 
