@@ -18,6 +18,18 @@ class Sender: public Thread {
         ProtocolClient& protocol;
         SDL_Event last_event;
         int localPlayers;
+        std::map<SDL_Keycode, int> key_player = {
+                    {SDLK_a, PLAYER_1},
+                    {SDLK_d, PLAYER_1},
+                    {SDLK_SPACE, PLAYER_1},
+                    {SDLK_f, PLAYER_1},
+                    {SDLK_g, PLAYER_1},
+                    {SDLK_LEFT, PLAYER_2},
+                    {SDLK_RIGHT, PLAYER_2},
+                    {SDLK_RCTRL, PLAYER_2},
+                    {SDLK_RSHIFT, PLAYER_2},
+                    {SDLK_l, PLAYER_2}
+                };
 
         // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
         void map_key_to_action_1(const SDL_Event& e, action_t& action) {
@@ -117,43 +129,29 @@ class Sender: public Thread {
             }
         }
 
-        void run() override {
+       void run() override {
             try {
                 protocol.send_number_of_players(localPlayers);
-            
-                std::map<SDL_Keycode, int> key_player = {
-                    {SDLK_a, PLAYER_1},
-                    {SDLK_d, PLAYER_1},
-                    {SDLK_SPACE, PLAYER_1},
-                    {SDLK_f, PLAYER_1},
-                    {SDLK_g, PLAYER_1},
-                    {SDLK_LEFT, PLAYER_2},
-                    {SDLK_RIGHT, PLAYER_2},
-                    {SDLK_RCTRL, PLAYER_2},
-                    {SDLK_RSHIFT, PLAYER_2},
-                    {SDLK_l, PLAYER_2}
-                };
-                
                 bool quit = false;
                 SDL_Event e;
-                last_event.type = 0;
 
                 while (!quit && !protocol.socket_closed() && _keep_running) {
-                    if (SDL_PollEvent(&e) != 0) {
+                    // Procesar eventos
+                    while (SDL_PollEvent(&e) != 0) {
                         if (e.type == SDL_QUIT) {
                             quit = true;
-                        } else if (e.type == SDL_KEYUP || e.type == SDL_KEYDOWN) {
-                            // Evitar el procesamiento de un evento si ya está registrado como el último evento
-                            if (e.type == SDL_KEYDOWN && last_event.type == SDL_KEYDOWN &&
-                                last_event.key.keysym.sym == e.key.keysym.sym) {
+                            break;
+                        } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
+                            if (e.type == last_event.type && e.key.keysym.sym == last_event.key.keysym.sym) {
+                                // Evita procesar eventos repetidos
                                 continue;
                             }
                             
                             last_event = e;
 
-                            // Procesamos las acciones del player 0 o 1
+                            // Determinar el jugador y la acción
                             action_t action;
-                            if (key_player.find(e.key.keysym.sym) != key_player.end()) {
+                            if (key_player.count(e.key.keysym.sym) > 0) {
                                 if (key_player[e.key.keysym.sym] == PLAYER_1) {
                                     map_key_to_action_1(e, action);
                                 } else {
@@ -163,7 +161,9 @@ class Sender: public Thread {
                             }
                         }
                     }
-                usleep(SLEEP_TIME_SENDER);
+
+                    // Esperar solo si no hay eventos pendientes, reduciendo CPU sin retrasos innecesarios
+                    SDL_Delay(1); // flama
                 }
             } catch (const ClosedQueue& e) {
                 stop();
@@ -171,6 +171,7 @@ class Sender: public Thread {
                 std::cerr << "Exception while in client sender thread: " << e.what() << std::endl;
             }
         }
+
 
     public:
         Sender(ProtocolClient& protocol, int localPlayers): protocol(protocol), localPlayers(localPlayers) {
