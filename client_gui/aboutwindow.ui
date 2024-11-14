@@ -76,8 +76,7 @@ color: rgb(255, 255, 0);</string>
     font: bold 18px;                       
     border: 2px solid red;                   
     padding: 0px 0px;                      
-    border-radius: 3px;                      
-    qproperty-alignment: 'AlignCenter';       
+    border-radius: 3px;                         
 }
 QPushButton:hover {
     background-color: darkred;             
@@ -105,8 +104,7 @@ QPushButton:hover {
     font: bold 18px;                       
     border: 2px solid red;                   
     padding: 0px 0px;                      
-    border-radius: 3px;                      
-    qproperty-alignment: 'AlignCenter';       
+    border-radius: 3px;                           
 }
 QPushButton:hover {
     background-color: darkred;             
@@ -134,8 +132,7 @@ QPushButton:hover {
     font: bold 18px;                       
     border: 2px solid red;                   
     padding: 0px 0px;                      
-    border-radius: 3px;                      
-    qproperty-alignment: 'AlignCenter';       
+    border-radius: 3px;                        
 }
 QPushButton:hover {
     background-color: darkred;             
@@ -163,8 +160,7 @@ QPushButton:hover {
     font: bold 18px;                       
     border: 2px solid red;                   
     padding: 0px 0px;                      
-    border-radius: 3px;                      
-    qproperty-alignment: 'AlignCenter';       
+    border-radius: 3px;                          
 }
 QPushButton:hover {
     background-color: darkred;             
@@ -192,8 +188,7 @@ QPushButton:hover {
     font: bold 18px;                       
     border: 2px solid red;                   
     padding: 0px 0px;                      
-    border-radius: 3px;                      
-    qproperty-alignment: 'AlignCenter';       
+    border-radius: 3px;                       
 }
 QPushButton:hover {
     background-color: darkred;             

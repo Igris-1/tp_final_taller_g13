@@ -2,7 +2,7 @@
 
 #include <QMediaPlayer>
 #include <QMessageBox>
-
+#include <iostream>
 #include "../client_src/client.h"
 
 #include "ui_newgamewindow.h"
@@ -33,6 +33,7 @@ void NewGameWindow::on_musicButton_clicked() {
 
 void NewGameWindow::on_playersButton_clicked() {
     // setear cantidad de jugadores para iniciar la partida
+    std::cout << "playersButton clicked" << std::endl;
 }
 
 void NewGameWindow::on_player2Button_clicked() {
@@ -51,14 +52,17 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
 
 void NewGameWindow::on_mapaDosButton_clicked() {
     // createMatch("mapaDos");
+    std::cout << "mapaDosButton clicked" << std::endl;
 }
 
 void NewGameWindow::on_mapaTresButton_clicked() {
     // createMatch("mapaTres");
+    std::cout << "mapaTresButton clicked" << std::endl;
 }
 
 void NewGameWindow::on_mapaCuatroButton_clicked() {
     // createMatch("mapaCuatro");
+    std::cout << "mapaCuatroButton clicked" << std::endl;
 }
 
 // void NewGameWindow::createMatch(std::string map) {
