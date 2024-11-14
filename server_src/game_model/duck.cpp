@@ -10,10 +10,11 @@ std::shared_ptr<Weapon> Duck::throw_weapon(){
     std::cout << "entro a throw_weapon" << std::endl;
     
     if(this->weapon == nullptr){
+        std::cout << "no weapon" << std::endl;
         return nullptr;
     }
     auto weapon_list = this->weapon->get_list();
-    return this->take_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(weapon_list, "")));
+    return this->take_weapon(nullptr);//std::make_shared<Weapon>(WeaponFactory::createWeapon(weapon_list, ""))
 //    if(this->weapon == nullptr){
 //        return nullptr;
 //    }
@@ -33,6 +34,13 @@ int Duck::get_id(){
 
 std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon){
     std::shared_ptr<Weapon> aux = this->weapon;
+    if(weapon == nullptr){
+        // std::list<std::shared_ptr<BulletInterface>> weapon_list;
+        // aux = std::make_shared<Weapon>(WeaponFactory::createWeapon(weapon_list, ""));
+        this->weapon = weapon;
+        return aux;
+    }
+
     this->weapon = weapon;
     this->weapon->set_falling(false);
     this->weapon->set_moving(true);
@@ -54,6 +62,9 @@ std::shared_ptr<Helmet> Duck::take_helmet(std::shared_ptr<Helmet> helmet){
 }
 
 bool Duck::has_weapon(){
+    if(this->weapon == nullptr){
+        return false;
+    }
     return this->weapon->get_id() != 0;
 }
 
@@ -94,7 +105,6 @@ duck_DTO Duck::to_DTO(){
     dto.width = this->hitbox.get_width();
     dto.height = this->hitbox.get_height();
     //uint8_t duck_hp = this->health;
-    std::cout << "chequeo el tipo d eqapon" << std::endl;
     if(weapon == nullptr){
         dto.weapon_id = 0;
     } else {
@@ -106,17 +116,29 @@ duck_DTO Duck::to_DTO(){
 }
 
 void Duck::continue_fire_rate(){
+    if(this->weapon == nullptr){
+        return;
+    }
     this->weapon->fire_rate_down();
 }
 
 bool Duck::has_explosive_weapon(){
+    if(this->weapon == nullptr){
+        return false;
+    }
     return this->weapon->is_explosive();
 }
 
 bool Duck::has_active_explosive_weapon(){
+    if(this->weapon == nullptr){
+        return false;
+    }
     return this->weapon->is_active();
 }
 void Duck::activation_explosive_weapon(){
+    if(this->weapon == nullptr){
+        return;
+    }
     this->weapon->activation();
 }
 
@@ -139,6 +161,9 @@ std::vector<std::shared_ptr<BulletInterface>>  Duck::fire_weapon(int x_direction
 
 void Duck::use_item(int x_direction, int y_direction, MapGame& map){
     std::cout << "entra a duck.use_item" << std::endl;
+    if(!this->has_weapon()){
+        return;
+    }
     this->weapon->set_direction(x_direction, y_direction);
     std::cout << "add owner" << std::endl;
     this->weapon->add_owner(shared_from_this());

@@ -43,36 +43,48 @@ void Game::run_duck(int duck_id, bool left, bool right){
 void Game::pick_up_item(int id, bool pick_up){
     this->duck_exist(id);
     if(pick_up){
+        int i = 0;
+        bool picked_up = false;
+        size_t size = weapons_on_map.size();
+        std::cout << "size es: " << size << std::endl;
         for (auto it = weapons_on_map.begin(); it != weapons_on_map.end();){
             if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
+                std::cout << "chequeo 1 posicion: "<< i << std::endl;
+                picked_up = true;
                 std::shared_ptr<Weapon> other_weapon = ducks[id]->take_weapon(*it);
+                std::cout << "chequeo 2" << std::endl;
                 if(other_weapon != nullptr){
+                    std::cout << "chequeo 3" << std::endl;
                     other_weapon->move_to((*it)->get_x(), (*it)->get_y());
+                    other_weapon->set_falling(true);
+                    std::cout << "chequeo 4 x es: " << (*it)->get_x() << "y es: " << (*it)->get_y() << std::endl;
                     weapons_on_map.push_back(other_weapon);
+                    std::cout << "chequeo 5" << std::endl;
                 }
                 it = weapons_on_map.erase(it);
                 break;
             }
-            else{
-                if(ducks[id]->has_weapon()){
-                    std::shared_ptr<Weapon> weapon = ducks[id]->throw_weapon();
-                    if(weapon == nullptr){
-                    }else{
-                        std::cout << "devolvio un arma" << std::endl;
-                    }
-                    weapon->move_to(ducks[id]->get_x(), ducks[id]->get_y());
-                    if(ducks_states[id]->facing_direction){
-                        std::cout << "tiro a la der" << std::endl;
-                        weapon->set_direction(1, -1);
-                    }else{
-                        std::cout << "tiro a la izq" << std::endl;
-                        weapon->set_direction(-1, -1);
-                    }
-                    weapons_on_map.push_back(weapon);
-                    return;
-                }
-            }
             ++it;
+            i++;
+        }
+        if(ducks[id]->has_weapon() && !picked_up){
+            std::cout << "tiro arma desp d chequear en pos "<< i << std::endl;
+            std::shared_ptr<Weapon> weapon = ducks[id]->throw_weapon();
+            if(weapon == nullptr){
+                return;
+            }else{
+                std::cout << "devolvio un arma" << std::endl;
+            }
+            weapon->move_to(ducks[id]->get_x(), ducks[id]->get_y());
+            if(ducks_states[id]->facing_direction){
+                std::cout << "tiro a la der" << std::endl;
+                weapon->set_direction(1, -1);
+            }else{
+                std::cout << "tiro a la izq" << std::endl;
+                weapon->set_direction(-1, -1);
+            }
+            weapons_on_map.push_back(weapon);
+            return;
         }
     }
 }
@@ -158,8 +170,11 @@ void Game::continue_horizontal_movements(int count){
             if ((*it)->next_position(this->map)) {
                 for (auto& duck : this->ducks) {
                     if(duck.second->get_hitbox().has_collision((*it)->get_hitbox())){
+                        std::cout << "calculo danio" << std::endl;
                         int numerito = (*it)->damage_generated(duck.second->get_id());
+                        std::cout << "recibe danio" << std::endl;
                         duck.second->receive_damage(numerito);
+                        std::cout << "recibio danio" << std::endl;
                         break;
                     }
                 }
@@ -245,7 +260,7 @@ void Game::continue_vertical_movements(int count){
                     continue;                    
                 }
                 if((*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0, GRAVITY)){
-                    std::cout << "se cae" << std::endl;
+                    
                     (*it)->move_relative_to(0, GRAVITY);       
                 }
             }

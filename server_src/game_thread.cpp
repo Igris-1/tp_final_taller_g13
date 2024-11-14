@@ -44,6 +44,9 @@ void GameThread::run() {
 
     game.add_invalid_position(Hitbox(0,430, 820, 2));
     game.add_weapon_on_map("cowboy", 50, 150);
+    game.add_weapon_on_map("laser_rifle", 150, 150);
+    game.add_weapon_on_map("laser_rifle", 250, 150);
+    game.add_weapon_on_map("cowboy", 350, 150);
     clients.send_map(game.get_map_structure());
     
     while (_keep_running) {
