@@ -158,14 +158,19 @@ bool MapGame::position_is_valid(Hitbox hitbox){
     return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
 }
 
-bool MapGame::set_duck_start_position(std::shared_ptr<Duck> duck, int x, int y){
-    Hitbox aux = duck->get_hitbox();
+bool MapGame::set_duck_start_position(int id, int x, int y){
+    
+    if (this->ducks.find(id) != this->ducks.end()){
+        throw MapError("Duck id already exists");
+    }
+    std::shared_ptr<Duck> new_duck = std::make_shared<Duck>(HEALTH, id);
+    this->ducks[id] = new_duck;
+    Hitbox aux = new_duck->get_hitbox();
     aux.move(x, y);
     if(!position_is_valid(aux)){
         return false;
     }
-    duck->move_to(x, y);
-    this->ducks[duck->get_id()] = duck;
+    new_duck->move_to(x, y);
     return true;
 }
 
@@ -282,4 +287,9 @@ std::vector<platform_DTO> MapGame::get_platforms_DTO(){
     return vector_platforms;
 }
 
+void MapGame::continue_fire_rate(int id){
+    if(this->duck_exist(id)){
+        this->ducks[id]->continue_fire_rate();
+    }
+}
 #endif

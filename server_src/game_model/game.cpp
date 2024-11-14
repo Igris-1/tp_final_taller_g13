@@ -391,7 +391,7 @@ void Game::add_weapon_on_map(std::string type_weapon, int x, int y){
 /* --------- NUEVOOO GAMEEEE----------------*/
 #ifdef NUEVO_MAPA
 
-Game::Game(int height, int width): map(width, height), ducks_states(), ducks() {}
+Game::Game(int height, int width): map(width, height), ducks_states() {}
 
 void Game::duck_exist(int id){
     this->map.duck_exist(id);
@@ -418,46 +418,27 @@ void Game::run_duck(int duck_id, bool left, bool right){
     }
 }
 
-
-void Game::set_duck_start_position(int id, Position position){
-    this->map.set_duck_start_position(this->ducks[id], position.get_x(), position.get_y());
+void Game::set_duck_start_position(int id, int x, int y){
+    if(this->map.set_duck_start_position(id, x, y)){
+        ducks_states.emplace(id, std::make_shared<duck_state>());
+    }
 }
 
 std::vector<duck_DTO> Game::get_duck_DTO_list(){
     std::vector<duck_DTO> list_DTO = this->map.get_duck_DTO_list();
     for(auto& it : list_DTO){
-        it.is_moving_left = this->ducks_states[it.id]->is_moving_left;
-        it.is_moving_right = this->ducks_states[it.id]->is_moving_right;
-        it.jumping = this->ducks_states[it.id]->is_jumping;
-        it.falling = this->ducks_states[it.id]->is_falling;
-        it.is_alive = this->ducks[it.id]->is_alive();
+        it.is_moving_left = this->ducks_states[it.duck_id]->is_moving_left;
+        it.is_moving_right = this->ducks_states[it.duck_id]->is_moving_right;
+        it.jumping = this->ducks_states[it.duck_id]->is_jumping;
+        it.falling = this->ducks_states[it.duck_id]->is_falling;
+        //it.shooting = this->ducks_states[it.duck_id].is_shooting;
     }
     return list_DTO;
 }
 
-// std::vector<bullet_DTO> Game::get_bullet_DTO_list(){
-//     std::vector<bullet_DTO> list_DTO;
-//     for(auto it = this->bullets.begin(); it != this->bullets.end(); it++){
-//         bullet_DTO new_dto = (*it)->to_DTO();
-//         list_DTO.push_back(new_dto);
-//     }
-//     return list_DTO;
-// }
-
-// std::vector<weapon_DTO> Game::get_weapon_DTO_list(){
-//     std::vector<weapon_DTO> list_DTO;
-//     for(auto it = this->weapons_on_map.begin(); it != this->weapons_on_map.end(); it++){
-//         weapon_DTO new_dto = (*it)->to_DTO();
-//         list_DTO.push_back(new_dto);
-//     }
-//     return list_DTO;
-// }
-
-
 void Game::respawner(){
     this->map.respawn_ducks();
 }
-
 
 void Game::continue_horizontal_movements(int count){
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
@@ -465,13 +446,13 @@ void Game::continue_horizontal_movements(int count){
     for(int i=0; i< count; i++){
         for(auto& id: ducks_id){
             //se mueve para la left si is_moving_left is true
-            if(this->ducks_states[it->first]->is_moving_left){
-                this->ducks_states[it->first]->facing_direction = false;
+            if(this->ducks_states[id]->is_moving_left){
+                this->ducks_states[id]->facing_direction = false;
                 this->map.move_relative_if_posible(id, LEFT_MOVEMENT, 0);
             }
             //se mueve para la right si is_moving_right is true
-            if(this->ducks_states[it->first]->is_moving_right){
-                this->ducks_states[it->first]->facing_direction = true;
+            if(this->ducks_states[id]->is_moving_right){
+                this->ducks_states[id]->facing_direction = true;
                 this->map.move_relative_if_posible(id, RIGHT_MOVEMENT, 0);          
             }  
         }       
@@ -514,24 +495,24 @@ void Game::continue_horizontal_movements(int count){
 void Game::continue_vertical_movements(int count){
     std::vector<int> ducks_id = this->map.get_all_duck_ids();
     for(auto& id: ducks_id){
-        if(this->ducks_states[it->first]->is_jumping){
+        if(this->ducks_states[id]->is_jumping){
             for(int i=0; i< (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++){
-                if(this->ducks_states[it->first]->tiles_to_jump > 0){
+                if(this->ducks_states[id]->tiles_to_jump > 0){
                     this->map.move_relative_if_posible(id, 0, JUMP_DIRECTION);
-                    this->ducks_states[it->first]->tiles_to_jump --;
+                    this->ducks_states[id]->tiles_to_jump --;
                 }
-                if(this->ducks_states[it->first]->tiles_to_jump == 0){
-                    this->ducks_states[it->first]->air_time --;
+                if(this->ducks_states[id]->tiles_to_jump == 0){
+                    this->ducks_states[id]->air_time --;
                 }
-                if(this->ducks_states[it->first]->tiles_to_jump == 0 && this->ducks_states[it->first]->air_time == 0){         
-                    this->ducks_states[it->first]->is_jumping = false;
-                    this->ducks_states[it->first]->is_falling = true;
+                if(this->ducks_states[id]->tiles_to_jump == 0 && this->ducks_states[id]->air_time == 0){         
+                    this->ducks_states[id]->is_jumping = false;
+                    this->ducks_states[id]->is_falling = true;
                 }
             }
-        }else if(this->ducks_states[it->first]->falling_with_style){
+        }else if(this->ducks_states[id]->falling_with_style){
             for(int i=0; i< (count) + ADD_FACTOR_GRAVITY; i++){    
-                if(this->ducks_states[it->first]->falling_with_style && i%2 == 0){
-                    this->ducks_states[it->first]->is_falling = 
+                if(this->ducks_states[id]->falling_with_style && i%2 == 0){
+                    this->ducks_states[id]->is_falling = 
                         this->map.move_relative_if_posible(id, 0, GRAVITY) ? 
                             true : false;
                 }
@@ -541,9 +522,9 @@ void Game::continue_vertical_movements(int count){
             for(int i=0; i< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++){
                 //this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0, GRAVITY);
                 if(this->map.move_relative_if_posible(id, 0, GRAVITY)){
-                    this->ducks_states[it->first]->is_falling = true;
+                    this->ducks_states[id]->is_falling = true;
                 }else{
-                    this->ducks_states[it->first]->is_falling = false;
+                    this->ducks_states[id]->is_falling = false;
                 }
             }
         }  
@@ -567,7 +548,7 @@ void Game::continue_vertical_movements(int count){
 }
 
 void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
-    if(!this->map->duck_exist(id)){
+    if(!this->map.duck_exist(id)){
         return;
     }
     if(stop_left){
@@ -578,21 +559,18 @@ void Game::stop_run_duck(int id, bool stop_left, bool stop_right){
     }
 }
 
-// Position Game::position_duck(int id){
-//     this->duck_exist(id);
-//     return this->ducks[id]->get_position();
-// }
-
-
-// hasta aca
 game_snapshot_t Game::get_snapshot(){
     game_snapshot_t snapshot;
-    snapshot.ducks_len = this->ducks.size();
-    snapshot.ducks = this->get_duck_DTO_list();
-    snapshot.bullets_len = this->bullets.size();
-    snapshot.bullets = this->get_bullet_DTO_list();
-    snapshot.weapons = this->get_weapon_DTO_list();
-    snapshot.weapons_len = snapshot.weapons.size();
+    snapshot.ducks = this->get_duck_DTO_list(); // usar el de this y no el de map
+    snapshot.ducks_len = snapshot.ducks.size();
+    // snapshot.bullets = this->map.get_bullets_DTO_list();
+    // snapshot.bullets_len = snapshot.bullets.size();
+    // snapshot.weapons = this->map.get_weapons_DTO_list();
+    // snapshot.weapons_len = snapshot.weapons.size();
+    // snapshot.bullets_len = this->bullets.size();
+    // snapshot.bullets = this->get_bullet_DTO_list();
+    // snapshot.weapons = this->get_weapon_DTO_list();
+    // snapshot.weapons_len = snapshot.weapons.size();
     return snapshot;
 }
 
@@ -604,10 +582,9 @@ map_structure_t Game::get_map_structure(){
 }
 
 void Game::jump_duck(int id, bool jump){
-    if(!this->ducks[id]->is_alive()){
+    if(!this->map.duck_exist(id) && !this->map.duck_is_alive(id)){
         return;
     }
-    this->duck_exist(id);
     if(jump){
         this->ducks_states[id]->falling_with_style = true;
     }
@@ -629,26 +606,27 @@ void Game::stop_jump_duck(int id, bool stop_jump){
 }
 
 void Game::fire_duck_weapon(int id, bool fire){
-    if(fire && this->ducks[id]->is_alive()){
+    if(fire && this->map.duck_is_alive(id)){
         this->ducks_states[id]->is_shooting = true;
     }
 }
 
 void Game::keep_shooting(){
-    
-    for(auto it = this->ducks.begin(); it != this->ducks.end(); it++){
-        it->second->continue_fire_rate();
+    std::vector<int> ducks_id = this->map.get_live_duck_ids();
+
+    for(auto& id: ducks_id){
+        this->map.continue_fire_rate(id);
         std::vector<std::shared_ptr<BulletInterface>> new_bullets;
-        if(this->ducks_states[it->first]->is_shooting && this->ducks_states[it->first]->facing_direction){
-            new_bullets = it->second->fire_weapon(1, 0, this->map);
+        if(this->ducks_states[id]->is_shooting && this->ducks_states[id]->facing_direction){
+            // new_bullets = it->second->fire_weapon(1, 0, this->map);
         }
-        if(this->ducks_states[it->first]->is_shooting && !this->ducks_states[it->first]->facing_direction){
-            new_bullets = it->second->fire_weapon(-1, 0, this->map);
+        if(this->ducks_states[id]->is_shooting && !this->ducks_states[id]->facing_direction){
+            // new_bullets = it->second->fire_weapon(-1, 0, this->map);
         }
         int size = new_bullets.size();
-        for(int i = 0; i < size; i++){
-            this->bullets.push_back(new_bullets[i]);
-        }
+        // for(int i = 0; i < size; i++){
+        //     this->bullets.push_back(new_bullets[i]);
+        // }
     }
 }
 
@@ -658,7 +636,6 @@ void Game::stop_duck_weapon(int id, bool stop_fire){
         return;
     }
 }
-
 
 void Game::add_invalid_position(Hitbox hitbox){
     if(!this->map.add_invalid_position(hitbox)){
@@ -673,12 +650,12 @@ void Game::add_new_platform(Hitbox hitbox){
 }
 
 void Game::add_weapon_on_map(std::string type_weapon, int x, int y){
-    std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(WeaponFactory::createWeapon(type_weapon));
-    if(!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)){
-        throw GameError("game can't add weapon to map");
-    }
-    weapon->move_to(x, y);
-    this->weapons_on_map.push_back(weapon);
+    // std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(WeaponFactory::createWeapon(type_weapon));
+    // if(!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)){
+    //     throw GameError("game can't add weapon to map");
+    // }
+    // weapon->move_to(x, y);
+    // this->weapons_on_map.push_back(weapon);
 }
 
 void Game::pick_up_item(int id, bool pick_up){

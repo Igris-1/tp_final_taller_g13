@@ -155,37 +155,40 @@ class Game {
 
     public:
         Game(int high, int width);
+        
+
+        // DUCK
+        void set_duck_start_position(int id, int x, int y);
+        void respawner();
         // void remove_duck(int id);
-        std::vector<duck_DTO> get_duck_DTO_list();
+
+        // RUN
         void run_duck(int duck_id, bool left, bool right);
-        void set_duck_start_position(int id, Position position);
         void stop_run_duck(int id, bool stop_left, bool stop_right);
+
+        // MOVEMENTS
         void continue_horizontal_movements(int count=1);
         void continue_vertical_movements(int count=1);
 
-
-    // -----------------------------
-        
+        // JUMP
         void jump_duck(int id, bool jump);
         void stop_jump_duck(int id, bool stop_jump);
 
+        //  WEAPONS
         void fire_duck_weapon(int id, bool fire);
         void keep_shooting();
         void stop_duck_weapon(int id, bool stop_fire);
-
         void pick_up_item(int id, bool pick_up);
 
+        // DATA
+        game_snapshot_t get_snapshot();
+        std::vector<duck_DTO> get_duck_DTO_list();
+        map_structure_t get_map_structure();
+
+        // MAP FUNCTIONS
         void add_invalid_position(Hitbox hitbox);
         void add_new_platform(Hitbox hitbox);
         void add_weapon_on_map(std::string type_weapon, int x, int y);
-
-        void respawner();
-        
-        
-        // std::vector<bullet_DTO> get_bullet_DTO_list();
-        // std::vector<weapon_DTO> get_weapon_DTO_list();
-        game_snapshot_t get_snapshot();
-        map_structure_t get_map_structure();
 };
 
 class GameError: public std::exception {

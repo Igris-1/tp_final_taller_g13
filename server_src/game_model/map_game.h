@@ -11,6 +11,7 @@
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "hitbox.h"
 
+// #define NUEVO_MAPA
 
 #ifndef NUEVO_MAPA
 class MapGame{
@@ -45,6 +46,8 @@ class MapGame{
 /*------- NUEVOOOOO MAPPAAAAAA -------------------------*/
 #ifdef NUEVO_MAPA
 
+#define HEALTH 100
+
 class MapGame{
     private:
     int height;
@@ -58,32 +61,31 @@ class MapGame{
     bool not_in_invalid_position(Hitbox hitbox);
     bool not_in_platforms(Hitbox hitbox);
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
-    bool move_relative_if_posible(int id, int dx, int dy);
+    
 
     public:
     explicit MapGame(int width, int height);
+
+    // MAP STRUCTURE
     bool add_invalid_position(Hitbox hitbox);
     bool add_platform(Hitbox hitbox);
+
+    // DUCKS
     bool duck_exist(int id);
-    bool set_duck_start_position(std::shared_ptr<Duck> duck, int x, int y);
+    bool set_duck_start_position(int duck_id, int x, int y);
     bool duck_is_alive(int id);
     void respawn_ducks();
     void remove_duck(int id);
-
+    bool move_relative_if_posible(int id, int dx, int dy);
+    void continue_fire_rate(int id);
+    
+    // DTO
     std::vector<duck_DTO> get_duck_DTO_list();
     std::vector<platform_DTO> get_platforms_DTO();
     
+    // MANAGE DUCKS
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
-    
-
-    
-    // ---------------------
-    
-    
-    
-    
-    
 };
 
 class MapError: public std::exception {
