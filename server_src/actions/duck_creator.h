@@ -4,18 +4,15 @@
 #include "action.h"
 #include "duck_creator.h"
 
-class DuckCreator: public Action{
+class DuckCreator: public Action {
 
 public:
+    DuckCreator(int id);
 
-DuckCreator(int id);
+    void execute(Game& game) override;
 
-void execute(Game& game) override;
-
-~DuckCreator() = default;
-
+    ~DuckCreator() = default;
 };
-
 
 
 #endif

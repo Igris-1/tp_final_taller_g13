@@ -1,11 +1,14 @@
 #ifndef RECEIVER_H
 #define RECEIVER_H
 
+#include <iostream>
+
+#include <unistd.h>
+
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+
 #include "protocol_client.h"
-#include <iostream>
-#include <unistd.h>
 
 #define SLEEP_TIME 2000
 
@@ -17,12 +20,12 @@ private:
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
-                
+
                 game_snapshot_t gs = protocol.read_snapshot();
-                
+
                 queue.push(gs);
-                
-                
+
+
                 /*int len = gs.ducks.size();
                 for (int i = 0; i < len; i++) {
                     int x = static_cast<int>(gs.ducks[i].x);
@@ -38,13 +41,12 @@ private:
     }
 
 public:
-    Receiver(ProtocolClient& protocol, Queue<game_snapshot_t>& queue): protocol(protocol), queue(queue) {
+    Receiver(ProtocolClient& protocol, Queue<game_snapshot_t>& queue):
+            protocol(protocol), queue(queue) {
         start();
     }
 
-    ~Receiver() override { 
-        _is_alive = false; 
-    }
+    ~Receiver() override { _is_alive = false; }
 };
 
 #endif  // RECEIVER_H

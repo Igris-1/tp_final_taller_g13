@@ -1,21 +1,23 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <vector>
 #include <map>
-#include "positionable.h"
-#include "duck.h"
-#include <set>
 #include <memory>
+#include <set>
+#include <vector>
+
 #include "../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
+
+#include "duck.h"
 #include "hitbox.h"
+#include "positionable.h"
 
 // #define NUEVO_MAPA
 
 #ifndef NUEVO_MAPA
-class MapGame{
-    private:
+class MapGame {
+private:
     int height;
     int width;
     std::set<Hitbox> invalid_positions;
@@ -27,7 +29,7 @@ class MapGame{
     bool not_in_invalid_position(Hitbox hitbox);
     bool not_in_platforms(Hitbox hitbox);
 
-    public:
+public:
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
 
     // ---------------------
@@ -41,29 +43,31 @@ class MapGame{
 #endif
 
 
-
-
 /*------- NUEVOOOOO MAPPAAAAAA -------------------------*/
 #ifdef NUEVO_MAPA
 
 #define HEALTH 100
+#define RIGHT_DIRECTION 1
+#define LEFT_DIRECTION -1
+#define NO_DIRECTION 0
 
-class MapGame{
-    private:
+class MapGame {
+private:
     int height;
     int width;
     std::set<Hitbox> invalid_positions;
     std::set<Hitbox> platforms;
     std::map<int, std::shared_ptr<Duck>> ducks;
+    std::list<std::shared_ptr<Weapon>> pickables;
+    std::list<std::shared_ptr<BulletInterface>> bullets;
 
     bool hitbox_in_range(Hitbox hitbox);
     bool position_is_valid(Hitbox hitbox);
     bool not_in_invalid_position(Hitbox hitbox);
     bool not_in_platforms(Hitbox hitbox);
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
-    
 
-    public:
+public:
     explicit MapGame(int width, int height);
 
     // MAP STRUCTURE
@@ -76,13 +80,20 @@ class MapGame{
     bool duck_is_alive(int id);
     void respawn_ducks();
     void remove_duck(int id);
-    bool move_relative_if_posible(int id, int dx, int dy);
+    bool move_relative_if_posible(int duck_id, int dx, int dy);
     void continue_fire_rate(int id);
-    
+    void use_item(int duck_id, bool right_direction);
+
+    // BULLETS AND PICKABLE
+    void bullets_next_movement();
+    bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
+    void ducks_try_pick_up(int id_duck);
+
     // DTO
+    std::vector<bullet_DTO> get_bullets_DTO_list();
     std::vector<duck_DTO> get_duck_DTO_list();
     std::vector<platform_DTO> get_platforms_DTO();
-    
+
     // MANAGE DUCKS
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
@@ -94,9 +105,7 @@ private:
 
 public:
     MapError(std::string msg): msg(msg) {}
-    virtual const char* what() const noexcept override {
-        return msg.c_str();
-    }
+    virtual const char* what() const noexcept override { return msg.c_str(); }
 };
 
 #endif

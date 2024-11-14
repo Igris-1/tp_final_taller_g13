@@ -1,10 +1,11 @@
 #ifndef PROTOCOL_CLIENT_H
 #define PROTOCOL_CLIENT_H
 
-#include "../common_src/socket.h"
 #include <string>
-#include "../common_src/game_snapshot_t.h"
+
 #include "../common_src/action_t.h"
+#include "../common_src/game_snapshot_t.h"
+#include "../common_src/socket.h"
 
 class ProtocolClient {
 
@@ -15,7 +16,7 @@ private:
 public:
     explicit ProtocolClient(Socket&& client);
 
-     ProtocolClient(ProtocolClient&& protocol) noexcept;
+    ProtocolClient(ProtocolClient&& protocol) noexcept;
 
     void send_action(action_t& action);
 

@@ -1,19 +1,17 @@
 #include "server.h"
-#include "acceptor.h"
+
 #include "actions/action.h"
+
+#include "acceptor.h"
 
 #define RDWR 2
 #define QUEUE_MAX_SIZE 200
 #define STOP_CODE "q"
 #define START_CODE "f"
 
-Server::Server(const char* port) 
-        : port(port) {
-    start();
-}
+Server::Server(const char* port): port(port) { start(); }
 
-Server::~Server() {
-}
+Server::~Server() {}
 
 void Server::start() {
     try {
@@ -30,7 +28,7 @@ void Server::start() {
         while (input != STOP_CODE) {
             std::getline(std::cin, input);
         }
-        acceptor.close();    
+        acceptor.close();
         acceptor.stop();
         acceptor.join();
         gameThread.stop();

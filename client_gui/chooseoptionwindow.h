@@ -3,22 +3,21 @@
 
 #include <QDialog>
 // #include "joinwindow.h"
-#include "newgamewindow.h"
 #include "aboutwindow.h"
+#include "newgamewindow.h"
 // #include "../client_src/client_lobby.h"
-#include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QMediaPlayer>
 
 namespace Ui {
 class ChooseOptionWindow;
 }
 
-class ChooseOptionWindow : public QDialog
-{
+class ChooseOptionWindow: public QDialog {
     Q_OBJECT
 
 public:
-    explicit ChooseOptionWindow(QWidget *parent, QString port, QString address);
+    explicit ChooseOptionWindow(QWidget* parent, QString port, QString address);
     void playMusic();
     ~ChooseOptionWindow();
 
@@ -36,13 +35,13 @@ private slots:
 
 private:
     // ClientLobby cl;
-    Ui::ChooseOptionWindow *ui;
-    NewGameWindow *newGameWindow;
+    Ui::ChooseOptionWindow* ui;
+    NewGameWindow* newGameWindow;
     // JoinWindow *joinWindow;
-    AboutWindow *aboutWindow;
+    AboutWindow* aboutWindow;
 
-    QMediaPlayer *player;
-    QAudioOutput *audioOutput;
+    QMediaPlayer* player;
+    QAudioOutput* audioOutput;
 };
 
-#endif // CHOOSEOPTIONWINDOW_H
+#endif  // CHOOSEOPTIONWINDOW_H

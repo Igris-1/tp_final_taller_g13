@@ -7,12 +7,11 @@ namespace Ui {
 class AboutWindow;
 }
 
-class AboutWindow : public QDialog
-{
+class AboutWindow: public QDialog {
     Q_OBJECT
 
 public:
-    explicit AboutWindow(QWidget *parent = nullptr);
+    explicit AboutWindow(QWidget* parent = nullptr);
     ~AboutWindow();
 
 private slots:
@@ -24,7 +23,7 @@ private slots:
     void on_pedroButton_clicked();
 
 private:
-    Ui::AboutWindow *ui;
+    Ui::AboutWindow* ui;
 };
 
-#endif // ABOUTWINDOW_H
+#endif  // ABOUTWINDOW_H

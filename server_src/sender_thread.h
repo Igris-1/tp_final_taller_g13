@@ -5,9 +5,10 @@
 #include <string>
 #include <variant>
 
+#include "../common_src/game_snapshot_t.h"
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
-#include "../common_src/game_snapshot_t.h"
+
 #include "liberror.h"
 
 
@@ -17,13 +18,13 @@ private:
     ProtocolServer& protocol;
 
     void run() override {
-        
-        while (!protocol.socket_closed() && _keep_running){
+
+        while (!protocol.socket_closed() && _keep_running) {
             try {
 
                 game_snapshot_t gs = queue.pop();
                 protocol.sendGameInfo(gs);
- 
+
             } catch (const ClosedQueue& e) {
                 stop();
             } catch (const std::exception& e) {
@@ -35,13 +36,12 @@ private:
     }
 
 public:
-    SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol): queue(queue), protocol(protocol) {
+    SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol):
+            queue(queue), protocol(protocol) {
         start();
     }
 
-    ~SenderThread() override { 
-        _is_alive = false; 
-    }
+    ~SenderThread() override { _is_alive = false; }
 };
 
 #endif

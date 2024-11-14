@@ -4,7 +4,6 @@
 #include "positionable.h"
 class Helmet: public Positionable {
 private:
-
 public:
     explicit Helmet();
     ~Helmet() {}

@@ -1,33 +1,29 @@
 #include "connectionwindow.h"
 
+#include <QMessageBox>
 #include <QPalette>
 #include <QPixmap>
-#include "chooseoptionwindow.h"
-
-#include <ostream>
 #include <iostream>
-#include <QMessageBox>
+#include <ostream>
 #include <utility>
+
+#include "chooseoptionwindow.h"
 #include "ui_connectionwindow.h"
 
-ConnectionWindow::ConnectionWindow(QWidget *parent)
-        : QMainWindow(parent)
-        , ui(new Ui::ConnectionWindow)
-{
+ConnectionWindow::ConnectionWindow(QWidget* parent):
+        QMainWindow(parent), ui(new Ui::ConnectionWindow) {
     ui->setupUi(this);
     chooseOptionWindow = NULL;
 }
 
-ConnectionWindow::~ConnectionWindow()
-{
+ConnectionWindow::~ConnectionWindow() {
     if (this->chooseOptionWindow != NULL)
         delete this->chooseOptionWindow;
     delete ui;
 }
 
 
-void ConnectionWindow::on_pushButton_clicked()
-{
+void ConnectionWindow::on_pushButton_clicked() {
     QString port = ui->portLineEdit->text();
     QString address = ui->addressLineEdit->text();
 
@@ -47,7 +43,4 @@ void ConnectionWindow::on_pushButton_clicked()
     }
 }
 
-void ConnectionWindow::on_exitGameButton_clicked()
-{
-    QApplication::quit();
-}
+void ConnectionWindow::on_exitGameButton_clicked() { QApplication::quit(); }

@@ -64,7 +64,7 @@ public:
 
         if (q.empty()) {
             if (closed) {
-                throw ClosedQueue(); 
+                throw ClosedQueue();
             }
             return false;
         }

@@ -1,5 +1,6 @@
-#include "client.h"
 #include <iostream>
+
+#include "client.h"
 #define ERROR -1
 #define SUCCESS 0
 #define REQUIRED_ARGC 4
@@ -14,7 +15,7 @@ int main(int argc, const char* argv[]) {
         if (argc != REQUIRED_ARGC) {
             return ERROR;
         }
-        
+
         Client client(argv[HOST_ARG], argv[PORT_ARG], argv[LOCAL_PLAYERS]);
         return SUCCESS;
 

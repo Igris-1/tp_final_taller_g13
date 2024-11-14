@@ -1,11 +1,11 @@
-#include "server.h"
 #include <iostream>
+
+#include "server.h"
 
 #define ERROR -1
 #define SUCCESS 0
 #define PORT_ARG 1
 #define REQUIRED_ARGC 2
-
 
 
 int main(int argc, char* argv[]) {

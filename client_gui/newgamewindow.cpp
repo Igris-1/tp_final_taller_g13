@@ -1,55 +1,47 @@
 #include "newgamewindow.h"
-#include "ui_newgamewindow.h"
-#include <QMessageBox>
+
 #include <QMediaPlayer>
+#include <QMessageBox>
+
 #include "../client_src/client.h"
 
+#include "ui_newgamewindow.h"
+
 // no te olvides de recibir al cliente tambien
-NewGameWindow::NewGameWindow(QWidget *parent, QMediaPlayer *player, QString port, QString address) :
+NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString port, QString address):
         QDialog(parent),
-        //cl(std::move(cl)),
+        // cl(std::move(cl)),
         ui(new Ui::NewGameWindow),
         player(player),
         port(port),
-        address(address)
-{
+        address(address) {
     ui->setupUi(this);
 }
 
 
-NewGameWindow::~NewGameWindow()
-{
-    delete ui;
-}
+NewGameWindow::~NewGameWindow() { delete ui; }
 
-void NewGameWindow::on_backButton_clicked()
-{
-    this->close();
-}
+void NewGameWindow::on_backButton_clicked() { this->close(); }
 
-void NewGameWindow::on_musicButton_clicked()
-{
-    if (this->player->playbackState() == QMediaPlayer::PlayingState){
+void NewGameWindow::on_musicButton_clicked() {
+    if (this->player->playbackState() == QMediaPlayer::PlayingState) {
         this->player->pause();
     } else {
         this->player->play();
     }
 }
 
-void NewGameWindow::on_playersButton_clicked()
-{
+void NewGameWindow::on_playersButton_clicked() {
     // setear cantidad de jugadores para iniciar la partida
 }
 
-void NewGameWindow::on_player2Button_clicked()
-{
+void NewGameWindow::on_player2Button_clicked() {
     // setea si el jugador 2 es local o no
-     this->players = 2;
+    this->players = 2;
 }
 
-void NewGameWindow::on_mapaUnoButton_clicked()
-{
-    //createMatch("mapaUno");
+void NewGameWindow::on_mapaUnoButton_clicked() {
+    // createMatch("mapaUno");
     char* port = this->port.toUtf8().data();
     char* address = this->address.toUtf8().data();
     QString playersStr = QString::number(this->players);
@@ -57,22 +49,18 @@ void NewGameWindow::on_mapaUnoButton_clicked()
     Client cl(address, port, localPlayers);
 }
 
-void NewGameWindow::on_mapaDosButton_clicked()
-{
-    //createMatch("mapaDos");
+void NewGameWindow::on_mapaDosButton_clicked() {
+    // createMatch("mapaDos");
 }
 
-void NewGameWindow::on_mapaTresButton_clicked()
-{
-    //createMatch("mapaTres");
+void NewGameWindow::on_mapaTresButton_clicked() {
+    // createMatch("mapaTres");
 }
 
-void NewGameWindow::on_mapaCuatroButton_clicked()
-{
-    //createMatch("mapaCuatro");
+void NewGameWindow::on_mapaCuatroButton_clicked() {
+    // createMatch("mapaCuatro");
 }
 
 // void NewGameWindow::createMatch(std::string map) {
 //     // dejo esta funcion por las dudas
 // }
-

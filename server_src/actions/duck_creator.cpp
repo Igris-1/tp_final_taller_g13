@@ -1,15 +1,22 @@
 #include "duck_creator.h"
-#include "action.h"
+
 #include <iostream>
 
-DuckCreator::DuckCreator(int id)
-        : Action(id) {
-}
+#include "action.h"
+
+DuckCreator::DuckCreator(int id): Action(id) {}
 
 
-void DuckCreator::execute(Game& game){
+void DuckCreator::execute(Game& game) {
     std::cout << "Creating duck for client " << client_id << std::endl;
+
+#ifndef NUEVO_MAPA
     game.add_duck(1, this->client_id);
-    Position pos = Position(0,0);
-    game.set_duck_start_position(this->client_id, pos);
+    // Position pos = Position(0, 0);
+    game.set_duck_start_position(this->client_id, 0, 0);
+#endif
+
+#ifdef NUEVO_MAPA
+    game.set_duck_start_position(this->client_id, 0, 0);
+#endif
 }

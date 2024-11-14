@@ -1,11 +1,13 @@
 #pragma once
 
-#include "../common_src/socket.h"
-#include <string>
 #include <cstdint>
 #include <mutex>
-#include "game_snapshot_t.h"
+#include <string>
+
 #include "../common_src/action_t.h"
+#include "../common_src/socket.h"
+
+#include "game_snapshot_t.h"
 
 
 class ProtocolServer {
@@ -29,6 +31,6 @@ public:
     void sendGameInfo(game_snapshot_t game_snapshot);
 
     void sendGameStartInfo(map_structure_t map_structure);
-    
+
     ~ProtocolServer();
 };
