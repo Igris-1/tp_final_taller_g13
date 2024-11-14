@@ -1,3 +1,4 @@
+#define NUEVO_MAPA  
 #include "map_game.h"
 
 #include <iostream>
@@ -182,6 +183,15 @@ std::vector<duck_DTO> MapGame::get_duck_DTO_list() {
     return list_DTO;
 }
 
+std::vector<weapon_DTO> MapGame::get_weapons_DTO_list(){
+    std::vector<weapon_DTO> list_DTO;
+    for (auto it = this->pickables.begin(); it != this->pickables.end(); it++) {
+        weapon_DTO new_dto = (*it)->to_DTO();
+        list_DTO.push_back(new_dto);
+    }
+    return list_DTO;
+}
+
 bool MapGame::duck_is_alive(int id) {
     if (this->ducks.find(id) == this->ducks.end()) {
         throw MapError("El pato no existe");
@@ -301,6 +311,38 @@ void MapGame::continue_fire_rate(int id) {
     }
 }
 
+void MapGame::gravity_weapon(){
+        for (auto it = pickables.begin(); it != pickables.end(); ++it){
+        //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+            (*it)->air_time_down_y();
+            Hitbox& hitbox = (*it)->get_reference_hitbox();
+            if(!(*it)->is_falling()){
+                this->move_relative_if_posible(hitbox, 0 ,JUMP_DIRECTION);
+                continue;
+            }
+            if((*it)->is_falling()){         
+                this->move_relative_if_posible(hitbox, 0, GRAVITY);
+            }
+        }
+}
+void MapGame::inertia_weapon(){
+        for (auto it = pickables.begin(); it != pickables.end(); ++it){
+        //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+            (*it)->air_time_down_x();
+            Hitbox& hitbox = (*it)->get_reference_hitbox();
+            if((*it)->is_moving() && (*it)->get_x_direction() > 0){
+                this->move_relative_if_posible(hitbox, RIGHT_DIRECTION , 0);
+                continue;
+            }
+            if((*it)->is_moving() && (*it)->get_x_direction() < 0){         
+                this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
+            }
+        }
+}
+
+
+
+
 void MapGame::bullets_next_movement() {
     for (auto bullet = bullets.begin(); bullet != bullets.end();) {
         if ((*bullet)->next_position(*this)) {
@@ -317,6 +359,7 @@ void MapGame::bullets_next_movement() {
         }
     }
 }
+
 
 bool MapGame::move_relative_if_posible(Hitbox& hitbox, int dx, int dy) {
     int x_step = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
@@ -353,21 +396,72 @@ void MapGame::use_item(int duck_id, bool right_direction) {
     }
 }
 
-void MapGame::ducks_try_pick_up(int id_duck) {
-    if (this->duck_exist(id_duck) || this->duck_is_alive(id_duck)) {
-        return;
-    }
+// void MapGame::ducks_try_pick_up(int id_duck) {
+//     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
+//     std::cout << "entro a pick up de map2" << std::endl;
+//     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
+//         std::cout << "entro a pick up de map3" << std::endl;
+//         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
+//             std::cout << "entro a pick up de map4" << std::endl;
+//             std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
+//             if (other_weapon != nullptr) {
+//                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
+//                 pickables.push_back(other_weapon);
+//             }
+//             it = pickables.erase(it);
+//             break;
+//         }
+//         ++it;
+//     }
+// }
+
+void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
+    bool weapon_picked_up = false;
     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
+        std::cout << "entro a pick up de map3" << std::endl;
         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
+            std::cout << "entro a pick up de map4" << std::endl;
             std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
             if (other_weapon != nullptr) {
                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
+                other_weapon->set_falling(true);
+                other_weapon->set_moving(false);
                 pickables.push_back(other_weapon);
             }
             it = pickables.erase(it);
+            weapon_picked_up = true;
             break;
         }
+        ++it;
     }
+    if(weapon_picked_up){
+        return;
+    }
+    if(this_duck->has_weapon()){
+        std::shared_ptr<Weapon> weapon = this_duck->throw_weapon();
+        if(weapon == nullptr){
+            return;
+        }
+        weapon->move_to(this_duck->get_x(), this_duck->get_y());
+        if(right_direction){
+            weapon->set_direction(RIGHT_DIRECTION, JUMP_DIRECTION);
+        }else{
+            weapon->set_direction(LEFT_DIRECTION, JUMP_DIRECTION);
+        }
+        pickables.push_back(weapon);
+    }
+}
+
+void MapGame::add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y){
+    if (!this->can_move_hitbox(new_weapon->get_hitbox(), x, y)) {
+        throw MapError("game can't add weapon to map");
+    }
+    new_weapon->move_to(x, y);
+    this->pickables.push_back(new_weapon);
+}
+
+std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list(){
+    return this->bullets;
 }
 #endif

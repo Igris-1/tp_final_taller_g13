@@ -13,7 +13,7 @@
 #include "hitbox.h"
 #include "positionable.h"
 
-// #define NUEVO_MAPA
+#define NUEVO_MAPA
 
 #ifndef NUEVO_MAPA
 class MapGame {
@@ -50,6 +50,8 @@ public:
 #define RIGHT_DIRECTION 1
 #define LEFT_DIRECTION -1
 #define NO_DIRECTION 0
+#define GRAVITY 1
+#define JUMP_DIRECTION -1
 
 class MapGame {
 private:
@@ -88,13 +90,19 @@ public:
     void bullets_next_movement();
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
     void ducks_try_pick_up(int id_duck);
+    void ducks_try_throw(int id_duck, bool right_direction);
+    void add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y);
+    void gravity_weapon();
+    void inertia_weapon();
 
     // DTO
     std::vector<bullet_DTO> get_bullets_DTO_list();
     std::vector<duck_DTO> get_duck_DTO_list();
+    std::vector<weapon_DTO> get_weapons_DTO_list();
     std::vector<platform_DTO> get_platforms_DTO();
 
     // MANAGE DUCKS
+    std::list<std::shared_ptr<BulletInterface>>& get_bullets_list();
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
 };

@@ -24,6 +24,7 @@ public:
     int get_y() { return this->hitbox.get_y(); }
     // Position get_position() { return Position(this->hitbox.get_x(), this->hitbox.get_y()); }
     Hitbox get_hitbox() { return this->hitbox; }
+    Hitbox& get_reference_hitbox() {return this->hitbox; }
     int get_width() { return this->hitbox.get_width(); }
     int get_height() { return this->hitbox.get_height(); }
 };

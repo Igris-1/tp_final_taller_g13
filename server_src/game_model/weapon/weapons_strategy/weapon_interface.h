@@ -15,12 +15,6 @@
 */
 
 typedef enum {
-    COWBOY_PISTOL_ID = 1,
-    LASER_RIFLE_ID,
-    GRENADE_ID,
-} WEAPON_ID;
-
-typedef enum {
     COWBOY_PISTOL_RECOIL = 0,
     LASER_RIFLE_RECOIL = 0,
     GRENADE_RECOIL = 0,

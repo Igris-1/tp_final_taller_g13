@@ -81,20 +81,16 @@ void GameView::load_game(game_snapshot_t gs) {
     renderer.Clear();
 
     int duck_views_size = duck_views.size();
-    std::cout << "Duck views size: " << duck_views_size << std::endl;
 
     int gs_ducks_size = gs.ducks.size();
-    std::cout << "Ducks size: " << gs_ducks_size << std::endl;
 
     while (duck_views.size() < gs.ducks.size()) {
-        std::cout << "Creating duck view" << std::endl;
         for (int i = 0; i < gs.ducks.size(); i++) {
             duck_DTO duck = gs.ducks[i];
             duck_views.emplace_back(renderer, duck_sprites[duck.duck_id],
                                     wing_sprites[duck.duck_id], weapon_sprites);
         }
     }
-    std::cout << "paso el while " << std::endl;
 
     std::pair<duck_DTO, duck_DTO> mostDistantDucks = findMostDistantDucks(gs.ducks);
     std::cout << "Ducks: " << mostDistantDucks.first.x << mostDistantDucks.first.x << std::endl;

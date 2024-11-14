@@ -88,7 +88,7 @@ public:
 
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
-    void add_weapon_on_map(std::string type_weapon, int x, int y);
+    //void add_weapon_on_map(std::string type_weapon, int x, int y);
 
     void respawner();
 

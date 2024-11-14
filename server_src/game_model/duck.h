@@ -25,7 +25,10 @@ private:
     std::shared_ptr<Armor> armor;
     std::shared_ptr<Helmet> helmet;
     std::shared_ptr<Weapon> weapon;
-    // std::shared_ptr<Pickable> pickable;
+    bool has_armour = false;
+    bool has_helmet = false;
+    int id_weapon;
+    std::shared_ptr<Pickable> item_in_hands;
 
 public:
     // por defecto empieza en la posicion -1,-1 (fuera del mapa), con una armadura, casco y arma

@@ -3,6 +3,15 @@
 
 #include "positionable.h"
 
+typedef enum {
+    COWBOY_PISTOL_ID = 1,
+    LASER_RIFLE_ID,
+    GRENADE_ID,
+    HELMET_ID,
+    ARMOR_ID,
+} ITEM_ID;
+
+
 class Pickable /*: public Positionable */ {
 
 protected:

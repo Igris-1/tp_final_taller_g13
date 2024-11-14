@@ -33,6 +33,12 @@ bool Laser::next_position(MapGame& map) {
         return true;
     } else {
         this->y_direction *= -1;
+        if(map.move_relative_if_posible(this->hitbox, this->x_direction, this->y_direction)){
+            this->travel_distance--;
+            return true;
+        }
+        this->y_direction *= -1;
+        this->x_direction *= -1;
         map.move_relative_if_posible(this->hitbox, this->x_direction, this->y_direction);
         this->travel_distance--;
         return true;

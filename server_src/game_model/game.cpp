@@ -375,20 +375,20 @@ void Game::add_new_platform(Hitbox hitbox) {
     }
 }
 
-void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
-    std::shared_ptr<Weapon> weapon =
-            std::make_shared<Weapon>(WeaponFactory::createWeapon(this->bullets, type_weapon));
-    if (!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)) {
-        throw GameError("game can't add weapon to map");
-    }
-    weapon->move_to(x, y);
-    this->weapons_on_map.push_back(weapon);
-}
+// void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
+//     std::shared_ptr<Weapon> weapon =
+//             std::make_shared<Weapon>(WeaponFactory::createWeapon(this->bullets, type_weapon));
+//     if (!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)) {
+//         throw GameError("game can't add weapon to map");
+//     }
+//     weapon->move_to(x, y);
+//     this->weapons_on_map.push_back(weapon);
+// }
 
 #endif
 
 
-/* --------- NUEVOOO GAMEEEE----------------*/
+/* --------- NUEVOOO GAMEEEE----------------------------------------------------------------------------------------------------------------------------------------v------*/
 #ifdef NUEVO_MAPA
 
 Game::Game(int height, int width): map(width, height), ducks_states() {}
@@ -457,6 +457,10 @@ void Game::continue_horizontal_movements(int count) {
     for (int j = 0; j < count * 4; j++) {
         this->map.bullets_next_movement();
     }
+
+    for (int j = 0; j < (count * 3); j++) {
+        this->map.inertia_weapon();
+    }
     // for(int j=0; j< (count * 3); j++){
     //         for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ) {
     //             if((*it)->is_moving() && (*it)->get_x_direction() > 0 &&
@@ -513,8 +517,14 @@ void Game::continue_vertical_movements(int count) {
         }
     }
 
+    for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+        this->map.gravity_weapon();
+    }
+    // for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+    //   for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
+
     // for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
-    //      for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+    //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
     //         (*it)->air_time_down_y();
     //         if(!(*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0,
     //         JUMP_DIRECTION)){//
@@ -549,9 +559,8 @@ game_snapshot_t Game::get_snapshot() {
     snapshot.ducks_len = snapshot.ducks.size();
     snapshot.bullets = this->map.get_bullets_DTO_list();
     snapshot.bullets_len = snapshot.bullets.size();
-    // snapshot.weapons = this->map.get_weapons_DTO_list();
-    // snapshot.weapons_len = snapshot.weapons.size();
-    snapshot.weapons_len = 0;  // para q funcione
+    snapshot.weapons = this->map.get_weapons_DTO_list();
+    snapshot.weapons_len = snapshot.weapons.size();
     return snapshot;
 }
 
@@ -640,21 +649,28 @@ void Game::add_new_platform(Hitbox hitbox) {
 }
 
 void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
-    // std::shared_ptr<Weapon> weapon =
-    // std::make_shared<Weapon>(WeaponFactory::createWeapon(type_weapon));
-    // if(!this->map.can_move_hitbox(weapon->get_hitbox(), x, y)){
-    //     throw GameError("game can't add weapon to map");
-    // }
-    // weapon->move_to(x, y);
-    // this->weapons_on_map.push_back(weapon);
+    std::shared_ptr<Weapon> weapon =
+    std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), type_weapon));
+    this->map.add_weapon(weapon, x, y);
 }
 
-void Game::pick_up_item(int id, bool pick_up) {
-    this->duck_exist(id);
-    if (this->map.duck_exist(id) || this->map.duck_is_alive(id)) {
+void Game::pick_up_item(int duck_id, bool pick_up) {
+        std::cout << "entro a pick up item" << std::endl;
+    if (!pick_up || !this->map.duck_exist(duck_id) || !this->map.duck_is_alive(duck_id)) {
         return;
     }
-    if (pick_up) {}
+        std::cout << "antes del if" << std::endl;
+    // bool picked_up = false;
+    
+        // picked_up = true;
+        std::cout << "entro a pick up true" << std::endl;   
+    // this->map.ducks_try_pick_up(duck_id, booleano);
+    
+    // if(!picked_up){
+    //     std::cout << "entro a else" << std::endl;
+        this->map.ducks_try_throw(duck_id, this->ducks_states[duck_id]->facing_direction);
+    // }
+
     // if(pick_up){
     //     for (auto it = weapons_on_map.begin(); it != weapons_on_map.end();){
     //         if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
@@ -687,7 +703,6 @@ void Game::pick_up_item(int id, bool pick_up) {
     //         }
     //         ++it;
     //     }
-    // }
 }
 
 #endif

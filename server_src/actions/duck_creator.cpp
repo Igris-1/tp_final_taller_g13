@@ -1,3 +1,4 @@
+#define NUEVO_MAPA  
 #include "duck_creator.h"
 
 #include <iostream>

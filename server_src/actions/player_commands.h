@@ -31,7 +31,7 @@ public:
 
         game.pick_up_item(this->client_id + action_to_execute.player_id,
                           action_to_execute.press_pick_up_button);
-        // game.throw_weapon(this->client_id+action_to_execute.player_id ,
+        //game.throw_weapon(this->client_id+action_to_execute.player_id ,
         // action_to_execute.unpress_pick_up_button);
     }
 };
