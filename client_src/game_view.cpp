@@ -1,5 +1,6 @@
 #include "game_view.h"
 #include "../common_src/game_snapshot_t.h"
+#include <iostream>
 
 #define SCREEN_WIDTH 820
 #define SCREEN_HEIGHT 500
@@ -14,26 +15,24 @@ GameView::GameView(map_structure_t map):map(map),
     wing_sprites(),
     weapon_sprites(),
     bullet_sprites(),
-    duck_views(0),
-    wing_views(0),
-    dir(0){
+    duck_views(){
     set_up_game();
 }
 
 void GameView::set_up_game(){
-    background_sprites.push_back(Texture(renderer, "../game_ui/game.png"));
+    background_sprites.push_back(Texture(renderer, "../assets/game_assets/game.png"));
 
-    platform_sprites.push_back(Texture(renderer, "../game_ui/platform.png"));
+    platform_sprites.push_back(Texture(renderer, "../assets/game_assets/platform.png"));
 
-    Texture duck1Texture(renderer, "../game_ui/duck.png");
+    Texture duck1Texture(renderer, "../assets/game_assets/duck.png");
 
-    Texture duck2Texture(renderer, "../game_ui/duck.png");
+    Texture duck2Texture(renderer, "../assets/game_assets/duck.png");
     duck2Texture.SetColorMod(200,40,40);
 
-    Texture duck3Texture(renderer, "../game_ui/duck.png");
+    Texture duck3Texture(renderer, "../assets/game_assets/duck.png");
     duck3Texture.SetColorMod(40,200,40);
 
-    Texture duck4Texture(renderer, "../game_ui/duck.png");
+    Texture duck4Texture(renderer, "../assets/game_assets/duck.png");
     duck4Texture.SetColorMod(40,40,200);
     
     duck_sprites.push_back(std::move(duck1Texture));
@@ -41,15 +40,15 @@ void GameView::set_up_game(){
     duck_sprites.push_back(std::move(duck3Texture));
     duck_sprites.push_back(std::move(duck4Texture));
     
-    Texture wing1Texture(renderer, "../game_ui/wing.png");
-
-    Texture wing2Texture(renderer, "../game_ui/wing.png");
+    Texture wing1Texture(renderer, "../assets/game_assets/wing.png");
+    
+    Texture wing2Texture(renderer, "../assets/game_assets/wing.png");
     wing2Texture.SetColorMod(200,40,40);
-
-    Texture wing3Texture(renderer, "../game_ui/wing.png");
+    
+    Texture wing3Texture(renderer, "../assets/game_assets/wing.png");
     wing3Texture.SetColorMod(40,200,40);
-
-    Texture wing4Texture(renderer, "../game_ui/wing.png");
+    
+    Texture wing4Texture(renderer, "../assets/game_assets/wing.png");
     wing4Texture.SetColorMod(40,40,200);
 
     wing_sprites.push_back(std::move(wing1Texture));
@@ -57,13 +56,12 @@ void GameView::set_up_game(){
     wing_sprites.push_back(std::move(wing3Texture));
     wing_sprites.push_back(std::move(wing4Texture));
 
-    weapon_sprites.push_back(Texture(renderer, "../game_ui/cowboyPistol.png"));
-    weapon_sprites.push_back(Texture(renderer, "../game_ui/laserRifle.png"));
-
-    bullet_sprites.push_back(Texture(renderer, "../game_ui/pistolShell.png"));
-    bullet_sprites.push_back(Texture(renderer, "../game_ui/laserBeam.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/game_assets/cowboyPistol.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/game_assets/laserRifle.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/game_assets/pistolShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/game_assets/laserBeam.png"));
   
-    SDL_QueryTexture(Texture(renderer, "../game_ui/game.png").Get(), nullptr, nullptr, &bgWidth, &bgHeight);
+    SDL_QueryTexture(Texture(renderer, "../assets/game_assets/game.png").Get(), nullptr, nullptr, &bgWidth, &bgHeight);
     float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
     bgScaledWidth = SCREEN_WIDTH;
     bgScaledHeight = static_cast<int>(SCREEN_WIDTH / bgAspectRatio);
@@ -76,9 +74,36 @@ void GameView::set_up_game(){
 
 void GameView::load_game(game_snapshot_t gs){
     renderer.Clear();
-    duck_views.resize(gs.ducks.size(), 1);
-    wing_views.resize(gs.ducks.size(), 2);
-    dir.resize(gs.ducks.size(), 0);
+
+    int duck_views_size = duck_views.size();
+    std::cout << "Duck views size: " << duck_views_size << std::endl;
+
+    int gs_ducks_size = gs.ducks.size();
+    std::cout << "Ducks size: " << gs_ducks_size << std::endl;
+    
+    while (duck_views.size() < gs.ducks.size()) {
+        std::cout << "Creating duck view" << std::endl;
+        for (int i = 0; i < gs.ducks.size(); i++) {
+            duck_DTO duck = gs.ducks[i];
+            duck_views.emplace_back(renderer, duck_sprites[duck.duck_id], wing_sprites[duck.duck_id], weapon_sprites);
+        }
+    }
+    std::cout << "paso el while "  << std::endl;
+
+    std::pair<duck_DTO, duck_DTO> mostDistantDucks = findMostDistantDucks(gs.ducks);
+    std::cout << "Ducks: " << mostDistantDucks.first.x << mostDistantDucks.first.x << std::endl;
+    std::cout << "Ducks: " << mostDistantDucks.second.x << mostDistantDucks.second.x << std::endl;
+    
+
+    // float scale_factor = 1; // el valor debe estar entre 1 y 2
+    // int window_dimension = SCREEN_WIDTH < SCREEN_HEIGHT ? SCREEN_WIDTH : SCREEN_HEIGHT; // el menor de los dos
+    // int scaled_window_dimension = window_dimension * scale_factor;
+	// int cutoff = scaled_window_dimension - window_dimension;
+	// SDL_Rect viewport = (SDL_Rect) {0 - cutoff / 2, 0 - cutoff / 2, scaled_window_dimension, scaled_window_dimension};
+	// SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor); 
+	// SDL_RenderSetViewport(renderer.Get(), &viewport);
+
+
     load_map();
     load_ducks(gs);
     load_bullets(gs);
@@ -121,7 +146,7 @@ void GameView::load_bullets(game_snapshot_t gs){
 
 void GameView::load_map(){
     Texture& backgroundTexture = background_sprites[0];
-    renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
+    renderer.Copy(backgroundTexture, SDL_Rect{ 0, 0, bgWidth, bgHeight}, SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
 
     for (int i=0; i<map.platforms_len;i++){
         platform_DTO platform = map.platforms[i];
@@ -130,108 +155,42 @@ void GameView::load_map(){
 }
 
 void GameView::load_ducks(game_snapshot_t gs){
-    
     for (int i=0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
-        int weapon_id = duck.weapon_id;
-        int duck_id = static_cast<int>(duck.duck_id);
-        Texture& duckTexture = duck_sprites[duck_id];
-        Texture& wingTexture = wing_sprites[duck_id];
-        Texture& weaponTexture = weapon_sprites[weapon_id-1];
-        if (duck.is_moving_right){
-            dir[i] = 0;
-        } else if (duck.is_moving_left){
-            dir[i] = 1;
-        }
-        if(!duck.is_alive){
-            Texture dead_duck(renderer, "../game_ui/cookedDuck.png");
-            renderer.Copy(dead_duck, SDL_Rect{0, 0, 16, 16}, SDL_Rect{duck.x, duck.y+32, duck.width, duck.height-16}, 0, NullOpt, dir[i]);
-        }
-        else if (duck.jumping){
-            int ai = 10;
-            if (dir[i]){
-                ai = 22;
-            }
-            int ai2 = 22;
-            if (dir[i]){
-                ai2 = 10;
-            }
-            
-            renderer.Copy(duckTexture, SDL_Rect{1*32, 40, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            if (weapon_id==1){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+15, 36, 18}, 0, NullOpt, dir[i]);
-            } else if (weapon_id==2){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+8, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
-            }
-            
-            renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
-            
-        } else if (duck.falling){
-            int ai = 10;
-            if (dir[i]){
-                ai = 22;
-            }
-            int ai2 = 22;
-            if (dir[i]){
-                ai2 = 10;
-            }
-
-            renderer.Copy(duckTexture, SDL_Rect{3*32, 40, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            if (weapon_id==1){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+15, 36, 18}, 0, NullOpt, dir[i]);
-            } else if (weapon_id==2){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+8, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
-            }
-            renderer.Copy(wingTexture, SDL_Rect{wing_views[i]*16, 32, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+15, 32, 32}, 0, NullOpt, dir[i]);
-            renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+18, 32, 32}, 0, NullOpt, dir[i]);
-            
-        } else if (duck.is_moving_right ^ duck.is_moving_left){
-            int ai = 10;
-            if (dir[i]){
-                ai = 22;
-            }
-            int ai2 = 22;
-            if (dir[i]){
-                ai2 = 10;
-            }
-            renderer.Copy(duckTexture, SDL_Rect{duck_views[i]*32, 0, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            //renderer.Copy(wingTexture, SDL_Rect{10, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-            if (weapon_id==1){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
-            } else if (weapon_id==2){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+16, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
-            }
-            
-            renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+27, 32, 32}, 0, NullOpt, dir[i]);
-            
-        } else{
-            
-            renderer.Copy(duckTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16}, 0, NullOpt, dir[i]);
-            int ai = 10;
-            if (dir[i]){
-                ai = 22;
-            }
-            int ai2 = 22;
-            if (dir[i]){
-                ai2 = 10;
-            }
-            SDL_Rect rect = SDL_Rect{0, 0, 16, 16};
-            SDL_Rect duckRect = SDL_Rect{duck.x-16, duck.y, duck.width+32, duck.height+16};
-            //renderer.Copy(wingTexture, SDL_Rect{0, 0, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+25, 32, 32}, 0, NullOpt, dir[i]);
-            if (weapon_id==1){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11}, SDL_Rect{duck.x-16+ai2, duck.y+27, 36, 18}, 0, NullOpt, dir[i]);
-            } else if (weapon_id==2){
-                renderer.Copy(weaponTexture, SDL_Rect{0, 0, 32, 32}, SDL_Rect{duck.x-8+ai2, duck.y+16, duck.width+16, duck.width+16}, 0, NullOpt, dir[i]);
-            }
-            renderer.Copy(wingTexture, SDL_Rect{0, 6*8, 16, 16}, SDL_Rect{duck.x-16+ai, duck.y+27, 32, 32}, 0, NullOpt, dir[i]);
-            
-        } 
-        wing_views[i] = (wing_views[i] < 5) ? (wing_views[i] + 1) : 2;
-
-
-        duck_views[i] = (duck_views[i] < 5) ? (duck_views[i] + 1) : 1;
-
+        
+        duck_views[i].draw_duck(duck);
     }
+}
+
+
+
+// Función auxiliar para calcular la distancia entre dos patos
+float calculateDistance(const duck_DTO duck1, const duck_DTO duck2) {
+    return std::sqrt(std::pow(duck2.x - duck1.x, 2) + std::pow(duck2.y - duck1.y, 2));
+}
+
+// Función para encontrar los dos patos más alejados
+std::pair<duck_DTO, duck_DTO> GameView::findMostDistantDucks(std::vector<duck_DTO> ducks) {
+    if (ducks.size() < 2) {
+        // devolver los dos patos
+        return {ducks[0], ducks[1]};
+    }
+
+    float maxDistance = 0.0f;
+    std::pair<duck_DTO, duck_DTO> mostDistantPair;
+
+    // Recorre todas las combinaciones de patos para encontrar los más alejados
+    for (size_t i = 0; i < ducks.size(); ++i) {
+        for (size_t j = i + 1; j < ducks.size(); ++j) {
+            float distance = calculateDistance(ducks[i], ducks[j]);
+            if (distance > maxDistance) {
+                maxDistance = distance;
+                mostDistantPair = {ducks[i], ducks[j]};
+            }
+        }
+    }
+
+    return mostDistantPair;
 }
 
 GameView::~GameView(){}

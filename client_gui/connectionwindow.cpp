@@ -32,10 +32,7 @@ void ConnectionWindow::on_pushButton_clicked()
     QString address = ui->addressLineEdit->text();
 
     try {
-        // Levantar el cliente, si es necesario.
-        // Client cl(address.toStdString(), port.toStdString());
-
-        this->chooseOptionWindow = new ChooseOptionWindow(nullptr);
+        this->chooseOptionWindow = new ChooseOptionWindow(nullptr, port, address);
         hide();
         this->chooseOptionWindow->show();
         this->chooseOptionWindow->playMusic();

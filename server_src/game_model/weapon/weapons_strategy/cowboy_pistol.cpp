@@ -9,7 +9,7 @@ std::vector<std::shared_ptr<BulletInterface>> CowboyPistol::fire(std::shared_ptr
    if(this->fire_rate == 0){
       bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position, x_direction, y_direction));
       ammo--;
-      this->fire_rate = FIRE_RATE_COWBOY;
+      this->fire_rate = FIRE_RATE_COWBOY_PISTOL;
    }
    return bullets;
 }
@@ -19,5 +19,5 @@ int CowboyPistol::get_id(){
 }
 
 int CowboyPistol::recoil_produced(){
-   return 0;
+   return COWBOY_PISTOL_RECOIL;
 }

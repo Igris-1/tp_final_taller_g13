@@ -14,7 +14,7 @@ class NewGameWindow : public QDialog
 
 public:
     // no te olvides de pasarle el puntero al cliente
-    NewGameWindow(QWidget *parent, QMediaPlayer *player);
+    NewGameWindow(QWidget *parent, QMediaPlayer *player, QString port, QString address);
     ~NewGameWindow();
 
 private slots:
@@ -38,6 +38,9 @@ private:
     //Client cl;
     Ui::NewGameWindow *ui;
     QMediaPlayer *player;
+    int players;
+    QString port;
+    QString address;
 
     // void createMatch(std::string map);
 };

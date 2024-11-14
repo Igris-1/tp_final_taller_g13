@@ -47,13 +47,18 @@ public:
     void set_health(int health);
 
     std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction, MapGame& map);
-
+    void use_item(int x_direction, int y_direction, MapGame& map);
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
     Hitbox get_hitbox();
     void continue_fire_rate();
     bool has_weapon();
+    // para granadas y bananas
+    bool has_explosive_weapon();
+    bool has_active_explosive_weapon();
+    void activation_explosive_weapon();
+    bool already_exploted();
 
     /*  devuelve los estados internos del duck en un dto (vida, id, posicion). 
         no sabe nada de estados de jumping, running, ni nada*/

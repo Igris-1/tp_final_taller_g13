@@ -5,16 +5,15 @@
 #include <QScreen>
 #include <iostream>
 
-ChooseOptionWindow::ChooseOptionWindow(QWidget *parent) :
+ChooseOptionWindow::ChooseOptionWindow(QWidget *parent, QString port, QString address) :
         QDialog(parent),
-        //cl(std::move(cl)),
         ui(new Ui::ChooseOptionWindow),
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this))
 {
     ui->setupUi(this);
     // this->joinWindow = NULL;
-    this->newGameWindow = new NewGameWindow(nullptr, this->player);
+    this->newGameWindow = new NewGameWindow(nullptr, this->player, port, address);
     this->aboutWindow = new AboutWindow(nullptr);
 
     // Config player

@@ -13,9 +13,9 @@
 class WeaponFactory {
     public:
         // "cowboy", "sniper", "shotgun", "pew_pew", "laser_rifle", "" (no weapon)
-        static Weapon createWeapon(std::string weapon_name = ""){
+        static Weapon createWeapon(std::list<std::shared_ptr<BulletInterface>>& bullets, std::string weapon_name = ""){
             if (weapon_name == "cowboy") {
-                return Weapon (new CowboyPistol(), 36, 18);
+                return Weapon(new CowboyPistol(), 36, 18, bullets);
             }
             // if(weapon_name == "sniper"){
             //     return Weapon(new Sniper());
@@ -27,9 +27,9 @@ class WeaponFactory {
             //     return Weapon(new PewPew());
             // }
             if(weapon_name == "laser_rifle"){
-                return Weapon(new LaserRifle(), 36, 18);
+                return Weapon(new LaserRifle(), 36, 18, bullets);
             }
-            return Weapon(nullptr, 0, 0);
+            return Weapon(nullptr, 0, 0, bullets);
         }
 };
 

@@ -7,24 +7,34 @@ std::vector<std::shared_ptr<BulletInterface>> Grenade::fire(std::shared_ptr<Duck
 }
 
 int Grenade::get_id(){
-    return 2;
+    return GRENADE_ID;
 }
 
 int Grenade::recoil_produced(){
-    return 0;
+    return GRENADE_RECOIL;
 }
 
 bool  Grenade::is_explosive(){
     return true;
 }
 
-void Grenade::activation_time(){
-    this->is_active = true;
+void Grenade::activation(){
+    this->active = true;
 }
 
+bool Grenade::is_active(){
+    return this->active;
+}
+
+bool Grenade::exploted(){
+    return this->explosive_time == 0;
+}
+
+
+
 void  Grenade::fire_rate_down(){
-    if(this->is_active == false){
+    if(!this->active){
         return;
     }
-    this->fire_rate --;
+    this->explosive_time --;
 }

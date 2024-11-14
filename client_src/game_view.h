@@ -11,8 +11,10 @@
 #include <SDL2pp/Renderer.hh>
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Exception.hh>
+#include "duck_view.h"
 
 using namespace SDL2pp;
+
 
 class GameView {
     private:
@@ -26,10 +28,7 @@ class GameView {
         std::vector<Texture> wing_sprites;
         std::vector<Texture> weapon_sprites;
         std::vector<Texture> bullet_sprites;
-
-        std::vector<int> duck_views;
-        std::vector<int> wing_views;
-        std::vector<int> dir; //esto lo van a tener que cambiar en game eh
+        std::vector<DuckView> duck_views;
 
         int bgWidth;
         int bgHeight;
@@ -41,7 +40,9 @@ class GameView {
         void load_ducks(game_snapshot_t gs);
         void load_bullets(game_snapshot_t gs);
         void load_weapons(game_snapshot_t gs);
-        
+
+        std::pair<duck_DTO, duck_DTO> findMostDistantDucks(std::vector<duck_DTO> ducks);
+
     public:
         GameView(map_structure_t map);
         void load_game(game_snapshot_t gs);

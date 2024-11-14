@@ -9,15 +9,15 @@ std::vector<std::shared_ptr<BulletInterface>> LaserRifle::fire(std::shared_ptr<D
    if(this->fire_rate == 0){
       bullets.push_back(std::make_shared<Laser>(duck_trigger->get_id(), x_position, y_position, x_direction, +1));
       ammo--;
-      this->fire_rate = FIRE_RATE_LASER;
+      this->fire_rate = FIRE_RATE_LASER_RIFLE;
    }
    return bullets;
 }
 
 int LaserRifle::get_id(){
-   return LASER_ID;
+   return LASER_RIFLE_ID;
 }
 
 int LaserRifle::recoil_produced(){
-    return 20;
+    return LASER_RIFLE_RECOIL;
 }

@@ -6,8 +6,6 @@
 #include "../bullets_strategy/bullet_interface.h"
 #include <memory>
 
-#define FIRE_RATE_COWBOY 20
-#define COWBOY_PISTOL_ID 1
 
 class CowboyPistol : public WeaponInterface{
     private:

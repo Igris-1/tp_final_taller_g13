@@ -9,3 +9,15 @@
     bool WeaponInterface::is_explosive(){
         return false;
     }
+
+    bool WeaponInterface::is_active(){
+        return false;
+    }
+
+    void WeaponInterface::activation(){
+        return;
+    }
+
+    bool WeaponInterface::exploted(){
+        return false;
+    }

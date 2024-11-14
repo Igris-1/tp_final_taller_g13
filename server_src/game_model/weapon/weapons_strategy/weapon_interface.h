@@ -13,6 +13,24 @@
     todas las armas devuelven una lista de balas que se disparan con una direccion y distancia establecida.
 */
 
+typedef enum{
+    COWBOY_PISTOL_ID = 1,
+    LASER_RIFLE_ID,
+    GRENADE_ID,
+}WEAPON_ID;
+
+typedef enum {
+    COWBOY_PISTOL_RECOIL = 0,
+    LASER_RIFLE_RECOIL = 0,
+    GRENADE_RECOIL = 0,
+} RECOIL;
+
+typedef enum {
+    FIRE_RATE_COWBOY_PISTOL = 20,
+    FIRE_RATE_LASER_RIFLE = 5,
+    FIRE_RATE_GRENADE = 1000,
+} FIRE_RATE;
+
 class Duck;
 
 class WeaponInterface {
@@ -23,7 +41,12 @@ class WeaponInterface {
         virtual void fire_rate_down();
         virtual int recoil_produced() = 0;
         virtual int get_id() = 0;
+        // logico solo para explosivos
         virtual bool is_explosive();
+        virtual bool is_active();
+        virtual void activation();
+        virtual bool exploted();
+        // ---------------------------
         virtual ~WeaponInterface(){}
 
 }; 

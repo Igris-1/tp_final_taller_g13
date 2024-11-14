@@ -4,10 +4,9 @@
 class Armor: public Positionable {
 private:
     // cppcheck-suppress unusedStructMember
-    int defense;
 
 public:
-    explicit Armor(int defense);
+    explicit Armor();
     ~Armor() {}
 };
 
