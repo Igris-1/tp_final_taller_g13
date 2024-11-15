@@ -5,7 +5,8 @@ DuckView::DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_spri
         renderer(renderer),
         duck_texture(duck_sprites),
         wing_texture(wing_sprites),
-        weapon_textures(weapon_sprites) {
+        weapon_textures(weapon_sprites),
+        facing_direction(false) {
     walk_animation_frame = 1;
     wing_flying_animation_frame = 2;
 }
@@ -104,7 +105,7 @@ void DuckView::draw_duck(duck_DTO& duck) {
         if (weapon_id == 1) {
             renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 22, 11},
                           SDL_Rect{duck.x - 16 + ai2, duck.y + 27, 36, 18}, 0, NullOpt,
-                          facing_direction);
+                          2);
         } else if (weapon_id == 2) {
             renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 32, 32},
                           SDL_Rect{duck.x - 8 + ai2, duck.y + 16, duck.width + 16, duck.width + 16},
@@ -116,7 +117,6 @@ void DuckView::draw_duck(duck_DTO& duck) {
                       facing_direction);
 
     } else {
-
         renderer.Copy(duck_texture, SDL_Rect{0, 0, 32, 32},
                       SDL_Rect{duck.x - 16, duck.y, duck.width + 32, duck.height + 16}, 0, NullOpt,
                       facing_direction);

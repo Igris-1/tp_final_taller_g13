@@ -1,6 +1,7 @@
 #include "game_view.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include "../common_src/game_snapshot_t.h"
 
@@ -92,19 +93,51 @@ void GameView::load_game(game_snapshot_t gs) {
         }
     }
 
-    std::pair<duck_DTO, duck_DTO> mostDistantDucks = findMostDistantDucks(gs.ducks);
+    /*std::pair<duck_DTO, duck_DTO> mostDistantDucks = findMostDistantDucks(gs.ducks);
     std::cout << "Ducks: " << mostDistantDucks.first.x << mostDistantDucks.first.x << std::endl;
-    std::cout << "Ducks: " << mostDistantDucks.second.x << mostDistantDucks.second.x << std::endl;
+    std::cout << "Ducks: " << mostDistantDucks.second.x << mostDistantDucks.second.x << std::endl;*/
+
+    int x = gs.ducks[0].x;
+    int y = gs.ducks[0].y;
+
+    for (int i = 0; i < gs.ducks.size(); i++) {
+        duck_DTO duck = gs.ducks[i];
+        if (duck.x < x) {
+            x = duck.x;
+        }
+        if (duck.y < y) {
+            y = duck.y;
+        }
+    }
+
+    int x_min = gs.ducks[0].x - 32;
+    int y_min = gs.ducks[0].y - 32;
+    int x_max = gs.ducks[0].x + 32;
+    int y_max = gs.ducks[0].y + 32;
+
+    for (const auto& duck : gs.ducks) {
+        x_min = std::min(x_min, duck.x - 32);
+        y_min = std::min(y_min, duck.y - 32);
+        x_max = std::max(x_max, duck.x + 32);
+        y_max = std::max(y_max, duck.y + 32);
+    }
+
+    int ducks_width = x_max - x_min;
+    int ducks_height = y_max - y_min;
+
+    float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
+    float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
 
 
-    // float scale_factor = 1; // el valor debe estar entre 1 y 2
-    // int window_dimension = SCREEN_WIDTH < SCREEN_HEIGHT ? SCREEN_WIDTH : SCREEN_HEIGHT; // el
-    // menor de los dos int scaled_window_dimension = window_dimension * scale_factor; int cutoff =
-    // scaled_window_dimension - window_dimension; SDL_Rect viewport = (SDL_Rect) {0 - cutoff / 2, 0
-    // - cutoff / 2, scaled_window_dimension, scaled_window_dimension};
-    // SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
-    // SDL_RenderSetViewport(renderer.Get(), &viewport);
+    float scale_factor = std::min(scale_factor_x, scale_factor_y);
+    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
 
+
+
+
+    SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_RenderSetViewport(renderer.Get(), &viewport);
+    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 
     load_map();
     load_ducks(gs);
