@@ -40,7 +40,6 @@ private:
     NewGameWindow* newGameWindow;
     // JoinWindow *joinWindow;
     AboutWindow* aboutWindow;
-    Client* client;
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
 };

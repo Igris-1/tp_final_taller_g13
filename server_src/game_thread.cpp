@@ -16,7 +16,6 @@
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(500, 820), gameQueue(gameQueue), clients(clients) {
-
     start();
 }
 

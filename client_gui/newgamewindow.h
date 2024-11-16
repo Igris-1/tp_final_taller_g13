@@ -12,7 +12,7 @@ class NewGameWindow: public QDialog {
     Q_OBJECT
 
 public:
-    NewGameWindow(QWidget* parent, QMediaPlayer* player, Client* client);
+    NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, char* port);
     ~NewGameWindow();
 
 private slots:

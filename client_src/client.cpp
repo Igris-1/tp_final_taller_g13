@@ -8,22 +8,26 @@
 #include "../common_src/queue.h"
 
 #define EXIT_CODE "q"
+#define LOCAL_PLAYERS 2
 #define SLEEP_TIME_CLIENT 2000
 
-Client::Client(const char* host, const char* port, const char* localPlayers):
-        localPlayers(localPlayers),
+Client::Client(const char* host, const char* port):
+        localPlayers(LOCAL_PLAYERS),
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view(protocol.receive_map()) {
-    run();
+    //run();
 }
+
+void Client::setLocalPlayers(int players) { localPlayers = players; }
 
 Client::~Client() {}
 
 void Client::run() {
     try {
+        
         Receiver receiver(protocol, receiver_queue);
-        Sender sender(protocol, std::atoi(localPlayers));
+        Sender sender(protocol, localPlayers);
 
         while (sender.is_alive() && receiver.is_alive()) {
             game_snapshot_t gs;

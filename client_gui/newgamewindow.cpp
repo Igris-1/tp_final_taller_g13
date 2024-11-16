@@ -7,10 +7,10 @@
 
 #include "ui_newgamewindow.h"
 
-NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, Client* client):
+NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, char* port):
         QDialog(parent),
         ui(new Ui::NewGameWindow),
-        client(client),
+        client(new Client(host, port)),
         player(player) {
     ui->setupUi(this);
 }
@@ -35,12 +35,13 @@ void NewGameWindow::on_playersButton_clicked() {
 
 void NewGameWindow::on_player2Button_clicked() {
     // setea si el jugador 2 es local o no
-    // client->setPlayers();
+    client->setLocalPlayers(2);
 }
 
 void NewGameWindow::on_mapaUnoButton_clicked() {
     // createMatch("mapaUno");
     std::cout << "mapaUnoButton clicked" << std::endl;
+    client->run();
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {

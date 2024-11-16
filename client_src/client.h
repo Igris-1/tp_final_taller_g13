@@ -24,7 +24,7 @@ using namespace SDL2pp;
 
 class Client: public Thread {
 private:
-    const char* localPlayers;
+    int localPlayers;
     ProtocolClient protocol;
     Queue<game_snapshot_t> receiver_queue;
 
@@ -35,7 +35,8 @@ private:
 
 public:
     void run();
-    Client(const char* host, const char* port, const char* localPlayers);
+    Client(const char* host, const char* port);
+    void setLocalPlayers(int players);
     void change_color(Surface& surface, SDL_Color targetColor, SDL_Color newColor);
     ~Client();
 };
