@@ -5,7 +5,8 @@
 // #include "joinwindow.h"
 #include "aboutwindow.h"
 #include "newgamewindow.h"
-// #include "../client_src/client_lobby.h"
+#include "../client_src/client.h"
+
 #include <QAudioOutput>
 #include <QMediaPlayer>
 
@@ -17,7 +18,7 @@ class ChooseOptionWindow: public QDialog {
     Q_OBJECT
 
 public:
-    explicit ChooseOptionWindow(QWidget* parent, QString port, QString address);
+    explicit ChooseOptionWindow(QWidget* parent, char* port, char* address);
     void playMusic();
     ~ChooseOptionWindow();
 
@@ -39,7 +40,7 @@ private:
     NewGameWindow* newGameWindow;
     // JoinWindow *joinWindow;
     AboutWindow* aboutWindow;
-
+    Client* client;
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
 };

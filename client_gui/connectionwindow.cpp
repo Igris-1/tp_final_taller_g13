@@ -26,9 +26,21 @@ ConnectionWindow::~ConnectionWindow() {
 void ConnectionWindow::on_pushButton_clicked() {
     QString port = ui->portLineEdit->text();
     QString address = ui->addressLineEdit->text();
+    
+    if (port.isEmpty() || address.isEmpty()) {
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Error");
+        msgBox.setText("Please fill in all fields");
+        msgBox.setStyleSheet("QMessageBox { background-color: gray; border: 1px solid gray; }");
+        msgBox.exec();
+        return;
+    }
+
+    char* charPort = port.toUtf8().data();
+    char* charAddress = address.toUtf8().data();
 
     try {
-        this->chooseOptionWindow = new ChooseOptionWindow(nullptr, port, address);
+        this->chooseOptionWindow = new ChooseOptionWindow(nullptr, charPort, charAddress);
         hide();
         this->chooseOptionWindow->show();
         this->chooseOptionWindow->playMusic();

@@ -12,8 +12,7 @@ class NewGameWindow: public QDialog {
     Q_OBJECT
 
 public:
-    // no te olvides de pasarle el puntero al cliente
-    NewGameWindow(QWidget* parent, QMediaPlayer* player, QString port, QString address);
+    NewGameWindow(QWidget* parent, QMediaPlayer* player, Client* client);
     ~NewGameWindow();
 
 private slots:
@@ -34,12 +33,11 @@ private slots:
     void on_mapaCuatroButton_clicked();
 
 private:
-    // Client cl;
     Ui::NewGameWindow* ui;
+    Client* client;
     QMediaPlayer* player;
     int players;
-    QString port;
-    QString address;
+    Client* client;
 
     // void createMatch(std::string map);
 };

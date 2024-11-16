@@ -4,17 +4,18 @@
 #include <QMediaPlayer>
 #include <QScreen>
 #include <iostream>
-
+#include "../client_src/client.h"
 #include "ui_chooseoptionwindow.h"
 
-ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString port, QString address):
+ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, char* port, char* address):
         QDialog(parent),
         ui(new Ui::ChooseOptionWindow),
+        client(new Client(port, address)),
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
-    // this->joinWindow = NULL;
-    this->newGameWindow = new NewGameWindow(nullptr, this->player, port, address);
+    // this->joinWindow = new JoinWindow(nullptr, this->player, port, address);
+    this->newGameWindow = new NewGameWindow(nullptr, this->player, client);
     this->aboutWindow = new AboutWindow(nullptr);
 
     // Config player
@@ -36,9 +37,9 @@ ChooseOptionWindow::~ChooseOptionWindow() {
 }
 
 void ChooseOptionWindow::on_joinGameButton_clicked() {
-    // this->joinWindow = new JoinWindow(nullptr, std::move(this->cl));
-    // hide();
-    // this->joinWindow->show();
+    // this->hide();
+    // this->joinWindow->exec();
+    // this->show();
 }
 
 

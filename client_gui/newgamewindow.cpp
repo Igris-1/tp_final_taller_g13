@@ -7,14 +7,11 @@
 
 #include "ui_newgamewindow.h"
 
-// no te olvides de recibir al cliente tambien
-NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString port, QString address):
+NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, Client* client):
         QDialog(parent),
-        // cl(std::move(cl)),
         ui(new Ui::NewGameWindow),
-        player(player),
-        port(port),
-        address(address) {
+        client(client),
+        player(player) {
     ui->setupUi(this);
 }
 
@@ -38,16 +35,12 @@ void NewGameWindow::on_playersButton_clicked() {
 
 void NewGameWindow::on_player2Button_clicked() {
     // setea si el jugador 2 es local o no
-    this->players = 2;
+    // client->setPlayers();
 }
 
 void NewGameWindow::on_mapaUnoButton_clicked() {
     // createMatch("mapaUno");
-    char* port = this->port.toUtf8().data();
-    char* address = this->address.toUtf8().data();
-    QString playersStr = QString::number(this->players);
-    char* localPlayers = playersStr.toUtf8().data();
-    Client cl(address, port, localPlayers);
+    std::cout << "mapaUnoButton clicked" << std::endl;
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {
