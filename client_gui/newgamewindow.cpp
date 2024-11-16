@@ -13,6 +13,7 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, 
         client(new Client(host, port)),
         player(player) {
     ui->setupUi(this);
+    // this->loadingScreen = new LoadingScreen(nullptr);
 }
 
 
@@ -41,7 +42,15 @@ void NewGameWindow::on_player2Button_clicked() {
 void NewGameWindow::on_mapaUnoButton_clicked() {
     // createMatch("mapaUno");
     std::cout << "mapaUnoButton clicked" << std::endl;
-    client->run();
+    // this->hide();
+    // this->player->stop();
+    // this->loadingScreen->show();
+    // client->run()
+    // .then([this](){
+    //     this->loadingScreen->close();
+    //     this->close();
+    // })
+    // this->player->play();
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {

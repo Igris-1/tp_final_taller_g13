@@ -7,6 +7,7 @@
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+#include "message.h"
 
 #include "protocol_client.h"
 
@@ -15,16 +16,19 @@
 class Receiver: public Thread {
 private:
     ProtocolClient& protocol;
-    Queue<game_snapshot_t>& queue;
+    Queue<Message>& queue;
 
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
 
-                game_snapshot_t gs = protocol.read_snapshot();
-
-                queue.push(gs);
-
+                uint8_t code = protocol.read_number();
+                if (code == 0x01) {
+                    game_snapshot_t gs = protocol.read_snapshot();
+                    Message message(code);
+                    message.set_gs(gs);
+                    queue.push(message);
+                }
 
                 /*int len = gs.ducks.size();
                 for (int i = 0; i < len; i++) {
@@ -41,7 +45,7 @@ private:
     }
 
 public:
-    Receiver(ProtocolClient& protocol, Queue<game_snapshot_t>& queue):
+    Receiver(ProtocolClient& protocol, Queue<Message>& queue):
             protocol(protocol), queue(queue) {
         start();
     }

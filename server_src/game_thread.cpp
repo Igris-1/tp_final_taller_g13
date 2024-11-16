@@ -11,8 +11,9 @@
 #include "receiver_thread.h"
 #include "sender_thread.h"
 
-#define BOX_RESPAWNED_TEXT "A new box has appeared"
+#define SPEED_MOVEMENTS 10 
 #define SLEEP_TIME 40000
+
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(500, 820), gameQueue(gameQueue), clients(clients) {
@@ -24,6 +25,11 @@ void GameThread::send_snapshots() {
     if (snapshot.ducks_len != 0) {
         clients.enqueue_snapshot(snapshot);
     }
+}
+
+void GameThread::send_game_score() {
+    score_DTO score = game.get_score_DTO();
+
 }
 
 void GameThread::execute_commands() {
@@ -56,11 +62,19 @@ void GameThread::run() {
             stop();
         }
 
-        game.continue_vertical_movements(10);
-        game.continue_horizontal_movements(10);
+        game.continue_vertical_movements(SPEED_MOVEMENTS);
+        game.continue_horizontal_movements(SPEED_MOVEMENTS);
         game.keep_shooting();
         game.respawner();
-        game.check_if_round_finished();
+        if(game.check_if_round_finished()){
+            this->round_counter--;
+            if(this->round_counter == 0){
+                send_game_score();
+            }
+            //game.reset_round();
+            usleep(SLEEP_TIME);
+            continue;
+        }
         send_snapshots();
 
         usleep(SLEEP_TIME);

@@ -1,7 +1,6 @@
 #ifndef NEWGAMEWINDOW_H
 #define NEWGAMEWINDOW_H
 #include "../client_src/client.h"
-
 #include <QDialog>
 #include <QMediaPlayer>
 
@@ -37,6 +36,7 @@ private:
     Ui::NewGameWindow* ui;
     Client* client;
     QMediaPlayer* player;
+    // LoadingScreen* loadingScreen;
 
     // void createMatch(std::string map);
 };

@@ -74,9 +74,6 @@ map_structure_t ProtocolClient::receive_map() {
 
 game_snapshot_t ProtocolClient::read_snapshot() {
 
-    uint8_t protocol_code;
-    connection.recvall(&protocol_code, ONE_BYTE, &socket_is_closed);
-    // if(protocol_code == 0x01){ // no flaco ya se que es un snapshot
     uint8_t n = read_number();
     duck_DTO duck;
     game_snapshot_t game_snapshot;

@@ -1,0 +1,101 @@
+game:
+  title: "Duck Game"
+
+# The speed of the duck in pixels for diferent actions
+ducks_config:
+  health: 50
+  tiles_per_jump: 175 # The number of tiles the duck moves when jumping
+  product_factor_jump: 2 # speed of the duck when jumping
+  add_factor_jump: 3 # linear speed of the duck when jumping
+  product_factor_gravity: 2 # speed of the duck when falling
+  add_factor_gravity: 8 # linear speed of the duck when falling
+  speed_of_game: 10 # speed of the duck when moving
+
+weapons_config:
+  grenade:
+    shot: 1
+    damage: 20
+    recoil: 0
+    reload_time: 10 # time to explode
+    hitbox_width: 36
+    hitbox_height: 18
+  
+  banana:
+    shot: 1
+    damage: 10
+    recoil: 0
+    reload_time: 0 # never explodes
+    hitbox_width: 36
+    hitbox_height: 18
+
+  pew_pew_laser:
+    shot: 12
+    damage: 8
+    recoil: 0
+    scope: 35
+    reload_time: 0 # time to reload
+    hitbox_width: 36
+    hitbox_height: 18
+
+  laser_rifle:
+    shot: 10
+    damage: 15
+    recoil: 0
+    scope: 30
+    reload_time: 0
+    hitbox_width: 36
+    hitbox_height: 18
+
+  ak_47:
+    shot: 30
+    damage: 5
+    recoil: 5
+    scope: 13
+    reload_time: 0
+    hitbox_width: 36
+    hitbox_height: 18
+
+  dueling_pistol:
+    shot: 1
+    damage: 40
+    recoil: 9
+    scope: 5
+    reload_time: 0
+    hitbox_width: 36
+    hitbox_height: 18
+
+  cowboy_pistol:
+    shot: 6
+    damage: 5
+    recoil: 10
+    scope: 20
+    reload_time: 0
+    hitbox_width: 36
+    hitbox_height: 18
+
+  magnum:
+    shot: 6
+    damage: 7
+    recoil: 12
+    scope: 20
+    reload_time: 0 
+    hitbox_width: 36
+    hitbox_height: 18
+
+  shotgun:
+    shot: 2
+    damage: 7
+    recoil: 12
+    scope: 8
+    reload_time: 0 
+    hitbox_width: 36
+    hitbox_height: 18
+  
+  sniper:
+    shot: 3
+    damage: 50
+    recoil: 0
+    scope: 64
+    reload_time: 6 
+    hitbox_width: 36
+    hitbox_height: 18

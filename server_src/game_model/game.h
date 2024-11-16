@@ -29,8 +29,7 @@
 
 // factores para el salto y gravedad
 #define TILES_FOR_JUMP 175
-#define PRODUCT_FACTOR_JUMP \
-    2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
+#define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
 #define ADD_FACTOR_JUMP 3
 #define PRODUCT_FACTOR_GRAVITY 2
 #define ADD_FACTOR_GRAVITY 8
@@ -186,7 +185,7 @@ public:
     // DATA
     game_snapshot_t get_snapshot();
     std::vector<duck_DTO> get_duck_DTO_list();
-    std::vector<score_DTO> get_score_DTO();
+    score_DTO get_score_DTO();
     map_structure_t get_map_structure();
 
     // MAP FUNCTIONS

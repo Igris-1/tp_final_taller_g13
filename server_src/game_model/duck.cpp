@@ -16,8 +16,6 @@ Duck::Duck(int health, int id):
         duck_id(id) {}
 
 std::shared_ptr<Weapon> Duck::throw_weapon() {
-    std::cout << "entro a throw_weapon" << std::endl;
-
     if (this->weapon == nullptr) {
         std::cout << "no weapon" << std::endl;
         return nullptr;
@@ -179,7 +177,6 @@ std::vector<std::shared_ptr<BulletInterface>> Duck::fire_weapon(int x_direction,
 }
 
 void Duck::use_item(int x_direction, int y_direction, MapGame& map) {
-    std::cout << "entra a duck.use_item" << std::endl;
     if (!this->has_weapon()) {
         return;
     }

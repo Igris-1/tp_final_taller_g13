@@ -175,6 +175,7 @@ bool MapGame::set_duck_start_position(int id, int x, int y) {
 
 std::vector<duck_DTO> MapGame::get_duck_DTO_list() {
     std::vector<duck_DTO> list_DTO;
+    list_DTO.resize(0);
     for (auto it = this->ducks.begin(); it != this->ducks.end(); it++) {
         duck_DTO new_dto = it->second->to_DTO();
         new_dto.is_alive = it->second->is_alive();
@@ -185,6 +186,7 @@ std::vector<duck_DTO> MapGame::get_duck_DTO_list() {
 
 std::vector<weapon_DTO> MapGame::get_weapons_DTO_list(){
     std::vector<weapon_DTO> list_DTO;
+    list_DTO.resize(0);
     for (auto it = this->pickables.begin(); it != this->pickables.end(); it++) {
         weapon_DTO new_dto = (*it)->to_DTO();
         list_DTO.push_back(new_dto);
@@ -462,7 +464,9 @@ void MapGame::add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y){
     if (!this->can_move_hitbox(new_weapon->get_hitbox(), x, y)) {
         throw MapError("game can't add weapon to map");
     }
+    std::cout << "entro a add weapon de map" << std::endl;
     new_weapon->move_to(x, y);
+    
     this->pickables.push_back(new_weapon);
 }
 

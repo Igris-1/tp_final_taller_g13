@@ -16,7 +16,7 @@ Client::Client(const char* host, const char* port):
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view(protocol.receive_map()) {
-    //run();
+    run();
 }
 
 void Client::setLocalPlayers(int players) { localPlayers = players; }
@@ -24,16 +24,19 @@ void Client::setLocalPlayers(int players) { localPlayers = players; }
 Client::~Client() {}
 
 void Client::run() {
+
     try {
-        
         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol, localPlayers);
 
         while (sender.is_alive() && receiver.is_alive()) {
-            game_snapshot_t gs;
+            Message m(0);
 
-            if (receiver_queue.try_pop(gs)) {
-                game_view.load_game(gs);
+            if (receiver_queue.try_pop(m)) {
+                if (m.get_code() == 0x01) {
+                    game_snapshot_t gs = m.get_game_snapshot();
+                    game_view.load_game(gs);
+                }
             }
             usleep(SLEEP_TIME_CLIENT);
         }

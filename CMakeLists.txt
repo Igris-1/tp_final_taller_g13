@@ -17,7 +17,7 @@ project(DuckGame
 )
 
 option(CLIENT "Enable / disable client program." ON)
-# option(CLIENT_GUI "Enable / disable client GUI program." ON)
+# option(CLIENT_GUI "Enable / disable client GUI program." OFF)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 option(TESTS "Enable / disable tests." OFF)
@@ -53,6 +53,7 @@ endif()
 
 # ---------------- CLIENT_GUI SECTION ----------------
 # if (CLIENT_GUI)
+#     find_package(Qt6 COMPONENTS Core REQUIRED)
 #     find_package(Qt6 COMPONENTS Widgets REQUIRED)
 #     find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 

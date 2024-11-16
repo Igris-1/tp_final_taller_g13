@@ -1,0 +1,30 @@
+map:
+  map_width: 820
+  map_height: 500
+
+platforms:
+  - {x: 0, y: 350, width: 192, height: 16}
+  - {x: 350, y: 240, width: 469, height: 16}
+  - {x: 500, y: 100, width: 240, height: 16}
+  - {x: 0, y: 100, width: 230, height: 16}
+
+invalid_positions:
+  - {x: 0, y: 430, width: 820, height: 2}
+
+weapons_on_map:
+  - {type: "cowboy", x: 50, y: 150}
+  - {type: "laser_rifle", x: 150, y: 150}
+  - {type: "laser_rifle", x: 250, y: 150}
+  - {type: "cowboy", x: 350, y: 150}
+
+weapon_spawn_points:
+  - {x: 100, y: 300}
+  - {x: 200, y: 200}
+  - {x: 400, y: 250}
+  - {x: 600, y: 150}
+
+ducks_start_positions:
+  - {x: 120, y: 340}
+  - {x: 300, y: 210}
+  - {x: 500, y: 120}
+  - {x: 700, y: 100}

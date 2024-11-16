@@ -36,11 +36,14 @@ void ConnectionWindow::on_pushButton_clicked() {
         return;
     }
 
-    char* charPort = port.toUtf8().data();
-    char* charAddress = address.toUtf8().data();
+    QByteArray byteArrayPort = port.toUtf8();
+    char* charPort = byteArrayPort.data();
+
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charAddress = byteArrayAddress.data();
 
     try {
-        this->chooseOptionWindow = new ChooseOptionWindow(nullptr, charPort, charAddress);
+        this->chooseOptionWindow = new ChooseOptionWindow(nullptr, charAddress, charPort);
         hide();
         this->chooseOptionWindow->show();
         this->chooseOptionWindow->playMusic();

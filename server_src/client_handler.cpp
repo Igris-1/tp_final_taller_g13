@@ -23,7 +23,22 @@ void ClientHandler::push(game_snapshot_t gs) {
     }
 }
 
-void ClientHandler::send_map(map_structure_t map) { protocol.sendGameStartInfo(map); }
+// void ClientHandler::push_score(game_snapshot_t gs) {
+//     try {
+//         if (is_alive()) {
+//             senderQueue.push(gs);
+//         }
+//     } catch (const ClosedQueue& e) {
+//         if (is_alive()) {
+//             std::cerr << "Closed sender queue in client handler" << e.what() << std::endl;
+//         }
+//     }
+// }
+
+void ClientHandler::send_map(map_structure_t map) {
+        
+        protocol.sendGameStartInfo(map); 
+    }
 
 bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThread.is_alive(); }
 

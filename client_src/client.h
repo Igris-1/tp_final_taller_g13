@@ -19,6 +19,7 @@
 #include "protocol_client.h"
 #include "receiver.h"
 #include "sender.h"
+#include "message.h"
 
 using namespace SDL2pp;
 
@@ -26,7 +27,7 @@ class Client: public Thread {
 private:
     int localPlayers;
     ProtocolClient protocol;
-    Queue<game_snapshot_t> receiver_queue;
+    Queue<Message> receiver_queue;
 
     void command(char pressed_key);
 

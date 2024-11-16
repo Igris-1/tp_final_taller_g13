@@ -17,19 +17,19 @@ typedef struct game_snapshot {
 
 typedef struct game_snapshot {
 
-    uint8_t ducks_len;            // 1 byte
+    uint8_t ducks_len = 0;            // 1 byte
     std::vector<duck_DTO> ducks;  // sizeof(ducks) * ducks_len
 
-    uint16_t bullets_len;             // 2 bytes
+    uint16_t bullets_len = 0;             // 2 bytes
     std::vector<bullet_DTO> bullets;  // sizeof(bullet) * bullets_len
 
-    uint16_t weapons_len;             // 2 bytes
+    uint16_t weapons_len = 0;             // 2 bytes
     std::vector<weapon_DTO> weapons;  // sizeof(item) * items_len
 
 } game_snapshot_t;
 
 typedef struct map_structure_t {
-    uint16_t platforms_len;
+    uint16_t platforms_len = 0;
     std::vector<platform_DTO> platforms;
 } map_structure_t;
 

@@ -97,7 +97,7 @@ void GameView::load_game(game_snapshot_t gs) {
     std::cout << "Ducks: " << mostDistantDucks.first.x << mostDistantDucks.first.x << std::endl;
     std::cout << "Ducks: " << mostDistantDucks.second.x << mostDistantDucks.second.x << std::endl;*/
 
-    int x = gs.ducks[0].x;
+    /*int x = gs.ducks[0].x;
     int y = gs.ducks[0].y;
 
     for (int i = 0; i < gs.ducks.size(); i++) {
@@ -137,7 +137,7 @@ void GameView::load_game(game_snapshot_t gs) {
 
     SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
-    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
+    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);*/
 
     load_map();
     load_ducks(gs);
@@ -147,6 +147,7 @@ void GameView::load_game(game_snapshot_t gs) {
 }
 
 void GameView::load_weapons(game_snapshot_t gs) {
+    std::cout << "weapon size" << gs.weapons.size() << std::endl;
     for (int i = 0; i < gs.weapons.size(); i++) {
         weapon_DTO weapon = gs.weapons[i];
         int weapon_id = weapon.weapon_id;
