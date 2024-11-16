@@ -57,4 +57,23 @@ typedef struct weapon_DTO {
     uint16_t width;
     uint16_t height;
 } __attribute__((packed)) weapon_DTO;
+
+
+typedef struct score_DTO {
+
+    uint8_t first_place_id;
+    uint8_t second_place_id;
+    uint8_t third_place_id;
+    uint8_t fourth_place_id;
+
+    uint8_t first_place_score = 0;
+    uint8_t second_place_score = 0;
+    uint8_t third_place_score = 0;
+    uint8_t fourth_place_score = 0;
+    
+} __attribute__((packed)) score_DTO;
+
+
+
+
 #endif  // DUCK_INFO_T_H

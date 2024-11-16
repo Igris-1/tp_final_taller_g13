@@ -60,6 +60,7 @@ private:
     std::set<Hitbox> invalid_positions;
     std::set<Hitbox> platforms;
     std::map<int, std::shared_ptr<Duck>> ducks;
+    std::map<int, std::shared_ptr<Duck>> ducks_dead;
     std::list<std::shared_ptr<Weapon>> pickables;
     std::list<std::shared_ptr<BulletInterface>> bullets;
 
@@ -105,6 +106,8 @@ public:
     std::list<std::shared_ptr<BulletInterface>>& get_bullets_list();
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
+    void clean_map(); // tiene que recibir donde spawnea en un futuro
+
 };
 
 class MapError: public std::exception {

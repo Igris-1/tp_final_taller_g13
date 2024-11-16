@@ -435,6 +435,12 @@ std::vector<duck_DTO> Game::get_duck_DTO_list() {
     return list_DTO;
 }
 
+std::vector<score_DTO> Game::get_score_DTO(){
+
+///////////////////////////
+
+}
+
 void Game::respawner() { this->map.respawn_ducks(); }
 
 void Game::continue_horizontal_movements(int count) {
@@ -658,51 +664,29 @@ void Game::pick_up_item(int duck_id, bool pick_up) {
         std::cout << "entro a pick up item" << std::endl;
     if (!pick_up || !this->map.duck_exist(duck_id) || !this->map.duck_is_alive(duck_id)) {
         return;
-    }
-        std::cout << "antes del if" << std::endl;
-    // bool picked_up = false;
-    
-        // picked_up = true;
-        std::cout << "entro a pick up true" << std::endl;   
-    // this->map.ducks_try_pick_up(duck_id, booleano);
-    
-    // if(!picked_up){
-    //     std::cout << "entro a else" << std::endl;
-        this->map.ducks_try_throw(duck_id, this->ducks_states[duck_id]->facing_direction);
-    // }
-
-    // if(pick_up){
-    //     for (auto it = weapons_on_map.begin(); it != weapons_on_map.end();){
-    //         if(ducks[id]->get_hitbox().has_collision((*it)->get_hitbox())){
-    //             std::shared_ptr<Weapon> other_weapon = ducks[id]->take_weapon(*it);
-    //             if(other_weapon != nullptr){
-    //                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
-    //                 weapons_on_map.push_back(other_weapon);
-    //             }
-    //             it = weapons_on_map.erase(it);
-    //             break;
-    //         }
-    //         else{
-    //             if(ducks[id]->has_weapon()){
-    //                 std::shared_ptr<Weapon> weapon = ducks[id]->throw_weapon();
-    //                 if(weapon == nullptr){
-    //                 }else{
-    //                     std::cout << "devolvio un arma" << std::endl;
-    //                 }
-    //                 weapon->move_to(ducks[id]->get_x(), ducks[id]->get_y());
-    //                 if(ducks_states[id]->facing_direction){
-    //                     std::cout << "tiro a la der" << std::endl;
-    //                     weapon->set_direction(1, -1);
-    //                 }else{
-    //                     std::cout << "tiro a la izq" << std::endl;
-    //                     weapon->set_direction(-1, -1);
-    //                 }
-    //                 weapons_on_map.push_back(weapon);
-    //                 return;
-    //             }
-    //         }
-    //         ++it;
-    //     }
+    }  
+    this->map.ducks_try_throw(duck_id, this->ducks_states[duck_id]->facing_direction);
 }
+
+void Game::start_game(){
+    this->actual_round += 1;
+    std::vector<int> ids_ducks = this->map.get_live_duck_ids();
+    for (auto& id: ids_ducks){
+        this->ducks_score[id] = 0;
+    }
+}
+bool Game::check_if_round_finished(){
+    std::vector<int> ids_ducks = this->map.get_live_duck_ids();
+    if(ids_ducks.size() <= 1){
+        if(ids_ducks.size() == 1){
+            this->ducks_score[ids_ducks[0]] += 1;
+        }
+        this->map.clean_map();
+        this->actual_round += 1;
+        return true;
+    }
+    return false;
+}
+
 
 #endif

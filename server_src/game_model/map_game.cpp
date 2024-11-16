@@ -350,6 +350,11 @@ void MapGame::bullets_next_movement() {
                 if (duck->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(id);
                     duck->receive_damage(damage);
+                    if(duck->is_alive()){
+                        break;
+                    }
+                    this->ducks_dead[id] = this->ducks[id];
+                    ducks.erase(id);
                     break;
                 }
             }
@@ -464,4 +469,21 @@ void MapGame::add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y){
 std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list(){
     return this->bullets;
 }
+
+void MapGame::clean_map(){
+    for(auto& [id, duck]:this->ducks){
+            duck->set_health(HEALTH);
+    }
+    for (auto& [id, duck]:this->ducks_dead){
+        duck->set_health(HEALTH);
+        this->ducks[id] = duck;
+        // hay que saber donde tienen que respawnear segun el mapa
+    }
+    this->ducks_dead.clear();
+    this->bullets.clear();
+    this->pickables.clear();
+
+    // hay que saber donde tienen que respawnear segun el mapa
+}
+
 #endif

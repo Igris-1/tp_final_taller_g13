@@ -60,6 +60,7 @@ void GameThread::run() {
         game.continue_horizontal_movements(10);
         game.keep_shooting();
         game.respawner();
+        game.check_if_round_finished();
         send_snapshots();
 
         usleep(SLEEP_TIME);

@@ -52,61 +52,62 @@ typedef struct duck_state {
 
 } duck_state;
 
-class Game {
-private:
-    std::map<int, std::shared_ptr<duck_state>> ducks_states;
-    MapGame map;
-    std::map<int, std::shared_ptr<Duck>> ducks;
-    std::list<std::shared_ptr<BulletInterface>> bullets;
-    std::list<std::shared_ptr<Weapon>> weapons_on_map;
-    // std::list<std::shared_ptr<Armor>> armours_on_map;
+// class Game {
+// private:
+//     std::map<int, std::shared_ptr<duck_state>> ducks_states;
+//     MapGame map;
+//     std::map<int, std::shared_ptr<Duck>> ducks;
+//     std::list<std::shared_ptr<BulletInterface>> bullets;
+//     std::list<std::shared_ptr<Weapon>> weapons_on_map;
+//     // std::list<std::shared_ptr<Armor>> armours_on_map;
+//     
 
-    void duck_exist(int id);
+//     void duck_exist(int id);
 
-public:
-    Game(int high, int width);
+// public:
+//     Game(int high, int width);
 
-    int add_duck(int health, int id);
-    void remove_duck(int id);
-    // Position position_duck(int id);
+//     int add_duck(int health, int id);
+//     void remove_duck(int id);
+//     // Position position_duck(int id);
 
-    void run_duck(int duck_id, bool left, bool right);
-    void set_duck_start_position(int id, int x, int y);
+//     void run_duck(int duck_id, bool left, bool right);
+//     void set_duck_start_position(int id, int x, int y);
 
-    void stop_run_duck(int id, bool stop_left, bool stop_right);
-    void continue_horizontal_movements(int count = 1);
-    void continue_vertical_movements(int count = 1);
+//     void stop_run_duck(int id, bool stop_left, bool stop_right);
+//     void continue_horizontal_movements(int count = 1);
+//     void continue_vertical_movements(int count = 1);
 
-    void jump_duck(int id, bool jump);
-    void stop_jump_duck(int id, bool stop_jump);
+//     void jump_duck(int id, bool jump);
+//     void stop_jump_duck(int id, bool stop_jump);
 
-    void fire_duck_weapon(int id, bool fire);
-    void keep_shooting();
-    void stop_duck_weapon(int id, bool stop_fire);
+//     void fire_duck_weapon(int id, bool fire);
+//     void keep_shooting();
+//     void stop_duck_weapon(int id, bool stop_fire);
 
-    void pick_up_item(int id, bool pick_up);
+//     void pick_up_item(int id, bool pick_up);
 
-    void add_invalid_position(Hitbox hitbox);
-    void add_new_platform(Hitbox hitbox);
-    //void add_weapon_on_map(std::string type_weapon, int x, int y);
+//     void add_invalid_position(Hitbox hitbox);
+//     void add_new_platform(Hitbox hitbox);
+//     //void add_weapon_on_map(std::string type_weapon, int x, int y);
 
-    void respawner();
+//     void respawner();
 
-    std::vector<duck_DTO> get_duck_DTO_list();
-    std::vector<bullet_DTO> get_bullet_DTO_list();
-    std::vector<weapon_DTO> get_weapon_DTO_list();
-    game_snapshot_t get_snapshot();
-    map_structure_t get_map_structure();
-};
+//     std::vector<duck_DTO> get_duck_DTO_list();
+//     std::vector<bullet_DTO> get_bullet_DTO_list();
+//     std::vector<weapon_DTO> get_weapon_DTO_list();
+//     game_snapshot_t get_snapshot();
+//     map_structure_t get_map_structure();
+// };
 
-class GameError: public std::exception {
-private:
-    std::string msg;
+// class GameError: public std::exception {
+// private:
+//     std::string msg;
 
-public:
-    GameError(std::string msg): msg(msg) {}
-    virtual const char* what() const noexcept override { return msg.c_str(); }
-};
+// public:
+//     GameError(std::string msg): msg(msg) {}
+//     virtual const char* what() const noexcept override { return msg.c_str(); }
+// };
 #endif
 
 
@@ -150,7 +151,9 @@ class Game {
 private:
     std::map<int, std::shared_ptr<duck_state>> ducks_states;
     MapGame map;
-
+    std::map<int, int> ducks_score;
+    int actual_round = 0;
+    
     void duck_exist(int id);
 
 public:
@@ -183,12 +186,17 @@ public:
     // DATA
     game_snapshot_t get_snapshot();
     std::vector<duck_DTO> get_duck_DTO_list();
+    std::vector<score_DTO> get_score_DTO();
     map_structure_t get_map_structure();
 
     // MAP FUNCTIONS
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
     void add_weapon_on_map(std::string type_weapon, int x, int y);
+
+    // game logic
+    void start_game();
+    bool check_if_round_finished();
 };
 
 class GameError: public std::exception {
