@@ -35,7 +35,7 @@ private:
                 else if(instruction.id == 3){
                     std::cout << "Sending endgame score in sender thread" << std::endl;
                     score_DTO score = instruction.score;
-                    protocol.sendScore(score);
+                    protocol.sendFinalScore(score);
                 }
                 else{
                     std::cerr << "Unknown instruction id: " << instruction.id << std::endl;

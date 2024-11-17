@@ -45,6 +45,13 @@ void Client::run() {
                 if (m.get_code() == 0x01) {
                     game_snapshot_t gs = m.get_game_snapshot();
                     game_view.load_game(gs);
+                } else if (m.get_code() == 0x02) {
+                    score_DTO score = m.get_score();
+                    game_view.load_score(score);
+                } else if (m.get_code() == 0x03) {
+                    score_DTO score = m.get_score();
+                    game_view.load_endgame_score(score);
+                    break;
                 }
             }
             usleep(SLEEP_TIME_CLIENT);

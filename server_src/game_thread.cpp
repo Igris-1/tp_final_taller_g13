@@ -16,7 +16,7 @@
 
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
-        game(500, 820), gameQueue(gameQueue), clients(clients) {
+        game(768, 1366), gameQueue(gameQueue), clients(clients) {
     start();
 }
 
@@ -67,22 +67,21 @@ void GameThread::execute_commands() {
 
 
 void GameThread::run() {
-    game.add_new_platform(Hitbox(0, 350, 192, 16));
-    game.add_new_platform(Hitbox(350, 240, 469, 16));
-    game.add_new_platform(Hitbox(500, 100, 240, 16));
-    game.add_new_platform(Hitbox(0, 100, 230, 16));
+    
+    try{
+    game.add_new_platform(Hitbox(0, 200, 100, 16));
+    game.add_new_platform(Hitbox(25, 350, 100, 16));
+    game.add_new_platform(Hitbox(40, 420, 100, 16));
+    game.add_new_platform(Hitbox(0, 510, 50, 16));
+    game.add_new_platform(Hitbox(200, 620, 120, 16));
 
-    game.add_invalid_position(Hitbox(0, 430, 820, 2));
+    game.add_invalid_position(Hitbox(0, 690, 1366, 2));
+    }catch(const GameError& e){
+        std::cerr << e.what() << std::endl;
+    }catch(...){
+        std::cerr << "Error desconocido" << std::endl;
+    }
 
-    //metodo_nuevo();
-
-    // game.add_weapon_on_map("cowboy", 50, 150);
-    // game.add_weapon_on_map("laser_rifle", 150, 150);
-    // game.add_weapon_on_map("laser_rifle", 250, 150);
-    // game.add_weapon_on_map("cowboy", 350, 150);
-
-    // game.add_spawn_position(192, 1);
-    // game.add_spawn_position(150, 150);
     game.add_spawn_position(200, 70);
     game.add_spawn_position(350, 210);
 

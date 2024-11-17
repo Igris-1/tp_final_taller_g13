@@ -31,22 +31,17 @@ private:
     std::vector<Texture> bullet_sprites;
     std::vector<DuckView> duck_views;
 
-    int bgWidth;
-    int bgHeight;
-    int bgScaledWidth;
-    int bgScaledHeight;
-
     void set_up_game();
     void load_map();
     void load_ducks(game_snapshot_t gs);
     void load_bullets(game_snapshot_t gs);
     void load_weapons(game_snapshot_t gs);
 
-    std::pair<duck_DTO, duck_DTO> findMostDistantDucks(std::vector<duck_DTO> ducks);
-
 public:
     GameView();
     void add_map(map_structure_t map);
+    void load_score(score_DTO score);
+    void load_endgame_score(score_DTO score);
     void load_game(game_snapshot_t gs);
     ~GameView();
 };

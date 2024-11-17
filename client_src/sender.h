@@ -23,8 +23,8 @@ private:
     std::map<SDL_Keycode, int> key_player = {{SDLK_a, PLAYER_1},      {SDLK_d, PLAYER_1},
                                              {SDLK_SPACE, PLAYER_1},  {SDLK_f, PLAYER_1},
                                              {SDLK_g, PLAYER_1},      {SDLK_LEFT, PLAYER_2},
-                                             {SDLK_RIGHT, PLAYER_2},  {SDLK_RCTRL, PLAYER_2},
-                                             {SDLK_RSHIFT, PLAYER_2}, {SDLK_l, PLAYER_2}};
+                                             {SDLK_RIGHT, PLAYER_2},  {SDLK_o, PLAYER_2},
+                                             {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}};
 
     // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
     void map_key_to_action_1(const SDL_Event& e, action_t& action) {
@@ -87,13 +87,13 @@ private:
                 case SDLK_RIGHT:
                     action.right = true;
                     break;
-                case SDLK_RCTRL:
+                case SDLK_o:
                     action.jump = true;
                     break;
-                case SDLK_RSHIFT:
+                case SDLK_p:
                     action.press_action_button = true;
                     break;
-                case SDLK_l:
+                case SDLK_i:
                     action.press_pick_up_button = true;
                     break;
                 default:
@@ -108,13 +108,13 @@ private:
                 case SDLK_RIGHT:
                     action.stop_right = true;
                     break;
-                case SDLK_RCTRL:
+                case SDLK_o:
                     action.stop_jump = true;
                     break;
-                case SDLK_RSHIFT:
+                case SDLK_p:
                     action.unpress_action_button = true;
                     break;
-                case SDLK_l:
+                case SDLK_i:
                     action.unpress_pick_up_button = true;
                     break;
                 default:

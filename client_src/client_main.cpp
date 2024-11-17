@@ -3,7 +3,7 @@
 #include "client.h"
 #define ERROR -1
 #define SUCCESS 0
-#define REQUIRED_ARGC 3
+#define REQUIRED_ARGC 4
 #define HOST_ARG 1
 #define PORT_ARG 2
 #define LOCAL_PLAYERS 3 // ??? 
@@ -17,10 +17,8 @@ int main(int argc, const char* argv[]) {
         }
 
         Client client(argv[HOST_ARG], argv[PORT_ARG]);
-        client.select_game_mode(1);
-        std::cout << "Client created" << std::endl;
+        client.select_game_mode(atoi(argv[LOCAL_PLAYERS]));
         client.receive_map();
-        std::cout << "Map received" << std::endl;
         client.run();
         return SUCCESS;
 

@@ -665,7 +665,7 @@ void Game::add_invalid_position(Hitbox hitbox) {
 
 void Game::add_new_platform(Hitbox hitbox) {
     if (!this->map.add_platform(hitbox)) {
-        throw GameError("game can't add invalid position");
+        throw GameError("game can't add platform");
     }
 }
 

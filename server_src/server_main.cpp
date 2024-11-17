@@ -5,7 +5,7 @@
 #define ERROR -1
 #define SUCCESS 0
 #define PORT_ARG 1
-#define REQUIRED_ARGC 2
+#define REQUIRED_ARGC 3
 
 
 int main(int argc, char* argv[]) {
@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
         }
 
 
-        Server server(argv[PORT_ARG]);
+        Server server(argv[PORT_ARG], atoi(argv[2]));
         return SUCCESS;
 
     } catch (const std::exception& e) {

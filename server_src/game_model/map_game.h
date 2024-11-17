@@ -46,7 +46,7 @@ public:
 /*------- NUEVOOOOO MAPPAAAAAA -------------------------*/
 #ifdef NUEVO_MAPA
 
-#define HEALTH 100
+#define HEALTH 20
 #define RIGHT_DIRECTION 1
 #define LEFT_DIRECTION -1
 #define NO_DIRECTION 0

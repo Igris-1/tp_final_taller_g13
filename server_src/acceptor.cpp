@@ -15,6 +15,7 @@
 #include "games_manager.h"
 
 #define SHUT_DOWN_TWO 2
+#define NEW_GAME 255
 
 Acceptor::Acceptor(const char* port, GamesManager& gameManager):
         socket(port), games_manager(gameManager) {
@@ -36,13 +37,21 @@ void Acceptor::run() {
             bool aux;
             ss.recvall(&buffer, 1, &aux);
             std::cout << "acceptor recibio un: " << static_cast<int> (buffer) << std::endl;
-            if(buffer == 255){
-                // this->games_manager.create_new_game();
-            }else{
+            if(buffer == NEW_GAME){
                 this->games_manager.create_new_game(static_cast<int> (buffer));
                 std::cout << "acceptor creando nueva partida" << std::endl;
                 this->games_manager.add_client_to_game(static_cast<int> (buffer), std::move(ss));
                 std::cout << "acceptor agregando cliente a partida" << std::endl;
+            }else{
+                try{
+                    this->games_manager.create_new_game(static_cast<int> (buffer));
+                    this->games_manager.add_client_to_game(static_cast<int> (buffer), std::move(ss));
+                    std::cout << "acceptor agregando cliente a partida" << std::endl;
+                }catch(const GamesManagerError& e){
+                    ss.shutdown(SHUT_DOWN_TWO);
+                    ss.close();
+                    continue;
+                }
             }
 
             //clients.addClient(std::move(ss), gameQueue, idCount);

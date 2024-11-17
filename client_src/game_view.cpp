@@ -4,9 +4,9 @@
 #include <algorithm>
 
 #include "../common_src/game_snapshot_t.h"
-
-#define SCREEN_WIDTH 820
-#define SCREEN_HEIGHT 500
+// 835 490
+#define SCREEN_WIDTH 1366
+#define SCREEN_HEIGHT 768
 
 GameView::GameView():
         sdl(SDL_INIT_VIDEO),
@@ -25,6 +25,22 @@ GameView::GameView():
 
 void GameView::add_map(map_structure_t map) {
     this->map = map;
+}
+
+void GameView::load_score(score_DTO score) {
+    renderer.Clear();
+    renderer.SetDrawColor(Color(255, 255, 0, 0));
+    renderer.FillRect(SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+    renderer.Present();
+}
+
+void GameView::load_endgame_score(score_DTO score) {
+    renderer.Clear();
+    renderer.SetDrawColor(Color(0, 0, 0, 0));
+    renderer.FillRect(SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+    renderer.Present();
+    window.Hide();
+    std::cout << "Termino el juego todo el mundo a casa" << static_cast<int>(score.first_place_score) << std::endl;
 }
 
 void GameView::set_up_game() {
@@ -69,13 +85,6 @@ void GameView::set_up_game() {
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
 
-    SDL_QueryTexture(Texture(renderer, "../assets/sprites/game.png").Get(), nullptr, nullptr,
-                     &bgWidth, &bgHeight);
-    float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
-    bgScaledWidth = SCREEN_WIDTH;
-    bgScaledHeight = static_cast<int>(SCREEN_WIDTH / bgAspectRatio);
-    bgScaledWidth = static_cast<int>(SCREEN_HEIGHT * bgAspectRatio);
-
     /*duck_views.resize(gs.ducks.size(), 0);
     wing_views.resize(gs.ducks.size(), 0);
     dir.resize(gs.ducks.size(), 0);*/
@@ -96,11 +105,7 @@ void GameView::load_game(game_snapshot_t gs) {
         }
     }
 
-    /*std::pair<duck_DTO, duck_DTO> mostDistantDucks = findMostDistantDucks(gs.ducks);
-    std::cout << "Ducks: " << mostDistantDucks.first.x << mostDistantDucks.first.x << std::endl;
-    std::cout << "Ducks: " << mostDistantDucks.second.x << mostDistantDucks.second.x << std::endl;*/
-
-    /*int x = gs.ducks[0].x;
+    int x = gs.ducks[0].x;
     int y = gs.ducks[0].y;
 
     for (int i = 0; i < gs.ducks.size(); i++) {
@@ -130,17 +135,20 @@ void GameView::load_game(game_snapshot_t gs) {
 
     float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
     float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
-
-
     float scale_factor = std::min(scale_factor_x, scale_factor_y);
     scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
 
+    /*if (x*+SCREEN_WIDTH*scale_factor>SCREEN_WIDTH){
+        x -= x*scale_factor+SCREEN_WIDTH*scale_factor-SCREEN_WIDTH;
+    }
+    if (y+SCREEN_HEIGHT*scale_factor>SCREEN_HEIGHT){
+        y -= y+SCREEN_HEIGHT*scale_factor-SCREEN_HEIGHT;
+    }*/
 
-
-
+    
     SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
-    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);*/
+    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 
     load_map();
     load_ducks(gs);
@@ -193,8 +201,8 @@ void GameView::load_bullets(game_snapshot_t gs) {
 
 void GameView::load_map() {
     Texture& backgroundTexture = background_sprites[0];
-    renderer.Copy(backgroundTexture, SDL_Rect{0, 0, bgWidth, bgHeight},
-                  SDL_Rect{0, 0, bgScaledWidth, bgScaledHeight});
+    renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2425, 1451},
+                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
 
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
@@ -217,28 +225,5 @@ float calculateDistance(const duck_DTO duck1, const duck_DTO duck2) {
     return std::sqrt(std::pow(duck2.x - duck1.x, 2) + std::pow(duck2.y - duck1.y, 2));
 }
 
-// Función para encontrar los dos patos más alejados
-std::pair<duck_DTO, duck_DTO> GameView::findMostDistantDucks(std::vector<duck_DTO> ducks) {
-    if (ducks.size() < 2) {
-        // devolver los dos patos
-        return {ducks[0], ducks[1]};
-    }
-
-    float maxDistance = 0.0f;
-    std::pair<duck_DTO, duck_DTO> mostDistantPair;
-
-    // Recorre todas las combinaciones de patos para encontrar los más alejados
-    for (size_t i = 0; i < ducks.size(); ++i) {
-        for (size_t j = i + 1; j < ducks.size(); ++j) {
-            float distance = calculateDistance(ducks[i], ducks[j]);
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                mostDistantPair = {ducks[i], ducks[j]};
-            }
-        }
-    }
-
-    return mostDistantPair;
-}
 
 GameView::~GameView() {}
