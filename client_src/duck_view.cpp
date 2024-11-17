@@ -27,7 +27,7 @@ void DuckView::draw_duck(duck_DTO& duck) {
         facing_direction = true;
     }
     if (!duck.is_alive) {
-        Texture dead_duck(renderer, "../assets/game_assets/cookedDuck.png");
+        Texture dead_duck(renderer, "../assets/sprites/cookedDuck.png");
         renderer.Copy(dead_duck, SDL_Rect{0, 0, 16, 16},
                       SDL_Rect{duck.x, duck.y + 32, duck.width, duck.height - 16}, 0, NullOpt,
                       facing_direction);

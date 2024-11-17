@@ -25,19 +25,19 @@ GameView::GameView(map_structure_t map):
 }
 
 void GameView::set_up_game() {
-    background_sprites.push_back(Texture(renderer, "../assets/game_assets/game.png"));
+    background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
 
-    platform_sprites.push_back(Texture(renderer, "../assets/game_assets/platform.png"));
+    platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
 
-    Texture duck1Texture(renderer, "../assets/game_assets/duck.png");
+    Texture duck1Texture(renderer, "../assets/sprites/duck.png");
 
-    Texture duck2Texture(renderer, "../assets/game_assets/duck.png");
+    Texture duck2Texture(renderer, "../assets/sprites/duck.png");
     duck2Texture.SetColorMod(200, 40, 40);
 
-    Texture duck3Texture(renderer, "../assets/game_assets/duck.png");
+    Texture duck3Texture(renderer, "../assets/sprites/duck.png");
     duck3Texture.SetColorMod(40, 200, 40);
 
-    Texture duck4Texture(renderer, "../assets/game_assets/duck.png");
+    Texture duck4Texture(renderer, "../assets/sprites/duck.png");
     duck4Texture.SetColorMod(40, 40, 200);
 
     duck_sprites.push_back(std::move(duck1Texture));
@@ -45,15 +45,15 @@ void GameView::set_up_game() {
     duck_sprites.push_back(std::move(duck3Texture));
     duck_sprites.push_back(std::move(duck4Texture));
 
-    Texture wing1Texture(renderer, "../assets/game_assets/wing.png");
+    Texture wing1Texture(renderer, "../assets/sprites/wing.png");
 
-    Texture wing2Texture(renderer, "../assets/game_assets/wing.png");
+    Texture wing2Texture(renderer, "../assets/sprites/wing.png");
     wing2Texture.SetColorMod(200, 40, 40);
 
-    Texture wing3Texture(renderer, "../assets/game_assets/wing.png");
+    Texture wing3Texture(renderer, "../assets/sprites/wing.png");
     wing3Texture.SetColorMod(40, 200, 40);
 
-    Texture wing4Texture(renderer, "../assets/game_assets/wing.png");
+    Texture wing4Texture(renderer, "../assets/sprites/wing.png");
     wing4Texture.SetColorMod(40, 40, 200);
 
     wing_sprites.push_back(std::move(wing1Texture));
@@ -61,12 +61,12 @@ void GameView::set_up_game() {
     wing_sprites.push_back(std::move(wing3Texture));
     wing_sprites.push_back(std::move(wing4Texture));
 
-    weapon_sprites.push_back(Texture(renderer, "../assets/game_assets/cowboyPistol.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/game_assets/laserRifle.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/game_assets/pistolShell.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/game_assets/laserBeam.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
 
-    SDL_QueryTexture(Texture(renderer, "../assets/game_assets/game.png").Get(), nullptr, nullptr,
+    SDL_QueryTexture(Texture(renderer, "../assets/sprites/game.png").Get(), nullptr, nullptr,
                      &bgWidth, &bgHeight);
     float bgAspectRatio = static_cast<float>(bgWidth) / static_cast<float>(bgHeight);
     bgScaledWidth = SCREEN_WIDTH;
