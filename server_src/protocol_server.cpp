@@ -96,6 +96,19 @@ void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
     }
 }
 
+void ProtocolServer::sendScore(score_DTO score){
+    std::lock_guard<std::mutex> lock(mutex);
+    uint8_t protocol_name = 0x02;
+    connection.sendall(&protocol_name, ONE_BYTE, &socket_is_closed);
+    connection.sendall(&score, sizeof(score_DTO), &socket_is_closed);
+}
+
+void ProtocolServer::sendFinalScore(score_DTO score){
+    std::lock_guard<std::mutex> lock(mutex);
+    uint8_t protocol_name = 0x03;
+    connection.sendall(&protocol_name, ONE_BYTE, &socket_is_closed);
+    connection.sendall(&score, sizeof(score_DTO), &socket_is_closed);
+}
 
 void ProtocolServer::shutDown() {
     if (!socket_is_closed) {

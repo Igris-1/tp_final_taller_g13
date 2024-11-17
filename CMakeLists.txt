@@ -80,6 +80,7 @@ endif()
 if (SERVER)
     set(SERVER_EXECUTABLE server)
     file(GLOB SERVER_SOURCES
+        "configuration_yaml/*.cpp"
         "server_src/*.cpp"
         "server_src/game_model/*.cpp"
         "server_src/actions/*.cpp"

@@ -444,19 +444,27 @@ score_DTO Game::get_score_DTO(){
 
     if (!sorted_ducks.empty()) {
         score.first_place_id = sorted_ducks[0].first;
+        std::cout << "first place id score: " << sorted_ducks[0].second << std::endl;
         score.first_place_score = sorted_ducks[0].second;
+        std::cout << "first place en struct: " << static_cast<int>(score.first_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 1) {
         score.second_place_id = sorted_ducks[1].first;
+        std::cout << "second place id: " << sorted_ducks[1].first << std::endl;
         score.second_place_score = sorted_ducks[1].second;
+        std::cout << "second place en struct: " << static_cast<int>(score.second_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 2) {
         score.third_place_id = sorted_ducks[2].first;
+        std::cout << "third place id: " << sorted_ducks[2].first << std::endl;
         score.third_place_score = sorted_ducks[2].second;
+        std::cout << "third place en struct: " << static_cast<int>(score.third_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 3) {
         score.fourth_place_id = sorted_ducks[3].first;
+        std::cout << "fourth place id: " << sorted_ducks[3].first << std::endl;
         score.fourth_place_score = sorted_ducks[3].second;
+        std::cout << "fourth place en struct: " << static_cast<int>(score.fourth_place_score) << std::endl;
     }
     return score;
 }
@@ -587,8 +595,6 @@ game_snapshot_t Game::get_snapshot() {
     snapshot.bullets_len = snapshot.bullets.size();
     snapshot.weapons = this->map.get_weapons_DTO_list();
     snapshot.weapons_len = snapshot.weapons.size();
-    std::cout << "snapshot weapons len: " << snapshot.weapons_len << std::endl;
-    std::cout << "snapshot weapons len: " << snapshot.weapons.size() << std::endl;
     return snapshot;
 }
 
@@ -657,6 +663,10 @@ void Game::keep_shooting() {
     }
 }
 
+void Game::add_spawn_position(int x, int y){
+    this->spawn_positions.push_back(std::make_tuple(x, y));
+}
+
 void Game::stop_duck_weapon(int id, bool stop_fire) {
     if (stop_fire) {
         this->ducks_states[id]->is_shooting = false;
@@ -679,7 +689,6 @@ void Game::add_new_platform(Hitbox hitbox) {
 void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
     std::shared_ptr<Weapon> weapon =
     std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), type_weapon));
-    std::cout << "creo arma " << type_weapon << std::endl;
     this->map.add_weapon(weapon, x, y);
 }
 
@@ -691,24 +700,51 @@ void Game::pick_up_item(int duck_id, bool pick_up) {
 }
 
 void Game::start_game(){
+    this->started_game = true;
     this->actual_round += 1;
     std::vector<int> ids_ducks = this->map.get_live_duck_ids();
     for (auto& id: ids_ducks){
         this->ducks_score[id] = 0;
     }
 }
-bool Game::check_if_round_finished(){
+bool Game::check_if_round_finished(){    
     std::vector<int> ids_ducks = this->map.get_live_duck_ids();
-    if(ids_ducks.size() <= 1){
+    int dead_ducks = this->map.ducks_dead_size();
+    if(ids_ducks.size() <= 1 && dead_ducks > 0){
         if(ids_ducks.size() == 1){
             this->ducks_score[ids_ducks[0]] += 1;
+            std::cout << "Duck id: " << ids_ducks[0] << " score: " << this->ducks_score[ids_ducks[0]] << std::endl;
         }
-        this->map.clean_map();
-        this->actual_round += 1;
         return true;
     }
     return false;
 }
 
+bool Game::check_if_winner(){
+    for (auto it = ducks_score.begin(); it != ducks_score.end(); ++it) {
+        if(it->second == 10){
+            return true;
+        }
+    }  
+    return false;
+}
+
+void Game::random_weapon_spawn(){
+    for(auto& pos: this->spawn_positions){
+        if(this->map.already_exist_a_pickable(std::get<0>(pos), std::get<1>(pos))){
+            continue;
+        }else{
+            this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), "random")), std::get<0>(pos), std::get<1>(pos));
+        }
+    }
+}
+
+void Game::reset_round(){
+    this->map.clean_map();
+    this->actual_round += 1;
+    for(auto& pos: this->spawn_positions){
+        this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), "random")), std::get<0>(pos), std::get<1>(pos));
+    }
+}
 
 #endif

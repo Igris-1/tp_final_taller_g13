@@ -30,6 +30,10 @@ public:
 
     void sendGameInfo(game_snapshot_t game_snapshot);
 
+    void sendScore(score_DTO score);
+    
+    void sendFinalScore(score_DTO score);
+
     void sendGameStartInfo(map_structure_t map_structure);
 
     ~ProtocolServer();

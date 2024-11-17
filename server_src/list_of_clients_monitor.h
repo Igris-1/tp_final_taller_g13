@@ -24,6 +24,10 @@ public:
 
     void enqueue_snapshot(game_snapshot_t command);
 
+    void enqueue_instruction(instruction_for_client_t command);
+
+    void enqueue_score(score_DTO score);
+
     void send_map(map_structure_t map);
 
     ~ListOfClientsMonitor();

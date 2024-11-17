@@ -45,6 +45,7 @@ public:
     virtual bool is_active();
     virtual void activation();
     virtual bool exploted();
+    // int get_ammo();
     // ---------------------------
     virtual ~WeaponInterface() {}
 };

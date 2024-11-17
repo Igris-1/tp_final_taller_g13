@@ -148,11 +148,12 @@ typedef struct {
 
 class Game {
 private:
-    std::map<int, std::shared_ptr<duck_state>> ducks_states;
-    MapGame map;
-    std::map<int, int> ducks_score;
+    std::map<int, std::shared_ptr<duck_state>> ducks_states; // tiene el estado de cada pato
+    std::map<int, int> ducks_score; //tiene los puntos de cada pato
+    std::vector<std::tuple<int,int>> spawn_positions; // tiene las posiciones de spawn de armas
+    MapGame map; // sabe donde esta todo posicionado
     int actual_round = 0;
-    
+    bool started_game = false;
     void duck_exist(int id);
 
 public:
@@ -192,10 +193,14 @@ public:
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
     void add_weapon_on_map(std::string type_weapon, int x, int y);
+    void add_spawn_position(int x, int y); // agrega una posicion de spawn de armas
 
     // game logic
     void start_game();
+    void reset_round();
     bool check_if_round_finished();
+    bool check_if_winner();
+    void random_weapon_spawn();
 };
 
 class GameError: public std::exception {

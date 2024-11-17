@@ -109,6 +109,13 @@ game_snapshot_t ProtocolClient::read_snapshot() {
     return game_snapshot;
 }
 
+score_DTO ProtocolClient::read_score() {
+    score_DTO score;
+    connection.recvall(&score, sizeof(score_DTO), &socket_is_closed);
+    return score;
+}
+
+
 void ProtocolClient::shutDown() {
     if (!socket_is_closed) {
         connection.shutdown(SHUT_DOWN_TWO);

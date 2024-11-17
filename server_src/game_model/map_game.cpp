@@ -181,6 +181,11 @@ std::vector<duck_DTO> MapGame::get_duck_DTO_list() {
         new_dto.is_alive = it->second->is_alive();
         list_DTO.push_back(new_dto);
     }
+    for(auto it = this->ducks_dead.begin(); it != this->ducks_dead.end(); it++){
+        duck_DTO new_dto = it->second->to_DTO();
+        new_dto.is_alive = it->second->is_alive();
+        list_DTO.push_back(new_dto);
+    }
     return list_DTO;
 }
 
@@ -188,6 +193,10 @@ std::vector<weapon_DTO> MapGame::get_weapons_DTO_list(){
     std::vector<weapon_DTO> list_DTO;
     list_DTO.resize(0);
     for (auto it = this->pickables.begin(); it != this->pickables.end(); it++) {
+        weapon_DTO new_dto = (*it)->to_DTO();
+        list_DTO.push_back(new_dto);
+    }
+    for (auto it = this->pickables_spawned.begin(); it != this->pickables_spawned.end(); it++) {
         weapon_DTO new_dto = (*it)->to_DTO();
         list_DTO.push_back(new_dto);
     }
@@ -252,11 +261,14 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
 }
 
 void MapGame::respawn_ducks() {
-    for (auto it = this->ducks.begin(); it != this->ducks.end(); it++) {
-        if (!it->second->is_alive() && it->second->get_respawn_time() == 0) {
-            it->second->set_health(100);
-        } else if (!it->second->is_alive()) {
+    for (auto it = this->ducks_dead.begin(); it != this->ducks_dead.end(); ) {
+        if (it->second->get_respawn_time() == 0) {
+            it->second->set_health(HEALTH);
+            this->ducks[it->first] = it->second;
+            it = this->ducks_dead.erase(it);
+        } else {
             it->second->tick_respawn_time();
+            ++it;
         }
     }
 }
@@ -352,11 +364,9 @@ void MapGame::bullets_next_movement() {
                 if (duck->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(id);
                     duck->receive_damage(damage);
-                    if(duck->is_alive()){
-                        break;
+                    if (!duck->is_alive()) {
+                        this->ducks_dead[id] = duck;
                     }
-                    this->ducks_dead[id] = this->ducks[id];
-                    ducks.erase(id);
                     break;
                 }
             }
@@ -422,13 +432,26 @@ void MapGame::use_item(int duck_id, bool right_direction) {
 //     }
 // }
 
+bool MapGame::already_exist_a_pickable(int x, int y){
+    for (auto it = this->pickables.begin(); it != this->pickables.end(); ++it){
+        if((*it)->get_hitbox().has_collision(Hitbox(x, y, 30, 30))){
+            return true;
+        }
+    }
+    for (auto it = this->pickables_spawned.begin(); it != this->pickables_spawned.end(); ++it){
+        if((*it)->get_hitbox().has_collision(Hitbox(x, y, 30, 30))){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
     bool weapon_picked_up = false;
     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
-        std::cout << "entro a pick up de map3" << std::endl;
         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
-            std::cout << "entro a pick up de map4" << std::endl;
             std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
             if (other_weapon != nullptr) {
                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
@@ -442,6 +465,22 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
         }
         ++it;
     }
+    for (auto it = this->pickables_spawned.begin(); it != this->pickables_spawned.end();) {
+        if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
+            std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
+            if (other_weapon != nullptr) {
+                other_weapon->move_to((*it)->get_x(), (*it)->get_y());
+                other_weapon->set_falling(true);
+                other_weapon->set_moving(false);
+                pickables.push_back(other_weapon);
+            }
+            it = pickables.erase(it);
+            weapon_picked_up = true;
+            break;
+        }
+        ++it;
+    }
+
     if(weapon_picked_up){
         return;
     }
@@ -464,10 +503,9 @@ void MapGame::add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y){
     if (!this->can_move_hitbox(new_weapon->get_hitbox(), x, y)) {
         throw MapError("game can't add weapon to map");
     }
-    std::cout << "entro a add weapon de map" << std::endl;
     new_weapon->move_to(x, y);
     
-    this->pickables.push_back(new_weapon);
+    this->pickables_spawned.push_back(new_weapon);
 }
 
 std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list(){
@@ -476,10 +514,10 @@ std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list(){
 
 void MapGame::clean_map(){
     for(auto& [id, duck]:this->ducks){
-            duck->set_health(HEALTH);
+            duck->reset();
     }
     for (auto& [id, duck]:this->ducks_dead){
-        duck->set_health(HEALTH);
+        duck->reset();
         this->ducks[id] = duck;
         // hay que saber donde tienen que respawnear segun el mapa
     }
@@ -488,6 +526,10 @@ void MapGame::clean_map(){
     this->pickables.clear();
 
     // hay que saber donde tienen que respawnear segun el mapa
+}
+
+int MapGame::ducks_dead_size(){
+    return this->ducks_dead.size();
 }
 
 #endif
