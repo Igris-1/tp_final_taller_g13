@@ -9,12 +9,20 @@
 
 Duck::Duck(int health, int id):
         health(health),
+        begin_health(health),
         armor(nullptr),
         helmet(nullptr),
         weapon(nullptr),
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {}
 
+void Duck::reset(){
+    this->health = this->begin_health;
+    this->armor = nullptr;
+    this->helmet = nullptr;
+    this->weapon = nullptr;
+    //this->respawn_time = 0;
+}
 std::shared_ptr<Weapon> Duck::throw_weapon() {
     if (this->weapon == nullptr) {
         std::cout << "no weapon" << std::endl;
@@ -146,46 +154,13 @@ bool Duck::already_exploted() {
     return this->weapon->exploted();
 }
 
-std::vector<std::shared_ptr<BulletInterface>> Duck::fire_weapon(int x_direction, int y_direction,
-                                                                MapGame& map) {
-
-#ifndef NUEVO_MAPA
-    if (!this->has_weapon()) {
-        return std::vector<std::shared_ptr<BulletInterface>>();
-    }
-    std::vector<std::shared_ptr<BulletInterface>> bullets = this->weapon->fire(
-            shared_from_this(), this->hitbox.get_x() + (this->hitbox.get_width() / 2),
-            this->hitbox.get_y() + (this->hitbox.get_height()) / 2, x_direction, y_direction);
-    int recoil = this->weapon->recoil_produced();
-    if (map.can_move_hitbox(this->hitbox, (-x_direction) * recoil, -recoil)) {
-        this->hitbox.move_relative((-x_direction) * recoil, -recoil);
-    }
-    return bullets;
-#endif
-
-#ifdef NUEVO_MAPA
-    if (!this->has_weapon()) {
-        return std::vector<std::shared_ptr<BulletInterface>>();
-    }
-    std::vector<std::shared_ptr<BulletInterface>> bullets = this->weapon->fire(
-            shared_from_this(), this->hitbox.get_x() + (this->hitbox.get_width() / 2),
-            this->hitbox.get_y() + (this->hitbox.get_height()) / 2, x_direction, y_direction);
-    int recoil = this->weapon->recoil_produced();
-    map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, -recoil);
-    return bullets;
-#endif
-}
-
 void Duck::use_item(int x_direction, int y_direction, MapGame& map) {
     if (!this->has_weapon()) {
         return;
     }
     this->weapon->set_direction(x_direction, y_direction);
-    std::cout << "add owner" << std::endl;
     this->weapon->add_owner(shared_from_this());
-    std::cout << "use a la weapon" << std::endl;
     this->weapon->use();
-    std::cout << "ya use la weapon" << std::endl;
 
 #ifndef NUEVO_MAPA
     int recoil = this->weapon->recoil_produced();

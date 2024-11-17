@@ -29,6 +29,29 @@ private:
                     message.set_gs(gs);
                     queue.push(message);
                 }
+                if(code == 0x02){
+                    score_DTO score = protocol.read_score();
+                    Message message(code);
+                    message.set_score(score);
+                    std::cout << "Score received: " << std::endl;
+                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
+                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
+                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
+                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
+                    queue.push(message);
+                    
+                }
+                if(code == 0x03){
+                    score_DTO score = protocol.read_score();
+                    Message message(code);
+                    message.set_score(score);
+                    std::cout << "Endgame score received: " << std::endl;
+                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
+                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
+                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
+                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
+                    queue.push(message);
+                }
 
                 /*int len = gs.ducks.size();
                 for (int i = 0; i < len; i++) {

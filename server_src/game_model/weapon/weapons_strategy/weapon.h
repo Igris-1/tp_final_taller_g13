@@ -20,15 +20,6 @@ protected:
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;
 
-    // int air_time_x = 300;
-    // int air_time_y = 50;
-
-    // int x_direction = 0;
-    // bool moving = true;
-
-    // int y_direction = 0;
-    // bool falling = false;
-
     std::shared_ptr<WeaponInterface> weapon_strategy;  // deberia llamarse weapon_strategy la clase
 
     bool is_not_a_weapon();
@@ -51,6 +42,7 @@ public:
     bool is_active();
     void activation();
     bool exploted();
+    int get_ammo();
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
 

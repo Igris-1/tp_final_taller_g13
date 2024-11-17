@@ -11,10 +11,10 @@ ClientHandler::ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& ga
         senderThread(senderQueue, protocol),
         receiverThread(gameQueue, protocol, id),
         clientID(id) {}
-void ClientHandler::push(game_snapshot_t gs) {
+void ClientHandler::push(instruction_for_client_t instruction) {
     try {
         if (is_alive()) {
-            senderQueue.push(gs);
+            senderQueue.push(instruction);
         }
     } catch (const ClosedQueue& e) {
         if (is_alive()) {
@@ -23,10 +23,10 @@ void ClientHandler::push(game_snapshot_t gs) {
     }
 }
 
-// void ClientHandler::push_score(game_snapshot_t gs) {
+// void ClientHandler::push_score(score_DTO score) {
 //     try {
 //         if (is_alive()) {
-//             senderQueue.push(gs);
+//             //senderQueue.push(score);
 //         }
 //     } catch (const ClosedQueue& e) {
 //         if (is_alive()) {

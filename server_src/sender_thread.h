@@ -14,7 +14,7 @@
 
 class SenderThread: public Thread {
 private:
-    Queue<game_snapshot_t>& queue;
+    Queue<instruction_for_client_t>& queue;
     ProtocolServer& protocol;
 
     void run() override {
@@ -22,8 +22,24 @@ private:
         while (!protocol.socket_closed() && _keep_running) {
             try {
 
-                game_snapshot_t gs = queue.pop();
-                protocol.sendGameInfo(gs);
+                
+                instruction_for_client_t instruction = queue.pop();
+                if(instruction.id == 1){
+                    game_snapshot_t gs = instruction.gs;
+                    protocol.sendGameInfo(gs);
+                }
+                else if(instruction.id == 2){
+                    score_DTO score = instruction.score;
+                    protocol.sendScore(score);
+                }
+                else if(instruction.id == 3){
+                    std::cout << "Sending endgame score in sender thread" << std::endl;
+                    score_DTO score = instruction.score;
+                    protocol.sendScore(score);
+                }
+                else{
+                    std::cerr << "Unknown instruction id: " << instruction.id << std::endl;
+                }
 
             } catch (const ClosedQueue& e) {
                 stop();
@@ -36,7 +52,7 @@ private:
     }
 
 public:
-    SenderThread(Queue<game_snapshot_t>& queue, ProtocolServer& protocol):
+    SenderThread(Queue<instruction_for_client_t>& queue, ProtocolServer& protocol):
             queue(queue), protocol(protocol) {
         start();
     }

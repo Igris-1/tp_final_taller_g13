@@ -62,6 +62,7 @@ private:
     std::map<int, std::shared_ptr<Duck>> ducks;
     std::map<int, std::shared_ptr<Duck>> ducks_dead;
     std::list<std::shared_ptr<Weapon>> pickables;
+    std::list<std::shared_ptr<Weapon>> pickables_spawned;
     std::list<std::shared_ptr<BulletInterface>> bullets;
 
     bool hitbox_in_range(Hitbox hitbox);
@@ -76,6 +77,7 @@ public:
     // MAP STRUCTURE
     bool add_invalid_position(Hitbox hitbox);
     bool add_platform(Hitbox hitbox);
+    bool already_exist_a_pickable(int x, int y);
 
     // DUCKS
     bool duck_exist(int id);
@@ -106,6 +108,7 @@ public:
     std::list<std::shared_ptr<BulletInterface>>& get_bullets_list();
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
+    int ducks_dead_size();
     void clean_map(); // tiene que recibir donde spawnea en un futuro
 
 };

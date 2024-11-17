@@ -30,6 +30,8 @@ public:
 
     game_snapshot_t read_snapshot();
 
+    score_DTO read_score();
+
     map_structure_t receive_map();
 
     void shutDown();

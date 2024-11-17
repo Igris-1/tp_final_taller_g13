@@ -21,6 +21,7 @@ private:
     // cppcheck-suppress unusedStructMember
     int duck_id;
     int health;
+    int begin_health;
     int respawn_time = 100;
     std::shared_ptr<Armor> armor;
     std::shared_ptr<Helmet> helmet;
@@ -48,12 +49,13 @@ public:
     int get_health();
     int get_id();
 
+    void reset();
     void tick_respawn_time();
     int get_respawn_time();
     void set_health(int health);
 
-    std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction,
-                                                              MapGame& map);
+    // std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction,
+    //                                                           MapGame& map);
     void use_item(int x_direction, int y_direction, MapGame& map);
     bool is_alive();
     bool is_this_duck(int id);

@@ -147,7 +147,6 @@ void GameView::load_game(game_snapshot_t gs) {
 }
 
 void GameView::load_weapons(game_snapshot_t gs) {
-    std::cout << "weapon size" << gs.weapons.size() << std::endl;
     for (int i = 0; i < gs.weapons.size(); i++) {
         weapon_DTO weapon = gs.weapons[i];
         int weapon_id = weapon.weapon_id;

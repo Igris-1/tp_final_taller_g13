@@ -9,16 +9,20 @@ Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height,
                std::list<std::shared_ptr<BulletInterface>>& bullets):
         Positionable(0, 0, width, height), weapon_strategy(weapon_strategy), bullets(bullets) {}
 
-std::vector<std::shared_ptr<BulletInterface>> Weapon::fire(std::shared_ptr<Duck> duck_trigger,
-                                                           int x_position, int y_position,
-                                                           int& x_direction, int& y_direction) {
-    if (this->is_not_a_weapon()) {
-        return std::vector<std::shared_ptr<BulletInterface>>();
-    }
-    return weapon_strategy->fire(duck_trigger, x_position, y_position, x_direction, y_direction);
-}
+// std::vector<std::shared_ptr<BulletInterface>> Weapon::fire(std::shared_ptr<Duck> duck_trigger,
+//                                                            int x_position, int y_position,
+//                                                            int& x_direction, int& y_direction) {
+//     if (this->is_not_a_weapon()) {
+//         return std::vector<std::shared_ptr<BulletInterface>>();
+//     }
+//     return weapon_strategy->fire(duck_trigger, x_position, y_position, x_direction, y_direction);
+// }
 
 void Weapon::add_owner(std::shared_ptr<Duck> new_duck) { this->duck = new_duck; }
+
+// int Weapon::get_ammo(){
+//     this->weapon_strategy->get_ammo();
+// }
 
 void Weapon::use() {
     if (this->is_not_a_weapon()) {
