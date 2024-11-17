@@ -53,13 +53,6 @@ private:
                     queue.push(message);
                 }
 
-                /*int len = gs.ducks.size();
-                for (int i = 0; i < len; i++) {
-                    int x = static_cast<int>(gs.ducks[i].x);
-                    int y = static_cast<int>(gs.ducks[i].y);
-                    std::cout << "Duck " << i << " at (" << x << ", " << y << ")" << std::endl;
-                }*/
-
                 usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;

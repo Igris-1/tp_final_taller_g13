@@ -17,7 +17,7 @@ project(DuckGame
 )
 
 option(CLIENT "Enable / disable client program." ON)
-# option(CLIENT_GUI "Enable / disable client GUI program." OFF)
+#option(CLIENT_GUI "Enable / disable client GUI program." ON)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 option(TESTS "Enable / disable tests." OFF)

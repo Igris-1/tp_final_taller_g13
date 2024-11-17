@@ -643,23 +643,6 @@ void Game::keep_shooting() {
         if (this->ducks_states[id]->is_shooting) {
             this->map.use_item(id, this->ducks_states[id]->facing_direction);
         }
-
-        // std::vector<int> ducks_id = this->map.get_live_duck_ids();
-
-        // for(auto& id: ducks_id){
-        //     this->map.continue_fire_rate(id);
-        //     std::vector<std::shared_ptr<BulletInterface>> new_bullets;
-        //     if(this->ducks_states[id]->is_shooting && this->ducks_states[id]->facing_direction){
-        //         // new_bullets = it->second->fire_weapon(1, 0, this->map);
-        //     }
-        //     if(this->ducks_states[id]->is_shooting && !this->ducks_states[id]->facing_direction){
-        //         // new_bullets = it->second->fire_weapon(-1, 0, this->map);
-        //     }
-        //     int size = new_bullets.size();
-        //     // for(int i = 0; i < size; i++){
-        //     //     this->bullets.push_back(new_bullets[i]);
-        //     // }
-        // }
     }
 }
 
@@ -743,7 +726,8 @@ void Game::reset_round(){
     this->map.clean_map();
     this->actual_round += 1;
     for(auto& pos: this->spawn_positions){
-        this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), "random")), std::get<0>(pos), std::get<1>(pos));
+        random_weapon_spawn();
+        //this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), "random")), std::get<0>(pos), std::get<1>(pos));
     }
 }
 
