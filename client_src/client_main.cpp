@@ -17,6 +17,11 @@ int main(int argc, const char* argv[]) {
         }
 
         Client client(argv[HOST_ARG], argv[PORT_ARG]);
+        client.select_game_mode(1);
+        std::cout << "Client created" << std::endl;
+        client.receive_map();
+        std::cout << "Map received" << std::endl;
+        client.run();
         return SUCCESS;
 
     } catch (const std::exception& e) {
@@ -26,4 +31,4 @@ int main(int argc, const char* argv[]) {
         std::cerr << "Unknown exception caught." << std::endl;
         return ERROR;
     }
-}
+} 

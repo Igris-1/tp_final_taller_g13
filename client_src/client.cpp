@@ -15,20 +15,29 @@ Client::Client(const char* host, const char* port):
         localPlayers(LOCAL_PLAYERS),
         protocol(Socket(host, port)),
         receiver_queue(),
-        game_view(protocol.receive_map()) {
-    run();
+        game_view() {
 }
 
 void Client::setLocalPlayers(int players) { localPlayers = players; }
 
 Client::~Client() {}
 
+void Client::select_game_mode(int game_mode){
+    protocol.send_number_of_players(game_mode);
+}
+
+void Client::receive_map() {
+    map_structure_t map = protocol.receive_map(); //esto hay que hacer que lo haga el receiver despues
+    game_view.add_map(map);
+}
+
+
+
 void Client::run() {
 
     try {
         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol, localPlayers);
-
         while (sender.is_alive() && receiver.is_alive()) {
             Message m(0);
 

@@ -22,6 +22,7 @@ void ProtocolClient::send_number_of_players(int localPlayers) {
     connection.sendall(&localPlayers, ONE_BYTE, &socket_is_closed);
 }
 
+
 void ProtocolClient::send_action(action_t& action) {
 
     TranslatorActions translator;

@@ -7,7 +7,7 @@
 #include "../common_src/thread.h"
 #include "actions/action.h"
 #include "actions/client_action_t.h"
-
+#include "games_manager.h"
 #include "list_of_clients_monitor.h"
 
 
@@ -15,13 +15,13 @@ class Acceptor: public Thread {
 
 private:
     Socket socket;
-    Queue<std::shared_ptr<Action>>& gameQueue;
-    ListOfClientsMonitor& clients;
+    // Queue<std::shared_ptr<Action>>& gameQueue;
+    // ListOfClientsMonitor& clients;
+    GamesManager& games_manager;
     void run() override;
 
 public:
-    explicit Acceptor(const char* port, Queue<std::shared_ptr<Action>>& gameQueue,
-                      ListOfClientsMonitor& clients);
+    explicit Acceptor(const char* port, GamesManager& gameManager);
     void close();
     ~Acceptor();
 };

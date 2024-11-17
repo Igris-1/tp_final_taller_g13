@@ -354,13 +354,13 @@ void MapGame::inertia_weapon(){
         }
 }
 
-
-
-
 void MapGame::bullets_next_movement() {
     for (auto bullet = bullets.begin(); bullet != bullets.end();) {
         if ((*bullet)->next_position(*this)) {
             for (auto& [id, duck]: this->ducks) {
+                if (!duck->is_alive()){
+                        continue;
+                }
                 if (duck->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(id);
                     duck->receive_damage(damage);

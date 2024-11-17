@@ -83,8 +83,8 @@ void GameThread::run() {
 
     // game.add_spawn_position(192, 1);
     // game.add_spawn_position(150, 150);
-    game.add_spawn_position(250, 150);
-    game.add_spawn_position(350, 150);
+    game.add_spawn_position(200, 70);
+    game.add_spawn_position(350, 210);
 
     
     clients.send_map(game.get_map_structure());
@@ -108,7 +108,9 @@ void GameThread::run() {
         if(game.check_if_round_finished()){
             if (game.check_if_winner()){
                 std::cout << "Game finished" << std::endl;
-                send_endgame_score();   
+                send_endgame_score(); 
+                this->_is_alive = false;
+                return;
             }
             this->round_counter--;
             if(this->round_counter == 0){

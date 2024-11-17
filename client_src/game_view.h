@@ -45,7 +45,8 @@ private:
     std::pair<duck_DTO, duck_DTO> findMostDistantDucks(std::vector<duck_DTO> ducks);
 
 public:
-    GameView(map_structure_t map);
+    GameView();
+    void add_map(map_structure_t map);
     void load_game(game_snapshot_t gs);
     ~GameView();
 };

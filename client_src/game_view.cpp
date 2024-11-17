@@ -8,8 +8,7 @@
 #define SCREEN_WIDTH 820
 #define SCREEN_HEIGHT 500
 
-GameView::GameView(map_structure_t map):
-        map(map),
+GameView::GameView():
         sdl(SDL_INIT_VIDEO),
         window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                SCREEN_HEIGHT, SDL_WINDOW_SHOWN),
@@ -22,6 +21,10 @@ GameView::GameView(map_structure_t map):
         bullet_sprites(),
         duck_views() {
     set_up_game();
+}
+
+void GameView::add_map(map_structure_t map) {
+    this->map = map;
 }
 
 void GameView::set_up_game() {
