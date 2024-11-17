@@ -6,14 +6,14 @@
 #include <iostream>
 #include "ui_chooseoptionwindow.h"
 
-ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, char* port, char* address):
+ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, char* address, char* port):
         QDialog(parent),
         ui(new Ui::ChooseOptionWindow),
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
     // this->joinWindow = new JoinWindow(nullptr, this->player, port, address);
-    this->newGameWindow = new NewGameWindow(nullptr, this->player, port, address);
+    this->newGameWindow = new NewGameWindow(nullptr, this->player, address, port);
     this->aboutWindow = new AboutWindow(nullptr);
 
     // Config player

@@ -10,8 +10,9 @@
 NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, char* port):
         QDialog(parent),
         ui(new Ui::NewGameWindow),
-        client(new Client(host, port)),
-        player(player) {
+        player(player),
+        host(host),
+        port(port) {
     ui->setupUi(this);
     // this->loadingScreen = new LoadingScreen(nullptr);
 }
@@ -29,19 +30,23 @@ void NewGameWindow::on_musicButton_clicked() {
     }
 }
 
-void NewGameWindow::on_playersButton_clicked() {
+void NewGameWindow::on_selectPlayers_activated() {
     // setear cantidad de jugadores para iniciar la partida
-    std::cout << "playersButton clicked" << std::endl;
+    std::cout << "selectPlayers clicked" << std::endl;
 }
 
 void NewGameWindow::on_player2Button_clicked() {
     // setea si el jugador 2 es local o no
-    client->setLocalPlayers(2);
+    localPlayers = 2;
 }
 
 void NewGameWindow::on_mapaUnoButton_clicked() {
     // createMatch("mapaUno");
     std::cout << "mapaUnoButton clicked" << std::endl;
+    Client client(host, port);
+    client.setLocalPlayers(localPlayers);
+    client.run();
+
     // this->hide();
     // this->player->stop();
     // this->loadingScreen->show();

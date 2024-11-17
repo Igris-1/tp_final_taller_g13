@@ -20,7 +20,7 @@ private slots:
 
     void on_musicButton_clicked();
 
-    void on_playersButton_clicked();
+    void on_selectPlayers_activated();
 
     void on_player2Button_clicked();
 
@@ -36,6 +36,9 @@ private:
     Ui::NewGameWindow* ui;
     Client* client;
     QMediaPlayer* player;
+    int localPlayers;
+    char* host;
+    char* port;
     // LoadingScreen* loadingScreen;
 
     // void createMatch(std::string map);

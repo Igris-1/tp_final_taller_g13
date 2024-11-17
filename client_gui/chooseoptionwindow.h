@@ -18,7 +18,7 @@ class ChooseOptionWindow: public QDialog {
     Q_OBJECT
 
 public:
-    explicit ChooseOptionWindow(QWidget* parent, char* port, char* address);
+    explicit ChooseOptionWindow(QWidget* parent, char* address, char* port);
     void playMusic();
     ~ChooseOptionWindow();
 

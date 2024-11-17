@@ -38,7 +38,6 @@ void ConnectionWindow::on_pushButton_clicked() {
 
     QByteArray byteArrayPort = port.toUtf8();
     char* charPort = byteArrayPort.data();
-
     QByteArray byteArrayAddress = address.toUtf8();
     char* charAddress = byteArrayAddress.data();
 
@@ -47,7 +46,6 @@ void ConnectionWindow::on_pushButton_clicked() {
         hide();
         this->chooseOptionWindow->show();
         this->chooseOptionWindow->playMusic();
-
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         QMessageBox msgBox;
