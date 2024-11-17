@@ -4,17 +4,19 @@
 #include <QMessageBox>
 #include <iostream>
 #include "../client_src/client.h"
+#include "loadingwindow.h"
 
 #include "ui_newgamewindow.h"
 
-NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, char* port):
+NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString address, QString port):
         QDialog(parent),
         ui(new Ui::NewGameWindow),
         player(player),
-        host(host),
+        localPlayers(1),
+        address(address),
         port(port) {
     ui->setupUi(this);
-    // this->loadingScreen = new LoadingScreen(nullptr);
+    this->loadingWindow = new LoadingWindow(nullptr);
 }
 
 
@@ -37,25 +39,33 @@ void NewGameWindow::on_selectPlayers_activated() {
 
 void NewGameWindow::on_player2Button_clicked() {
     // setea si el jugador 2 es local o no
-    localPlayers = 2;
+    if (ui->player2Button->isChecked()) {
+        localPlayers = 2;
+    } else {
+        localPlayers = 1;
+    }
 }
 
 void NewGameWindow::on_mapaUnoButton_clicked() {
     // createMatch("mapaUno");
     std::cout << "mapaUnoButton clicked" << std::endl;
-    Client client(host, port);
-    client.setLocalPlayers(localPlayers);
-    client.run();
 
-    // this->hide();
-    // this->player->stop();
-    // this->loadingScreen->show();
-    // client->run()
-    // .then([this](){
-    //     this->loadingScreen->close();
-    //     this->close();
-    // })
-    // this->player->play();
+    QByteArray byteArrayPort = port.toUtf8();
+    char* charPort = byteArrayPort.data();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charAddress = byteArrayAddress.data();
+
+    // createMatch("mapaUno");
+    Client client(charAddress, charPort);
+    client.setLocalPlayers(localPlayers);
+
+    this->hide();
+    this->loadingWindow->show();
+
+    client.receive_map();
+    this->loadingWindow->hide();
+    client.run();
+    this->show();
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {

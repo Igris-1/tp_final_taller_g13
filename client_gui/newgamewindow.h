@@ -3,6 +3,7 @@
 #include "../client_src/client.h"
 #include <QDialog>
 #include <QMediaPlayer>
+#include "loadingwindow.h"
 
 namespace Ui {
 class NewGameWindow;
@@ -12,7 +13,7 @@ class NewGameWindow: public QDialog {
     Q_OBJECT
 
 public:
-    NewGameWindow(QWidget* parent, QMediaPlayer* player, char* host, char* port);
+    NewGameWindow(QWidget* parent, QMediaPlayer* player, QString host, QString port);
     ~NewGameWindow();
 
 private slots:
@@ -37,11 +38,11 @@ private:
     Client* client;
     QMediaPlayer* player;
     int localPlayers;
-    char* host;
-    char* port;
-    // LoadingScreen* loadingScreen;
+    QString address;
+    QString port;
+    LoadingWindow* loadingWindow;
 
     // void createMatch(std::string map);
 };
 
-#endif  // CREATEWINDOW_H
+#endif  // NEWGAMEWINDOW_H

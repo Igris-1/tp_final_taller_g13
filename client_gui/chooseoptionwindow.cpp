@@ -6,7 +6,7 @@
 #include <iostream>
 #include "ui_chooseoptionwindow.h"
 
-ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, char* address, char* port):
+ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString port):
         QDialog(parent),
         ui(new Ui::ChooseOptionWindow),
         player(new QMediaPlayer(this)),

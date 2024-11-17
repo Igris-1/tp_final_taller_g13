@@ -13,10 +13,12 @@
 
 
 ProtocolClient::ProtocolClient(Socket&& client):
-        connection(std::move(client)), socket_is_closed(false) {}
+        connection(std::move(client)), socket_is_closed(false) {
+        }
 
 ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept:
-        connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {}
+        connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {
+        }
 
 void ProtocolClient::send_number_of_players(int localPlayers) {
     connection.sendall(&localPlayers, ONE_BYTE, &socket_is_closed);
