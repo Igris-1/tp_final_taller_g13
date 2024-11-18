@@ -10,6 +10,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Window.hh>
+#include <map>
 
 #include "../common_src/game_snapshot_t.h"
 
@@ -19,8 +20,10 @@ using namespace SDL2pp;
 class DuckView {
 private:
     bool facing_direction;
-    int walk_animation_frame;
-    int wing_flying_animation_frame;
+    std::map<int, SDL_Point> walk_frames;
+    int walk_frame;
+    std::map<int, SDL_Point> flying_frames;
+    int flying_frame;
     Renderer& renderer;
     Texture& duck_texture;
     Texture& wing_texture;
