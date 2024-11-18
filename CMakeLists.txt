@@ -17,7 +17,7 @@ project(DuckGame
 )
 
 option(CLIENT "Enable / disable client program." ON)
-#option(CLIENT_GUI "Enable / disable client GUI program." ON)
+option(CLIENT_GUI "Enable / disable client GUI program." ON)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
 option(TESTS "Enable / disable tests." OFF)
@@ -52,29 +52,29 @@ if (CLIENT)
 endif()
 
 # ---------------- CLIENT_GUI SECTION ----------------
-# if (CLIENT_GUI)
-#     find_package(Qt6 COMPONENTS Core REQUIRED)
-#     find_package(Qt6 COMPONENTS Widgets REQUIRED)
-#     find_package(Qt6 REQUIRED COMPONENTS Multimedia)
+if (CLIENT_GUI)
+    find_package(Qt6 COMPONENTS Core REQUIRED)
+    find_package(Qt6 COMPONENTS Widgets REQUIRED)
+    find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
-#     set(CLIENT_GUI_EXECUTABLE client_gui_exec)
-#     set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
+    set(CLIENT_GUI_EXECUTABLE client_gui_exec)
+    set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
 
-#     file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")
-#     file(GLOB_RECURSE SRC_FILES "${GUI_SRC_DIR}/*.cpp")
-#     file(GLOB_RECURSE HEADER_FILES "${GUI_SRC_DIR}/*.h")
-#     file(GLOB_RECURSE UI_FILES "${GUI_SRC_DIR}/*.ui")
+    file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")
+    file(GLOB_RECURSE SRC_FILES "${GUI_SRC_DIR}/*.cpp")
+    file(GLOB_RECURSE HEADER_FILES "${GUI_SRC_DIR}/*.h")
+    file(GLOB_RECURSE UI_FILES "${GUI_SRC_DIR}/*.ui")
 
-#     Qt6_wrap_ui(UI_HEADERS ${UI_FILES})
-#     Qt6_wrap_cpp(MOC_FILES ${HEADER_FILES})
-#     Qt6_add_resources(RESOURCES_RCC ${RESOURCE_FILES})
+    Qt6_wrap_ui(UI_HEADERS ${UI_FILES})
+    Qt6_wrap_cpp(MOC_FILES ${HEADER_FILES})
+    Qt6_add_resources(RESOURCES_RCC ${RESOURCE_FILES})
 
-#     list(REMOVE_ITEM CLIENT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/client_src/client_main.cpp")
+    list(REMOVE_ITEM CLIENT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/client_src/client_main.cpp")
 
-#     add_executable(${CLIENT_GUI_EXECUTABLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_FILES} ${RESOURCES_RCC} ${CLIENT_SOURCES})
-#     target_link_libraries(${CLIENT_GUI_EXECUTABLE} PRIVATE common_lib Qt6::Widgets Qt6::Multimedia SDL2pp::SDL2pp)
-#     target_include_directories(${CLIENT_GUI_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${GUI_SRC_DIR} ${libSDL2pp_SOURCE_DIR})
-# endif()
+    add_executable(${CLIENT_GUI_EXECUTABLE} ${SRC_FILES} ${UI_HEADERS} ${MOC_FILES} ${RESOURCES_RCC} ${CLIENT_SOURCES})
+    target_link_libraries(${CLIENT_GUI_EXECUTABLE} PRIVATE common_lib Qt6::Widgets Qt6::Multimedia SDL2pp::SDL2pp)
+    target_include_directories(${CLIENT_GUI_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${GUI_SRC_DIR} ${libSDL2pp_SOURCE_DIR})
+endif()
 
 # ---------------- SERVER SECTION ----------------
 if (SERVER)
