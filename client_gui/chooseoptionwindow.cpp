@@ -12,7 +12,7 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
-    // this->joinWindow = new JoinWindow(nullptr, this->player, port, address);
+    this->joinGame = new JoinGame(nullptr, this->player, port, address);
     this->newGameWindow = new NewGameWindow(nullptr, this->player, address, port);
     this->aboutWindow = new AboutWindow(nullptr);
 
@@ -27,17 +27,17 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
 ChooseOptionWindow::~ChooseOptionWindow() {
     if (this->newGameWindow != NULL)
         delete newGameWindow;
-    // if (this->joinWindow != NULL)
-    //     delete joinWindow;
+    if (this->joinGame != NULL)
+        delete joinGame;
     if (this->aboutWindow != NULL)
         delete aboutWindow;
     delete ui;
 }
 
 void ChooseOptionWindow::on_joinGameButton_clicked() {
-    // this->hide();
-    // this->joinWindow->exec();
-    // this->show();
+    this->hide();
+    this->joinGame->exec();
+    this->show();
 }
 
 

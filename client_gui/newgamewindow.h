@@ -41,8 +41,6 @@ private:
     QString address;
     QString port;
     LoadingWindow* loadingWindow;
-
-    // void createMatch(std::string map);
 };
 
 #endif  // NEWGAMEWINDOW_H

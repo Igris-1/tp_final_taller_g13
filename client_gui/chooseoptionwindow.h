@@ -2,7 +2,7 @@
 #define CHOOSEOPTIONWINDOW_H
 
 #include <QDialog>
-// #include "joinwindow.h"
+#include "joingame.h"
 #include "aboutwindow.h"
 #include "newgamewindow.h"
 #include "../client_src/client.h"
@@ -35,10 +35,9 @@ private slots:
 
 
 private:
-    // ClientLobby cl;
     Ui::ChooseOptionWindow* ui;
     NewGameWindow* newGameWindow;
-    // JoinWindow *joinWindow;
+    JoinGame* joinGame;
     AboutWindow* aboutWindow;
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
