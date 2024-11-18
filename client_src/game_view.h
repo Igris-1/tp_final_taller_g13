@@ -30,16 +30,19 @@ private:
     std::vector<Texture> weapon_sprites;
     std::vector<Texture> bullet_sprites;
     std::vector<DuckView> duck_views;
+    std::vector<Texture> scoreboard_font;
 
     void set_up_game();
     void load_map();
     void load_ducks(game_snapshot_t gs);
     void load_bullets(game_snapshot_t gs);
     void load_weapons(game_snapshot_t gs);
+    void draw_scoreboard(score_DTO score);
 
 public:
     GameView();
     void add_map(map_structure_t map);
+    
     void load_score(score_DTO score);
     void load_endgame_score(score_DTO score);
     void load_game(game_snapshot_t gs);
