@@ -41,7 +41,6 @@ public:
     std::vector<int> get_available_games();
 
     ~Client();
-    void receive_map();
 };
 
 #endif

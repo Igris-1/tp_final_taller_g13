@@ -7,9 +7,14 @@
 #include "../common_src/game_snapshot_t.h"
 #include "../common_src/queue.h"
 
-#define EXIT_CODE "q"
 #define LOCAL_PLAYERS 2
 #define SLEEP_TIME_CLIENT 2000
+#define MAP_CODE 0x00
+#define GAME_SNAPSHOT_CODE 0x01
+#define SCORE_CODE 0x02
+#define END_SCORE_CODE 0x03
+#define JOIN_GAME_CODE 0x04
+#define PLAYERS_CODE 0x05
 
 Client::Client(const char* host, const char* port):
         localPlayers(LOCAL_PLAYERS),
@@ -44,12 +49,6 @@ void Client::select_game_mode(int game_mode){
 
 // }
 
-void Client::receive_map() {
-    // map_structure_t map = protocol.receive_map();
-    // game_view.add_map(map);
-}
-
-
 
 void Client::run() {
 
@@ -60,24 +59,24 @@ void Client::run() {
             Message m(0);
 
             if (receiver_queue.try_pop(m)) {
-                if(m.get_code() == 0x00){
+                if(m.get_code() == MAP_CODE){
                     map_structure_t map = m.get_map();
                     game_view.add_map(map);
-                } else if (m.get_code() == 0x01) {
+                } else if (m.get_code() == GAME_SNAPSHOT_CODE) {
                     game_snapshot_t gs = m.get_game_snapshot();
                     game_view.load_game(gs);
-                } else if (m.get_code() == 0x02) {
+                } else if (m.get_code() == SCORE_CODE) {
                     score_DTO score = m.get_score();
                     game_view.load_score(score);
-                } else if (m.get_code() == 0x03) {
+                } else if (m.get_code() == END_SCORE_CODE) {
                     score_DTO score = m.get_score();
                     game_view.load_endgame_score(score);
                     break;
                 }
-                else if (m.get_code() == 0x04) {
+                else if (m.get_code() == JOIN_GAME_CODE) {
                     sender.send_game_to_join();
                 }
-                else if(m.get_code() == 0x05){
+                else if(m.get_code() == PLAYERS_CODE){
                     sender.send_players();
                 }
 

@@ -29,14 +29,17 @@ private:
     Texture& wing_texture;
     std::vector<Texture>& weapon_textures;
 
+    void draw_dead_duck(duck_DTO& duck);
+    void draw_jumping_duck(duck_DTO& duck, Texture* weapon_texture);
+    void draw_falling_duck(duck_DTO& duck, Texture* weapon_texture);
+    void draw_moving_duck(duck_DTO& duck, Texture* weapon_texture);
+    void draw_idle_duck(duck_DTO& duck, Texture* weapon_texture);
+
 public:
     DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_sprites,
              std::vector<Texture>& weapon_sprites);
     void draw_duck(duck_DTO& duck);
-    void draw_dead_duck();
-    void draw_jumping_duck();
-    void draw_falling_duck();
-    void draw_moving_duck();
+
     ~DuckView();
 };
 

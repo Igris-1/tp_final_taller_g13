@@ -3,10 +3,9 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../common_src/game_snapshot_t.h"
-// 835 490
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
+#define DELAY_AFTER_SCORE 7000
 
 GameView::GameView():
         sdl(SDL_INIT_VIDEO),
@@ -31,42 +30,45 @@ void GameView::draw_scoreboard(score_DTO score) {
     renderer.SetDrawColor(Color(0, 0, 0, 0));
     renderer.FillRect(SDL_Rect{SCREEN_WIDTH/4, SCREEN_HEIGHT/4, SCREEN_WIDTH/2, SCREEN_HEIGHT/2});
 
+    renderer.Copy(scoreboard_font[1], SDL_Rect{0, 0, 218, 109},
+                  SDL_Rect{SCREEN_WIDTH*7/16, SCREEN_HEIGHT/4, 218, 109}, 0, NullOpt, 0);
+
     renderer.Copy(duck_sprites[score.first_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/4+20, 64, 64}, 0, NullOpt, 0);
+                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+30, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.first_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/4+36, 32, 32}, 0, NullOpt, 0);
+                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+56, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.second_place_id], SDL_Rect{0, 0, 32, 32},
-            SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/4+90, 64, 64}, 0, NullOpt, 0);
+            SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+100, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/4+106, 32, 32}, 0, NullOpt, 0);
+                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+126, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/4+160, 64, 64}, 0, NullOpt, 0);
+                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+170, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/4+176, 32, 32}, 0, NullOpt, 0);
+                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+196, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/4+230, 64, 64}, 0, NullOpt, 0);
+                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+240, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/4+246, 32, 32}, 0, NullOpt, 0);
+                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+266, 32, 32}, 0, NullOpt, 0);
 }
 
 void GameView::load_score(score_DTO score) {
     draw_scoreboard(score);
     renderer.Present();
-    SDL_Delay(7000);
+    SDL_Delay(DELAY_AFTER_SCORE);
 }
 
 void GameView::load_endgame_score(score_DTO score) {
 
     draw_scoreboard(score);
     renderer.Present();
-    SDL_Delay(7000);
+    SDL_Delay(DELAY_AFTER_SCORE);
     window.Hide();
     std::cout << "Termino el juego todo el mundo a casa"  << std::endl;
 }
@@ -80,6 +82,8 @@ void GameView::set_up_game() {
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
 
     scoreboard_font.push_back(Texture(renderer, "../assets/fonts/moneyFont.png"));
+
+    scoreboard_font.push_back(Texture(renderer, "../assets/fonts/duck_game_title.png"));
 
     Texture duck1Texture(renderer, "../assets/sprites/duck.png");
 
@@ -118,25 +122,29 @@ void GameView::set_up_game() {
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
 
-
-
-    Texture loging_image(renderer, "../assets/sprites/image_6.png");
-
-
+    Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
 
     renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
                   SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
 
     renderer.Present();
-
-    /*duck_views.resize(gs.ducks.size(), 0);
-    wing_views.resize(gs.ducks.size(), 0);
-    dir.resize(gs.ducks.size(), 0);*/
 }
 
 void GameView::load_game(game_snapshot_t gs) {
     renderer.Clear();
 
+    add_ducks(gs); // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
+
+    // zoom(gs);
+
+    load_map();
+    load_ducks(gs);
+    load_bullets(gs);
+    load_weapons(gs);
+    renderer.Present();
+}
+
+void GameView::add_ducks(game_snapshot_t gs ){
     int duck_views_size = duck_views.size();
 
     int gs_ducks_size = gs.ducks.size();
@@ -147,44 +155,45 @@ void GameView::load_game(game_snapshot_t gs) {
             int duck_id = static_cast<int>(gs.ducks[i].duck_id);
 
             duck_DTO duck = gs.ducks[i];
-            std::cout << "Duck id en game view: " << duck_id << std::endl;
             duck_views.emplace_back(renderer, duck_sprites[duck_id],
                                     wing_sprites[duck_id], weapon_sprites);
         }
     }
+}
 
-    // int x = gs.ducks[0].x;
-    // int y = gs.ducks[0].y;
+void GameView::zoom(game_snapshot_t gs) {
+    int x = gs.ducks[0].x;
+    int y = gs.ducks[0].y;
 
-    // for (int i = 0; i < gs.ducks.size(); i++) {
-    //     duck_DTO duck = gs.ducks[i];
-    //     if (duck.x < x) {
-    //         x = duck.x;
-    //     }
-    //     if (duck.y < y) {
-    //         y = duck.y;
-    //     }
-    // }
+    for (int i = 0; i < gs.ducks.size(); i++) {
+        duck_DTO duck = gs.ducks[i];
+        if (duck.x < x) {
+            x = duck.x;
+        }
+        if (duck.y < y) {
+            y = duck.y;
+        }
+    }
 
-    // int x_min = gs.ducks[0].x - 32;
-    // int y_min = gs.ducks[0].y - 32;
-    // int x_max = gs.ducks[0].x + 32;
-    // int y_max = gs.ducks[0].y + 32;
+    int x_min = gs.ducks[0].x - 32;
+    int y_min = gs.ducks[0].y - 32;
+    int x_max = gs.ducks[0].x + 32;
+    int y_max = gs.ducks[0].y + 32;
 
-    // for (const auto& duck : gs.ducks) {
-    //     x_min = std::min(x_min, duck.x - 32);
-    //     y_min = std::min(y_min, duck.y - 32);
-    //     x_max = std::max(x_max, duck.x + 32);
-    //     y_max = std::max(y_max, duck.y + 32);
-    // }
+    for (const auto& duck : gs.ducks) {
+        x_min = std::min(x_min, duck.x - 32);
+        y_min = std::min(y_min, duck.y - 32);
+        x_max = std::max(x_max, duck.x + 32);
+        y_max = std::max(y_max, duck.y + 32);
+    }
 
-    // int ducks_width = x_max - x_min;
-    // int ducks_height = y_max - y_min;
+    int ducks_width = x_max - x_min;
+    int ducks_height = y_max - y_min;
 
-    // float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
-    // float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
-    // float scale_factor = std::min(scale_factor_x, scale_factor_y);
-    // scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
+    float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
+    float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
+    float scale_factor = std::min(scale_factor_x, scale_factor_y);
+    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
 
     /*if (x*+SCREEN_WIDTH*scale_factor>SCREEN_WIDTH){
         x -= x*scale_factor+SCREEN_WIDTH*scale_factor-SCREEN_WIDTH;
@@ -194,15 +203,9 @@ void GameView::load_game(game_snapshot_t gs) {
     }*/
 
     
-    // SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
-    // SDL_RenderSetViewport(renderer.Get(), &viewport);
-    // SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
-
-    load_map();
-    load_ducks(gs);
-    load_bullets(gs);
-    load_weapons(gs);
-    renderer.Present();
+    SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_RenderSetViewport(renderer.Get(), &viewport);
+    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 }
 
 void GameView::load_weapons(game_snapshot_t gs) {
@@ -286,12 +289,5 @@ void GameView::load_ducks(game_snapshot_t gs) {
         duck_views[i].draw_duck(duck);
     }
 }
-
-
-// Función auxiliar para calcular la distancia entre dos patos
-float calculateDistance(const duck_DTO duck1, const duck_DTO duck2) {
-    return std::sqrt(std::pow(duck2.x - duck1.x, 2) + std::pow(duck2.y - duck1.y, 2));
-}
-
 
 GameView::~GameView() {}

@@ -38,11 +38,12 @@ private:
     void load_bullets(game_snapshot_t gs);
     void load_weapons(game_snapshot_t gs);
     void draw_scoreboard(score_DTO score);
+    void zoom(game_snapshot_t gs);
+    void add_ducks(game_snapshot_t gs);
 
 public:
     GameView();
     void add_map(map_structure_t map);
-    
     void load_score(score_DTO score);
     void load_endgame_score(score_DTO score);
     void load_game(game_snapshot_t gs);
