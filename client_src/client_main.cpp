@@ -18,7 +18,6 @@ int main(int argc, const char* argv[]) {
 
         Client client(argv[HOST_ARG], argv[PORT_ARG]);
         client.select_game_mode(atoi(argv[LOCAL_PLAYERS]));
-        client.receive_map();
         client.run();
         return SUCCESS;
 

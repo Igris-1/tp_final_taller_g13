@@ -1,123 +1,6 @@
-#define NUEVO_MAPA  
 #include "map_game.h"
 
 #include <iostream>
-
-
-#ifndef NUEVO_MAPA
-MapGame::MapGame(int width, int height): height(height), width(width) {}
-
-bool MapGame::hitbox_in_range(Hitbox hitbox) {
-    int hitbox_left = hitbox.get_x();
-    int hitbox_right = hitbox.get_x() + hitbox.get_width();
-    int hitbox_top = hitbox.get_y();
-    int hitbox_bottom = hitbox.get_y() + hitbox.get_height();
-
-    return (hitbox_left >= 0 && hitbox_right <= this->width && hitbox_top >= 0 &&
-            hitbox_bottom <= this->height);
-}
-
-bool MapGame::not_in_invalid_position(Hitbox hitbox) {
-    for (Hitbox invalid_position: this->invalid_positions) {
-        if (invalid_position.has_collision(hitbox)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool MapGame::not_in_platforms(Hitbox hitbox) {
-    for (Hitbox platform: this->platforms) {
-        if (platform.has_collision(hitbox)) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool MapGame::position_is_valid(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox)) {
-        return false;
-    }
-    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
-}
-
-bool MapGame::add_invalid_position(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox) && not_in_platforms(hitbox)) {
-        return false;
-    }
-    this->invalid_positions.insert(hitbox);
-    return true;
-}
-
-bool MapGame::add_platform(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox) && not_in_invalid_position(hitbox)) {
-        // std::cout << "hubo un false" << std::endl;
-        return false;
-    }
-    this->platforms.insert(hitbox);
-    return true;
-}
-
-
-bool MapGame::move_duck(std::shared_ptr<Duck> duck, int dx, int dy) {
-    Hitbox aux = duck->get_hitbox();
-    aux.move_relative(dx, dy);
-    if (position_is_valid(aux)) {
-        duck->move_relative_to(dx, dy);
-        return true;
-    }
-    return false;
-}
-
-// bool MapGame::move_bullet(BulletInterface* bullet, int dx, int dy){
-//     Hitbox aux = bullet->get_hitbox();
-//     aux.move_relative(dx, dy);
-//         if(position_is_valid(aux)){
-//             bullet->move_relative_to(dx, dy);
-//             return true;
-//         }
-//     return false;
-// }
-
-bool MapGame::can_move_hitbox(Hitbox hitbox, int dx, int dy) {
-    hitbox.move_relative(dx, dy);
-    if (position_is_valid(hitbox)) {
-        return true;
-    }
-    return false;
-}
-
-bool MapGame::set_duck_start_position(std::shared_ptr<Duck> duck, int x, int y) {
-    Hitbox aux = duck->get_hitbox();
-    aux.move(x, y);
-    if (!position_is_valid(aux)) {
-        return false;
-    }
-    duck->move_to(x, y);
-    return true;
-}
-
-
-std::vector<platform_DTO> MapGame::get_platforms_DTO() {
-    std::vector<platform_DTO> vector_platforms;
-    vector_platforms.resize(0);
-    for (Hitbox p: this->platforms) {
-        platform_DTO dto = {static_cast<uint16_t>(p.get_x()), static_cast<uint16_t>(p.get_y()),
-                            static_cast<uint16_t>(p.get_width()),
-                            static_cast<uint16_t>(p.get_height())};
-        vector_platforms.push_back(dto);
-    }
-    return vector_platforms;
-}
-
-
-#endif
-
-/*------NUEVOOOOOOOOOOOO -----------------------------------------------------------------
--------------------------MAPAAAAAAAA ---------------------------------------------------*/
-
-#ifdef NUEVO_MAPA
 
 MapGame::MapGame(int width, int height): height(height), width(width) {}
 
@@ -141,6 +24,16 @@ bool MapGame::not_in_platforms(Hitbox hitbox) {
     return true;
 }
 
+bool MapGame::not_in_boxes(Hitbox hitbox) {
+    for (auto& box : this->boxes) {
+        if (box->get_hitbox().has_collision(hitbox)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 bool MapGame::hitbox_in_range(Hitbox hitbox) {
     int hitbox_left = hitbox.get_x();
     int hitbox_right = hitbox.get_x() + hitbox.get_width();
@@ -155,7 +48,7 @@ bool MapGame::position_is_valid(Hitbox hitbox) {
     if (!hitbox_in_range(hitbox)) {
         return false;
     }
-    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
+    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox) && not_in_boxes(hitbox);
 }
 
 bool MapGame::set_duck_start_position(int id, int x, int y) {
@@ -220,10 +113,17 @@ bool MapGame::add_invalid_position(Hitbox hitbox) {
 
 bool MapGame::add_platform(Hitbox hitbox) {
     if (!hitbox_in_range(hitbox) && not_in_invalid_position(hitbox)) {
-        // std::cout << "hubo un false" << std::endl;
         return false;
     }
     this->platforms.insert(hitbox);
+    return true;
+}
+
+bool MapGame::add_box(Hitbox hitbox){
+if (!hitbox_in_range(hitbox) && not_in_invalid_position(hitbox)) {
+        return false;
+    }
+    this->boxes.push_back(std::make_shared<Box>(hitbox));
     return true;
 }
 
@@ -310,6 +210,18 @@ std::vector<platform_DTO> MapGame::get_platforms_DTO() {
     return vector_platforms;
 }
 
+std::vector<box_DTO> MapGame::get_boxes_DTO(){
+    std::vector<box_DTO> vector_boxes;
+    vector_boxes.resize(0);
+    for (auto& box : this->boxes) {
+        box_DTO dto = {static_cast<uint16_t>(box->get_x()), static_cast<uint16_t>(box->get_y()),
+                            static_cast<uint16_t>(box->get_width()),
+                            static_cast<uint16_t>(box->get_height())};
+        vector_boxes.push_back(dto);
+    }
+    return vector_boxes;
+}
+
 std::vector<bullet_DTO> MapGame::get_bullets_DTO_list() {
     std::vector<bullet_DTO> list_DTO;
     for (auto it = this->bullets.begin(); it != this->bullets.end(); it++) {
@@ -368,6 +280,21 @@ void MapGame::bullets_next_movement() {
                         this->ducks_dead[id] = duck;
                     }
                     break;
+                }
+            }
+            for(auto& box: this->boxes){
+                if (box->get_hitbox().has_collision((*bullet)->get_hitbox())) {
+                    int damage = (*bullet)->damage_generated(0);
+                    box->receive_damage(damage);
+                    if(box->is_destroyed()){
+                        if(box->get_reward()){
+                            std::shared_ptr<Weapon> weapon =  std::make_shared<Weapon>(WeaponFactory::createWeapon(this->get_bullets_list(), "random"));
+                            this->add_weapon(weapon, box->get_x(), box->get_y());
+                        }
+                        this->boxes.remove(box);
+                        bullet = bullets.erase(bullet);
+                        break;
+                    }
                 }
             }
             ++bullet;
@@ -531,5 +458,3 @@ void MapGame::clean_map(){
 int MapGame::ducks_dead_size(){
     return this->ducks_dead.size();
 }
-
-#endif

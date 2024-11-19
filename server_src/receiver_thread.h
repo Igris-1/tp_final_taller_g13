@@ -23,13 +23,7 @@ private:
     int clientId;
 
     void run() override {
-
-        int number_of_players = protocol.receive_number_of_players();
-        for (int i = 1; i < number_of_players; i++) {
-            std::shared_ptr<Action> create_duck = std::make_shared<DuckCreator>(clientId + i);
-            queue.push(create_duck);
-        }
-
+        
         while (!protocol.socket_closed() && _keep_running) {
             try {
                 action_t action = protocol.receive_action();

@@ -8,25 +8,18 @@
 #define RDWR 2
 #define QUEUE_MAX_SIZE 200
 #define STOP_CODE "q"
-#define START_CODE "f"
 
-Server::Server(const char* port, int start_size_of_games): port(port) { start(start_size_of_games); }
+Server::Server(const char* port): port(port) {}
 
 Server::~Server() {}
 
 
 
-void Server::start(int start_size_of_games) {
+void Server::start() {
     try {
         GamesManager gamesManager;
-        for(int i = 0; i < start_size_of_games; i++){
-            gamesManager.create_new_game(i);
-        }
         Acceptor acceptor(port, gamesManager);
         std::string input;
-        while (input != START_CODE) {
-            std::getline(std::cin, input);
-        }
         while (input != STOP_CODE) {
             std::getline(std::cin, input);
         }

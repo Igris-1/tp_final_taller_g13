@@ -4,7 +4,6 @@
 #include <QMessageBox>
 #include <iostream>
 #include "../client_src/client.h"
-#include "loadingwindow.h"
 
 #include "ui_newgamewindow.h"
 
@@ -16,15 +15,10 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
         address(address),
         port(port) {
     ui->setupUi(this);
-    this->loadingWindow = new LoadingWindow(this);
-    this->loadingWindow->setModal(true);
 }
 
 
 NewGameWindow::~NewGameWindow() { 
-        if (this->loadingWindow != nullptr) {
-            delete this->loadingWindow;
-        }
         delete ui; 
     }
 
@@ -59,8 +53,11 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    this->loadingWindow->exec();
+    Client client(charAddress, charPort);
+    client.setLocalPlayers(localPlayers);
+    client.select_game_mode(0);
     this->hide();
+    client.run();
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {

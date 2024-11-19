@@ -1,7 +1,6 @@
 #ifndef JOINGAME_H
 #define JOINGAME_H
 
-#include "loadingwindow.h"
 #include <QDialog>
 #include <QMediaPlayer>
 
@@ -36,8 +35,6 @@ private:
     QString address;
     QString port;
     int localPlayers;
-    LoadingWindow* loadingWindow;
-
 };
 
 #endif  // JOINGAME_H

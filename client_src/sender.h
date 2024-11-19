@@ -125,7 +125,6 @@ private:
 
     void run() override {
         try {
-            protocol.send_number_of_players(localPlayers);
             bool quit = false;
             SDL_Event e;
 
@@ -138,7 +137,7 @@ private:
                     } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
                         if (e.type == last_event.type &&
                             e.key.keysym.sym == last_event.key.keysym.sym) {
-                            // Evita procesar eventos repetidos
+                            // Evita procesar eventos repetidos seguro????
                             continue;
                         }
 
@@ -173,6 +172,18 @@ public:
     Sender(ProtocolClient& protocol, int localPlayers):
             protocol(protocol), localPlayers(localPlayers) {
         start();
+    }
+
+    void send_game_to_join(){
+        std::cout << "choose game to join" << std::endl;
+        std::string input;
+        std::getline(std::cin, input);
+        int game_id = std::stoi(input);
+        protocol.send_number_of_players(game_id);
+    }
+
+    void send_players(){
+        protocol.send_number_of_players(localPlayers);
     }
 
     ~Sender() override { _is_alive = false; }

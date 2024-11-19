@@ -1,9 +1,32 @@
 #include "box.h"
 
-// Box::Box(int id, int x, int y, Positionable reward): box_id(id), reward(reward), Positionable(x,
-// y) {
-//     this->has_reward = true;
-// }
-// Box::Box(int id, int x, int y): box_id(id), reward(0), Positionable(x, y) {
-//     this->has_reward = false;
-// }
+
+Box::Box(Hitbox hitbox): Positionable(hitbox), resistance(RESISTANCE){}
+
+void Box::receive_damage(int damage){
+    this->resistance -= damage;
+    if(this->resistance < 0){
+        this->resistance = 0;
+    }
+}
+
+bool Box::is_destroyed(){
+    return this->resistance == 0;
+}
+
+bool Box::get_reward(){
+    std::srand(std::time(0));
+    if(std::rand() % 2){
+        return true;
+    }
+    return false;
+}
+
+box_DTO Box::get_DTO(){
+    box_DTO box;
+    box.x = this->get_x();
+    box.y = this->get_y();
+    box.width = this->get_width();
+    box.height = this->get_height();
+    return box;
+}

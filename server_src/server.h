@@ -15,7 +15,7 @@ private:
     const char* port;
 
 public:
-    explicit Server(const char* port, int start_size_of_games);
-    void start(int start_size_of_games);
+    explicit Server(const char* port);
+    void start();
     ~Server();
 };

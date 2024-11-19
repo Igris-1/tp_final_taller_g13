@@ -26,7 +26,6 @@ struct game_t{
     ListOfClientsMonitor clients;
     GameThread gameThread;
 
-    // Constructor to initialize the members
     game_t(int id): game_id(id), gameQueue(), clients(),gameThread(gameQueue, clients){}
 };
 
@@ -36,14 +35,17 @@ typedef struct game_t game_thread_t;
 class GamesManager {
 private:
     std::list<std::unique_ptr<game_t>> games;
+    int games_counter = 1;
 public:
     explicit GamesManager();
 
-    void create_new_game(int game_id);
+    void create_new_game();
 
-    void add_client_to_game(int game_id, Socket&& client_socket);
+    void add_client_to_game(int game_id, Socket&& client_socket, int number_of_players);
 
     void finish_game(int game_id);
+
+    int get_game_counter();
 
     ~GamesManager();
 };

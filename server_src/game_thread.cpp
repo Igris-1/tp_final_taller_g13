@@ -31,9 +31,18 @@ void GameThread::send_snapshots() {
     instruction_for_client_t instruction;
     instruction.id = 1;
     instruction.gs = game.get_snapshot();
-    if (instruction.gs.ducks_len != 0) {
+    //if (instruction.gs.ducks_len != 0) {
         clients.enqueue_instruction(instruction);
-    }
+    //}
+}
+
+void GameThread::send_map(){
+    std::cout << "Sending map" << std::endl;
+    instruction_for_client_t instruction;
+    instruction.id = 0;
+    instruction.map = game.get_map_structure();
+    clients.enqueue_instruction(instruction);
+
 }
 
 // void GameThread::send_instructions() {
@@ -65,28 +74,50 @@ void GameThread::execute_commands() {
     }
 }
 
+void GameThread::blocking_execute_commands() {
+    std::cout << "Executing blocking commands" << std::endl;
+    std::shared_ptr<Action> c_action = gameQueue.pop();
+    c_action->execute(game);   
+}
+
 
 void GameThread::run() {
     
     try{
-    game.add_new_platform(Hitbox(0, 200, 100, 16));
-    game.add_new_platform(Hitbox(25, 350, 100, 16));
-    game.add_new_platform(Hitbox(40, 420, 100, 16));
-    game.add_new_platform(Hitbox(0, 510, 50, 16));
-    game.add_new_platform(Hitbox(200, 620, 120, 16));
+    //                          x, y, width, height
+    game.add_new_platform(Hitbox(0, 200, 200, 16));
+    game.add_new_platform(Hitbox(25, 350, 450, 16));
+    game.add_new_platform(Hitbox(40, 420, 600, 16));
+    game.add_new_platform(Hitbox(0, 510, 300, 16));
+    game.add_new_platform(Hitbox(580, 200, 200, 16));
+    game.add_new_platform(Hitbox(600, 350, 400, 16));
+    game.add_new_platform(Hitbox(200, 600, 100, 16));
+    game.add_new_platform(Hitbox(0, 600, 300, 16));
 
-    game.add_invalid_position(Hitbox(0, 690, 1366, 2));
+    game.add_invalid_position(Hitbox(0, 670, 1365, 2));
     }catch(const GameError& e){
         std::cerr << e.what() << std::endl;
     }catch(...){
         std::cerr << "Error desconocido" << std::endl;
     }
 
-    game.add_spawn_position(200, 70);
-    game.add_spawn_position(350, 210);
-
+    game.add_spawn_position(15, 180);
+    game.add_spawn_position(30, 300);
+    game.add_spawn_position(500, 350);
+    game.add_spawn_position(650, 490);
     
-    clients.send_map(game.get_map_structure());
+    game.random_weapon_spawn(false);
+    int start_flag = 0;
+
+    for (int i = 0; i < 4; i++){
+        blocking_execute_commands();
+    }
+
+    while(this->game.get_duck_DTO_list().size() < 4){
+        std::cout << "Waiting for players " << this->game.get_duck_DTO_list().size() << "/4" << std::endl;
+        usleep(SLEEP_TIME);
+    }
+    send_map();
 
     while (_keep_running) {
         try {
@@ -100,11 +131,12 @@ void GameThread::run() {
         game.continue_vertical_movements(SPEED_MOVEMENTS);
         game.continue_horizontal_movements(SPEED_MOVEMENTS);
         game.keep_shooting();
-        game.random_weapon_spawn();
+        game.random_weapon_spawn(true);
         //game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
 
         
         if(game.check_if_round_finished()){
+            send_snapshots();
             if (game.check_if_winner()){
                 std::cout << "Game finished" << std::endl;
                 send_endgame_score(); 
@@ -115,10 +147,13 @@ void GameThread::run() {
             if(this->round_counter == 0){
                 std::cout << "5th round finished" << std::endl;
                 send_game_score();
+                this->round_counter = 5;
+                // usleep(1000000);
             }
             game.reset_round();
             usleep(SLEEP_TIME);
             continue;
+        usleep(SLEEP_TIME);
         }
         send_snapshots();
 

@@ -5,17 +5,18 @@
 #define ERROR -1
 #define SUCCESS 0
 #define PORT_ARG 1
-#define REQUIRED_ARGC 3
+#define REQUIRED_ARGC 2
 
 
 int main(int argc, char* argv[]) {
     try {
         if (argc != REQUIRED_ARGC) {
+            std::cout << "Error: invalid arguments" << std::endl;
             return ERROR;
         }
-
-
-        Server server(argv[PORT_ARG], atoi(argv[2]));
+        Server server(argv[PORT_ARG]);
+        server.start();
+        std::cout << "Server started" << std::endl;
         return SUCCESS;
 
     } catch (const std::exception& e) {

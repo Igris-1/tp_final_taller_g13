@@ -24,6 +24,11 @@ private:
 
                 
                 instruction_for_client_t instruction = queue.pop();
+                if(instruction.id == 0){
+                    map_structure_t map = instruction.map;
+                    protocol.sendGameStartInfo(map);
+                }
+                else
                 if(instruction.id == 1){
                     game_snapshot_t gs = instruction.gs;
                     protocol.sendGameInfo(gs);

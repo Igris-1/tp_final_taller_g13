@@ -3,7 +3,6 @@
 #include "../client_src/client.h"
 #include <QDialog>
 #include <QMediaPlayer>
-#include "loadingwindow.h"
 
 namespace Ui {
 class NewGameWindow;
@@ -40,7 +39,6 @@ private:
     int localPlayers;
     QString address;
     QString port;
-    LoadingWindow* loadingWindow;
 };
 
 #endif  // NEWGAMEWINDOW_H

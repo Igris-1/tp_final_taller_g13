@@ -58,8 +58,8 @@ void GameView::draw_scoreboard(score_DTO score) {
 
 void GameView::load_score(score_DTO score) {
     draw_scoreboard(score);
-    SDL_Delay(7000);
     renderer.Present();
+    SDL_Delay(7000);
 }
 
 void GameView::load_endgame_score(score_DTO score) {
@@ -73,6 +73,9 @@ void GameView::load_endgame_score(score_DTO score) {
 
 void GameView::set_up_game() {
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
+
+    //background_sprites.push_back(Texture(renderer, "../assets/images/boca.jpg"));
+
 
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
 
@@ -115,6 +118,17 @@ void GameView::set_up_game() {
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
 
+
+
+    Texture loging_image(renderer, "../assets/sprites/image_6.png");
+
+
+
+    renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
+                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+
+    renderer.Present();
+
     /*duck_views.resize(gs.ducks.size(), 0);
     wing_views.resize(gs.ducks.size(), 0);
     dir.resize(gs.ducks.size(), 0);*/
@@ -129,56 +143,60 @@ void GameView::load_game(game_snapshot_t gs) {
 
     while (duck_views.size() < gs.ducks.size()) {
         for (int i = 0; i < gs.ducks.size(); i++) {
+
+            int duck_id = static_cast<int>(gs.ducks[i].duck_id);
+
             duck_DTO duck = gs.ducks[i];
-            duck_views.emplace_back(renderer, duck_sprites[duck.duck_id],
-                                    wing_sprites[duck.duck_id], weapon_sprites);
+            std::cout << "Duck id en game view: " << duck_id << std::endl;
+            duck_views.emplace_back(renderer, duck_sprites[duck_id],
+                                    wing_sprites[duck_id], weapon_sprites);
         }
     }
 
-    /*int x = gs.ducks[0].x;
-    int y = gs.ducks[0].y;
+    // int x = gs.ducks[0].x;
+    // int y = gs.ducks[0].y;
 
-    for (int i = 0; i < gs.ducks.size(); i++) {
-        duck_DTO duck = gs.ducks[i];
-        if (duck.x < x) {
-            x = duck.x;
-        }
-        if (duck.y < y) {
-            y = duck.y;
-        }
-    }
+    // for (int i = 0; i < gs.ducks.size(); i++) {
+    //     duck_DTO duck = gs.ducks[i];
+    //     if (duck.x < x) {
+    //         x = duck.x;
+    //     }
+    //     if (duck.y < y) {
+    //         y = duck.y;
+    //     }
+    // }
 
-    int x_min = gs.ducks[0].x - 32;
-    int y_min = gs.ducks[0].y - 32;
-    int x_max = gs.ducks[0].x + 32;
-    int y_max = gs.ducks[0].y + 32;
+    // int x_min = gs.ducks[0].x - 32;
+    // int y_min = gs.ducks[0].y - 32;
+    // int x_max = gs.ducks[0].x + 32;
+    // int y_max = gs.ducks[0].y + 32;
 
-    for (const auto& duck : gs.ducks) {
-        x_min = std::min(x_min, duck.x - 32);
-        y_min = std::min(y_min, duck.y - 32);
-        x_max = std::max(x_max, duck.x + 32);
-        y_max = std::max(y_max, duck.y + 32);
-    }
+    // for (const auto& duck : gs.ducks) {
+    //     x_min = std::min(x_min, duck.x - 32);
+    //     y_min = std::min(y_min, duck.y - 32);
+    //     x_max = std::max(x_max, duck.x + 32);
+    //     y_max = std::max(y_max, duck.y + 32);
+    // }
 
-    int ducks_width = x_max - x_min;
-    int ducks_height = y_max - y_min;
+    // int ducks_width = x_max - x_min;
+    // int ducks_height = y_max - y_min;
 
-    float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
-    float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
-    float scale_factor = std::min(scale_factor_x, scale_factor_y);
-    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
+    // float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
+    // float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
+    // float scale_factor = std::min(scale_factor_x, scale_factor_y);
+    // scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
 
     /*if (x*+SCREEN_WIDTH*scale_factor>SCREEN_WIDTH){
         x -= x*scale_factor+SCREEN_WIDTH*scale_factor-SCREEN_WIDTH;
     }
     if (y+SCREEN_HEIGHT*scale_factor>SCREEN_HEIGHT){
         y -= y+SCREEN_HEIGHT*scale_factor-SCREEN_HEIGHT;
-    }
+    }*/
 
     
-    SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
-    SDL_RenderSetViewport(renderer.Get(), &viewport);
-    SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);*/
+    // SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
+    // SDL_RenderSetViewport(renderer.Get(), &viewport);
+    // SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 
     load_map();
     load_ducks(gs);
@@ -251,6 +269,8 @@ void GameView::load_map() {
     Texture& backgroundTexture = background_sprites[0];
     renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2425, 1451},
                   SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+    /*renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2560, 1440},
+                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});*/
 
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];

@@ -36,7 +36,6 @@ void ClientHandler::push(instruction_for_client_t instruction) {
 // }
 
 void ClientHandler::send_map(map_structure_t map) {
-        
         protocol.sendGameStartInfo(map); 
     }
 

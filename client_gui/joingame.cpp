@@ -12,15 +12,9 @@ JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QStri
     localPlayers(1)
     { 
         ui->setupUi(this);
-        this->loadingWindow = new LoadingWindow(this);
-        this->loadingWindow->setModal(true);    
-    
     }
 
 JoinGame::~JoinGame() { 
-        if (this->loadingWindow != nullptr) {
-            delete this->loadingWindow;
-        }
         delete ui; 
     }
 
@@ -61,6 +55,5 @@ void JoinGame::on_startButton_clicked() {
     char* charAddress = byteArrayAddress.data();
 
     // aca se instancia el cliente
-    this->loadingWindow->exec();
     this->hide();
 }

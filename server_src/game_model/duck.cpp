@@ -162,17 +162,8 @@ void Duck::use_item(int x_direction, int y_direction, MapGame& map) {
     this->weapon->add_owner(shared_from_this());
     this->weapon->use();
 
-#ifndef NUEVO_MAPA
-    int recoil = this->weapon->recoil_produced();
-    if (map.can_move_hitbox(this->hitbox, (-x_direction) * recoil, -recoil)) {
-        this->hitbox.move_relative((-x_direction) * recoil, -recoil);
-    }
-#endif
-
-#ifdef NUEVO_MAPA
     int recoil = this->weapon->recoil_produced();
     map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, -recoil);
-#endif
 }
 
 

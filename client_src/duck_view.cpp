@@ -23,8 +23,6 @@ DuckView::DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_spri
     flying_frames[5] = {48, 32};
 
 
-
-
     walk_frame = 0;
     flying_frame = 0;
 }

@@ -26,6 +26,9 @@ typedef struct game_snapshot {
     uint16_t weapons_len = 0;             // 2 bytes
     std::vector<weapon_DTO> weapons;  // sizeof(item) * items_len
 
+    uint16_t boxes_len = 0;
+    std::vector<box_DTO> boxes;         // 2 bytes
+
 } game_snapshot_t;
 
 typedef struct map_structure_t {

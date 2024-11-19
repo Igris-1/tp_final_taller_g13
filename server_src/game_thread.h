@@ -22,7 +22,9 @@ private:
     int round_counter = 5;
     void send_snapshots();
     void send_game_score();
+    void send_map();
     void send_endgame_score();
+    void blocking_execute_commands();
     void send_instructions();
     void pickUpBox(const std::string& name, int box_id);
     // void move_duck(Position& position);

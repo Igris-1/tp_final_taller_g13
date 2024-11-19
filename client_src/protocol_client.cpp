@@ -21,7 +21,9 @@ ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept:
         }
 
 void ProtocolClient::send_number_of_players(int localPlayers) {
-    connection.sendall(&localPlayers, ONE_BYTE, &socket_is_closed);
+    uint8_t lp  = static_cast<uint8_t>(localPlayers);
+    std::cout << "sending number of players: " << static_cast<int>(lp) << std::endl;
+    connection.sendall(&lp, ONE_BYTE, &socket_is_closed);
 }
 
 
@@ -39,9 +41,7 @@ void ProtocolClient::send_action(action_t& action) {
 uint8_t ProtocolClient::read_number() {
 
     uint8_t buffer;
-
     connection.recvall(&buffer, sizeof(uint8_t), &socket_is_closed);
-
     return buffer;
 }
 
@@ -57,19 +57,14 @@ uint16_t ProtocolClient::read_long_number() {
 bool ProtocolClient::socket_closed() { return socket_is_closed; }
 
 map_structure_t ProtocolClient::receive_map() {
-    uint8_t protocol_code;
-    connection.recvall(&protocol_code, ONE_BYTE, &socket_is_closed);
     map_structure_t map;
-
-    if (protocol_code == 0x00) {
-        uint16_t n = read_long_number();
-        platform_DTO platform;
-        map.platforms_len = n;
-        map.platforms.resize(n);
-        for (int i = 0; i < n; i++) {
-            connection.recvall(&platform, sizeof(platform_DTO), &socket_is_closed);
-            map.platforms[i] = platform;
-        }
+    uint16_t n = read_long_number();
+    platform_DTO platform;
+    map.platforms_len = n;
+    map.platforms.resize(n);
+    for (int i = 0; i < n; i++) {
+        connection.recvall(&platform, sizeof(platform_DTO), &socket_is_closed);
+        map.platforms[i] = platform;
     }
     return map;
 }
@@ -84,12 +79,10 @@ game_snapshot_t ProtocolClient::read_snapshot() {
     game_snapshot.ducks.resize(n);
 
     int number_of_ducks = static_cast<int>(n);
-
     for (int i = 0; i < number_of_ducks; i++) {
         connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
         game_snapshot.ducks[i] = duck;  // deberia pasarse con move? para evitar copiar
     }
-
     uint16_t m = read_long_number();
     bullet_DTO bullet;
     game_snapshot.bullets_len = m;
@@ -108,7 +101,15 @@ game_snapshot_t ProtocolClient::read_snapshot() {
         connection.recvall(&weapon, sizeof(weapon_DTO), &socket_is_closed);
         game_snapshot.weapons[i] = weapon;
     }
-
+    m = read_long_number();
+    box_DTO box;
+    game_snapshot.boxes_len = m;
+    game_snapshot.boxes.resize(m);
+    int number_of_boxes = static_cast<int>(m);
+    for (int i = 0; i < number_of_boxes; i++) {
+        connection.recvall(&box, sizeof(box_DTO), &socket_is_closed);
+        game_snapshot.boxes[i] = box;
+    }
     return game_snapshot;
 }
 

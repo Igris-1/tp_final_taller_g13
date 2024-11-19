@@ -27,8 +27,8 @@ void Client::select_game_mode(int game_mode){
 }
 
 void Client::receive_map() {
-    map_structure_t map = protocol.receive_map(); //esto hay que hacer que lo haga el receiver despues
-    game_view.add_map(map);
+    // map_structure_t map = protocol.receive_map();
+    // game_view.add_map(map);
 }
 
 
@@ -42,7 +42,10 @@ void Client::run() {
             Message m(0);
 
             if (receiver_queue.try_pop(m)) {
-                if (m.get_code() == 0x01) {
+                if(m.get_code() == 0x00){
+                    map_structure_t map = m.get_map();
+                    game_view.add_map(map);
+                } else if (m.get_code() == 0x01) {
                     game_snapshot_t gs = m.get_game_snapshot();
                     game_view.load_game(gs);
                 } else if (m.get_code() == 0x02) {
@@ -53,6 +56,13 @@ void Client::run() {
                     game_view.load_endgame_score(score);
                     break;
                 }
+                else if (m.get_code() == 0x04) {
+                    sender.send_game_to_join();
+                }
+                else if(m.get_code() == 0x05){
+                    sender.send_players();
+                }
+
             }
             usleep(SLEEP_TIME_CLIENT);
         }

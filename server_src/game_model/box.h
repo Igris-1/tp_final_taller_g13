@@ -1,19 +1,24 @@
 #ifndef BOX_H
 #define BOX_H
 
+#define RESISTANCE 100
+
 #include "positionable.h"
+#include <cstdlib>
+#include <ctime> 
+#include "duck_DTO.h"
 
-// class Box: public Positionable{
-//     private:
-//     int box_id;
-//     bool has_reward;
-//     Positionable reward;
+class Box: public Positionable{
+    private:
+    int resistance;
 
-//     public:
-//     Box(int id, int x, int y, Positionable reward);
-//     Box(int id, int x, int y);
+    public:
+    Box(Hitbox hitbox);
 
-//     int get_id();
-//     bool is_a_gun();
-// };
+    void receive_damage(int damage);
+    bool is_destroyed();
+    bool get_reward();
+    box_DTO get_DTO();
+
+};
 #endif
