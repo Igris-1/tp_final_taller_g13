@@ -6,7 +6,7 @@
 #define REQUIRED_ARGC 4
 #define HOST_ARG 1
 #define PORT_ARG 2
-#define LOCAL_PLAYERS 3 // ??? 
+#define LOCAL_PLAYERS 3
 
 
 int main(int argc, const char* argv[]) {

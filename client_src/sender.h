@@ -174,6 +174,12 @@ public:
         start();
     }
 
+    // void send_game_to_join(int game_id){
+    //     std::cout << "choose game to join" << std::endl;
+    //     protocol.send_number_of_players(game_id);
+    // }
+
+
     void send_game_to_join(){
         std::cout << "choose game to join" << std::endl;
         std::string input;

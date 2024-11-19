@@ -60,6 +60,8 @@ private:
                 }
                 else if(code == 0x04){
                     Message message(code);
+                    int size = protocol.read_number();
+                    protocol.receive_games(size, message);
                     queue.push(message);
                 }
                 else if(code == 0x05){

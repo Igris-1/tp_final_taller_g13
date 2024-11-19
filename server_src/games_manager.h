@@ -12,13 +12,6 @@
 #include "game_thread.h"
 #include <memory>
 
-// typedef struct{
-//     Queue<std::shared_ptr<Action>> gameQueue;
-//     ListOfClientsMonitor clients;
-//     GameThread gameThread(gameQueue, clients);
-// }game_thread_t;
-
-
 struct game_t{
     int game_id;
     int player_count = 0;
@@ -47,7 +40,10 @@ public:
 
     int get_game_counter();
 
+    std::list<std::unique_ptr<game_t>>& get_games();
+
     ~GamesManager();
+
 };
 
 class GamesManagerError: public std::exception {

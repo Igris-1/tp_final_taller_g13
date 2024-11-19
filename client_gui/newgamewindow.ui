@@ -96,7 +96,7 @@ color: rgb(255, 255, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_1.jpeg);</string>
+        <string notr="true">border-image: url(:/assets/images/mapa_2.jpeg);</string>
        </property>
        <property name="text">
         <string/>
@@ -112,7 +112,7 @@ color: rgb(255, 255, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_1.jpeg);</string>
+        <string notr="true">border-image: url(:/assets/images/mapa_4.jpeg);</string>
        </property>
        <property name="text">
         <string/>
@@ -144,7 +144,7 @@ color: rgb(255, 255, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_1.jpeg);</string>
+        <string notr="true">border-image: url(:/assets/images/mapa_3.jpeg);</string>
        </property>
        <property name="text">
         <string/>

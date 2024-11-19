@@ -4,7 +4,8 @@
 #include <cstdint>
 #include <iostream>
 #include <vector>
-
+#include "../common_src/duck_DTO.h"
+#include "message.h"
 #include "../common_src/translator_actions.h"
 
 #define ONE_BYTE 1
@@ -52,6 +53,19 @@ uint16_t ProtocolClient::read_long_number() {
     connection.recvall(&buffer, sizeof(uint16_t), &socket_is_closed);
 
     return buffer;
+}
+
+void ProtocolClient::receive_games(int size, Message& message){
+
+    std::vector <games_DTO> available_games;
+    available_games.resize(size);
+    for(int i = 0; i < size; i++){
+        games_DTO game;
+        connection.recvall(&game, sizeof(games_DTO), &socket_is_closed);
+        available_games[i] = game;
+        std::cout << "game id: " << static_cast<int>(game.game_id) << std::endl;
+    }
+    message.set_games(available_games);
 }
 
 bool ProtocolClient::socket_closed() { return socket_is_closed; }

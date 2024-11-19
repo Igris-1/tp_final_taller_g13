@@ -6,6 +6,8 @@
 #include "../common_src/action_t.h"
 #include "../common_src/game_snapshot_t.h"
 #include "../common_src/socket.h"
+#include "../common_src/score_DTO.h"
+#include "message.h"
 
 class ProtocolClient {
 
@@ -26,6 +28,8 @@ public:
 
     uint8_t read_number();
 
+    void receive_games(int size, Message& message);
+
     uint16_t read_long_number();
 
     game_snapshot_t read_snapshot();
@@ -33,6 +37,9 @@ public:
     score_DTO read_score();
 
     map_structure_t receive_map();
+
+    // return games list
+    // std::vector<int> get_available_games();
 
     void shutDown();
 

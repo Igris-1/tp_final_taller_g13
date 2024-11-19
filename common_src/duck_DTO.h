@@ -80,5 +80,11 @@ typedef struct box_DTO {
     uint16_t height;
 }__attribute__((packed)) box_DTO;
 
+typedef struct games_DTO {
+    uint8_t game_id;
+    uint8_t max_players;
+    uint8_t current_players;
+}__attribute__((packed)) games_DTO;
+
 
 #endif  // DUCK_INFO_T_H

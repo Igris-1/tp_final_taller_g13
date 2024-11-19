@@ -57,6 +57,10 @@ GamesManager::GamesManager() {}
         return this->games_counter;
     }
 
+    std::list<std::unique_ptr<game_t>>& GamesManager::get_games(){
+        return this->games;
+    }
+
     GamesManager::~GamesManager(){
         for (auto& game : this->games) {
             game->gameThread.stop();

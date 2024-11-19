@@ -2,16 +2,19 @@
 
 #include "ui_joingame.h"
 #include <iostream>
+#include <map>
+#include <tuple>
 
 JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port) : 
     QDialog(parent), 
     ui(new Ui::JoinGame),
     player(player),
-    address(address),
-    port(port),
-    localPlayers(1)
-    { 
+    localPlayers(1) { 
         ui->setupUi(this);
+        QByteArray byteArrayPort = port.toUtf8();
+        QByteArray byteArrayAddress = address.toUtf8();
+        char* charPort = byteArrayPort.data();
+        char* charAddress = byteArrayAddress.data();
     }
 
 JoinGame::~JoinGame() { 
@@ -43,17 +46,32 @@ void JoinGame::on_matchesBox_activated() {
 
 void JoinGame::on_refreshButton_clicked() {
     // refrescar partidas del combo box
+    std::cout << "refreshButton clicked" << std::endl;
+    
+    // ui->matchesBox->clear();
+    // std::map<int, std::tuple<int,int>> matches = client.get_available_games();
+    
+    // for (const auto& match : matches) {
+    //     int id = match.first;
+    //     int currentPlayers = std::get<0>(match.second);
+    //     int maxPlayers = std::get<1>(match.second);
+
+    //     QString matchInfo = QString("ID: %1 | Players: %2/%3")
+    //                             .arg(id)
+    //                             .arg(currentPlayers)
+    //                             .arg(maxPlayers);
+        
+    //     ui->matchesBox->addItem(matchInfo);
+    // }
 }
 
 void JoinGame::on_startButton_clicked() {
     // iniciar partida
     std::cout << "startButton clicked" << std::endl;
 
-    QByteArray byteArrayPort = port.toUtf8();
-    QByteArray byteArrayAddress = address.toUtf8();
-    char* charPort = byteArrayPort.data();
-    char* charAddress = byteArrayAddress.data();
-
-    // aca se instancia el cliente
-    this->hide();
+    // this->hide();
+    // client.setLocalPlayers(localPlayers);
+    // client.select_game_mode(0);
+    // this->hide();
+    // client.run();
 }

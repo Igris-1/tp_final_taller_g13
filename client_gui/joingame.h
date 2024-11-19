@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMediaPlayer>
+#include "../client_src/client.h"
 
 namespace Ui {
 class JoinGame;
@@ -32,9 +33,8 @@ private slots:
 private:
     Ui::JoinGame* ui;
     QMediaPlayer* player;
-    QString address;
-    QString port;
     int localPlayers;
+    //Client client;
 };
 
 #endif  // JOINGAME_H

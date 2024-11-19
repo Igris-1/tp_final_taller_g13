@@ -20,6 +20,7 @@
 #include "receiver.h"
 #include "sender.h"
 #include "message.h"
+#include <vector>
 
 using namespace SDL2pp;
 
@@ -37,6 +38,8 @@ public:
     Client(const char* host, const char* port);
     void setLocalPlayers(int players);
     void select_game_mode(int gmae_mode);
+    std::vector<int> get_available_games();
+
     ~Client();
     void receive_map();
 };

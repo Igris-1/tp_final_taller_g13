@@ -26,6 +26,24 @@ void Client::select_game_mode(int game_mode){
     protocol.send_number_of_players(game_mode);
 }
 
+// std::map<int, std::tuple<int, int>> get_available_games(){
+//     // return available games
+//     // games_DTO game;
+
+
+//     // std::vector<int> games;
+//     // games[0] = game.game_id;
+//     // games[1] = game.current_players;
+//     // games[2] = game.max_players;
+
+//     // games [3] = 2;
+//     // games [4] = 4;
+//     // games [5] = 4;
+
+//     return nullptr;
+
+// }
+
 void Client::receive_map() {
     // map_structure_t map = protocol.receive_map();
     // game_view.add_map(map);

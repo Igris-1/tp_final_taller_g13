@@ -8,6 +8,7 @@
 #include "../common_src/liberror.h"
 #include "../common_src/socket.h"
 #include "actions/duck_creator.h"
+#include "../common_src/duck_DTO.h"
 
 #include "client_handler.h"
 #include "list_of_clients_monitor.h"
@@ -54,8 +55,18 @@ void Acceptor::run() {
                     uint8_t buffer2;
                     ss.recvall(&buffer2, 1, &aux);
 
+                    std::list<std::unique_ptr<game_t>>& games = this->games_manager.get_games();
+                    int size = games.size();
                     uint8_t code = 0x04;
                     ss.sendall(&code, 1, &aux);
+                    ss.sendall(&size, 1, &aux);
+                    for(auto& game : games){
+                        games_DTO game_dto;
+                        game_dto.game_id = game->game_id;
+                        game_dto.current_players = game->player_count;
+                        game_dto.max_players = 4;
+                        ss.sendall(&game_dto, sizeof(games_DTO), &aux);
+                    }
                     std::cout << "acceptor espera recibir algo" << std::endl;
                     ss.recvall(&buffer, 1, &aux);
                     std::cout << "acceptor recibio un: " << static_cast<int> (buffer) << std::endl;
