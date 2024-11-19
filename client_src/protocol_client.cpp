@@ -21,10 +21,9 @@ ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept:
         connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {
         }
 
-void ProtocolClient::send_number_of_players(int localPlayers) {
-    uint8_t lp  = static_cast<uint8_t>(localPlayers);
-    std::cout << "sending number of players: " << static_cast<int>(lp) << std::endl;
-    connection.sendall(&lp, ONE_BYTE, &socket_is_closed);
+void ProtocolClient::send_number(int number) {
+    uint8_t num  = static_cast<uint8_t>(number);
+    connection.sendall(&num, ONE_BYTE, &socket_is_closed);
 }
 
 
@@ -56,14 +55,12 @@ uint16_t ProtocolClient::read_long_number() {
 }
 
 void ProtocolClient::receive_games(int size, Message& message){
-
     std::vector <games_DTO> available_games;
     available_games.resize(size);
     for(int i = 0; i < size; i++){
         games_DTO game;
         connection.recvall(&game, sizeof(games_DTO), &socket_is_closed);
         available_games[i] = game;
-        std::cout << "game id: " << static_cast<int>(game.game_id) << std::endl;
     }
     message.set_games(available_games);
 }
@@ -83,7 +80,6 @@ map_structure_t ProtocolClient::receive_map() {
     return map;
 }
 
-
 game_snapshot_t ProtocolClient::read_snapshot() {
 
     uint8_t n = read_number();
@@ -95,7 +91,7 @@ game_snapshot_t ProtocolClient::read_snapshot() {
     int number_of_ducks = static_cast<int>(n);
     for (int i = 0; i < number_of_ducks; i++) {
         connection.recvall(&duck, sizeof(duck_DTO), &socket_is_closed);
-        game_snapshot.ducks[i] = duck;  // deberia pasarse con move? para evitar copiar
+        game_snapshot.ducks[i] = duck;
     }
     uint16_t m = read_long_number();
     bullet_DTO bullet;

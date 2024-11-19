@@ -1,7 +1,7 @@
 #ifndef PICKABLE_H
 #define PICKABLE_H
 
-#include "positionable.h"
+#include <memory>
 
 typedef enum {
     COWBOY_PISTOL_ID = 1,
@@ -11,6 +11,7 @@ typedef enum {
     ARMOR_ID,
 } ITEM_ID;
 
+class Duck;
 
 class Pickable /*: public Positionable */ {
 
@@ -24,40 +25,24 @@ protected:
     int y_direction = 0;
     bool falling = false;
 
+    std::shared_ptr<Duck> duck;    
+   // std::shared_ptr<Hitbox> hitbox;
+
 public:
     virtual void use() = 0;
+    void add_owner(std::shared_ptr<Duck> new_duck);
+   // void add_owner2(std::shared_ptr<Hitbox> new_hitbox);
 
-    void air_time_down_y() {
-        this->air_time_y--;
-        if (air_time_y == 0) {
-            falling = true;
-        }
-    }
-    void air_time_down_x() {
-        this->air_time_x--;
-        if (air_time_x == 0) {
-            moving = false;
-        }
-    }
-
-
-    bool is_falling() { return falling; }
-    bool is_moving() { return moving; }
-    void set_falling(bool falling) { this->falling = falling; }
-    void set_moving(bool moving) {
-        this->moving = moving;
-        if (moving) {
-            this->air_time_x = 300;
-        }
-    }
-    int get_air_time_y() { return this->air_time_y; }
-    int get_x_direction() { return this->x_direction; }
-    void set_direction(int x, int y) {
-        this->x_direction = x;
-        this->y_direction = y;
-        this->air_time_y = 50;
-        this->air_time_x = 300;
-    }
+    // para la caida cool
+    void air_time_down_y();
+    void air_time_down_x();
+    bool is_falling();
+    bool is_moving();
+    void set_falling(bool falling);
+    void set_moving(bool moving);
+    int get_air_time_y();
+    int get_x_direction();
+    void set_direction(int x, int y);
 
     ~Pickable() = default;
 };

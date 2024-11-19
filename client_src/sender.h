@@ -3,14 +3,13 @@
 
 #include <iostream>
 #include <map>
-
 #include <SDL2/SDL.h>
 #include <unistd.h>
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
-
 #include "protocol_client.h"
+
 #define SLEEP_TIME_SENDER 2000
 #define PLAYER_1 0
 #define PLAYER_2 1
@@ -137,7 +136,7 @@ private:
                     } else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP) {
                         if (e.type == last_event.type &&
                             e.key.keysym.sym == last_event.key.keysym.sym) {
-                            // Evita procesar eventos repetidos seguro????
+                            // Evita procesar eventos repetidos
                             continue;
                         }
 
@@ -156,9 +155,7 @@ private:
                     }
                 }
 
-                // Esperar solo si no hay eventos pendientes, reduciendo CPU sin retrasos
-                // innecesarios
-                SDL_Delay(1);  // flama
+                SDL_Delay(1);
             }
         } catch (const ClosedQueue& e) {
             stop();
@@ -174,22 +171,13 @@ public:
         start();
     }
 
-    // void send_game_to_join(int game_id){
-    //     std::cout << "choose game to join" << std::endl;
-    //     protocol.send_number_of_players(game_id);
-    // }
-
-
-    void send_game_to_join(){
-        std::cout << "choose game to join" << std::endl;
-        std::string input;
-        std::getline(std::cin, input);
+    void send_game_to_join(std::string input){
         int game_id = std::stoi(input);
-        protocol.send_number_of_players(game_id);
+        protocol.send_number(game_id);
     }
 
     void send_players(){
-        protocol.send_number_of_players(localPlayers);
+        protocol.send_number(localPlayers);
     }
 
     ~Sender() override { _is_alive = false; }

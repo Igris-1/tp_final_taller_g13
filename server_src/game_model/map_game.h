@@ -8,10 +8,13 @@
 
 #include "../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
+#include "weapon/weapons_strategy/weapon.h"
 
 #include "duck.h"
 #include "hitbox.h"
 #include "positionable.h"
+#include <list>
+
 #include "box.h"
 
 #define HEALTH 20
@@ -49,6 +52,7 @@ public:
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
+    void approximate_spawn_to_platform(int x, int &y, int width, int height);
 
     // DUCKS
     bool duck_exist(int id);
@@ -82,7 +86,6 @@ public:
     std::vector<int> get_all_duck_ids();
     int ducks_dead_size();
     void clean_map(); // tiene que recibir donde spawnea en un futuro
-
 };
 
 class MapError: public std::exception {

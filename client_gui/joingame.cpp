@@ -4,24 +4,33 @@
 #include <iostream>
 #include <map>
 #include <tuple>
+#include <memory>
 
 JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port) : 
     QDialog(parent), 
     ui(new Ui::JoinGame),
     player(player),
-    localPlayers(1) { 
+    localPlayers(1),
+    address(address),
+    port(port), 
+    client(nullptr) { 
         ui->setupUi(this);
         QByteArray byteArrayPort = port.toUtf8();
         QByteArray byteArrayAddress = address.toUtf8();
-        char* charPort = byteArrayPort.data();
-        char* charAddress = byteArrayAddress.data();
+        this->charPort = byteArrayPort.data();
+        this->charAddress = byteArrayAddress.data();
     }
 
 JoinGame::~JoinGame() { 
         delete ui; 
     }
 
+void JoinGame::on_open_join_game() {
+    this->client = std::make_shared<Client>(charAddress, charPort);
+}   
+
 void JoinGame::on_backButton_clicked() { this->close(); }
+
 
 void JoinGame::on_musicButton_clicked() {
     if (this->player->playbackState() == QMediaPlayer::PlayingState) {

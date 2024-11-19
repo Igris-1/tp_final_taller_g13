@@ -3,7 +3,7 @@
 
 #include "../bullets_strategy/bullet_interface.h"
 #include "../bullets_strategy/laser.h"
-
+#include "weapon.h"
 #include "weapon_interface.h"
 
 

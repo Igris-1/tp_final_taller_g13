@@ -18,10 +18,9 @@ public:
         return (x >= this->x && x <= this->x + this->width && y >= this->y &&
                 y <= this->y + this->height);
     }
-    bool has_collision(const Hitbox& other) {
+    bool has_collision(const Hitbox& other) const {
         return (this->x<other.x + other.width&& this->x + this->width> other.x) &&
                (this->y<other.y + other.height&& this->y + this->height> other.y);
-        // deberian ser <= y >=   ???
     }
     Hitbox& operator=(const Hitbox& other) {
         if (this != &other) {

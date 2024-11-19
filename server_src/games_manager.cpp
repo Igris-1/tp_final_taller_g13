@@ -15,21 +15,14 @@ GamesManager::GamesManager() {}
             // }
             ++it;
         }
-        std::cout << "Creating new game with id: " << this->games_counter << std::endl;
         this->games.push_back(std::make_unique<game_t>(this->games_counter));
         this->games_counter++;
     }
 
-    void GamesManager::add_client_to_game(int game_id, Socket&& client_socket, int number_of_players) {
-        std::cout << "cuantos games existen ya: " << this->games.size() << std::endl;
-        for(auto& game : this->games){
-            std::cout << "game id: " << game->game_id << std::endl;
-        }
+    void GamesManager::add_client_to_game(int game_id, Socket&& ss, int number_of_players) {
         for (auto& game : this->games) {
-            std::cout << "entramos al for "<< std::endl;
             if (game->game_id == game_id) {
-                std::cout << "join to id: " << game->game_id << std::endl;
-                game->clients.addClient(std::move(client_socket), game->gameQueue, game->player_count);
+                game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);
                 for(int i = 0; i < number_of_players; i++){
                     auto create_duck = std::make_shared<DuckCreator>(game->player_count+i);
                     game->gameQueue.push(create_duck);

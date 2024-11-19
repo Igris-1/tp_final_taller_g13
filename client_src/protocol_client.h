@@ -22,7 +22,7 @@ public:
 
     void send_action(action_t& action);
 
-    void send_number_of_players(int localPlayers);
+    void send_number(int number);
 
     bool socket_closed();
 
@@ -37,9 +37,6 @@ public:
     score_DTO read_score();
 
     map_structure_t receive_map();
-
-    // return games list
-    // std::vector<int> get_available_games();
 
     void shutDown();
 

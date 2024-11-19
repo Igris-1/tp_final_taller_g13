@@ -13,7 +13,7 @@
 #define GAME_SNAPSHOT_CODE 0x01
 #define SCORE_CODE 0x02
 #define END_SCORE_CODE 0x03
-#define JOIN_GAME_CODE 0x04
+#define GAMES_INFO_CODE 0x04
 #define PLAYERS_CODE 0x05
 
 Client::Client(const char* host, const char* port):
@@ -28,26 +28,18 @@ void Client::setLocalPlayers(int players) { localPlayers = players; }
 Client::~Client() {}
 
 void Client::select_game_mode(int game_mode){
-    protocol.send_number_of_players(game_mode);
+    protocol.send_number(game_mode);
 }
 
-// std::map<int, std::tuple<int, int>> get_available_games(){
-//     // return available games
-//     // games_DTO game;
 
-
-//     // std::vector<int> games;
-//     // games[0] = game.game_id;
-//     // games[1] = game.current_players;
-//     // games[2] = game.max_players;
-
-//     // games [3] = 2;
-//     // games [4] = 4;
-//     // games [5] = 4;
-
-//     return nullptr;
-
+// std::vector<int> Client::get_available_games() {
+    
 // }
+
+
+std::vector<games_DTO> Client::get_games_info(){
+    return games;
+}
 
 
 void Client::run() {
@@ -67,17 +59,41 @@ void Client::run() {
                     game_view.load_game(gs);
                 } else if (m.get_code() == SCORE_CODE) {
                     score_DTO score = m.get_score();
+                    std::cout << "Score received: " << std::endl;
+                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
+                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
+                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
+                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
                     game_view.load_score(score);
                 } else if (m.get_code() == END_SCORE_CODE) {
                     score_DTO score = m.get_score();
+                    std::cout << "Score received: " << std::endl;
+                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
+                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
+                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
+                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
                     game_view.load_endgame_score(score);
                     break;
                 }
-                else if (m.get_code() == JOIN_GAME_CODE) {
-                    sender.send_game_to_join();
+                else if (m.get_code() == GAMES_INFO_CODE) {
+                    std::cout << "choose game to join" << std::endl;
+                    std::string input;
+                    std::getline(std::cin, input);
+                    sender.send_game_to_join(input);
+                    //this->games = m.get_games();
+
+                    // int size = m.get_size();
+                    // this->games.resize(size);                    
+                    // std::vector <games_DTO> available_games = m.get_games();
+                    // for (int i = 0; i < size; i++){
+                    //     this->games[i].game_id = available_games[i].game_id;
+                    //     this->games[i].current_players = available_games[i].current_players;
+                    //     this->games[i].max_players = available_games[i].max_players;
+                    // }
                 }
                 else if(m.get_code() == PLAYERS_CODE){
                     sender.send_players();
+
                 }
 
             }

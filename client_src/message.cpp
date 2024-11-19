@@ -17,9 +17,13 @@ score_DTO Message::get_score(){
     return this->score;
 }
 
-std::vector <games_DTO> Message::get_games(){
+std::vector <games_DTO>& Message::get_games(){
     return this->games;
 }
+
+int Message::get_size(){
+    return this->games.size();
+};
 
 void Message::set_gs(game_snapshot_t gs){
     this->gs = gs;

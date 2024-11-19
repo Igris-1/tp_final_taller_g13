@@ -20,9 +20,18 @@ private:
 public:
     ProtocolServer(Socket&& client);
 
+    // Move Constructor
+    ProtocolServer(ProtocolServer&& other) noexcept;
+
+    // Move Assignment Operator
+    ProtocolServer& operator=(ProtocolServer&& other) noexcept;
+
+    ProtocolServer(const ProtocolServer&) = delete;
+    ProtocolServer& operator=(const ProtocolServer&) = delete;
+
     action_t receive_action();
 
-    int receive_number_of_players();
+    int receive_number();
 
     bool socket_closed();
 

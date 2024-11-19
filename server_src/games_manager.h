@@ -34,7 +34,7 @@ public:
 
     void create_new_game();
 
-    void add_client_to_game(int game_id, Socket&& client_socket, int number_of_players);
+    void add_client_to_game(int game_id, Socket&& ss, int number_of_players);
 
     void finish_game(int game_id);
 

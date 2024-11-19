@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMediaPlayer>
 #include "../client_src/client.h"
+#include <memory>
 
 namespace Ui {
 class JoinGame;
@@ -14,6 +15,8 @@ class JoinGame: public QDialog {
 
 public:
     explicit JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port);
+    void on_open_join_game();
+
     ~JoinGame();
 
 private slots:
@@ -34,7 +37,11 @@ private:
     Ui::JoinGame* ui;
     QMediaPlayer* player;
     int localPlayers;
-    //Client client;
+    QString address;
+    QString port;
+    char* charAddress;
+    char* charPort;
+    std::shared_ptr<Client> client;
 };
 
 #endif  // JOINGAME_H

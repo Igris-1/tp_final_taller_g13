@@ -2,7 +2,9 @@
 #include <algorithm> 
 #include <unistd.h>
 
-Game::Game(int height, int width): map(width, height), ducks_states(), time_to_respawn(300), actual_round(0), started_game(false) {}
+Game::Game(int height, int width): map(width, height), ducks_states(), time_to_respawn(300), actual_round(0), started_game(false) {
+
+}
 
 void Game::duck_exist(int id) {
     this->map.duck_exist(id);
@@ -31,6 +33,7 @@ void Game::run_duck(int duck_id, bool left, bool right) {
 void Game::set_duck_start_position(int id, int x, int y) {
     if (this->map.set_duck_start_position(id, x, y)) {
         ducks_states.emplace(id, std::make_shared<duck_state>());
+        this->ducks_score[id] = 0;
     }
 }
 
@@ -58,6 +61,7 @@ score_DTO Game::get_score_DTO(){
 
     if (!sorted_ducks.empty()) {
         score.first_place_id = sorted_ducks[0].first;
+        std::cout << "first place id: " << sorted_ducks[0].first;
         std::cout << "first place id score: " << sorted_ducks[0].second << std::endl;
         score.first_place_score = sorted_ducks[0].second;
         std::cout << "first place en struct: " << static_cast<int>(score.first_place_score) << std::endl;
@@ -263,6 +267,7 @@ void Game::keep_shooting() {
 }
 
 void Game::add_spawn_position(int x, int y){
+    // this->map.approximate_spawn_to_platform(x, y, 36, 18);
     this->spawn_positions.push_back(std::make_tuple(x, y));
 }
 

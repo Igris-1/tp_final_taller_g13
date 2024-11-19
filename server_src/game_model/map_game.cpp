@@ -458,3 +458,22 @@ void MapGame::clean_map(){
 int MapGame::ducks_dead_size(){
     return this->ducks_dead.size();
 }
+
+ void MapGame::approximate_spawn_to_platform(int x, int &y, int width, int height){
+    bool cond = true;
+    while(cond){
+        for(auto& platform: this->platforms){
+            const Hitbox hitbox(x, y, width, height);
+            if(platform.has_collision(hitbox)){
+                cond = false;
+                y-=10;
+                break;
+            }
+        }
+        if(!cond){
+            break;
+        }
+        // si se va de mapa?
+        y+=10;
+    }
+ }

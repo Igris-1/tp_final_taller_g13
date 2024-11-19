@@ -20,7 +20,8 @@ public:
     game_snapshot_t get_game_snapshot();
     map_structure_t get_map();
     score_DTO get_score();
-    std::vector <games_DTO> get_games();
+    std::vector <games_DTO>& get_games();
+    int get_size();
 
     void set_gs(game_snapshot_t gs);
     void set_map(map_structure_t map);

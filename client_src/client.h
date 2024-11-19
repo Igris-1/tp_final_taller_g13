@@ -32,13 +32,15 @@ private:
 
     game_snapshot_t get_snapshot();
     GameView game_view;
+    std::vector <games_DTO> games;
 
 public:
     void run();
     Client(const char* host, const char* port);
     void setLocalPlayers(int players);
-    void select_game_mode(int gmae_mode);
-    std::vector<int> get_available_games();
+    void select_game_mode(int game_mode);
+    // std::vector<int> get_available_games();
+    std::vector<games_DTO> get_games_info();
 
     ~Client();
 };

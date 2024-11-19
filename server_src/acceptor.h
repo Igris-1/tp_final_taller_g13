@@ -15,8 +15,6 @@ class Acceptor: public Thread {
 
 private:
     Socket socket;
-    // Queue<std::shared_ptr<Action>>& gameQueue;
-    // ListOfClientsMonitor& clients;
     GamesManager& games_manager;
     void run() override;
 

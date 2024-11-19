@@ -1,8 +1,6 @@
 #ifndef RECEIVER_H
 #define RECEIVER_H
 
-#include <iostream>
-
 #include <unistd.h>
 
 #include "../common_src/queue.h"
@@ -12,61 +10,80 @@
 #include "protocol_client.h"
 
 #define SLEEP_TIME 2000
+#define MAP_CODE 0x00
+#define GAME_SNAPSHOT_CODE 0x01
+#define SCORE_CODE 0x02
+#define END_SCORE_CODE 0x03
+#define GAMES_INFO_CODE 0x04
+#define PLAYERS_CODE 0x05
 
 class Receiver: public Thread {
 private:
     ProtocolClient& protocol;
     Queue<Message>& queue;
 
+    void receive_map() {
+        map_structure_t map = protocol.receive_map();
+        Message message(MAP_CODE);
+        message.set_map(map);
+        queue.push(message);
+    }
+
+    void receive_game_snapshot() {
+        game_snapshot_t gs = protocol.read_snapshot();
+        Message message(GAME_SNAPSHOT_CODE);
+        message.set_gs(gs);
+        queue.push(message);
+    }
+
+    void receive_score() {
+        score_DTO score = protocol.read_score();
+        Message message(SCORE_CODE);
+        message.set_score(score);
+        queue.push(message);
+    }
+
+    void receive_end_score() {
+        score_DTO score = protocol.read_score();
+        Message message(END_SCORE_CODE);
+        message.set_score(score);
+        queue.push(message);
+    }
+
+    void receive_game_info() {
+        Message message(GAMES_INFO_CODE);
+        int size = protocol.read_number();
+        protocol.receive_games(size, message);
+        queue.push(message);
+    }
+
+    void receive_players() {
+        Message message(PLAYERS_CODE);
+        queue.push(message);
+    }
+
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
                 
                 uint8_t code = protocol.read_number();
-                if(code == 0x00){
-                    map_structure_t map = protocol.receive_map();
-                    Message message(code);
-                    message.set_map(map);
-                    queue.push(message);
+                if(code == MAP_CODE){
+                    receive_map();
                 }
-                else if (code == 0x01) {
-                    game_snapshot_t gs = protocol.read_snapshot();
-                    Message message(code);
-                    message.set_gs(gs);
-                    queue.push(message);
+                else if (code == GAME_SNAPSHOT_CODE) {
+                    receive_game_snapshot();
                 }
-                else if(code == 0x02){
-                    score_DTO score = protocol.read_score();
-                    Message message(code);
-                    message.set_score(score);
-                    std::cout << "Score received: " << std::endl;
-                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
-                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
-                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
-                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
-                    queue.push(message);
-                    
+                else if(code == SCORE_CODE){
+                    receive_score();
                 }
-                else if(code == 0x03){
-                    score_DTO score = protocol.read_score();
-                    Message message(code);
-                    message.set_score(score);
-                    std::cout << "Endgame score received: " << std::endl;
-                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
-                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
-                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
-                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
-                    queue.push(message);
+                else if(code == END_SCORE_CODE){
+                    receive_end_score();
                 }
-                else if(code == 0x04){
-                    Message message(code);
-                    int size = protocol.read_number();
-                    protocol.receive_games(size, message);
-                    queue.push(message);
+                else if(code == GAMES_INFO_CODE){
+                    receive_game_info();
                 }
-                else if(code == 0x05){
-                    Message message(code);
-                    queue.push(message);
+                else if(code == PLAYERS_CODE){
+                    receive_players();
                 }
     
                 usleep(SLEEP_TIME);

@@ -19,7 +19,7 @@ private:
     int clientID;
 
 public:
-    ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& gameQueue, int id);
+    ClientHandler(Socket&& ss, Queue<std::shared_ptr<Action>>& gameQueue, int id);
     void push(instruction_for_client_t gs);
     void send_map(map_structure_t map);
     void push_score(score_DTO score);

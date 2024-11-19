@@ -5,8 +5,10 @@
 #include <memory>
 #include <vector>
 
-#include "../../../../common_src/duck_DTO.h"
 #include "../../pickable.h"
+#include "../../positionable.h"
+#include "../../../../common_src/duck_DTO.h"
+
 
 #include "weapon_interface.h"
 
@@ -16,7 +18,7 @@ protected:
     int recoil;
     bool reload_time;
 
-    std::shared_ptr<Duck> duck;
+    // std::shared_ptr<Duck> duck;
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;
 
@@ -37,7 +39,7 @@ public:
     int get_id();
     int recoil_produced();
     // especiales para la granada y banana
-    void add_owner(std::shared_ptr<Duck> new_duck);
+    // void add_owner(std::shared_ptr<Duck> new_duck);
     bool is_explosive();
     bool is_active();
     void activation();
@@ -46,7 +48,7 @@ public:
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
 
-    void use();
+    void use() override;
     ~Weapon();
 };
 

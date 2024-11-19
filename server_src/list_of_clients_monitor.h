@@ -20,7 +20,7 @@ private:
 public:
     ListOfClientsMonitor();
 
-    void addClient(Socket&& client, Queue<std::shared_ptr<Action>>& gameQueue, int idCount);
+    void addClient(Socket&& ss, Queue<std::shared_ptr<Action>>& gameQueue, int idCount);
 
     void enqueue_snapshot(game_snapshot_t command);
 

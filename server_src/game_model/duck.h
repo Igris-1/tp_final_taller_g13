@@ -6,12 +6,15 @@
 
 #include "../../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
-#include "weapon/weapons_strategy/weapon.h"
 #include "weapon/weapons_strategy/weapon_factory.h"
 
 #include "armor.h"
 #include "helmet.h"
 #include "positionable.h"
+
+
+class Pickable;
+class Weapon;
 
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 48
@@ -23,10 +26,8 @@ private:
     int health;
     int begin_health;
     int respawn_time = 100;
-    std::shared_ptr<Armor> armor;
-    std::shared_ptr<Helmet> helmet;
     std::shared_ptr<Weapon> weapon;
-    bool has_armour = false;
+    bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;
     std::shared_ptr<Pickable> item_in_hands;
@@ -40,9 +41,9 @@ public:
     // arma)
     std::shared_ptr<Weapon> throw_weapon();
     std::shared_ptr<Weapon> take_weapon(std::shared_ptr<Weapon> weapon);
-    std::shared_ptr<Armor> take_armor(std::shared_ptr<Armor> armor);
-    std::shared_ptr<Helmet> take_helmet(std::shared_ptr<Helmet> helmet);
 
+    void add_armor();
+    void add_helmet();
     // Weapon& get_weapon();
     // Armor& get_armor();
     // Helmet& get_helmet();
@@ -54,8 +55,6 @@ public:
     int get_respawn_time();
     void set_health(int health);
 
-    // std::vector<std::shared_ptr<BulletInterface>> fire_weapon(int x_direction, int y_direction,
-    //                                                           MapGame& map);
     void use_item(int x_direction, int y_direction, MapGame& map);
     bool is_alive();
     bool is_this_duck(int id);

@@ -5,8 +5,8 @@
 #include "actions/action.h"
 #define QUEUE_MAX_SIZE 200
 
-ClientHandler::ClientHandler(Socket&& socket, Queue<std::shared_ptr<Action>>& gameQueue, int id):
-        protocol(std::move(socket)),
+ClientHandler::ClientHandler(Socket&& ss, Queue<std::shared_ptr<Action>>& gameQueue, int id):
+        protocol(std::move(ss)),
         senderQueue(QUEUE_MAX_SIZE),
         senderThread(senderQueue, protocol),
         receiverThread(gameQueue, protocol, id),

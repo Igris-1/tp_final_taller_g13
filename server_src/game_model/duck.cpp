@@ -1,8 +1,9 @@
 #include "duck.h"
 
 #include <iostream>
-
+#include "pickable.h"
 #include "map_game.h"
+#include "weapon/weapons_strategy/weapon.h"
 
 // Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1),
 // duck_id(0) {}
@@ -10,16 +11,12 @@
 Duck::Duck(int health, int id):
         health(health),
         begin_health(health),
-        armor(nullptr),
-        helmet(nullptr),
         weapon(nullptr),
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {}
 
 void Duck::reset(){
     this->health = this->begin_health;
-    this->armor = nullptr;
-    this->helmet = nullptr;
     this->weapon = nullptr;
     //this->respawn_time = 0;
 }
@@ -29,15 +26,7 @@ std::shared_ptr<Weapon> Duck::throw_weapon() {
         return nullptr;
     }
     auto weapon_list = this->weapon->get_list();
-    return this->take_weapon(
-            nullptr);  // std::make_shared<Weapon>(WeaponFactory::createWeapon(weapon_list, ""))
-    //    if(this->weapon == nullptr){
-    //        return nullptr;
-    //    }
-    //    std::cout << "entro a throw_weapon" << std::endl;
-    //     std::shared_ptr<Weapon> aux = this->weapon;
-    //     this->weapon = std::make_shared<Weapon>(WeaponFactory::createWeapon(""));
-    //     return aux;
+    return this->take_weapon(nullptr);
 }
 
 int Duck::get_health() { return this->health; }
@@ -60,17 +49,17 @@ std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon) {
 }
 
 
-std::shared_ptr<Armor> Duck::take_armor(std::shared_ptr<Armor> armor) {
-    std::shared_ptr<Armor> aux = this->armor;
-    this->armor = armor;
-    return aux;
-}
+// std::shared_ptr<Armor> Duck::take_armor(std::shared_ptr<Armor> armor) {
+//     std::shared_ptr<Armor> aux = this->armor;
+//     this->armor = armor;
+//     return aux;
+// }
 
-std::shared_ptr<Helmet> Duck::take_helmet(std::shared_ptr<Helmet> helmet) {
-    std::shared_ptr<Helmet> aux = this->helmet;
-    this->helmet = helmet;
-    return aux;
-}
+// std::shared_ptr<Helmet> Duck::take_helmet(std::shared_ptr<Helmet> helmet) {
+//     std::shared_ptr<Helmet> aux = this->helmet;
+//     this->helmet = helmet;
+//     return aux;
+// }
 
 bool Duck::has_weapon() {
     if (this->weapon == nullptr) {
@@ -79,21 +68,26 @@ bool Duck::has_weapon() {
     return this->weapon->get_id() != 0;
 }
 
-/*Weapon& Duck::get_weapon(){
-    return this->weapon;
-}*/
+void Duck::add_armor(){
+    this->has_armor = true;
+}
 
-// Armor& Duck::get_armor(){
-//     return this->armor;
-// }
+void Duck::add_helmet(){
+    this->has_helmet = true;
+}
 
-// Helmet& Duck::get_helmet(){
-//     return this->helmet;
-// }
+
 
 bool Duck::is_alive() { return !(this->health <= 0); }
 
 void Duck::receive_damage(int damage) {
+    if(this->has_armor){
+        this->has_armor = false;
+        return;
+    }else if(this->has_helmet){
+        this->has_helmet = false;
+        return;
+    }
     this->health -= damage;
     if (this->health < 0) {
         this->health = 0;
