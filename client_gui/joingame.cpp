@@ -12,9 +12,7 @@ JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QStri
     player(player),
     localPlayers(1),
     address(address),
-    port(port) 
-    // client(nullptr) 
-    { 
+    port(port) { 
         ui->setupUi(this);
     }
 
@@ -31,27 +29,18 @@ void JoinGame::on_open_join_game() {
     char* charAddress = byteArrayAddress.data();
 
     JoinableGamesFinder dummy(charAddress, charPort);
-    std::vector <games_DTO> games_to_join = dummy.ask_for_games();
-    std::cout << "game id: " << static_cast<int>(games_to_join[0].game_id) << std::endl;
-    
-    
-    
-    // this->client = std::make_shared<Client>(charPort, charAddress);
-    // client->select_game_mode(1);
+    std::vector <games_DTO> games = dummy.ask_for_games();
 
-    // std::vector<games_DTO> games = client->get_games_info();
-    // std::cout << "Games size: " << games.size() << std::endl;
-
-    // if (!games.empty()) {
-    //     ui->matchesBox->clear();
-    //     for (const games_DTO& game : games) {
-    //         QString gameInfo = QString("Game ID: %1 | Max Players: %2 | Current Players: %3")
-    //                         .arg(game.game_id)
-    //                         .arg(game.max_players)
-    //                         .arg(game.current_players);
-    //         ui->matchesBox->addItem(gameInfo);
-    //     }
-    // }
+    if (!games.empty()) {
+        ui->matchesBox->clear();
+        for (const games_DTO& game : games) {
+            QString gameInfo = QString("Game ID: %1 | Current Players: %2 | Max Players: %3")
+                            .arg(game.game_id)
+                            .arg(game.current_players)
+                            .arg(game.max_players);
+            ui->matchesBox->addItem(gameInfo);
+        }
+    }
 }   
 
 void JoinGame::on_backButton_clicked() { this->close(); }
@@ -85,7 +74,9 @@ void JoinGame::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    Client client(charAddress, charPort, 1); //cambiar este 1 por el id de la partida que se elije para unir
+    int selectedGame = ui->matchesBox->currentIndex() + 1;
+
+    Client client(charAddress, charPort, selectedGame); //cambiar este 1 por el id de la partida que se elije para unir
     client.setLocalPlayers(localPlayers);
     client.select_game_mode(1);
     this->hide();

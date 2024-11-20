@@ -66,7 +66,7 @@ border-image: transparent;</string>
       <item row="6" column="1">
        <widget class="QPushButton" name="pushButton">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se conecta al servidor y se abre la ventana del menu del juego&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Connect to server&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="whatsThis">
          <string notr="true"/>

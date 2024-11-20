@@ -38,8 +38,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: transparent;
-background-image: transparent;
+    <string notr="true">background-image: transparent;
 border-image: transparent;</string>
    </property>
   </widget>
@@ -94,7 +93,6 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
-
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -134,7 +132,6 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
-
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -154,7 +151,6 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
-
 background-image: transparent;
 border-image: transparent;</string>
    </property>
