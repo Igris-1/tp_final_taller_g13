@@ -1,45 +1,81 @@
 #ifndef PARSER_YAML_H
 #define PARSER_YAML_H
 
-#include <yaml-cpp/yaml.h>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <yaml-cpp/yaml.h>
+#include <stdexcept>
+#include <memory>
+#include <mutex>
 
 class ParserYAML {
-    private:
-        ParserYAML() = default; 
-        YAML::Node mapConfig;
-        YAML::Node gameConfig; 
-    public:
-        static ParserYAML& getInstance() {
-            static ParserYAML instance; // Instancia única
-            return instance;
-        }
+private:
+    YAML::Node map_data;
+    YAML::Node game_data;
+    static std::mutex mtx;
 
-        void loadConfigs(const std::string& mapPath, const std::string& gamePath) {
-            try {
-                mapConfig = YAML::LoadFile(mapPath);
-                gameConfig = YAML::LoadFile(gamePath);
-                std::cout << "Archivos cargados exitosamente.\n";
-            } catch (const YAML::Exception& e) {
-                std::cerr << "Error al cargar los archivos YAML: " << e.what() << "\n";
+public:
+    ParserYAML() {}
+    ParserYAML(const ParserYAML&) = delete;
+    ParserYAML& operator=(const ParserYAML&) = delete;
+
+
+    // Método para cargar los archivos YAML
+    void load_files(const std::string& map_file, const std::string& game_file) {
+        try {
+            map_data = YAML::LoadFile(map_file);
+            game_data = YAML::LoadFile(game_file);
+        } catch (const std::exception& e) {
+            throw std::runtime_error(std::string("Error loading YAML files: ") + e.what());
+        }
+    }
+
+    int get_value_game(const std::string& path) {
+        std::istringstream stream(path);
+        std::string word;
+        YAML::Node current_node = this->game_data;
+
+        while (stream >> word) {
+            if (current_node[word]) {
+                current_node = current_node[word]; // Navegamos al siguiente nodo
+            } else {
+                return -1; // Si alguna clave no existe
             }
         }
 
-        int getValue(const std::string& key) const {
-            try{
-                return mapConfig[key].as<int>();
-            } catch (const YAML::Exception& e) {
-                try{
-                    return gameConfig[key].as<int>();
-                } catch (const YAML::Exception& e) {
-                    std::cerr << "Error al obtener el valor de la clave '" << key << "': " << e.what() << "\n";
-                    return -1;
-                }
-            }
+        if (current_node.IsScalar()) {
+            return current_node.as<int>();
+        }else {
+            return -1;
         }
-        ParserYAML(const ParserYAML&) = delete;
-        ParserYAML& operator=(const ParserYAML&) = delete;
-    };
+    }
 
+    // type_structure puede ser "platforms" , "invalid positions"
+    std::vector<std::tuple<int, int, int, int>> get_map_structure(std::string type_structure) {
+        std::vector<std::tuple<int, int, int, int>> platforms;
+        for (const auto& platform : this->map_data[type_structure]) {
+            int x = platform["x"].as<int>();
+            int y = platform["y"].as<int>();
+            int width = platform["width"].as<int>();
+            int height = platform["height"].as<int>();
+
+            platforms.emplace_back(x, y, width, height);
+        }
+        return platforms;
+    }
+
+    std::vector<std::tuple<int, int>> get_spawn_points(std::string type_item) {
+        std::vector<std::tuple<int, int>> items;
+        for (const auto& platform : this->map_data[type_item]) {
+            int x = platform["x"].as<int>();
+            int y = platform["y"].as<int>();
+            items.emplace_back(x, y);
+        }
+        return items;
+    }
+
+
+};
 
 #endif // PARSER_YAML_H

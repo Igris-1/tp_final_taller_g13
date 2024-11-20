@@ -27,8 +27,6 @@ private slots:
 
     void on_player2Button_clicked();
 
-    void on_matchesBox_activated();
-    
     void on_refreshButton_clicked();
 
     void on_startButton_clicked();
@@ -39,8 +37,6 @@ private:
     int localPlayers;
     QString address;
     QString port;
-    char* charAddress;
-    char* charPort;
     std::shared_ptr<Client> client;
 };
 

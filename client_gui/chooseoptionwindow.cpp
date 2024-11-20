@@ -36,6 +36,7 @@ ChooseOptionWindow::~ChooseOptionWindow() {
 
 void ChooseOptionWindow::on_joinGameButton_clicked() {
     this->hide();
+    this->joinGame->on_open_join_game();
     this->joinGame->exec();
     this->show();
 }

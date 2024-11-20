@@ -2,9 +2,8 @@
 
 #include "ui_joingame.h"
 #include <iostream>
-#include <map>
-#include <tuple>
 #include <memory>
+#include "../common_src/duck_DTO.h"
 
 JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port) : 
     QDialog(parent), 
@@ -15,10 +14,6 @@ JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QStri
     port(port), 
     client(nullptr) { 
         ui->setupUi(this);
-        QByteArray byteArrayPort = port.toUtf8();
-        QByteArray byteArrayAddress = address.toUtf8();
-        this->charPort = byteArrayPort.data();
-        this->charAddress = byteArrayAddress.data();
     }
 
 JoinGame::~JoinGame() { 
@@ -26,7 +21,28 @@ JoinGame::~JoinGame() {
     }
 
 void JoinGame::on_open_join_game() {
-    this->client = std::make_shared<Client>(charAddress, charPort);
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    this->client = std::make_shared<Client>(charPort, charAddress);
+    client->select_game_mode(1);
+
+
+    std::vector<games_DTO> games = client->get_games_info();
+    std::cout << "Games size: " << games.size() << std::endl;
+
+    if (!games.empty()) {
+        ui->matchesBox->clear();
+        for (const games_DTO& game : games) {
+            QString gameInfo = QString("Game ID: %1 | Max Players: %2 | Current Players: %3")
+                            .arg(game.game_id)
+                            .arg(game.max_players)
+                            .arg(game.current_players);
+            ui->matchesBox->addItem(gameInfo);
+        }
+    }
 }   
 
 void JoinGame::on_backButton_clicked() { this->close(); }
@@ -48,39 +64,26 @@ void JoinGame::on_player2Button_clicked() {
     }
 }
 
-void JoinGame::on_matchesBox_activated() {
-    // elegir una partida
-    std::cout << "matchesBox clicked" << std::endl;
-}
-
 void JoinGame::on_refreshButton_clicked() {
     // refrescar partidas del combo box
     std::cout << "refreshButton clicked" << std::endl;
-    
-    // ui->matchesBox->clear();
-    // std::map<int, std::tuple<int,int>> matches = client.get_available_games();
-    
-    // for (const auto& match : matches) {
-    //     int id = match.first;
-    //     int currentPlayers = std::get<0>(match.second);
-    //     int maxPlayers = std::get<1>(match.second);
-
-    //     QString matchInfo = QString("ID: %1 | Players: %2/%3")
-    //                             .arg(id)
-    //                             .arg(currentPlayers)
-    //                             .arg(maxPlayers);
-        
-    //     ui->matchesBox->addItem(matchInfo);
-    // }
 }
 
 void JoinGame::on_startButton_clicked() {
     // iniciar partida
     std::cout << "startButton clicked" << std::endl;
 
-    // this->hide();
-    // client.setLocalPlayers(localPlayers);
-    // client.select_game_mode(0);
-    // this->hide();
-    // client.run();
+    int index = ui->matchesBox->currentIndex();
+
+    //levantar un error si index es -1
+
+    if (index != -1) {
+        client->setLocalPlayers(localPlayers);
+
+        std::cout << "Selected game: " << ui->matchesBox->currentIndex() << std::endl;
+
+        client->select_game(ui->matchesBox->currentIndex());
+        this->hide();
+        client->run();
+    }
 }

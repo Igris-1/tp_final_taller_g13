@@ -40,6 +40,7 @@ public:
     void setLocalPlayers(int players);
     void select_game_mode(int game_mode);
     // std::vector<int> get_available_games();
+    void select_game(int game_id);
     std::vector<games_DTO> get_games_info();
 
     ~Client();

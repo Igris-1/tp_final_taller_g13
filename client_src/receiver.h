@@ -2,6 +2,7 @@
 #define RECEIVER_H
 
 #include <unistd.h>
+#include <iostream>
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
@@ -59,6 +60,7 @@ private:
 
     void receive_players() {
         Message message(PLAYERS_CODE);
+        std::cout << "encolo soliciutd d players en la queue" << std::endl;
         queue.push(message);
     }
 
@@ -83,7 +85,9 @@ private:
                     receive_game_info();
                 }
                 else if(code == PLAYERS_CODE){
+                    std::cout << "Recibiendo players en receiver" << std::endl;
                     receive_players();
+                    std::cout << "Recibido los players en receiver" << std::endl;
                 }
     
                 usleep(SLEEP_TIME);

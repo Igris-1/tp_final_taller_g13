@@ -11,19 +11,13 @@ platforms:
 invalid_positions:
   - {x: 0, y: 430, width: 820, height: 2}
 
-weapons_on_map:
-  - {type: "cowboy", x: 50, y: 150}
-  - {type: "laser_rifle", x: 150, y: 150}
-  - {type: "laser_rifle", x: 250, y: 150}
-  - {type: "cowboy", x: 350, y: 150}
-
-weapon_spawn_points:
+weapons:
   - {x: 100, y: 300}
   - {x: 200, y: 200}
   - {x: 400, y: 250}
   - {x: 600, y: 150}
 
-ducks_start_positions:
+ducks:
   - {x: 120, y: 340}
   - {x: 300, y: 210}
   - {x: 500, y: 120}

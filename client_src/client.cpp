@@ -21,6 +21,7 @@ Client::Client(const char* host, const char* port):
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view() {
+            std::cout << "game size " << games.size() << std::endl;
 }
 
 void Client::setLocalPlayers(int players) { localPlayers = players; }
@@ -36,9 +37,14 @@ void Client::select_game_mode(int game_mode){
     
 // }
 
+void Client::select_game(int game_id){
+    protocol.send_number(game_id);
+}
+
 
 std::vector<games_DTO> Client::get_games_info(){
-    return games;
+    
+    return this->games;
 }
 
 
@@ -77,22 +83,24 @@ void Client::run() {
                 }
                 else if (m.get_code() == GAMES_INFO_CODE) {
                     std::cout << "choose game to join" << std::endl;
-                    std::string input;
-                    std::getline(std::cin, input);
-                    sender.send_game_to_join(input);
-                    //this->games = m.get_games();
-
-                    // int size = m.get_size();
-                    // this->games.resize(size);                    
-                    // std::vector <games_DTO> available_games = m.get_games();
-                    // for (int i = 0; i < size; i++){
-                    //     this->games[i].game_id = available_games[i].game_id;
-                    //     this->games[i].current_players = available_games[i].current_players;
-                    //     this->games[i].max_players = available_games[i].max_players;
-                    // }
+                    // std::string input;
+                    // std::getline(std::cin, input);
+                    // sender.send_game_to_join(input);
+                    
+                    int size = m.get_size();
+                    this->games.resize(size);                    
+                    std::vector <games_DTO> available_games = m.get_games();
+                    std::cout << "choose game to join2" << std::endl;
+                    for (int i = 0; i < size; i++){
+                        this->games[i].game_id = available_games[i].game_id;
+                        this->games[i].current_players = available_games[i].current_players;
+                        this->games[i].max_players = available_games[i].max_players;
+                    }
                 }
                 else if(m.get_code() == PLAYERS_CODE){
+                    std::cout << "players sending" << std::endl;
                     sender.send_players();
+                    std::cout << "players sent" << std::endl;
 
                 }
 

@@ -11,7 +11,7 @@ ducks_config:
   add_factor_gravity: 8 # linear speed of the duck when falling
   speed_of_game: 10 # speed of the duck when moving
 
-weapons_config:
+weapon:
   grenade:
     shot: 1
     damage: 20

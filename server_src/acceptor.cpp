@@ -38,7 +38,7 @@ void Acceptor::run() {
             uint8_t buffer;
             bool aux;
             ss.recvall(&buffer, 1, &aux);
-            std::cout << "acceptor recibio un: " << static_cast<int> (buffer) << std::endl;
+            std::cout << "acceptor recibio un codigo: " << static_cast<int> (buffer) << std::endl;
             if(buffer == NEW_GAME){
                 this->games_manager.create_new_game();
                 std::cout << "acceptor creando nueva partida" << std::endl;
@@ -46,17 +46,19 @@ void Acceptor::run() {
                 ss.sendall(&code2, 1, &aux);
                 ss.recvall(&buffer, 1, &aux);
                 this->games_manager.add_client_to_game(this->games_manager.get_game_counter() - 1, std::move(ss), buffer);
-                std::cout << "acceptor agregando cliente a partida" << std::endl;
+                
             }else{  
                 try{
+                    std::cout << "en join to new game" << std::endl;
                     //this->games_manager.create_new_game(static_cast<int> (buffer));
                     uint8_t code2 = 0x05;
                     ss.sendall(&code2, 1, &aux);
                     uint8_t buffer2;
                     ss.recvall(&buffer2, 1, &aux);
-
+                    std::cout << "recibo cant d players" << std::endl;
                     std::list<std::unique_ptr<game_t>>& games = this->games_manager.get_games();
                     int size = games.size();
+                    std::cout << "game sizes: " << games.size() << std::endl;
                     uint8_t code = 0x04;
                     ss.sendall(&code, 1, &aux);
                     ss.sendall(&size, 1, &aux);
@@ -65,6 +67,7 @@ void Acceptor::run() {
                         game_dto.game_id = game->game_id;
                         game_dto.current_players = game->player_count;
                         game_dto.max_players = 4;
+                        std::cout << "envio un game_dto" << std::endl;
                         ss.sendall(&game_dto, sizeof(games_DTO), &aux);
                     }
                     std::cout << "acceptor espera recibir algo" << std::endl;
