@@ -171,8 +171,8 @@ public:
         start();
     }
 
-    void send_game_to_join(std::string input){
-        int game_id = std::stoi(input);
+    void send_game_to_join(int game_id){
+        //int game_id = std::stoi(input);
         protocol.send_number(game_id);
     }
 

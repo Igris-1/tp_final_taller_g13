@@ -27,6 +27,7 @@ using namespace SDL2pp;
 class Client{
 private:
     int localPlayers;
+    uint8_t game_to_join;
     ProtocolClient protocol;
     Queue<Message> receiver_queue;
 
@@ -36,7 +37,7 @@ private:
 
 public:
     void run();
-    Client(const char* host, const char* port);
+    Client(const char* host, const char* port, uint8_t game_id);
     void setLocalPlayers(int players);
     void select_game_mode(int game_mode);
     // std::vector<int> get_available_games();

@@ -15,7 +15,7 @@ int main(int argc, const char* argv[]) {
             return ERROR;
         }
 
-        Client client(argv[HOST_ARG], argv[PORT_ARG]);
+        Client client(argv[HOST_ARG], argv[PORT_ARG], 0);
         client.select_game_mode(atoi(argv[LOCAL_PLAYERS]));
         client.run();
         return SUCCESS;

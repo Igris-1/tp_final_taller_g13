@@ -53,7 +53,7 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    Client client(charAddress, charPort);
+    Client client(charAddress, charPort, 0);
     client.setLocalPlayers(localPlayers);
     client.select_game_mode(0);
     this->hide();

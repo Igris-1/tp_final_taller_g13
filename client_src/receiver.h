@@ -58,9 +58,14 @@ private:
         queue.push(message);
     }
 
-    void receive_players() {
+    void send_players() {
         Message message(PLAYERS_CODE);
         std::cout << "encolo soliciutd d players en la queue" << std::endl;
+        queue.push(message);
+    }
+
+    void send_players_and_game_id(){
+        Message message(0x06);
         queue.push(message);
     }
 
@@ -85,9 +90,10 @@ private:
                     receive_game_info();
                 }
                 else if(code == PLAYERS_CODE){
-                    std::cout << "Recibiendo players en receiver" << std::endl;
-                    receive_players();
-                    std::cout << "Recibido los players en receiver" << std::endl;
+                    send_players();
+                }
+                else if(code == 0x06){
+                    send_players_and_game_id();
                 }
     
                 usleep(SLEEP_TIME);

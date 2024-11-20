@@ -16,12 +16,13 @@
 #define GAMES_INFO_CODE 0x04
 #define PLAYERS_CODE 0x05
 
-Client::Client(const char* host, const char* port):
+Client::Client(const char* host, const char* port, uint8_t game_id):
         localPlayers(LOCAL_PLAYERS),
         protocol(Socket(host, port)),
         receiver_queue(),
         game_view()
         {
+            game_to_join = game_id;
             std::cout << "game size " << games.size() << std::endl;
 }
 
@@ -80,10 +81,11 @@ void Client::run() {
                 }
                 else if (m.get_code() == GAMES_INFO_CODE) {
                     
-                    std::cout << "choose game to join" << std::endl;
+                    std::cout << "no deberia entrar aca" << std::endl;
+                    continue;
                     std::string input;
                     std::getline(std::cin, input);
-                    sender.send_game_to_join(input);
+                    //sender.send_game_to_join(input);
                     
                     // int size = m.get_size();
                     // this->games.resize(size);                    
@@ -99,6 +101,10 @@ void Client::run() {
                     std::cout << "players sending" << std::endl;
                     sender.send_players();
                     std::cout << "players sent" << std::endl;
+                }
+                else if(m.get_code() == 0x06){
+                    sender.send_players();
+                    sender.send_game_to_join(this->game_to_join);
                 }
 
             }

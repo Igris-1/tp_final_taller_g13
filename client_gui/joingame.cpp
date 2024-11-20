@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include "../common_src/duck_DTO.h"
+#include "../client_src/joinable_games_finder.h"
 
 JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port) : 
     QDialog(parent), 
@@ -22,11 +23,19 @@ JoinGame::~JoinGame() {
     }
 
 void JoinGame::on_open_join_game() {
-    // QByteArray byteArrayPort = port.toUtf8();
-    // QByteArray byteArrayAddress = address.toUtf8();
-    // char* charPort = byteArrayPort.data();
-    // char* charAddress = byteArrayAddress.data();
+    std::cout << "open_join_game" << std::endl;
 
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    JoinableGamesFinder dummy(charAddress, charPort);
+    std::vector <games_DTO> games_to_join = dummy.ask_for_games();
+    std::cout << "game id: " << static_cast<int>(games_to_join[0].game_id) << std::endl;
+    
+    
+    
     // this->client = std::make_shared<Client>(charPort, charAddress);
     // client->select_game_mode(1);
 
@@ -76,7 +85,7 @@ void JoinGame::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    Client client(charAddress, charPort);
+    Client client(charAddress, charPort, 1); //cambiar este 1 por el id de la partida que se elije para unir
     client.setLocalPlayers(localPlayers);
     client.select_game_mode(1);
     this->hide();
