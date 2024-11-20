@@ -113,22 +113,6 @@ void Game::continue_horizontal_movements(int count) {
     for (int j = 0; j < (count * 3); j++) {
         this->map.inertia_weapon();
     }
-    // for(int j=0; j< (count * 3); j++){
-    //         for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ) {
-    //             if((*it)->is_moving() && (*it)->get_x_direction() > 0 &&
-    //             this->map.can_move_hitbox((*it)->get_hitbox(),RIGHT_MOVEMENT,0)){
-    //                 (*it)->air_time_down_x();
-    //                 (*it)->move_relative_to(RIGHT_MOVEMENT, 0);
-    //             }
-    //             else if((*it)->is_moving() && (*it)->get_x_direction() < 0 &&
-    //             this->map.can_move_hitbox((*it)->get_hitbox(),LEFT_MOVEMENT, 0)){
-    //                 (*it)->air_time_down_x();
-    //                 (*it)->move_relative_to(LEFT_MOVEMENT,0);
-    //             }
-
-    //             ++it;
-    //         }
-    // }
 }
 
 void Game::continue_vertical_movements(int count) {
@@ -172,25 +156,6 @@ void Game::continue_vertical_movements(int count) {
     for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
         this->map.gravity_weapon();
     }
-    // for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
-    //   for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
-
-    // for (auto it = weapons_on_map.begin(); it != weapons_on_map.end(); ){
-    //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
-    //         (*it)->air_time_down_y();
-    //         if(!(*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0,
-    //         JUMP_DIRECTION)){//
-
-    //             (*it)->move_relative_to(0, JUMP_DIRECTION);
-    //             continue;
-    //         }
-    //         if((*it)->is_falling() && this->map.can_move_hitbox((*it)->get_hitbox(),0, GRAVITY)){
-    //             std::cout << "se cae" << std::endl;
-    //             (*it)->move_relative_to(0, GRAVITY);
-    //         }
-    //     }
-    //     ++it;
-    // }
 }
 
 void Game::stop_run_duck(int id, bool stop_left, bool stop_right) {

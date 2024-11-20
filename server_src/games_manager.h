@@ -40,6 +40,8 @@ public:
 
     int get_game_counter();
 
+    void add_client_to_random_game(Socket&& ss, int number_of_players);
+
     std::list<std::unique_ptr<game_t>>& get_games();
 
     ~GamesManager();

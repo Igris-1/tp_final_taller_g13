@@ -12,7 +12,7 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
-    this->joinGame = new JoinGame(nullptr, this->player, port, address);
+    this->joinGame = new JoinGame(nullptr, this->player, address, port);
     this->newGameWindow = new NewGameWindow(nullptr, this->player, address, port);
     this->aboutWindow = new AboutWindow(nullptr);
 

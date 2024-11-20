@@ -34,6 +34,21 @@ GamesManager::GamesManager() {}
         throw GamesManagerError("Game not found");
     }
 
+    void GamesManager::add_client_to_random_game(Socket&& ss, int number_of_players) {
+        for (auto& game : this->games) {
+            if (game->player_count+number_of_players <= 4) {
+                game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);
+                for(int i = 0; i < number_of_players; i++){
+                    auto create_duck = std::make_shared<DuckCreator>(game->player_count+i);
+                    game->gameQueue.push(create_duck);
+                }
+                game->player_count += number_of_players;
+                return;
+            }
+        }
+        throw GamesManagerError("Game not found");
+    }    
+
     void GamesManager::finish_game(int game_id) {
         for (auto it = this->games.begin(); it != this->games.end(); ++it) {
             if ((*it)->game_id == game_id) {

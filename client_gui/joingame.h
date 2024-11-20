@@ -37,7 +37,7 @@ private:
     int localPlayers;
     QString address;
     QString port;
-    std::shared_ptr<Client> client;
+    // std::shared_ptr<Client> client;
 };
 
 #endif  // JOINGAME_H

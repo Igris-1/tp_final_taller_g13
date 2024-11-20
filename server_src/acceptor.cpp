@@ -55,25 +55,25 @@ void Acceptor::run() {
                     ss.sendall(&code2, 1, &aux);
                     uint8_t buffer2;
                     ss.recvall(&buffer2, 1, &aux);
-                    std::cout << "recibo cant d players" << std::endl;
-                    std::list<std::unique_ptr<game_t>>& games = this->games_manager.get_games();
-                    int size = games.size();
-                    std::cout << "game sizes: " << games.size() << std::endl;
-                    uint8_t code = 0x04;
-                    ss.sendall(&code, 1, &aux);
-                    ss.sendall(&size, 1, &aux);
-                    for(auto& game : games){
-                        games_DTO game_dto;
-                        game_dto.game_id = game->game_id;
-                        game_dto.current_players = game->player_count;
-                        game_dto.max_players = 4;
-                        std::cout << "envio un game_dto" << std::endl;
-                        ss.sendall(&game_dto, sizeof(games_DTO), &aux);
-                    }
-                    std::cout << "acceptor espera recibir algo" << std::endl;
-                    ss.recvall(&buffer, 1, &aux);
-                    std::cout << "acceptor recibio un: " << static_cast<int> (buffer) << std::endl;
-                    this->games_manager.add_client_to_game(static_cast<int> (buffer), std::move(ss), buffer2);
+                    std::cout << "recibo cant d players" << buffer2 << std::endl;
+                    // std::list<std::unique_ptr<game_t>>& games = this->games_manager.get_games();
+                    // int size = games.size();
+                    // std::cout << "game sizes: " << games.size() << std::endl;
+                    // uint8_t code = 0x04;
+                    // ss.sendall(&code, 1, &aux);
+                    // ss.sendall(&size, 1, &aux);
+                    // for(auto& game : games){
+                    //     games_DTO game_dto;
+                    //     game_dto.game_id = game->game_id;
+                    //     game_dto.current_players = game->player_count;
+                    //     game_dto.max_players = 4;
+                    //     std::cout << "envio un game_dto" << std::endl;
+                    //     ss.sendall(&game_dto, sizeof(games_DTO), &aux);
+                    // }
+                    // std::cout << "acceptor espera recibir algo" << std::endl;
+                    // ss.recvall(&buffer, 1, &aux);
+                    //std::cout << "acceptor recibio un game id: " << static_cast<int> (buffer) << std::endl;
+                    this->games_manager.add_client_to_random_game(std::move(ss), buffer2);
                     std::cout << "acceptor agregando cliente a partida existente" << std::endl;
                 }catch(const GamesManagerError& e){
                     ss.shutdown(SHUT_DOWN_TWO);
@@ -81,12 +81,6 @@ void Acceptor::run() {
                     continue;
                 }
             }
-
-            //clients.addClient(std::move(ss), gameQueue, idCount);
-
-            //std::shared_ptr<Action> create_duck = std::make_shared<DuckCreator>(idCount);
-            //gameQueue.push(create_duck);
-            //idCount = idCount + 2;
         }
     } catch (const LibError& e) {
         stop();

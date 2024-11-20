@@ -18,7 +18,7 @@ class Sender: public Thread {
 private:
     ProtocolClient& protocol;
     SDL_Event last_event;
-    int localPlayers;
+    int localPlayers = 2;
     std::map<SDL_Keycode, int> key_player = {{SDLK_a, PLAYER_1},      {SDLK_d, PLAYER_1},
                                              {SDLK_SPACE, PLAYER_1},  {SDLK_f, PLAYER_1},
                                              {SDLK_g, PLAYER_1},      {SDLK_LEFT, PLAYER_2},
@@ -147,7 +147,7 @@ private:
                         if (key_player.count(e.key.keysym.sym) > 0) {
                             if (key_player[e.key.keysym.sym] == PLAYER_1) {
                                 map_key_to_action_1(e, action);
-                            } else {
+                            } else if (key_player[e.key.keysym.sym] == PLAYER_2 && localPlayers == 2) {
                                 map_key_to_action_2(e, action);
                             }
                             protocol.send_action(action);

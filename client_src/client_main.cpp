@@ -11,7 +11,6 @@
 
 int main(int argc, const char* argv[]) {
     try {
-
         if (argc != REQUIRED_ARGC) {
             return ERROR;
         }
