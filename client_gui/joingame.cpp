@@ -2,6 +2,7 @@
 
 #include "ui_joingame.h"
 #include <iostream>
+#include <QMessageBox>
 #include <memory>
 #include "../common_src/duck_DTO.h"
 #include "../client_src/joinable_games_finder.h"
@@ -47,6 +48,8 @@ void JoinGame::on_backButton_clicked() { this->close(); }
 
 
 void JoinGame::on_musicButton_clicked() {
+    std::cout << "musicButton clicked" << std::endl;
+
     if (this->player->playbackState() == QMediaPlayer::PlayingState) {
         this->player->pause();
     } else {
@@ -55,6 +58,8 @@ void JoinGame::on_musicButton_clicked() {
 }
 
 void JoinGame::on_player2Button_clicked() {
+    std::cout << "player2Button clicked" << std::endl;
+
     if (ui->player2Button->isChecked()) {
         localPlayers = 2;
     } else {
@@ -74,11 +79,14 @@ void JoinGame::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    int selectedGame = ui->matchesBox->currentIndex() + 1;
+    int selectedGame = ui->matchesBox->currentIndex();
 
-    Client client(charAddress, charPort, selectedGame); //cambiar este 1 por el id de la partida que se elije para unir
-    client.setLocalPlayers(localPlayers);
-    client.select_game_mode(1);
-    this->hide();
-    client.run();
+    if (selectedGame > -1) {
+        this->player->stop();
+        Client client(charAddress, charPort, selectedGame + 1);
+        client.setLocalPlayers(localPlayers);
+        client.select_game_mode(1);
+        this->hide();
+        client.run();
+    }
 }

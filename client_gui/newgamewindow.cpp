@@ -25,6 +25,8 @@ NewGameWindow::~NewGameWindow() {
 void NewGameWindow::on_backButton_clicked() { this->close(); }
 
 void NewGameWindow::on_musicButton_clicked() {
+    std::cout << "musicButton clicked" << std::endl;
+
     if (this->player->playbackState() == QMediaPlayer::PlayingState) {
         this->player->pause();
     } else {
@@ -38,6 +40,8 @@ void NewGameWindow::on_selectPlayers_activated() {
 }
 
 void NewGameWindow::on_player2Button_clicked() {
+    std::cout << "player2Button clicked" << std::endl;
+
     if (ui->player2Button->isChecked()) {
         localPlayers = 2;
     } else {
@@ -53,6 +57,7 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
+    this->player->stop();
     Client client(charAddress, charPort, 0);
     client.setLocalPlayers(localPlayers);
     client.select_game_mode(0);
