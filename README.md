@@ -12,10 +12,9 @@ Para correr este programa, es necesario instalar las siguientes dependencias:
 ## Instrucciones para Ejecutar
 
 1. Clona el repositorio y navega a la carpeta del proyecto.
-2. Ejecuta `cmake .` para generar los archivos de construcción.
-3. Ejecuta `make` para compilar el proyecto.
-4. Navega a la carpeta `build` y ejecuta los siguientes comandos en terminales separadas:
-
+2. Ejecuta `make` para compilar el proyecto.
+3. Navega a la carpeta `build` y ejecuta los siguientes comandos en terminales separadas:
+   
    - Para iniciar el servidor:
      ```sh
      ./server 8080
@@ -25,6 +24,7 @@ Para correr este programa, es necesario instalar las siguientes dependencias:
      ```sh
      ./client_qt
      ```
+> El server se puede levantar en cualquier puerto y el cliente por default se autocompleta con puerto 8080 e ip localhost, ambos modificables
 
 ## Estructura del Proyecto
 
