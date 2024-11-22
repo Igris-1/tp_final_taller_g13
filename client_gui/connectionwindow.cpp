@@ -44,6 +44,7 @@ void ConnectionWindow::on_pushButton_clicked() {
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
         QMessageBox msgBox;
+        msgBox.setModal(true);
         msgBox.setWindowTitle("Error");
         msgBox.setText("Error joining server");
         msgBox.setStyleSheet("QMessageBox { background-color: gray; border: 1px solid gray; }");
