@@ -98,6 +98,7 @@ install_dependencies() {
       echo -e "${BLUE}Detected Ubuntu/Debian-based system...${NC}"
       sudo sh -c '
         apt-get install -y cmake
+        sudo apt-get install -y libyaml-cpp-dev
         apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
         apt-get install -y qt6-base-dev qt6-multimedia
       ' | while IFS= read -r line; do
@@ -108,6 +109,7 @@ install_dependencies() {
       sudo sh -c '
         pacman -Syu --noconfirm
         pacman -S --noconfirm cmake
+        sudo pacman -S yaml-cpp
         pacman -S --noconfirm sdl2 sdl2_image sdl2_mixer sdl2_ttf
         pacman -S --noconfirm qt6-base qt6-multimedia
       ' | while IFS= read -r line; do

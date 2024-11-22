@@ -32,7 +32,8 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_MIXER
 include(cmake/CompilerWarnings.cmake)
 
 # Biblioteca común
-file(GLOB COMMON_SOURCES "common_src/*.cpp")
+file(GLOB COMMON_SOURCES "common_src/*.cpp" "configuration_yaml/*.cpp")
+
 add_library(common_lib STATIC ${COMMON_SOURCES})
 target_include_directories(common_lib PUBLIC common_src)
 
@@ -57,7 +58,7 @@ if (CLIENT_GUI)
     find_package(Qt6 COMPONENTS Widgets REQUIRED)
     find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
-    set(CLIENT_GUI_EXECUTABLE client_qt)
+    set(CLIENT_GUI_EXECUTABLE client_gui)
     set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
 
     file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")
@@ -80,7 +81,6 @@ endif()
 if (SERVER)
     set(SERVER_EXECUTABLE server)
     file(GLOB SERVER_SOURCES
-        "configuration_yaml/*.cpp"
         "server_src/*.cpp"
         "server_src/game_model/*.cpp"
         "server_src/actions/*.cpp"
@@ -107,3 +107,17 @@ endif()
 if (TESTS)
     add_subdirectory(tests_src)
 endif()
+
+
+# ---------------- INSTALL SECTION ----------------
+# set(BIN_INSTALL_DIR "/usr/bin")
+# set(SHARED_DIR "/usr/lib/TPDuckGame")
+
+# set(CONF_INSTALL_DIR "/etc/TPDuckGame")
+# set(VAR_INSTALL_DIR "/var/TPDuckGame")
+
+# install(TARGETS client server DESTINATION ${BIN_INSTALL_DIR}  PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+# install(TARGETS common_lib client_gui DESTINATION ${SHARED_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/maps" "${CMAKE_CURRENT_SOURCE_DIR}/resources" DESTINATION ${VAR_INSTALL_DIR} FILE_PERMISSIONS WORLD_READ WORLD_WRITE)
+# install(FILES "configuration.yaml" DESTINATION ${CONF_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE)
