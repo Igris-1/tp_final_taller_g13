@@ -9,12 +9,15 @@ JoinableGamesFinder::JoinableGamesFinder(const char* host, const char* port):soc
 
 }
 JoinableGamesFinder::~JoinableGamesFinder(){
-    //hay q cerrar el socket del dummy
+    this->socket_is_closed = true;
+    this->socket.close();
 }
+
 // void run();
 // void stop(); // quizas no hace falta
+
 std::vector <games_DTO> JoinableGamesFinder::ask_for_games(){
-    
+    // si lanza algun erro hay que meter esto en un try catch
     std::vector <games_DTO> games;
 
     uint8_t num  = 2;
