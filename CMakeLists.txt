@@ -58,7 +58,7 @@ if (CLIENT_GUI)
     find_package(Qt6 COMPONENTS Widgets REQUIRED)
     find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
-    set(CLIENT_GUI_EXECUTABLE client_gui)
+    set(CLIENT_GUI_EXECUTABLE client_qt)
     set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
 
     file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")

@@ -33,14 +33,7 @@ void JoinGame::on_open_join_game() {
     std::vector <games_DTO> games = dummy.ask_for_games();
 
     if (!games.empty()) {
-        ui->matchesBox->clear();
-        for (const games_DTO& game : games) {
-            QString gameInfo = QString("Game ID: %1 | Current Players: %2 | Max Players: %3")
-                            .arg(game.game_id)
-                            .arg(game.current_players)
-                            .arg(game.max_players);
-            ui->matchesBox->addItem(gameInfo);
-        }
+        refresh_matches(games);
     }
 }   
 
@@ -69,6 +62,20 @@ void JoinGame::on_player2Button_clicked() {
 
 void JoinGame::on_refreshButton_clicked() {
     std::cout << "refreshButton clicked" << std::endl;
+
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    JoinableGamesFinder dummy(charAddress, charPort);
+    std::vector <games_DTO> games = dummy.ask_for_games();
+
+    if (!games.empty()) {
+        refresh_matches(games);
+    } else {
+        QMessageBox::information(this, "Error", "No games found");
+    }
 }
 
 void JoinGame::on_startButton_clicked() {
@@ -88,5 +95,18 @@ void JoinGame::on_startButton_clicked() {
         client.select_game_mode(1);
         this->hide();
         client.run();
+    }
+}
+
+void JoinGame::refresh_matches(std::vector <games_DTO> games) {
+    if (!games.empty()) {
+        ui->matchesBox->clear();
+        for (const games_DTO& game : games) {
+            QString gameInfo = QString("Game ID: %1 | Current Players: %2 | Max Players: %3")
+                            .arg(game.game_id)
+                            .arg(game.current_players)
+                            .arg(game.max_players);
+            ui->matchesBox->addItem(gameInfo);
+        }
     }
 }

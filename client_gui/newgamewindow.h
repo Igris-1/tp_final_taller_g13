@@ -28,15 +28,17 @@ private slots:
 
     void on_mapaDosButton_clicked();
 
-    void on_mapaTresButton_clicked();
+    void on_maps_activated();
 
-    void on_mapaCuatroButton_clicked();
+    void on_startButton_clicked();
 
 private:
     Ui::NewGameWindow* ui;
     Client* client;
     QMediaPlayer* player;
     int localPlayers;
+    int map;
+    int players;
     QString address;
     QString port;
 };

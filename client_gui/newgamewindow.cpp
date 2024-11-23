@@ -12,6 +12,8 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
         ui(new Ui::NewGameWindow),
         player(player),
         localPlayers(1),
+        map(0),
+        players(1),
         address(address),
         port(port) {
     ui->setupUi(this);
@@ -66,16 +68,29 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
 }
 
 void NewGameWindow::on_mapaDosButton_clicked() {
-    // createMatch("mapaDos");
+    // levantare el mapa custom
     std::cout << "mapaDosButton clicked" << std::endl;
 }
 
-void NewGameWindow::on_mapaTresButton_clicked() {
-    // createMatch("mapaTres");
-    std::cout << "mapaTresButton clicked" << std::endl;
+void NewGameWindow::on_maps_activated() {
+    // setear mapa para iniciar la partida
+    std::cout << "maps clicked" << std::endl;
+    this->map = ui->maps->currentIndex();
 }
 
-void NewGameWindow::on_mapaCuatroButton_clicked() {
-    // createMatch("mapaCuatro");
-    std::cout << "mapaCuatroButton clicked" << std::endl;
+void NewGameWindow::on_startButton_clicked() {
+    // levantar el mapa seleccionado
+    std::cout << "startButton clicked" << std::endl;
+
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    // this->player->stop();
+    // Client client(charAddress, charPort, 0);
+    // client.setLocalPlayers(localPlayers);
+    // client.select_game_mode(0);
+    // this->hide();
+    // client.run();
 }

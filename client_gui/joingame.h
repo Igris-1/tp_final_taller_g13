@@ -5,6 +5,8 @@
 #include <QMediaPlayer>
 #include "../client_src/client.h"
 #include <memory>
+#include "../client_src/joinable_games_finder.h"
+
 
 namespace Ui {
 class JoinGame;
@@ -37,7 +39,8 @@ private:
     int localPlayers;
     QString address;
     QString port;
-    // std::shared_ptr<Client> client;
+
+    void refresh_matches(std::vector <games_DTO> games);
 };
 
 #endif  // JOINGAME_H

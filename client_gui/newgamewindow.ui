@@ -83,42 +83,10 @@ color: rgb(255, 255, 0);</string>
       <x>260</x>
       <y>130</y>
       <width>451</width>
-      <height>271</height>
+      <height>171</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="4">
-      <widget class="QPushButton" name="mapaDosButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_2.jpeg);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="mapaCuatroButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_4.jpeg);</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="3">
       <widget class="QPushButton" name="mapaUnoButton">
        <property name="sizePolicy">
@@ -135,8 +103,8 @@ color: rgb(255, 255, 0);</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="mapaTresButton">
+     <item row="0" column="4">
+      <widget class="QPushButton" name="mapaDosButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
@@ -144,7 +112,7 @@ color: rgb(255, 255, 0);</string>
         </sizepolicy>
        </property>
        <property name="styleSheet">
-        <string notr="true">border-image: url(:/assets/images/mapa_3.jpeg);</string>
+        <string notr="true">border-image: url(:/assets/images/mapa_2.png);</string>
        </property>
        <property name="text">
         <string/>
@@ -153,69 +121,147 @@ color: rgb(255, 255, 0);</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget1">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
       <x>260</x>
-      <y>80</y>
-      <width>451</width>
-      <height>40</height>
+      <y>100</y>
+      <width>161</width>
+      <height>21</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QComboBox" name="selectPlayers">
-       <property name="styleSheet">
-        <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>1 Player</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2 Players</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3 Players</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>4 Players</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="player2Button">
-       <property name="styleSheet">
-        <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+    </property>
+    <property name="text">
+     <string>Instant map</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="maps">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>370</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+background-color: rgb(68, 68, 68);
+background-image: transparent;
+border-image: transparent;</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Mapa 1</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Mapa 2</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Mapa 3</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Mapa 4</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="startButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>370</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+background-color: rgb(68, 68, 68);
+background-image: transparent;
+border-image: transparent;</string>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>340</y>
+      <width>161</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);</string>
-       </property>
-       <property name="text">
-        <string>Local player 2</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </property>
+    <property name="text">
+     <string>More maps</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="player2Button">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>10</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);</string>
+    </property>
+    <property name="text">
+     <string>Local player 2</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="selectPlayers">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>10</y>
+      <width>281</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>1 Player</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>2 Players</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>3 Players</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>4 Players</string>
+     </property>
+    </item>
    </widget>
   </widget>
  </widget>
