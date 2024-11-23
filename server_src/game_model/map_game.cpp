@@ -120,11 +120,10 @@ bool MapGame::add_platform(Hitbox hitbox) {
 }
 
 bool MapGame::add_box(Hitbox hitbox){
-if (!hitbox_in_range(hitbox) && not_in_invalid_position(hitbox)) {
+if (!position_is_valid(hitbox)) {
         return false;
     }
     this->boxes.push_back(std::make_shared<Box>(hitbox));
-    std::cout << "Box x: " << hitbox.get_x() << " Box y: " << hitbox.get_y() << std::endl;
     return true;
 }
 
