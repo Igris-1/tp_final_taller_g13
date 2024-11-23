@@ -1,12 +1,15 @@
 # Nombre del directorio de construcción
 BUILD_DIR = build
 
+# Detectar el número de núcleos disponibles
+CORES = $(shell nproc)
+
 # Objetivos del Makefile
 .PHONY: all clean
 
 # El objetivo por defecto es 'all'
 all: $(BUILD_DIR)/Makefile
-	$(MAKE) -C $(BUILD_DIR)
+	$(MAKE) -C $(BUILD_DIR) -j$(CORES)
 
 # Crear el directorio de construcción y ejecutar CMake
 $(BUILD_DIR)/Makefile: $(BUILD_DIR)
@@ -24,5 +27,5 @@ test:
 
 super:
 	make clean
-	make
+	make -j$(CORES)
 	make test
