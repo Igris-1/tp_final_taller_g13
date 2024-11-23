@@ -33,7 +33,6 @@ include(cmake/CompilerWarnings.cmake)
 
 # Biblioteca común
 file(GLOB COMMON_SOURCES "common_src/*.cpp" "configuration_yaml/*.cpp")
-
 add_library(common_lib STATIC ${COMMON_SOURCES})
 target_include_directories(common_lib PUBLIC common_src)
 
@@ -45,7 +44,7 @@ if (CLIENT)
 
     add_subdirectory(third_party/libSDL2pp)
 
-    set(CLIENT_EXECUTABLE client)
+    set(CLIENT_EXECUTABLE duckGameClient)
     file(GLOB CLIENT_SOURCES "client_src/*.cpp")
     add_executable(${CLIENT_EXECUTABLE} ${CLIENT_SOURCES})
     target_link_libraries(${CLIENT_EXECUTABLE} PRIVATE common_lib SDL2pp::SDL2pp)
@@ -58,7 +57,7 @@ if (CLIENT_GUI)
     find_package(Qt6 COMPONENTS Widgets REQUIRED)
     find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
-    set(CLIENT_GUI_EXECUTABLE client_qt)
+    set(CLIENT_GUI_EXECUTABLE duckGameQt)
     set(GUI_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/client_gui)
 
     file(GLOB_RECURSE RESOURCE_FILES "${GUI_SRC_DIR}/*.qrc")
@@ -79,7 +78,7 @@ endif()
 
 # ---------------- SERVER SECTION ----------------
 if (SERVER)
-    set(SERVER_EXECUTABLE server)
+    set(SERVER_EXECUTABLE duckGameServer)
     file(GLOB SERVER_SOURCES
         "server_src/*.cpp"
         "server_src/game_model/*.cpp"
@@ -94,9 +93,9 @@ if (SERVER)
     target_include_directories(${SERVER_EXECUTABLE} PRIVATE server_src)
 endif()
 
-# ---------------- EDITOR SECTION ----------------
+# ---------------- EDITOR SECTION ---------------- terminar
 if (EDITOR)
-    set(EDITOR_EXECUTABLE editor_exec)
+    set(EDITOR_EXECUTABLE duckGameEditor)
     file(GLOB EDITOR_SOURCES "editor_src/*.cpp")
     add_executable(editor_exec ${EDITOR_SOURCES})
     target_link_libraries(editor_exec PRIVATE common_lib)
@@ -110,14 +109,14 @@ endif()
 
 
 # ---------------- INSTALL SECTION ----------------
-# set(BIN_INSTALL_DIR "/usr/bin")
-# set(SHARED_DIR "/usr/lib/TPDuckGame")
+# set(BIN_INSTALL_DIR "/usr/bin") # ejecutables
+# set(SHARED_DIR "/usr/lib/TPDuckGame") # librerías compartidas
+# set(CONF_INSTALL_DIR "/etc/TPDuckGame") # archivos de configuración
+# set(ASSETS_INSTALL_DIR "/usr/share/TPDuckGame") # assets
 
-# set(CONF_INSTALL_DIR "/etc/TPDuckGame")
-# set(VAR_INSTALL_DIR "/var/TPDuckGame")
+# install(TARGETS duckGameClient duckGameServer duckGameQt DESTINATION ${BIN_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+# install(TARGETS common_lib DESTINATION ${SHARED_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
-# install(TARGETS client server DESTINATION ${BIN_INSTALL_DIR}  PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
-# install(TARGETS common_lib client_gui DESTINATION ${SHARED_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
-
-# install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/maps" "${CMAKE_CURRENT_SOURCE_DIR}/resources" DESTINATION ${VAR_INSTALL_DIR} FILE_PERMISSIONS WORLD_READ WORLD_WRITE)
-# install(FILES "configuration.yaml" DESTINATION ${CONF_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE)
+# # Using PATTERN to set permissions for directories
+# install(DIRECTORY "configuration_yamls" DESTINATION ${CONF_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE)
+# install(DIRECTORY "assets" DESTINATION ${ASSETS_INSTALL_DIR} PERMISSIONS WORLD_READ)

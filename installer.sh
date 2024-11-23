@@ -136,8 +136,8 @@ install_game() {
   fi
   mkdir build
   cd build
-  cmake ..
-  if sudo make install -j8; then
+  cmake -DCMAKE_BUILD_TYPE=Release ..
+  if sudo make install -j$(nproc); then
     echo -e "${GREEN}Build complete! Ready for use!${NC}"
   else
     echo -e "${RED}Error: Failed to install. Check the error message above for details.${NC}"
@@ -147,12 +147,11 @@ install_game() {
 
 uninstall_game() {
   echo -e "${GREEN}Uninstalling game...${NC}"
-  sudo rm -rf /var/TPDuckGame || true
-  sudo rm -rf /etc/TPDuckGame || true
-  sudo rm /usr/bin/duckGameServer || true
   sudo rm /usr/bin/duckGameClient || true
+  sudo rm /usr/bin/duckGameServer || true
+  sudo rm -rf /etc/TPDuckGame || true
   sudo rm -rf /usr/lib/TPDuckGame || true
-  
+  sudo rm -rf /usr/share/TPDuckGame || true
   if sudo rm -rf build || true; then
       echo -e "${GREEN}Uninstall complete!${NC}"
   else    
