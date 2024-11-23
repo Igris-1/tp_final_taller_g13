@@ -31,6 +31,7 @@ private:
     std::vector<Texture> bullet_sprites;
     std::vector<DuckView> duck_views;
     std::vector<Texture> scoreboard_font;
+    std::vector<Texture> box_sprites;
 
     void set_up_game();
     void load_map();
@@ -39,6 +40,7 @@ private:
     void load_weapons(game_snapshot_t gs);
     void draw_scoreboard(score_DTO score);
     void zoom(game_snapshot_t gs);
+    void load_boxes(game_snapshot_t gs);
     void add_ducks(game_snapshot_t gs);
 
 public:

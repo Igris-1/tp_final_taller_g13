@@ -119,6 +119,17 @@ void GameView::set_up_game() {
 
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
+
+    box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
+
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
 
@@ -141,6 +152,7 @@ void GameView::load_game(game_snapshot_t gs) {
     load_ducks(gs);
     load_bullets(gs);
     load_weapons(gs);
+    load_boxes(gs);
     renderer.Present();
 }
 
@@ -206,6 +218,14 @@ void GameView::zoom(game_snapshot_t gs) {
     SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
     SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
+}
+
+void GameView::load_boxes(game_snapshot_t gs) {
+    for (int i = 0; i < gs.boxes.size(); i++) {
+        box_DTO box = gs.boxes[i];
+        std::cout << "Box x: " << int(box.x) << " Box y: " << int(box.y) << std::endl;
+        renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16}, SDL_Rect{box.x, box.y, 32, 32});
+    }
 }
 
 void GameView::load_weapons(game_snapshot_t gs) {

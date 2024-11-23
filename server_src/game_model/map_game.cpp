@@ -124,6 +124,7 @@ if (!hitbox_in_range(hitbox) && not_in_invalid_position(hitbox)) {
         return false;
     }
     this->boxes.push_back(std::make_shared<Box>(hitbox));
+    std::cout << "Box x: " << hitbox.get_x() << " Box y: " << hitbox.get_y() << std::endl;
     return true;
 }
 

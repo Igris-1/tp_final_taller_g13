@@ -94,6 +94,8 @@ void GameThread::run() {
     game.add_new_platform(Hitbox(200, 600, 100, 16));
     game.add_new_platform(Hitbox(0, 600, 300, 16));
 
+    game.add_box(Hitbox(32, 32, 200, 500));
+
     game.add_invalid_position(Hitbox(0, 670, 1365, 2));
     }catch(const GameError& e){
         std::cerr << e.what() << std::endl;
