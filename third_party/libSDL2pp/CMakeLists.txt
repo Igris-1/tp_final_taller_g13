@@ -12,7 +12,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
 	option(SDL2PP_WITH_TTF "Enable SDL2_ttf support" ON)
 	option(SDL2PP_WITH_MIXER "Enable SDL2_mixer support" ON)
 
-	option(SDL2PP_WITH_EXAMPLES "Build examples" ON)
+	option(SDL2PP_WITH_EXAMPLES "Build examples" OFF)
 	option(SDL2PP_WITH_TESTS "Build tests" OFF)
 	option(SDL2PP_ENABLE_LIVE_TESTS "Enable live tests (require X11 display and audio device)" OFF)
 	option(SDL2PP_STATIC "Build static library instead of shared one" ON)
