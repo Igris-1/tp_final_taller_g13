@@ -4,8 +4,11 @@ BUILD_DIR = build
 # Detectar el número de núcleos disponibles
 CORES = $(shell nproc)
 
+# Tipo de compilación: Debug o Release (por defecto Debug)
+BUILD_TYPE ?= Debug
+
 # Objetivos del Makefile
-.PHONY: all clean
+.PHONY: all clean test super debug release
 
 # El objetivo por defecto es 'all'
 all: $(BUILD_DIR)/Makefile
@@ -13,7 +16,7 @@ all: $(BUILD_DIR)/Makefile
 
 # Crear el directorio de construcción y ejecutar CMake
 $(BUILD_DIR)/Makefile: $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake ..
+	cd $(BUILD_DIR) && cmake -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) ..
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -22,10 +25,17 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(BUILD_DIR)
 
+# Ejecutar las pruebas
 test:
 	./$(BUILD_DIR)/tests_src/runTests
 
-super:
-	make clean
-	make -j$(CORES)
-	make test
+# Compilar en modo Debug
+debug: clean
+	$(MAKE) BUILD_TYPE=Debug all
+
+# Compilar en modo Release
+release: clean
+	$(MAKE) BUILD_TYPE=Release all
+
+# Limpiar, compilar y ejecutar pruebas
+super: clean all
