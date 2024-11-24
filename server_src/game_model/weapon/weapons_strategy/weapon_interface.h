@@ -29,7 +29,7 @@ typedef enum {
     FIRE_RATE_SHOTGUN = 35,
 } FIRE_RATE;
 
-typedef enum{
+typedef enum {
     TRAVEL_DISTANCE_COWBOY_PISTOL = 256,
     TRAVEL_DISTANCE_LASER_RIFLE = 1000,
     TRAVEL_DISTANCE_AK47 = 700,
@@ -45,8 +45,8 @@ protected:
 public:
     virtual std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,
                                                                int x_position, int y_position,
-                                                               int x_direction,
-                                                               int y_direction, bool is_holding_button) = 0;
+                                                               int x_direction, int y_direction,
+                                                               bool is_holding_button) = 0;
     virtual void fire_rate_down();
     virtual int recoil_produced() = 0;
     virtual int get_id() = 0;

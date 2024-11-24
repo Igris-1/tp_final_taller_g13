@@ -6,17 +6,9 @@
 #include "../../../../common_src/duck_DTO.h"
 #include "../../positionable.h"
 
-typedef enum {
-    BULLET_ID = 1,
-    LASER_ID,
-    PELLET_ID
-} bullet_type;
+typedef enum { BULLET_ID = 1, LASER_ID, PELLET_ID } bullet_type;
 
-typedef enum {
-    BULLET_DAMAGE = 50,
-    LASER_DAMAGE = 20,
-    PELLET_DAMAGE = 17
-} damage_values;
+typedef enum { BULLET_DAMAGE = 50, LASER_DAMAGE = 20, PELLET_DAMAGE = 17 } damage_values;
 
 class MapGame;
 

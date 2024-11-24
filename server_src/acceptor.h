@@ -7,6 +7,7 @@
 #include "../common_src/thread.h"
 #include "actions/action.h"
 #include "actions/client_action_t.h"
+
 #include "games_manager.h"
 #include "list_of_clients_monitor.h"
 

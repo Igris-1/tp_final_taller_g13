@@ -17,34 +17,23 @@
 #define PLAYERS_CODE 0x05
 
 Client::Client(const char* host, const char* port, uint8_t game_id):
-        localPlayers(LOCAL_PLAYERS),
-        protocol(Socket(host, port)),
-        receiver_queue(),
-        game_view()
-        {
-            game_to_join = game_id;
-            std::cout << "game size " << games.size() << std::endl;
+        localPlayers(LOCAL_PLAYERS), protocol(Socket(host, port)), receiver_queue(), game_view() {
+    game_to_join = game_id;
 }
 
 void Client::setLocalPlayers(int players) { localPlayers = players; }
 
 Client::~Client() {}
 
-void Client::select_game_mode(int game_mode){
-    protocol.send_number(game_mode);
-}
+void Client::select_game_mode(int game_mode) { protocol.send_number(game_mode); }
 
 // std::vector<int> Client::get_available_games() {
-    // for refhresh button
+// for refhresh button
 // }
 
-void Client::select_game(int game_id){
-    protocol.send_number(game_id);
-}
+void Client::select_game(int game_id) { protocol.send_number(game_id); }
 
-std::vector<games_DTO> Client::get_games_info(){
-    return this->games;
-}
+std::vector<games_DTO> Client::get_games_info() { return this->games; }
 
 void Client::run() {
 
@@ -55,7 +44,7 @@ void Client::run() {
             Message m(0);
 
             if (receiver_queue.try_pop(m)) {
-                if(m.get_code() == MAP_CODE){
+                if (m.get_code() == MAP_CODE) {
                     map_structure_t map = m.get_map();
                     game_view.add_map(map);
                 } else if (m.get_code() == GAME_SNAPSHOT_CODE) {
@@ -63,32 +52,19 @@ void Client::run() {
                     game_view.load_game(gs);
                 } else if (m.get_code() == SCORE_CODE) {
                     score_DTO score = m.get_score();
-                    std::cout << "Score received: " << std::endl;
-                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
-                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
-                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
-                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
                     game_view.load_score(score);
                 } else if (m.get_code() == END_SCORE_CODE) {
                     score_DTO score = m.get_score();
-                    std::cout << "Score received: " << std::endl;
-                    std::cout << "1st place: " << static_cast<int>(score.first_place_score) << std::endl;
-                    std::cout << "2nd place: " << static_cast<int>(score.second_place_score) << std::endl;
-                    std::cout << "3rd place: " << static_cast<int>(score.third_place_score) << std::endl;
-                    std::cout << "4th place: " << static_cast<int>(score.fourth_place_score) << std::endl;
                     game_view.load_endgame_score(score);
                     break;
-                }
-                else if (m.get_code() == GAMES_INFO_CODE) {
-                    
-                    std::cout << "no deberia entrar aca" << std::endl;
+                } else if (m.get_code() == GAMES_INFO_CODE) {
                     continue;
                     std::string input;
                     std::getline(std::cin, input);
-                    //sender.send_game_to_join(input);
-                    
+                    // sender.send_game_to_join(input);
+
                     // int size = m.get_size();
-                    // this->games.resize(size);                    
+                    // this->games.resize(size);
                     // std::vector <games_DTO> available_games = m.get_games();
                     // std::cout << "choose game to join2" << std::endl;
                     // for (int i = 0; i < size; i++){
@@ -96,17 +72,12 @@ void Client::run() {
                     //     this->games[i].current_players = available_games[i].current_players;
                     //     this->games[i].max_players = available_games[i].max_players;
                     // }
-                }
-                else if(m.get_code() == PLAYERS_CODE){
-                    std::cout << "players sending" << std::endl;
+                } else if (m.get_code() == PLAYERS_CODE) {
                     sender.send_players();
-                    std::cout << "players sent" << std::endl;
-                }
-                else if(m.get_code() == 0x06){
+                } else if (m.get_code() == 0x06) {
                     sender.send_players();
                     sender.send_game_to_join(this->game_to_join);
                 }
-
             }
             usleep(SLEEP_TIME_CLIENT);
         }

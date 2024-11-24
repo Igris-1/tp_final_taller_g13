@@ -2,8 +2,10 @@
 #define PICKABLE_H
 
 #include <memory>
-#include "positionable.h"
+
 #include "../common_src/duck_DTO.h"
+
+#include "positionable.h"
 
 typedef enum {
     COWBOY_PISTOL_ID = 1,
@@ -23,7 +25,7 @@ typedef enum {
 
 class Duck;
 
-class Pickable : public Positionable  {
+class Pickable: public Positionable {
 
 protected:
     int air_time_x = 300;
@@ -35,15 +37,15 @@ protected:
     int y_direction = 0;
     bool falling = false;
 
-    std::shared_ptr<Duck> duck;    
+    std::shared_ptr<Duck> duck;
 
 public:
-    Pickable(int x, int y, int width, int height); //penes de madera
+    Pickable(int x, int y, int width, int height);  // penes de madera
     Pickable();
 
     virtual void use() = 0;
     void add_owner(std::shared_ptr<Duck> new_duck);
-   // void add_owner2(std::shared_ptr<Hitbox> new_hitbox);
+    // void add_owner2(std::shared_ptr<Hitbox> new_hitbox);
 
     // para la caida cool
     virtual int get_id() = 0;
@@ -57,13 +59,13 @@ public:
     int get_x_direction();
     void set_direction(int x, int y);
     virtual weapon_DTO to_DTO() = 0;
-    
+
     // metodos vacios
     virtual int recoil_produced();
     virtual void set_holding(bool is_holding);
     virtual void fire_rate_down();
 
-    virtual ~Pickable(){}
+    virtual ~Pickable() {}
 };
 
 #endif

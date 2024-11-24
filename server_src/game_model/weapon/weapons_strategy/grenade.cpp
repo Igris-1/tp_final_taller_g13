@@ -4,7 +4,8 @@
 
 // std::vector<std::shared_ptr<BulletInterface>> Grenade::fire(std::shared_ptr<Duck> duck_trigger,
 //                                                             int x_position, int y_position,
-//                                                             int x_direction, int y_direction, bool is_holding_button) {
+//                                                             int x_direction, int y_direction,
+//                                                             bool is_holding_button) {
 //     std::vector<std::shared_ptr<BulletInterface>> bullets;
 //     return bullets;
 // }

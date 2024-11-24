@@ -25,17 +25,17 @@ public:
                             action_to_execute.stop_jump);
 
         game.use_duck_item(this->client_id + action_to_execute.player_id,
-                              action_to_execute.press_action_button);
+                           action_to_execute.press_action_button);
         game.stop_duck_item(this->client_id + action_to_execute.player_id,
-                              action_to_execute.unpress_action_button);
+                            action_to_execute.unpress_action_button);
 
         game.pick_up_item(this->client_id + action_to_execute.player_id,
                           action_to_execute.press_pick_up_button);
-                    
-        //game.throw_item();
-        
-        //game.throw_weapon(this->client_id+action_to_execute.player_id ,
-        // action_to_execute.unpress_pick_up_button);
+
+        // game.throw_item();
+
+        // game.throw_weapon(this->client_id+action_to_execute.player_id ,
+        //  action_to_execute.unpress_pick_up_button);
     }
 };
 

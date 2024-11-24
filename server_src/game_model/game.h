@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <chrono>
 #include <iostream>
 #include <list>
 #include <map>
@@ -14,7 +15,6 @@
 #include "weapon/weapons_strategy/weapon.h"
 #include "weapon/weapons_strategy/weapon_factory.h"
 
-#include <chrono>
 #include "duck.h"
 #include "map_game.h"
 
@@ -54,10 +54,10 @@ typedef struct {
 
 class Game {
 private:
-    std::map<int, std::shared_ptr<duck_state>> ducks_states; // tiene el estado de cada pato
-    std::map<int, int> ducks_score; //tiene los puntos de cada pato
-    std::vector<std::tuple<int,int>> spawn_positions; // tiene las posiciones de spawn de armas
-    MapGame map; // sabe donde esta todo posicionado
+    std::map<int, std::shared_ptr<duck_state>> ducks_states;  // tiene el estado de cada pato
+    std::map<int, int> ducks_score;                           // tiene los puntos de cada pato
+    std::vector<std::tuple<int, int>> spawn_positions;  // tiene las posiciones de spawn de armas
+    MapGame map;                                        // sabe donde esta todo posicionado
     int actual_round;
     int time_to_respawn;
     bool started_game;
@@ -100,7 +100,7 @@ public:
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
     void add_weapon_on_map(std::string type_weapon, int x, int y);
-    void add_spawn_position(int x, int y); // agrega una posicion de spawn de armas
+    void add_spawn_position(int x, int y);  // agrega una posicion de spawn de armas
     void add_box(Hitbox hitbox);
 
     // game logic
@@ -121,4 +121,3 @@ public:
 };
 
 #endif
-

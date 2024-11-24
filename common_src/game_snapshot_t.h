@@ -17,17 +17,17 @@ typedef struct game_snapshot {
 
 typedef struct game_snapshot {
 
-    uint8_t ducks_len = 0;            // 1 byte
+    uint8_t ducks_len = 0;        // 1 byte
     std::vector<duck_DTO> ducks;  // sizeof(ducks) * ducks_len
 
-    uint16_t bullets_len = 0;             // 2 bytes
+    uint16_t bullets_len = 0;         // 2 bytes
     std::vector<bullet_DTO> bullets;  // sizeof(bullet) * bullets_len
 
-    uint16_t weapons_len = 0;             // 2 bytes
+    uint16_t weapons_len = 0;         // 2 bytes
     std::vector<weapon_DTO> weapons;  // sizeof(item) * items_len
 
     uint16_t boxes_len = 0;
-    std::vector<box_DTO> boxes;         // 2 bytes
+    std::vector<box_DTO> boxes;  // 2 bytes
 
 } game_snapshot_t;
 

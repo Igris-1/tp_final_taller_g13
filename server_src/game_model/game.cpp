@@ -1,10 +1,15 @@
 #include "game.h"
-#include <algorithm> 
+
+#include <algorithm>
+
 #include <unistd.h>
 
-Game::Game(int height, int width): map(width, height), ducks_states(), time_to_respawn(300), actual_round(0), started_game(false) {
-
-}
+Game::Game(int height, int width):
+        map(width, height),
+        ducks_states(),
+        time_to_respawn(300),
+        actual_round(0),
+        started_game(false) {}
 
 void Game::duck_exist(int id) {
     this->map.duck_exist(id);
@@ -49,15 +54,15 @@ std::vector<duck_DTO> Game::get_duck_DTO_list() {
     return list_DTO;
 }
 
-score_DTO Game::get_score_DTO(){
+score_DTO Game::get_score_DTO() {
 
     score_DTO score;
-    
-    std::vector<std::pair<int, int>> sorted_ducks(this->ducks_score.begin(), this->ducks_score.end());
 
-    std::sort(sorted_ducks.begin(), sorted_ducks.end(), [](const auto& a, const auto& b) {
-        return a.second > b.second; 
-    });
+    std::vector<std::pair<int, int>> sorted_ducks(this->ducks_score.begin(),
+                                                  this->ducks_score.end());
+
+    std::sort(sorted_ducks.begin(), sorted_ducks.end(),
+              [](const auto& a, const auto& b) { return a.second > b.second; });
 
     if (!sorted_ducks.empty()) {
         score.first_place_id = sorted_ducks[0].first;
@@ -144,7 +149,7 @@ void Game::continue_vertical_movements(int count) {
         }
     }
 
-    for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+    for (int j = 0; j < (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++) {
         this->map.gravity_weapon();
     }
 }
@@ -219,12 +224,11 @@ void Game::keep_using_item() {
         this->map.continue_fire_rate(id);
         if (this->ducks_states[id]->holding_action) {
             this->map.use_item(id, this->ducks_states[id]->facing_direction, true);
-
         }
     }
 }
 
-void Game::add_spawn_position(int x, int y){
+void Game::add_spawn_position(int x, int y) {
     // this->map.approximate_spawn_to_platform(x, y, 36, 18);
     this->spawn_positions.push_back(std::make_tuple(x, y));
 }
@@ -248,36 +252,34 @@ void Game::add_new_platform(Hitbox hitbox) {
     }
 }
 
-void Game::add_box(Hitbox hitbox){
-    this->map.add_box(hitbox);
-}
+void Game::add_box(Hitbox hitbox) { this->map.add_box(hitbox); }
 
 void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
-    std::shared_ptr<Weapon> weapon =
-    std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), type_weapon));
+    std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(
+            WeaponFactory::createWeapon(this->map.get_bullets_list(), type_weapon));
     this->map.add_weapon(weapon, x, y);
 }
 
 void Game::pick_up_item(int duck_id, bool pick_up) {
     if (!pick_up || !this->map.duck_exist(duck_id) || !this->map.duck_is_alive(duck_id)) {
         return;
-    }  
+    }
     this->map.ducks_try_throw(duck_id, this->ducks_states[duck_id]->facing_direction);
 }
 
-void Game::start_game(){
+void Game::start_game() {
     this->started_game = true;
     this->actual_round += 1;
     std::vector<int> ids_ducks = this->map.get_live_duck_ids();
-    for (auto& id: ids_ducks){
+    for (auto& id: ids_ducks) {
         this->ducks_score[id] = 0;
     }
 }
-bool Game::check_if_round_finished(){    
+bool Game::check_if_round_finished() {
     std::vector<int> ids_ducks = this->map.get_live_duck_ids();
     int dead_ducks = this->map.ducks_dead_size();
-    if(ids_ducks.size() <= 1 && dead_ducks > 0){
-        if(ids_ducks.size() == 1){
+    if (ids_ducks.size() <= 1 && dead_ducks > 0) {
+        if (ids_ducks.size() == 1) {
             this->ducks_score[ids_ducks[0]] += 1;
         }
         return true;
@@ -285,35 +287,37 @@ bool Game::check_if_round_finished(){
     return false;
 }
 
-bool Game::check_if_winner(){
+bool Game::check_if_winner() {
     for (auto it = ducks_score.begin(); it != ducks_score.end(); ++it) {
-        if(it->second == 10){
+        if (it->second == 10) {
             return true;
         }
-    }  
+    }
     return false;
 }
 
-void Game::random_weapon_spawn(bool on_game){
-    if(on_game && this->time_to_respawn > 0){
+void Game::random_weapon_spawn(bool on_game) {
+    if (on_game && this->time_to_respawn > 0) {
         this->time_to_respawn -= 1;
         return;
     }
-    for(auto& pos: this->spawn_positions){
-        if(this->map.already_exist_a_pickable(std::get<0>(pos), std::get<1>(pos))){
+    for (auto& pos: this->spawn_positions) {
+        if (this->map.already_exist_a_pickable(std::get<0>(pos), std::get<1>(pos))) {
             continue;
-        }else{
-            this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(this->map.get_bullets_list(), "random")), std::get<0>(pos), std::get<1>(pos));
+        } else {
+            this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(
+                                         this->map.get_bullets_list(), "random")),
+                                 std::get<0>(pos), std::get<1>(pos));
         }
     }
     this->time_to_respawn = TIME_TO_RESPAWN;
 }
 
-//preguntar por esto
-void Game::reset_round(){
+// preguntar por esto
+void Game::reset_round() {
     this->map.clean_map();
     this->actual_round += 1;
-    for(auto& pos: this->spawn_positions){
+    for (auto& pos: this->spawn_positions) {
         this->random_weapon_spawn(false);
     }
 }

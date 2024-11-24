@@ -13,12 +13,12 @@ void Weapon::use() {
     if (this->is_not_a_weapon()) {
         return;
     }
-    
+
     std::vector<std::shared_ptr<BulletInterface>> new_bullets = weapon_strategy->fire(
             duck, duck->get_hitbox().get_x() + (duck->get_hitbox().get_width() / 2),
             duck->get_hitbox().get_y() + (duck->get_hitbox().get_height() / 2), x_direction,
             y_direction, this->holding_button);
-   int size = new_bullets.size();
+    int size = new_bullets.size();
     for (int i = 0; i < size; i++) {
         this->bullets.push_back(new_bullets[i]);
     }
@@ -50,11 +50,7 @@ weapon_DTO Weapon::to_DTO() {
     dto.weapon_id = this->weapon_strategy->get_id();
     return dto;
 }
-int Weapon::recoil_produced() {
-
-    return this->weapon_strategy->recoil_produced(); 
-
-}
+int Weapon::recoil_produced() { return this->weapon_strategy->recoil_produced(); }
 
 int Weapon::get_id() {
     if (this->weapon_strategy == nullptr) {

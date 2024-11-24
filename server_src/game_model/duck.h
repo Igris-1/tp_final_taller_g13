@@ -26,7 +26,7 @@ private:
     int health;
     int begin_health;
     int respawn_time = 100;
-    //std::shared_ptr<Weapon> items_in_hands;
+    // std::shared_ptr<Weapon> items_in_hands;
     bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;

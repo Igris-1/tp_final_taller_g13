@@ -4,14 +4,16 @@
 
 std::vector<std::shared_ptr<BulletInterface>> CowboyPistol::fire(std::shared_ptr<Duck> duck_trigger,
                                                                  int x_position, int y_position,
-                                                                 int x_direction, int y_direction, bool is_holding_button) {
+                                                                 int x_direction, int y_direction,
+                                                                 bool is_holding_button) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     if (this->ammo == 0) {
         return bullets;
     }
     if (this->fire_rate == 0 && !is_holding_button) {
         bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
-                                                   x_direction, y_direction, TRAVEL_DISTANCE_COWBOY_PISTOL));
+                                                   x_direction, y_direction,
+                                                   TRAVEL_DISTANCE_COWBOY_PISTOL));
         ammo--;
         this->fire_rate = FIRE_RATE_COWBOY_PISTOL;
     }

@@ -22,26 +22,21 @@ private:
         while (!protocol.socket_closed() && _keep_running) {
             try {
 
-                
+
                 instruction_for_client_t instruction = queue.pop();
-                if(instruction.id == 0){
+                if (instruction.id == 0) {
                     map_structure_t map = instruction.map;
                     protocol.sendGameStartInfo(map);
-                }
-                else
-                if(instruction.id == 1){
+                } else if (instruction.id == 1) {
                     game_snapshot_t gs = instruction.gs;
                     protocol.sendGameInfo(gs);
-                }
-                else if(instruction.id == 2){
+                } else if (instruction.id == 2) {
                     score_DTO score = instruction.score;
                     protocol.sendScore(score);
-                }
-                else if(instruction.id == 3){
+                } else if (instruction.id == 3) {
                     score_DTO score = instruction.score;
                     protocol.sendFinalScore(score);
-                }
-                else{
+                } else {
                     std::cerr << "Unknown instruction id: " << instruction.id << std::endl;
                 }
 

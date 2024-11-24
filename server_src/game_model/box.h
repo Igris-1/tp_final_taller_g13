@@ -3,16 +3,17 @@
 
 #define RESISTANCE 10
 
-#include "positionable.h"
 #include <cstdlib>
-#include <ctime> 
-#include "duck_DTO.h"
+#include <ctime>
 
-class Box: public Positionable{
-    private:
+#include "duck_DTO.h"
+#include "positionable.h"
+
+class Box: public Positionable {
+private:
     int resistance;
 
-    public:
+public:
     Box(Hitbox hitbox);
     Box(int x, int y, int width, int height);
 
@@ -20,6 +21,5 @@ class Box: public Positionable{
     bool is_destroyed();
     bool get_reward();
     box_DTO get_DTO();
-
 };
 #endif

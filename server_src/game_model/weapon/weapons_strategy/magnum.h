@@ -3,4 +3,4 @@
 
 #include "weapon.h"
 
-#endif // MAGNUM_H
+#endif  // MAGNUM_H

@@ -4,9 +4,11 @@
 #include <cstdint>
 #include <iostream>
 #include <vector>
+
 #include "../common_src/duck_DTO.h"
-#include "message.h"
 #include "../common_src/translator_actions.h"
+
+#include "message.h"
 
 #define ONE_BYTE 1
 #define TWO_BYTES 2
@@ -14,15 +16,13 @@
 
 
 ProtocolClient::ProtocolClient(Socket&& client):
-        connection(std::move(client)), socket_is_closed(false) {
-        }
+        connection(std::move(client)), socket_is_closed(false) {}
 
 ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept:
-        connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {
-        }
+        connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {}
 
 void ProtocolClient::send_number(int number) {
-    uint8_t num  = static_cast<uint8_t>(number);
+    uint8_t num = static_cast<uint8_t>(number);
     connection.sendall(&num, ONE_BYTE, &socket_is_closed);
 }
 
@@ -54,10 +54,10 @@ uint16_t ProtocolClient::read_long_number() {
     return buffer;
 }
 
-void ProtocolClient::receive_games(int size, Message& message){
-    std::vector <games_DTO> available_games;
+void ProtocolClient::receive_games(int size, Message& message) {
+    std::vector<games_DTO> available_games;
     available_games.resize(size);
-    for(int i = 0; i < size; i++){
+    for (int i = 0; i < size; i++) {
         games_DTO game;
         connection.recvall(&game, sizeof(games_DTO), &socket_is_closed);
         available_games[i] = game;

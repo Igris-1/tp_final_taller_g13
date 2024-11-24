@@ -5,9 +5,8 @@
 #include "pickable.h"
 
 
-class Armor: public Pickable {                    
+class Armor: public Pickable {
 private:
-
 public:
     explicit Armor();
     void use();

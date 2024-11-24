@@ -1,19 +1,16 @@
 #include "helmet.h"
+
 #include "duck.h"
 
 Helmet::Helmet(): Pickable() {}
 
-void Helmet::use(){
-    this->duck->add_helmet();
-}
+void Helmet::use() { this->duck->add_helmet(); }
 
 Helmet::~Helmet() {}
 
-int Helmet::get_id(){
-    return HELMET_ID;
-}
+int Helmet::get_id() { return HELMET_ID; }
 
-weapon_DTO Helmet::to_DTO(){
+weapon_DTO Helmet::to_DTO() {
     weapon_DTO dto;
     dto.x = this->hitbox.get_x();
     dto.y = this->hitbox.get_y();

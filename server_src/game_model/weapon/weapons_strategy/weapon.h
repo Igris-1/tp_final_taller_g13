@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../pickable.h"
+
 #include "weapon_interface.h"
 
 class Weapon: public Pickable {
@@ -17,7 +18,7 @@ protected:
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;
 
-    std::shared_ptr<WeaponInterface> weapon_strategy; 
+    std::shared_ptr<WeaponInterface> weapon_strategy;
 
     bool is_not_a_weapon();
 

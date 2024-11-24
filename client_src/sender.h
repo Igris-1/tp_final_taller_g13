@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <map>
+
 #include <SDL2/SDL.h>
 #include <unistd.h>
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+
 #include "protocol_client.h"
 
 #define SLEEP_TIME_SENDER 2000
@@ -19,11 +21,10 @@ private:
     ProtocolClient& protocol;
     SDL_Event last_event;
     int localPlayers = 2;
-    std::map<SDL_Keycode, int> key_player = {{SDLK_a, PLAYER_1},      {SDLK_d, PLAYER_1},
-                                             {SDLK_SPACE, PLAYER_1},  {SDLK_f, PLAYER_1},
-                                             {SDLK_g, PLAYER_1},      {SDLK_LEFT, PLAYER_2},
-                                             {SDLK_RIGHT, PLAYER_2},  {SDLK_o, PLAYER_2},
-                                             {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}};
+    std::map<SDL_Keycode, int> key_player = {
+            {SDLK_a, PLAYER_1}, {SDLK_d, PLAYER_1},    {SDLK_SPACE, PLAYER_1}, {SDLK_f, PLAYER_1},
+            {SDLK_g, PLAYER_1}, {SDLK_LEFT, PLAYER_2}, {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2},
+            {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}};
 
     // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
     void map_key_to_action_1(const SDL_Event& e, action_t& action) {
@@ -147,7 +148,8 @@ private:
                         if (key_player.count(e.key.keysym.sym) > 0) {
                             if (key_player[e.key.keysym.sym] == PLAYER_1) {
                                 map_key_to_action_1(e, action);
-                            } else if (key_player[e.key.keysym.sym] == PLAYER_2 && localPlayers == 2) {
+                            } else if (key_player[e.key.keysym.sym] == PLAYER_2 &&
+                                       localPlayers == 2) {
                                 map_key_to_action_2(e, action);
                             }
                             protocol.send_action(action);
@@ -171,14 +173,12 @@ public:
         start();
     }
 
-    void send_game_to_join(int game_id){
-        //int game_id = std::stoi(input);
+    void send_game_to_join(int game_id) {
+        // int game_id = std::stoi(input);
         protocol.send_number(game_id);
     }
 
-    void send_players(){
-        protocol.send_number(localPlayers);
-    }
+    void send_players() { protocol.send_number(localPlayers); }
 
     ~Sender() override { _is_alive = false; }
 };

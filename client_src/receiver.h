@@ -1,13 +1,14 @@
 #ifndef RECEIVER_H
 #define RECEIVER_H
 
-#include <unistd.h>
 #include <iostream>
+
+#include <unistd.h>
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
-#include "message.h"
 
+#include "message.h"
 #include "protocol_client.h"
 
 #define SLEEP_TIME 2000
@@ -63,7 +64,7 @@ private:
         queue.push(message);
     }
 
-    void send_players_and_game_id(){
+    void send_players_and_game_id() {
         Message message(0x06);
         queue.push(message);
     }
@@ -71,30 +72,24 @@ private:
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
-                
+
                 uint8_t code = protocol.read_number();
-                if(code == MAP_CODE){
+                if (code == MAP_CODE) {
                     receive_map();
-                }
-                else if (code == GAME_SNAPSHOT_CODE) {
+                } else if (code == GAME_SNAPSHOT_CODE) {
                     receive_game_snapshot();
-                }
-                else if(code == SCORE_CODE){
+                } else if (code == SCORE_CODE) {
                     receive_score();
-                }
-                else if(code == END_SCORE_CODE){
+                } else if (code == END_SCORE_CODE) {
                     receive_end_score();
-                }
-                else if(code == GAMES_INFO_CODE){
+                } else if (code == GAMES_INFO_CODE) {
                     receive_game_info();
-                }
-                else if(code == PLAYERS_CODE){
+                } else if (code == PLAYERS_CODE) {
                     send_players();
-                }
-                else if(code == 0x06){
+                } else if (code == 0x06) {
                     send_players_and_game_id();
                 }
-    
+
                 usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;
@@ -103,8 +98,7 @@ private:
     }
 
 public:
-    Receiver(ProtocolClient& protocol, Queue<Message>& queue):
-            protocol(protocol), queue(queue) {
+    Receiver(ProtocolClient& protocol, Queue<Message>& queue): protocol(protocol), queue(queue) {
         start();
     }
 

@@ -35,9 +35,7 @@ void ClientHandler::push(instruction_for_client_t instruction) {
 //     }
 // }
 
-void ClientHandler::send_map(map_structure_t map) {
-        protocol.sendGameStartInfo(map); 
-    }
+void ClientHandler::send_map(map_structure_t map) { protocol.sendGameStartInfo(map); }
 
 bool ClientHandler::is_alive() { return senderThread.is_alive() && receiverThread.is_alive(); }
 

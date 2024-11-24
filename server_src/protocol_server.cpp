@@ -83,14 +83,14 @@ void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
     }
 }
 
-void ProtocolServer::sendScore(score_DTO score){
+void ProtocolServer::sendScore(score_DTO score) {
     std::lock_guard<std::mutex> lock(mutex);
     uint8_t protocol_name = 0x02;
     connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
     connection.sendall(&score, sizeof(score_DTO), &socket_is_closed);
 }
 
-void ProtocolServer::sendFinalScore(score_DTO score){
+void ProtocolServer::sendFinalScore(score_DTO score) {
     std::lock_guard<std::mutex> lock(mutex);
     uint8_t protocol_name = 0x03;
     connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
@@ -104,11 +104,10 @@ void ProtocolServer::shutDown() {
 }
 
 // Move Constructor
-ProtocolServer::ProtocolServer(ProtocolServer&& other) noexcept 
-    : connection(std::move(other.connection)), 
-      socket_is_closed(other.socket_is_closed) {
+ProtocolServer::ProtocolServer(ProtocolServer&& other) noexcept:
+        connection(std::move(other.connection)), socket_is_closed(other.socket_is_closed) {
     // No need to move the mutex, as std::mutex is not moveable
-    other.socket_is_closed = true; // Mark the old instance as "closed"
+    other.socket_is_closed = true;  // Mark the old instance as "closed"
 }
 
 // Move Assignment Operator
@@ -123,7 +122,7 @@ ProtocolServer& ProtocolServer::operator=(ProtocolServer&& other) noexcept {
         socket_is_closed = other.socket_is_closed;
 
         // Reset the source object
-        other.socket_is_closed = true; // Mark the old instance as "closed"
+        other.socket_is_closed = true;  // Mark the old instance as "closed"
     }
     return *this;
 }

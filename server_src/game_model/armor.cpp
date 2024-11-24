@@ -4,15 +4,11 @@
 
 Armor::Armor(): Pickable() {}
 
-void Armor::use(){
-    this->duck->add_armor();
-}
+void Armor::use() { this->duck->add_armor(); }
 
-int Armor::get_id(){
-    return ARMOR_ID;
-}
+int Armor::get_id() { return ARMOR_ID; }
 
-weapon_DTO Armor::to_DTO(){
+weapon_DTO Armor::to_DTO() {
     weapon_DTO dto;
     dto.x = this->hitbox.get_x();
     dto.y = this->hitbox.get_y();

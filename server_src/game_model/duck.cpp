@@ -1,10 +1,12 @@
 #include "duck.h"
 
-#include <typeinfo>
 #include <iostream>
-#include "pickable.h"
-#include "map_game.h"
+#include <typeinfo>
+
 #include "weapon/weapons_strategy/weapon.h"
+
+#include "map_game.h"
+#include "pickable.h"
 
 // Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1),
 // duck_id(0) {}
@@ -16,16 +18,16 @@ Duck::Duck(int health, int id):
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {}
 
-void Duck::reset(){
+void Duck::reset() {
     this->health = this->begin_health;
     this->item_in_hands = nullptr;
-    //this->respawn_time = 0;
+    // this->respawn_time = 0;
 }
 std::shared_ptr<Pickable> Duck::throw_weapon() {
     if (this->item_in_hands == nullptr) {
         return nullptr;
     }
-    
+
     // auto weapon_list = this->item_in_hands->get_list();
     return this->take_weapon(nullptr);
 }
@@ -41,7 +43,7 @@ std::shared_ptr<Pickable> Duck::take_weapon(std::shared_ptr<Pickable> item) {
         this->item_in_hands = item;
         return aux;
     }
-    
+
     this->item_in_hands = item;
     this->item_in_hands->set_falling(false);
     this->item_in_hands->set_moving(true);
@@ -69,23 +71,18 @@ bool Duck::has_weapon() {
     return this->item_in_hands->get_id() != 0;
 }
 
-void Duck::add_armor(){
-    this->has_armor = true;
-}
+void Duck::add_armor() { this->has_armor = true; }
 
-void Duck::add_helmet(){
-    this->has_helmet = true;
-}
-
+void Duck::add_helmet() { this->has_helmet = true; }
 
 
 bool Duck::is_alive() { return !(this->health <= 0); }
 
 void Duck::receive_damage(int damage) {
-    if(this->has_armor){
+    if (this->has_armor) {
         this->has_armor = false;
         return;
-    }else if(this->has_helmet){
+    } else if (this->has_helmet) {
         this->has_helmet = false;
         return;
     }

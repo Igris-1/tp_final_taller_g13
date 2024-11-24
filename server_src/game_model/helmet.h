@@ -4,9 +4,8 @@
 // #include "positionable.h"
 #include "pickable.h"
 
-class Helmet: public Pickable {                    
+class Helmet: public Pickable {
 private:
-
 public:
     explicit Helmet();
     void use() override;

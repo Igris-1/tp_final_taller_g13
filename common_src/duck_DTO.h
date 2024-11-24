@@ -70,21 +70,21 @@ typedef struct score_DTO {
     uint8_t second_place_score = 0;
     uint8_t third_place_score = 0;
     uint8_t fourth_place_score = 0;
-    
-}__attribute__((packed)) score_DTO;
+
+} __attribute__((packed)) score_DTO;
 
 typedef struct box_DTO {
     uint16_t x;
     uint16_t y;
     uint16_t width;
     uint16_t height;
-}__attribute__((packed)) box_DTO;
+} __attribute__((packed)) box_DTO;
 
 typedef struct games_DTO {
     uint8_t game_id;
     uint8_t max_players;
     uint8_t current_players;
-}__attribute__((packed)) games_DTO;
+} __attribute__((packed)) games_DTO;
 
 
 #endif  // DUCK_INFO_T_H

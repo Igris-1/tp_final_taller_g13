@@ -3,8 +3,8 @@
 #include "../common_src/game_snapshot_t.h"
 #include "../common_src/queue.h"
 #include "../common_src/socket.h"
-#include "message.h"
 
+#include "message.h"
 #include "protocol_server.h"
 #include "receiver_thread.h"
 #include "sender_thread.h"

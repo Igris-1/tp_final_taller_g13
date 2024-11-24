@@ -1,9 +1,9 @@
 #include "server.h"
 
 #include "actions/action.h"
-#include "games_manager.h"
 
 #include "acceptor.h"
+#include "games_manager.h"
 
 #define RDWR 2
 #define QUEUE_MAX_SIZE 200
@@ -12,7 +12,6 @@
 Server::Server(const char* port): port(port) {}
 
 Server::~Server() {}
-
 
 
 void Server::start() {

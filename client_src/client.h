@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -16,15 +17,14 @@
 #include "../common_src/thread.h"
 
 #include "game_view.h"
+#include "message.h"
 #include "protocol_client.h"
 #include "receiver.h"
 #include "sender.h"
-#include "message.h"
-#include <vector>
 
 using namespace SDL2pp;
 
-class Client{
+class Client {
 private:
     int localPlayers;
     uint8_t game_to_join;
@@ -33,7 +33,7 @@ private:
 
     game_snapshot_t get_snapshot();
     GameView game_view;
-    std::vector <games_DTO> games;
+    std::vector<games_DTO> games;
 
 public:
     void run();

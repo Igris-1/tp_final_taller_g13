@@ -1,7 +1,7 @@
 #include "game_view.h"
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
@@ -22,40 +22,39 @@ GameView::GameView():
     set_up_game();
 }
 
-void GameView::add_map(map_structure_t map) {
-    this->map = map;
-}
+void GameView::add_map(map_structure_t map) { this->map = map; }
 
 void GameView::draw_scoreboard(score_DTO score) {
     renderer.SetDrawColor(Color(0, 0, 0, 0));
-    renderer.FillRect(SDL_Rect{SCREEN_WIDTH/4, SCREEN_HEIGHT/4, SCREEN_WIDTH/2, SCREEN_HEIGHT/2});
+    renderer.FillRect(
+            SDL_Rect{SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
 
     renderer.Copy(scoreboard_font[1], SDL_Rect{0, 0, 218, 109},
-                  SDL_Rect{SCREEN_WIDTH*7/16, SCREEN_HEIGHT/4, 218, 109}, 0, NullOpt, 0);
+                  SDL_Rect{SCREEN_WIDTH * 7 / 16, SCREEN_HEIGHT / 4, 218, 109}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.first_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+30, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 30, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.first_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+56, 32, 32}, 0, NullOpt, 0);
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score.first_place_score * 8, 8, 8, 8},
+                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 56, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.second_place_id], SDL_Rect{0, 0, 32, 32},
-            SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+100, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 100, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+126, 32, 32}, 0, NullOpt, 0);
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score * 8, 8, 8, 8},
+                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 126, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+170, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 170, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+196, 32, 32}, 0, NullOpt, 0);
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score * 8, 8, 8, 8},
+                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 196, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{SCREEN_WIDTH*3/8, SCREEN_HEIGHT/3+240, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 240, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score*8, 8, 8, 8},
-                SDL_Rect{SCREEN_WIDTH*5/8, SCREEN_HEIGHT/3+266, 32, 32}, 0, NullOpt, 0);
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score * 8, 8, 8, 8},
+                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 266, 32, 32}, 0, NullOpt, 0);
 }
 
 void GameView::load_score(score_DTO score) {
@@ -72,7 +71,7 @@ void GameView::load_endgame_score(score_DTO score) {
     window.Hide();
     Mix_CloseAudio();
 
-    std::cout << "Termino el juego todo el mundo a casa"  << std::endl;
+    std::cout << "Termino el juego todo el mundo a casa" << std::endl;
 }
 
 void GameView::set_up_game() {
@@ -96,7 +95,7 @@ void GameView::set_up_game() {
 
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
 
-    //background_sprites.push_back(Texture(renderer, "../assets/images/boca.jpg"));
+    // background_sprites.push_back(Texture(renderer, "../assets/images/boca.jpg"));
 
 
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
@@ -169,7 +168,8 @@ void GameView::set_up_game() {
 void GameView::load_game(game_snapshot_t gs) {
     renderer.Clear();
 
-    add_ducks(gs); // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
+    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no
+                    // siempre. Despues hay que cambiarlo
 
     zoom(gs);
 
@@ -181,7 +181,7 @@ void GameView::load_game(game_snapshot_t gs) {
     renderer.Present();
 }
 
-void GameView::add_ducks(game_snapshot_t gs ){
+void GameView::add_ducks(game_snapshot_t gs) {
     int duck_views_size = duck_views.size();
 
     int gs_ducks_size = gs.ducks.size();
@@ -192,8 +192,8 @@ void GameView::add_ducks(game_snapshot_t gs ){
             int duck_id = static_cast<int>(gs.ducks[i].duck_id);
 
             duck_DTO duck = gs.ducks[i];
-            duck_views.emplace_back(renderer, duck_sprites[duck_id],
-                                    wing_sprites[duck_id], weapon_sprites);
+            duck_views.emplace_back(renderer, duck_sprites[duck_id], wing_sprites[duck_id],
+                                    weapon_sprites);
         }
     }
 }
@@ -217,7 +217,7 @@ void GameView::zoom(game_snapshot_t gs) {
     int x_max = gs.ducks[0].x + 100;
     int y_max = gs.ducks[0].y + 100;
 
-    for (const auto& duck : gs.ducks) {
+    for (const auto& duck: gs.ducks) {
         x_min = std::min(x_min, duck.x - 100);
         y_min = std::min(y_min, duck.y - 100);
         x_max = std::max(x_max, duck.x + 100);
@@ -230,7 +230,7 @@ void GameView::zoom(game_snapshot_t gs) {
     float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
     float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
     float scale_factor = std::min(scale_factor_x, scale_factor_y);
-    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f); 
+    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f);
 
     /*if (x*+SCREEN_WIDTH*scale_factor>SCREEN_WIDTH){
         x -= x*scale_factor+SCREEN_WIDTH*scale_factor-SCREEN_WIDTH;
@@ -239,8 +239,8 @@ void GameView::zoom(game_snapshot_t gs) {
         y -= y+SCREEN_HEIGHT*scale_factor-SCREEN_HEIGHT;
     }*/
 
-    
-    SDL_Rect viewport = (SDL_Rect) {-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
+
+    SDL_Rect viewport = (SDL_Rect){-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
     SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 }
@@ -248,7 +248,8 @@ void GameView::zoom(game_snapshot_t gs) {
 void GameView::load_boxes(game_snapshot_t gs) {
     for (int i = 0; i < gs.boxes.size(); i++) {
         box_DTO box = gs.boxes[i];
-        renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16}, SDL_Rect{box.x, box.y, box.width, box.height});
+        renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16},
+                      SDL_Rect{box.x, box.y, box.width, box.height});
     }
 }
 
@@ -293,25 +294,25 @@ void GameView::load_bullets(game_snapshot_t gs) {
             for (int x = 0; x < 32; x++) {
                 if (bullet.x_direction == 1 && bullet.y_direction == 1) {
                     renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                              SDL_Rect{bullet.x - x, bullet.y - x, 1, 8}, 0, NullOpt,
-                              bullet.x_direction);
-                    
+                                  SDL_Rect{bullet.x - x, bullet.y - x, 1, 8}, 0, NullOpt,
+                                  bullet.x_direction);
+
                 } else if (bullet.x_direction != 1 && bullet.y_direction != 1) {
                     renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                              SDL_Rect{bullet.x +x, bullet.y +x , 1, 8}, 0, NullOpt,
-                              bullet.x_direction);
-                } else if (bullet.x_direction == 1 && bullet.y_direction != 1){
+                                  SDL_Rect{bullet.x + x, bullet.y + x, 1, 8}, 0, NullOpt,
+                                  bullet.x_direction);
+                } else if (bullet.x_direction == 1 && bullet.y_direction != 1) {
                     renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                              SDL_Rect{bullet.x -x, bullet.y +x , 1, 8}, 0, NullOpt,
-                              bullet.x_direction);
+                                  SDL_Rect{bullet.x - x, bullet.y + x, 1, 8}, 0, NullOpt,
+                                  bullet.x_direction);
 
-                } else if (bullet.x_direction != 1 && bullet.y_direction == 1){
+                } else if (bullet.x_direction != 1 && bullet.y_direction == 1) {
                     renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                              SDL_Rect{bullet.x +x, bullet.y -x, 1, 8}, 0, NullOpt,
-                              bullet.x_direction);
+                                  SDL_Rect{bullet.x + x, bullet.y - x, 1, 8}, 0, NullOpt,
+                                  bullet.x_direction);
                 }
-            }    
-            
+            }
+
         } else if (bullet_id == 3) {
             renderer.SetDrawColor(Color(143, 142, 137, 0));
 

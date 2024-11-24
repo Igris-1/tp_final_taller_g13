@@ -1,6 +1,7 @@
 #ifndef DUCK_VIEW_H
 #define DUCK_VIEW_H
 
+#include <map>
 #include <vector>
 
 #include <SDL2/SDL.h>
@@ -10,7 +11,6 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Window.hh>
-#include <map>
 
 #include "../common_src/game_snapshot_t.h"
 

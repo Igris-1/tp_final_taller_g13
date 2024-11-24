@@ -1,9 +1,11 @@
 #include "ak_47.h"
+
 #include "../../duck.h"
 
 std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> duck_trigger,
-                                                                 int x_position, int y_position,
-                                                                 int x_direction, int y_direction, bool is_holding_button) {
+                                                         int x_position, int y_position,
+                                                         int x_direction, int y_direction,
+                                                         bool is_holding_button) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     if (this->ammo == 0) {
         return bullets;

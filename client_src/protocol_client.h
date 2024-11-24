@@ -5,8 +5,9 @@
 
 #include "../common_src/action_t.h"
 #include "../common_src/game_snapshot_t.h"
-#include "../common_src/socket.h"
 #include "../common_src/score_DTO.h"
+#include "../common_src/socket.h"
+
 #include "message.h"
 
 class ProtocolClient {
