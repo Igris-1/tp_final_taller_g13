@@ -26,7 +26,7 @@ private:
     int health;
     int begin_health;
     int respawn_time = 100;
-    std::shared_ptr<Weapon> weapon;
+    //std::shared_ptr<Weapon> items_in_hands;
     bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;
@@ -39,8 +39,8 @@ public:
 
     // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
     // arma)
-    std::shared_ptr<Weapon> throw_weapon();
-    std::shared_ptr<Weapon> take_weapon(std::shared_ptr<Weapon> weapon);
+    std::shared_ptr<Pickable> throw_weapon();
+    std::shared_ptr<Pickable> take_weapon(std::shared_ptr<Pickable> item);
 
     void add_armor();
     void add_helmet();
@@ -55,7 +55,7 @@ public:
     int get_respawn_time();
     void set_health(int health);
 
-    void use_item(int x_direction, int y_direction, MapGame& map);
+    void use_item(int x_direction, int y_direction, MapGame& map, bool is_holding);
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);

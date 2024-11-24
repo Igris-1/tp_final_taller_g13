@@ -3,19 +3,15 @@
 
 #include "bullet_interface.h"
 
+class MapGame;
 
-// class Pellet : public BulletInterface{
-//     private:
-
-//     public:
-//         // Pellet(Position start_position, Position direction, int tiles_acount) :
-//         BulletInterface(start_position, direction, tiles_acount) {
-//         // }
-//         // Position next_position() {
-//         //     if(this->tiles_acount == 0) return this->position;
-//         //     return this->position + this->direction;
-//         //     this->tiles_acount--;
-//         // }
-// };
+class Pellet: public BulletInterface {
+private:
+    int moved_vertical = 0;
+public:
+    Pellet(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int travel_distance);
+    bool next_position(MapGame& map) override;
+    int get_id() override;
+};
 
 #endif

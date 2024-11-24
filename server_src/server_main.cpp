@@ -16,7 +16,6 @@ int main(int argc, char* argv[]) {
         }
         Server server(argv[PORT_ARG]);
         server.start();
-        std::cout << "Server started" << std::endl;
         return SUCCESS;
 
     } catch (const std::exception& e) {

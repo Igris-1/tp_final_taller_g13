@@ -11,7 +11,7 @@ typedef struct duck_DTO {
     bool is_moving_right = false;
     bool is_moving_left = false;
     // uint8_t duck_hp;
-    // bool shooting;
+    bool shooting = false;
     bool jumping = false;
     bool falling = false;
     uint16_t width;

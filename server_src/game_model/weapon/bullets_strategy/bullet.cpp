@@ -2,10 +2,11 @@
 
 #include "../../map_game.h"
 
-Bullet::Bullet(int duck_trigger_id, int x, int y, int x_direction, int y_direction):
+Bullet::Bullet(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int travel_distance):
         BulletInterface(duck_trigger_id, x, y, x_direction, y_direction) {
-    this->travel_distance = TILES_BULLETS;
-}
+            this->travel_distance = travel_distance;
+            this->damage = BULLET_DAMAGE;
+        }
 
 bool Bullet::next_position(MapGame& map) {
     if (this->travel_distance == 0) {
@@ -18,4 +19,4 @@ bool Bullet::next_position(MapGame& map) {
     return false;
 }
 
-int Bullet::get_id() { return 1; }
+int Bullet::get_id() { return BULLET_ID; }

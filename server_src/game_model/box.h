@@ -1,7 +1,7 @@
 #ifndef BOX_H
 #define BOX_H
 
-#define RESISTANCE 100
+#define RESISTANCE 10
 
 #include "positionable.h"
 #include <cstdlib>
@@ -14,6 +14,7 @@ class Box: public Positionable{
 
     public:
     Box(Hitbox hitbox);
+    Box(int x, int y, int width, int height);
 
     void receive_damage(int damage);
     bool is_destroyed();

@@ -38,7 +38,6 @@ private:
                     protocol.sendScore(score);
                 }
                 else if(instruction.id == 3){
-                    std::cout << "Sending endgame score in sender thread" << std::endl;
                     score_DTO score = instruction.score;
                     protocol.sendFinalScore(score);
                 }

@@ -8,6 +8,7 @@
 #include "pew_pew.h"
 #include "shotgun.h"
 #include "sniper.h"
+#include "ak_47.h"
 #include <cstdlib>
 #include <ctime>
 #include <list>

@@ -9,6 +9,7 @@
 #include "../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapons_strategy/weapon.h"
+#include "pickable.h" 
 
 #include "duck.h"
 #include "hitbox.h"
@@ -33,8 +34,10 @@ private:
     std::set<Hitbox> platforms;
     std::map<int, std::shared_ptr<Duck>> ducks;
     std::map<int, std::shared_ptr<Duck>> ducks_dead;
-    std::list<std::shared_ptr<Weapon>> pickables;
-    std::list<std::shared_ptr<Weapon>> pickables_spawned;
+    // std::list<std::shared_ptr<Weapon>> pickables;
+    // std::list<std::shared_ptr<Weapon>> pickables_spawned;
+    std::list<std::shared_ptr<Pickable>> pickables;
+    std::list<std::shared_ptr<Pickable>> pickables_spawned;
     std::list<std::shared_ptr<BulletInterface>> bullets;
 
     bool hitbox_in_range(Hitbox hitbox);
@@ -43,6 +46,7 @@ private:
     bool not_in_platforms(Hitbox hitbox);
     bool not_in_boxes(Hitbox hitbox);
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
+    // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
 
 public:
     explicit MapGame(int width, int height);
@@ -62,14 +66,15 @@ public:
     void remove_duck(int id);
     bool move_relative_if_posible(int duck_id, int dx, int dy);
     void continue_fire_rate(int id);
-    void use_item(int duck_id, bool right_direction);
+    void use_item(int duck_id, bool right_direction, bool is_holding);
+    // void keep_using_item(int duck_id, bool right_direction);
 
     // BULLETS AND PICKABLE
     void bullets_next_movement();
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
     void ducks_try_pick_up(int id_duck);
     void ducks_try_throw(int id_duck, bool right_direction);
-    void add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y);
+    void add_weapon(std::shared_ptr<Pickable> new_weapon, int x, int y);
     void gravity_weapon();
     void inertia_weapon();
 

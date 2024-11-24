@@ -37,7 +37,6 @@ void GameThread::send_snapshots() {
 }
 
 void GameThread::send_map(){
-    std::cout << "Sending map" << std::endl;
     instruction_for_client_t instruction;
     instruction.id = 0;
     instruction.map = game.get_map_structure();
@@ -75,7 +74,6 @@ void GameThread::execute_commands() {
 }
 
 void GameThread::blocking_execute_commands() {
-    std::cout << "Executing blocking commands" << std::endl;
     std::shared_ptr<Action> c_action = gameQueue.pop();
     c_action->execute(game);   
 }
@@ -94,7 +92,7 @@ void GameThread::run() {
     game.add_new_platform(Hitbox(200, 600, 100, 16));
     game.add_new_platform(Hitbox(0, 600, 300, 16));
 
-    game.add_box(Hitbox(32, 32, 200, 500));
+    game.add_box(Hitbox(500, 500, 32, 32));
 
     game.add_invalid_position(Hitbox(0, 670, 1365, 2));
     }catch(const GameError& e){
@@ -116,12 +114,15 @@ void GameThread::run() {
     }
 
     while(this->game.get_duck_DTO_list().size() < 4){
-        std::cout << "Waiting for players " << this->game.get_duck_DTO_list().size() << "/4" << std::endl;
+
         usleep(SLEEP_TIME);
     }
     send_map();
 
+
+
     while (_keep_running) {
+        game.keep_using_item();
         try {
             execute_commands();
             
@@ -132,7 +133,6 @@ void GameThread::run() {
 
         game.continue_vertical_movements(SPEED_MOVEMENTS);
         game.continue_horizontal_movements(SPEED_MOVEMENTS);
-        game.keep_shooting();
         game.random_weapon_spawn(true);
         //game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
 
@@ -140,14 +140,12 @@ void GameThread::run() {
         if(game.check_if_round_finished()){
             send_snapshots();
             if (game.check_if_winner()){
-                std::cout << "Game finished" << std::endl;
                 send_endgame_score(); 
                 this->_is_alive = false;
                 return;
             }
             this->round_counter--;
             if(this->round_counter == 0){
-                std::cout << "5th round finished" << std::endl;
                 send_game_score();
                 this->round_counter = 5;
                 // usleep(1000000);

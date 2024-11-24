@@ -2,10 +2,10 @@
 
 #include "../../map_game.h"
 
-Laser::Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction):
+Laser::Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int travel_distance):
         BulletInterface(duck_trigger_id, x, y, x_direction, y_direction) {
-    this->travel_distance = TILES_LASER_DISTANCE;
-    this->damage = 50;
+            this->travel_distance = travel_distance;
+            this->damage = LASER_DAMAGE;
 }
 bool Laser::next_position(MapGame& map) {
     if (this->travel_distance == 0) {
@@ -28,4 +28,4 @@ bool Laser::next_position(MapGame& map) {
     }
 }
 
-int Laser::get_id() { return 2; }
+int Laser::get_id() { return LASER_ID; }

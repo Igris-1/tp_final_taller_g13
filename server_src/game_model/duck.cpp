@@ -1,5 +1,6 @@
 #include "duck.h"
 
+#include <typeinfo>
 #include <iostream>
 #include "pickable.h"
 #include "map_game.h"
@@ -11,21 +12,21 @@
 Duck::Duck(int health, int id):
         health(health),
         begin_health(health),
-        weapon(nullptr),
+        item_in_hands(nullptr),
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {}
 
 void Duck::reset(){
     this->health = this->begin_health;
-    this->weapon = nullptr;
+    this->item_in_hands = nullptr;
     //this->respawn_time = 0;
 }
-std::shared_ptr<Weapon> Duck::throw_weapon() {
-    if (this->weapon == nullptr) {
-        std::cout << "no weapon" << std::endl;
+std::shared_ptr<Pickable> Duck::throw_weapon() {
+    if (this->item_in_hands == nullptr) {
         return nullptr;
     }
-    auto weapon_list = this->weapon->get_list();
+    
+    // auto weapon_list = this->item_in_hands->get_list();
     return this->take_weapon(nullptr);
 }
 
@@ -33,18 +34,18 @@ int Duck::get_health() { return this->health; }
 
 int Duck::get_id() { return this->duck_id; }
 
-std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon) {
-    std::shared_ptr<Weapon> aux = this->weapon;
-    if (weapon == nullptr) {
-        // std::list<std::shared_ptr<BulletInterface>> weapon_list;
-        // aux = std::make_shared<Weapon>(WeaponFactory::createWeapon(weapon_list, ""));
-        this->weapon = weapon;
+std::shared_ptr<Pickable> Duck::take_weapon(std::shared_ptr<Pickable> item) {
+    std::shared_ptr<Pickable> aux = this->item_in_hands;
+
+    if (item == nullptr) {
+        this->item_in_hands = item;
         return aux;
     }
-
-    this->weapon = weapon;
-    this->weapon->set_falling(false);
-    this->weapon->set_moving(true);
+    
+    this->item_in_hands = item;
+    this->item_in_hands->set_falling(false);
+    this->item_in_hands->set_moving(true);
+    this->item_in_hands->add_owner(shared_from_this());
     return aux;
 }
 
@@ -62,10 +63,10 @@ std::shared_ptr<Weapon> Duck::take_weapon(std::shared_ptr<Weapon> weapon) {
 // }
 
 bool Duck::has_weapon() {
-    if (this->weapon == nullptr) {
+    if (this->item_in_hands == nullptr) {
         return false;
     }
-    return this->weapon->get_id() != 0;
+    return this->item_in_hands->get_id() != 0;
 }
 
 void Duck::add_armor(){
@@ -106,10 +107,10 @@ duck_DTO Duck::to_DTO() {
     dto.width = this->hitbox.get_width();
     dto.height = this->hitbox.get_height();
     // uint8_t duck_hp = this->health;
-    if (weapon == nullptr) {
+    if (item_in_hands == nullptr) {
         dto.weapon_id = 0;
     } else {
-        dto.weapon_id = this->weapon->get_id();
+        dto.weapon_id = this->item_in_hands->get_id();
     }
     // bool helmet_equipped;
     // bool armor_equipped;
@@ -117,47 +118,46 @@ duck_DTO Duck::to_DTO() {
 }
 
 void Duck::continue_fire_rate() {
-    if (this->weapon == nullptr) {
+    if (this->item_in_hands == nullptr) {
         return;
     }
-    this->weapon->fire_rate_down();
+    this->item_in_hands->fire_rate_down();
 }
 
-bool Duck::has_explosive_weapon() {
-    if (this->weapon == nullptr) {
-        return false;
-    }
-    return this->weapon->is_explosive();
-}
+// bool Duck::has_explosive_weapon() {
+//     if (this->item_in_hands == nullptr) {
+//         return false;
+//     }
+//     return this->item_in_hands->is_explosive();
+// }
 
-bool Duck::has_active_explosive_weapon() {
-    if (this->weapon == nullptr) {
-        return false;
-    }
-    return this->weapon->is_active();
-}
-void Duck::activation_explosive_weapon() {
-    if (this->weapon == nullptr) {
-        return;
-    }
-    this->weapon->activation();
-}
+// bool Duck::has_active_explosive_weapon() {
+//     if (this->item_in_hands == nullptr) {
+//         return false;
+//     }
+//     return this->item_in_hands->is_active();
+// }
+// void Duck::activation_explosive_weapon() {
+//     if (this->weap == nullptr) {
+//         return;
+//     }
+//     this->weapon->activation();
+// }
 
-bool Duck::already_exploted() {
-    this->weapon->move_to(this->get_x(), this->get_y());
-    return this->weapon->exploted();
-}
+// bool Duck::already_exploted() {
+//     this->item_in_hands->move_to(this->get_x(), this->get_y());
+//     return this->item_in_hands->exploded();
+// }
 
-void Duck::use_item(int x_direction, int y_direction, MapGame& map) {
+void Duck::use_item(int x_direction, int y_direction, MapGame& map, bool is_holding) {
     if (!this->has_weapon()) {
         return;
     }
-    this->weapon->set_direction(x_direction, y_direction);
-    this->weapon->add_owner(shared_from_this());
-    this->weapon->use();
-
-    int recoil = this->weapon->recoil_produced();
-    map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, -recoil);
+    this->item_in_hands->set_direction(x_direction, y_direction);
+    this->item_in_hands->set_holding(is_holding);
+    this->item_in_hands->use();
+    int recoil = this->item_in_hands->recoil_produced();
+    map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, 0);
 }
 
 

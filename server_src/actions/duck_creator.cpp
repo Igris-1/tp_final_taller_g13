@@ -9,6 +9,5 @@ DuckCreator::DuckCreator(int id): Action(id) {}
 
 
 void DuckCreator::execute(Game& game) {
-    std::cout << "Creating duck for client " << client_id << std::endl;
     game.set_duck_start_position(this->client_id, 0, 0);
 }

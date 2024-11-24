@@ -70,10 +70,30 @@ void GameView::load_endgame_score(score_DTO score) {
     renderer.Present();
     SDL_Delay(DELAY_AFTER_SCORE);
     window.Hide();
+    Mix_CloseAudio();
+
     std::cout << "Termino el juego todo el mundo a casa"  << std::endl;
 }
 
 void GameView::set_up_game() {
+    int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    if (a < 0) {
+        std::cout << "Error al abrir audio" << std::endl;
+    }
+
+    Mix_Music* efecto = Mix_LoadMUS("unapalabra.mp3");
+
+    if (efecto == NULL) {
+        std::cout << "Error al cargar musica" << std::endl;
+    }
+
+    Mix_PlayMusic(efecto, -1);
+
+    if (TTF_Init() == -1) {
+        std::cout << "Error al iniciar TTF" << std::endl;
+    }
+
+
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
 
     //background_sprites.push_back(Texture(renderer, "../assets/images/boca.jpg"));
@@ -127,11 +147,16 @@ void GameView::set_up_game() {
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
 
     box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
 
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/shotgunShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/magnumShell.png"));
+
 
     Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
 
@@ -146,7 +171,7 @@ void GameView::load_game(game_snapshot_t gs) {
 
     add_ducks(gs); // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
 
-    // zoom(gs);
+    zoom(gs);
 
     load_map();
     load_ducks(gs);
@@ -187,16 +212,16 @@ void GameView::zoom(game_snapshot_t gs) {
         }
     }
 
-    int x_min = gs.ducks[0].x - 32;
-    int y_min = gs.ducks[0].y - 32;
-    int x_max = gs.ducks[0].x + 32;
-    int y_max = gs.ducks[0].y + 32;
+    int x_min = gs.ducks[0].x - 100;
+    int y_min = gs.ducks[0].y - 100;
+    int x_max = gs.ducks[0].x + 100;
+    int y_max = gs.ducks[0].y + 100;
 
     for (const auto& duck : gs.ducks) {
-        x_min = std::min(x_min, duck.x - 32);
-        y_min = std::min(y_min, duck.y - 32);
-        x_max = std::max(x_max, duck.x + 32);
-        y_max = std::max(y_max, duck.y + 32);
+        x_min = std::min(x_min, duck.x - 100);
+        y_min = std::min(y_min, duck.y - 100);
+        x_max = std::max(x_max, duck.x + 100);
+        y_max = std::max(y_max, duck.y + 100);
     }
 
     int ducks_width = x_max - x_min;
@@ -223,8 +248,7 @@ void GameView::zoom(game_snapshot_t gs) {
 void GameView::load_boxes(game_snapshot_t gs) {
     for (int i = 0; i < gs.boxes.size(); i++) {
         box_DTO box = gs.boxes[i];
-        std::cout << "Box x: " << int(box.x) << " Box y: " << int(box.y) << std::endl;
-        renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16}, SDL_Rect{box.x, box.y, 32, 32});
+        renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16}, SDL_Rect{box.x, box.y, box.width, box.height});
     }
 }
 
@@ -237,6 +261,11 @@ void GameView::load_weapons(game_snapshot_t gs) {
             renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11},
                           SDL_Rect{weapon.x - 14, weapon.y - 7, 36, 18}, 0, NullOpt, 0);
         } else if (weapon_id == 2) {
+            renderer.Copy(
+                    weaponTexture, SDL_Rect{0, 0, 32, 32},
+                    SDL_Rect{weapon.x - 8, weapon.y - 8, weapon.width + 16, weapon.width + 16}, 0,
+                    NullOpt, 0);
+        } else if (weapon_id > 0) {
             renderer.Copy(
                     weaponTexture, SDL_Rect{0, 0, 32, 32},
                     SDL_Rect{weapon.x - 8, weapon.y - 8, weapon.width + 16, weapon.width + 16}, 0,
@@ -281,9 +310,18 @@ void GameView::load_bullets(game_snapshot_t gs) {
                               SDL_Rect{bullet.x +x, bullet.y -x, 1, 8}, 0, NullOpt,
                               bullet.x_direction);
                 }
+            }    
+            
+        } else if (bullet_id == 3) {
+            renderer.SetDrawColor(Color(143, 142, 137, 0));
 
-                
-            }
+            int yellow_x = (bullet.x_direction == 1) ? bullet.x - bullet.width * 4 : bullet.x;
+
+            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
+                          SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
+                          bullet.x_direction);
+            renderer.FillRect(
+                    SDL_Rect{yellow_x, bullet.y + 8, bullet.width * 4, bullet.height / 8});
         }
     }
 }

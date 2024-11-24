@@ -46,11 +46,9 @@ typedef struct {
     int time_to_respawn = 0;
     bool is_moving_right = false;
     bool is_moving_left = false;
-
-
     // true  -> derecha | false -> izquierda
     bool facing_direction = true;
-    bool is_shooting = false;
+    bool holding_action = false;
 
 } duck_state;
 
@@ -87,9 +85,9 @@ public:
     void stop_jump_duck(int id, bool stop_jump);
 
     //  WEAPONS
-    void fire_duck_weapon(int id, bool fire);
-    void keep_shooting();
-    void stop_duck_weapon(int id, bool stop_fire);
+    void use_duck_item(int id, bool fire);
+    void keep_using_item();
+    void stop_duck_item(int id, bool stop_fire);
     void pick_up_item(int id, bool pick_up);
 
     // DATA

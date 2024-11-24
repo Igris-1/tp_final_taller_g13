@@ -4,14 +4,14 @@
 
 std::vector<std::shared_ptr<BulletInterface>> LaserRifle::fire(std::shared_ptr<Duck> duck_trigger,
                                                                int x_position, int y_position,
-                                                               int x_direction, int y_direction) {
+                                                               int x_direction, int y_direction, bool is_holding_button) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     if (this->ammo == 0) {
         return bullets;
     }
     if (this->fire_rate == 0) {
         bullets.push_back(std::make_shared<Laser>(duck_trigger->get_id(), x_position, y_position,
-                                                  x_direction, +1));
+                                                  x_direction, 1, TRAVEL_DISTANCE_LASER_RIFLE));
         ammo--;
         this->fire_rate = FIRE_RATE_LASER_RIFLE;
     }

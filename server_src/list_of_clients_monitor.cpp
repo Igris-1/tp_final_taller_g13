@@ -57,7 +57,6 @@ void ListOfClientsMonitor::enqueue_instruction(instruction_for_client_t command)
 
 void ListOfClientsMonitor::send_map(map_structure_t map) {
     std::lock_guard<std::mutex> lock(mutex);
-    std::cout << "Sending map to clients" << std::endl;
     for (auto it = clientsList.begin(); it != clientsList.end();) {
         if (it->is_alive()) {
             it->send_map(map);

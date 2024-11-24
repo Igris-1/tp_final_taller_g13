@@ -2,18 +2,25 @@
 
 #include "duck.h"
 
+Pickable::Pickable(int x, int y, int width, int height) : Positionable(x, y, width, height) {}
+Pickable::Pickable(): Positionable(){}
+
 void Pickable::air_time_down_y() {
-        this->air_time_y--;
-        if (air_time_y == 0) {
-            falling = true;
+        if(this->air_time_y > 0){
+            this->air_time_y--;
+            if (air_time_y <= 0) {
+                falling = true;
+            }
         }
     }
 
 void Pickable::air_time_down_x() {
-        this->air_time_x--;
-        if (air_time_x == 0) {
-            moving = false;
-        }
+        if(this->air_time_x > 0){
+            this->air_time_x--;
+            if (air_time_x <= 0) {
+                moving = false;
+            }
+        }    
     }
 
 bool Pickable::is_falling() { return falling; }
@@ -41,3 +48,15 @@ void Pickable::set_direction(int x, int y) {
 }
 
 void Pickable::add_owner(std::shared_ptr<Duck> new_duck) { this->duck = new_duck; }
+
+void Pickable::fire_rate_down(){
+    return;
+}
+
+int Pickable::recoil_produced(){
+    return 0;
+}
+
+void Pickable::set_holding(bool is_holding){
+    return ;
+}

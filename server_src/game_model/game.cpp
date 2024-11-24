@@ -44,7 +44,7 @@ std::vector<duck_DTO> Game::get_duck_DTO_list() {
         it.is_moving_right = this->ducks_states[it.duck_id]->is_moving_right;
         it.jumping = this->ducks_states[it.duck_id]->is_jumping;
         it.falling = this->ducks_states[it.duck_id]->is_falling;
-        // it.shooting = this->ducks_states[it.duck_id].is_shooting;
+        it.shooting = this->ducks_states[it.duck_id]->holding_action;
     }
     return list_DTO;
 }
@@ -61,28 +61,19 @@ score_DTO Game::get_score_DTO(){
 
     if (!sorted_ducks.empty()) {
         score.first_place_id = sorted_ducks[0].first;
-        std::cout << "first place id: " << sorted_ducks[0].first;
-        std::cout << "first place id score: " << sorted_ducks[0].second << std::endl;
         score.first_place_score = sorted_ducks[0].second;
-        std::cout << "first place en struct: " << static_cast<int>(score.first_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 1) {
         score.second_place_id = sorted_ducks[1].first;
-        std::cout << "second place id: " << sorted_ducks[1].first << std::endl;
         score.second_place_score = sorted_ducks[1].second;
-        std::cout << "second place en struct: " << static_cast<int>(score.second_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 2) {
         score.third_place_id = sorted_ducks[2].first;
-        std::cout << "third place id: " << sorted_ducks[2].first << std::endl;
         score.third_place_score = sorted_ducks[2].second;
-        std::cout << "third place en struct: " << static_cast<int>(score.third_place_score) << std::endl;
     }
     if (sorted_ducks.size() > 3) {
         score.fourth_place_id = sorted_ducks[3].first;
-        std::cout << "fourth place id: " << sorted_ducks[3].first << std::endl;
         score.fourth_place_score = sorted_ducks[3].second;
-        std::cout << "fourth place en struct: " << static_cast<int>(score.fourth_place_score) << std::endl;
     }
     return score;
 }
@@ -215,18 +206,20 @@ void Game::stop_jump_duck(int id, bool stop_jump) {
     }
 }
 
-void Game::fire_duck_weapon(int id, bool fire) {
+void Game::use_duck_item(int id, bool fire) {
     if (fire && this->map.duck_is_alive(id)) {
-        this->ducks_states[id]->is_shooting = true;
+        this->ducks_states[id]->holding_action = true;
+        this->map.use_item(id, this->ducks_states[id]->facing_direction, false);
     }
 }
 
-void Game::keep_shooting() {
+void Game::keep_using_item() {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
     for (auto& id: ducks_id) {
         this->map.continue_fire_rate(id);
-        if (this->ducks_states[id]->is_shooting) {
-            this->map.use_item(id, this->ducks_states[id]->facing_direction);
+        if (this->ducks_states[id]->holding_action) {
+            this->map.use_item(id, this->ducks_states[id]->facing_direction, true);
+
         }
     }
 }
@@ -236,9 +229,9 @@ void Game::add_spawn_position(int x, int y){
     this->spawn_positions.push_back(std::make_tuple(x, y));
 }
 
-void Game::stop_duck_weapon(int id, bool stop_fire) {
+void Game::stop_duck_item(int id, bool stop_fire) {
     if (stop_fire) {
-        this->ducks_states[id]->is_shooting = false;
+        this->ducks_states[id]->holding_action = false;
         return;
     }
 }
@@ -286,7 +279,6 @@ bool Game::check_if_round_finished(){
     if(ids_ducks.size() <= 1 && dead_ducks > 0){
         if(ids_ducks.size() == 1){
             this->ducks_score[ids_ducks[0]] += 1;
-            std::cout << "Duck id: " << ids_ducks[0] << " score: " << this->ducks_score[ids_ducks[0]] << std::endl;
         }
         return true;
     }

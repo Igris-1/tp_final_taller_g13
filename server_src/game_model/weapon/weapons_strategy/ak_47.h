@@ -1,25 +1,18 @@
-#ifndef SHOTGUN_H
-#define SHOTGUN_H
-
-#include "../bullets_strategy/bullet_interface.h"
-#include "../bullets_strategy/pellet.h"
-
-#include "weapon_interface.h"
-
+#ifndef AK_47_H
+#define AK_47_H
 
 #include <memory>
 
-#include "../bullets_strategy/pellet.h"
+#include "../bullets_strategy/bullet.h"
 #include "../bullets_strategy/bullet_interface.h"
 #include "weapon.h"
 
 #include "weapon_interface.h"
 
 
-class Shotgun: public WeaponInterface {
+class AK47: public WeaponInterface {
 private:
-    int ammo = 12;
-    bool reload = false;
+    int ammo = 99999;
 
 public:
     std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,
@@ -27,7 +20,7 @@ public:
                                                        int x_direction, int y_direction, bool is_holding_button) override;
     int get_id() override;
     int recoil_produced() override;
-    ~Shotgun() override {}
+    ~AK47() override {}
 };
 
 #endif

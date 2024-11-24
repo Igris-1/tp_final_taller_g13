@@ -137,7 +137,7 @@ install_game() {
   mkdir build
   cd build
   cmake -DCMAKE_BUILD_TYPE=Release ..
-  if sudo make install -j$(nproc); then
+  if sudo make release -j$(nproc); then
     echo -e "${GREEN}Build complete! Ready for use!${NC}"
   else
     echo -e "${RED}Error: Failed to install. Check the error message above for details.${NC}"

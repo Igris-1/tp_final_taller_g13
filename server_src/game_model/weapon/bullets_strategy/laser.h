@@ -10,7 +10,7 @@ class MapGame;
 class Laser: public BulletInterface {
 private:
 public:
-    explicit Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction);
+    explicit Laser(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int travel_distance);
     bool next_position(MapGame& map) override;
     int get_id() override;
 };

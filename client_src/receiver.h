@@ -60,7 +60,6 @@ private:
 
     void send_players() {
         Message message(PLAYERS_CODE);
-        std::cout << "encolo soliciutd d players en la queue" << std::endl;
         queue.push(message);
     }
 

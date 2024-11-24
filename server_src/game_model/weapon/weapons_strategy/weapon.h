@@ -6,23 +6,18 @@
 #include <vector>
 
 #include "../../pickable.h"
-#include "../../positionable.h"
-#include "../../../../common_src/duck_DTO.h"
-
-
 #include "weapon_interface.h"
 
-class Weapon: public Positionable, public Pickable {
+class Weapon: public Pickable {
 protected:
     int dispersion;
     int recoil;
     bool reload_time;
-
-    // std::shared_ptr<Duck> duck;
+    bool holding_button;
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;
 
-    std::shared_ptr<WeaponInterface> weapon_strategy;  // deberia llamarse weapon_strategy la clase
+    std::shared_ptr<WeaponInterface> weapon_strategy; 
 
     bool is_not_a_weapon();
 
@@ -30,18 +25,16 @@ public:
     Weapon(WeaponInterface* weapon_strategy, int width, int height,
            std::list<std::shared_ptr<BulletInterface>>& bullets);
 
-    // devuelvo por x_direction e y_direction el retroceso del pato
-    std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,
-                                                       int x_position, int y_position,
-                                                       int& x_direction, int& y_direction);
-    void fire_rate_down();
+
+    void fire_rate_down() override;
     weapon_DTO to_DTO();
     int get_id();
-    int recoil_produced();
+    int recoil_produced() override;
     // especiales para la granada y banana
     // void add_owner(std::shared_ptr<Duck> new_duck);
     bool is_explosive();
     bool is_active();
+    void set_holding(bool holding) override;
     void activation();
     bool exploted();
     int get_ammo();

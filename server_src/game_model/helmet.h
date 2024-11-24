@@ -2,15 +2,17 @@
 #define HELMET_H
 
 // #include "positionable.h"
-// #include "pickable.h"
+#include "pickable.h"
 
-// class Helmet: public Positionable , public Pickable {                    
-// private:
+class Helmet: public Pickable {                    
+private:
 
-// public:
-//     explicit Helmet();
-//     void use() override;
-//     ~Helmet();
-// };
+public:
+    explicit Helmet();
+    void use() override;
+    int get_id();
+    weapon_DTO to_DTO() override;
+    ~Helmet();
+};
 
 #endif

@@ -33,7 +33,6 @@ bool MapGame::not_in_boxes(Hitbox hitbox) {
     return true;
 }
 
-
 bool MapGame::hitbox_in_range(Hitbox hitbox) {
     int hitbox_left = hitbox.get_x();
     int hitbox_right = hitbox.get_x() + hitbox.get_width();
@@ -48,7 +47,7 @@ bool MapGame::position_is_valid(Hitbox hitbox) {
     if (!hitbox_in_range(hitbox)) {
         return false;
     }
-    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox) && not_in_boxes(hitbox);
+    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
 }
 
 bool MapGame::set_duck_start_position(int id, int x, int y) {
@@ -119,11 +118,11 @@ bool MapGame::add_platform(Hitbox hitbox) {
     return true;
 }
 
-bool MapGame::add_box(Hitbox hitbox){
-if (!position_is_valid(hitbox)) {
+bool MapGame::add_box(Hitbox hitbox) {
+    if (!position_is_valid(hitbox)) {
         return false;
     }
-    this->boxes.push_back(std::make_shared<Box>(hitbox));
+    this->boxes.push_back(std::make_shared<Box>(hitbox.get_x(), hitbox.get_y(), hitbox.get_width(), hitbox.get_height()));
     return true;
 }
 
@@ -134,6 +133,13 @@ bool MapGame::can_move_hitbox(Hitbox hitbox, int dx, int dy) {
     }
     return false;
 }
+// bool MapGame::can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy) {
+//     hitbox.move_relative(dx, dy);
+//     if (position_is_valid(hitbox)) {
+//         return true;
+//     }
+//     return false;
+// }
 
 bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
     auto duck = this->ducks[duck_id];
@@ -147,7 +153,9 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
         int step_dx = (remaining_dx > 0) ? x_step : 0;
         int step_dy = (remaining_dy > 0) ? y_step : 0;
 
-        if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy)) {
+        Hitbox aux = duck->get_hitbox();
+        aux.move_relative(step_dx, step_dy);
+        if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy) && this->not_in_boxes(aux)) {
             duck->move_relative_to(step_dx, step_dy);
         } else {
             return false;
@@ -211,12 +219,9 @@ std::vector<platform_DTO> MapGame::get_platforms_DTO() {
 }
 
 std::vector<box_DTO> MapGame::get_boxes_DTO(){
-    std::vector<box_DTO> vector_boxes;
-    vector_boxes.resize(0);
+    std::vector<box_DTO> vector_boxes(0);
     for (auto& box : this->boxes) {
-        box_DTO dto = {static_cast<uint16_t>(box->get_x()), static_cast<uint16_t>(box->get_y()),
-                            static_cast<uint16_t>(box->get_width()),
-                            static_cast<uint16_t>(box->get_height())};
+        box_DTO dto = box->get_DTO();
         vector_boxes.push_back(dto);
     }
     return vector_boxes;
@@ -238,32 +243,33 @@ void MapGame::continue_fire_rate(int id) {
 }
 
 void MapGame::gravity_weapon(){
-        for (auto it = pickables.begin(); it != pickables.end(); ++it){
-        //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
-            (*it)->air_time_down_y();
-            Hitbox& hitbox = (*it)->get_reference_hitbox();
-            if(!(*it)->is_falling()){
-                this->move_relative_if_posible(hitbox, 0 ,JUMP_DIRECTION);
-                continue;
-            }
-            if((*it)->is_falling()){         
-                this->move_relative_if_posible(hitbox, 0, GRAVITY);
-            }
+    for (auto it = pickables.begin(); it != pickables.end(); ++it){
+    //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+        (*it)->air_time_down_y();
+        Hitbox& hitbox = (*it)->get_reference_hitbox();
+        if(!(*it)->is_falling()){
+            this->move_relative_if_posible(hitbox, 0 ,JUMP_DIRECTION);
+            continue;
         }
+        if((*it)->is_falling()){         
+            this->move_relative_if_posible(hitbox, 0, GRAVITY);
+        }
+    }
 }
+
 void MapGame::inertia_weapon(){
-        for (auto it = pickables.begin(); it != pickables.end(); ++it){
-        //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
-            (*it)->air_time_down_x();
-            Hitbox& hitbox = (*it)->get_reference_hitbox();
-            if((*it)->is_moving() && (*it)->get_x_direction() > 0){
-                this->move_relative_if_posible(hitbox, RIGHT_DIRECTION , 0);
-                continue;
-            }
-            if((*it)->is_moving() && (*it)->get_x_direction() < 0){         
-                this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
-            }
+    for (auto it = pickables.begin(); it != pickables.end(); ++it){
+    //  for(int j=0; j< (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++){
+        (*it)->air_time_down_x();
+        Hitbox& hitbox = (*it)->get_reference_hitbox();
+        if((*it)->is_moving() && (*it)->get_x_direction() > 0){
+            this->move_relative_if_posible(hitbox, RIGHT_DIRECTION , 0);
+            continue;
         }
+        if((*it)->is_moving() && (*it)->get_x_direction() < 0){         
+            this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
+        }
+    }
 }
 
 void MapGame::bullets_next_movement() {
@@ -289,7 +295,10 @@ void MapGame::bullets_next_movement() {
                     if(box->is_destroyed()){
                         if(box->get_reward()){
                             std::shared_ptr<Weapon> weapon =  std::make_shared<Weapon>(WeaponFactory::createWeapon(this->get_bullets_list(), "random"));
-                            this->add_weapon(weapon, box->get_x(), box->get_y());
+                            weapon->set_falling(true); 
+                            //this->add_weapon(weapon, box->get_x(), box->get_y());
+                            weapon->move_to(box->get_x(), box->get_y());
+                            this->pickables.push_back(weapon);
                         }
                         this->boxes.remove(box);
                         bullet = bullets.erase(bullet);
@@ -303,7 +312,6 @@ void MapGame::bullets_next_movement() {
         }
     }
 }
-
 
 bool MapGame::move_relative_if_posible(Hitbox& hitbox, int dx, int dy) {
     int x_step = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
@@ -329,35 +337,46 @@ bool MapGame::move_relative_if_posible(Hitbox& hitbox, int dx, int dy) {
     return true;
 }
 
-void MapGame::use_item(int duck_id, bool right_direction) {
+void MapGame::use_item(int duck_id, bool right_direction, bool is_holding) {
     if (!this->duck_exist(duck_id) || !this->duck_is_alive(duck_id)) {
         return;
     }
     if (right_direction) {
-        this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, *this);
+        this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, *this, is_holding);
     } else {
-        this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, *this);
+        this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, *this, is_holding);
     }
 }
 
-// void MapGame::ducks_try_pick_up(int id_duck) {
-//     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
-//     std::cout << "entro a pick up de map2" << std::endl;
-//     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
-//         std::cout << "entro a pick up de map3" << std::endl;
-//         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
-//             std::cout << "entro a pick up de map4" << std::endl;
-//             std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
-//             if (other_weapon != nullptr) {
-//                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
-//                 pickables.push_back(other_weapon);
-//             }
-//             it = pickables.erase(it);
-//             break;
-//         }
-//         ++it;
+// void MapGame::keep_using_item(int duck_id, bool right_direction) {
+//     if (!this->duck_exist(duck_id) || !this->duck_is_alive(duck_id)) {
+//         return;
+//     }
+//     if (right_direction) {
+//         this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, *this, true);
+//     } else {
+//         this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, *this, true);
 //     }
 // }
+
+    // void MapGame::ducks_try_pick_up(int id_duck) {
+    //     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
+    //     std::cout << "entro a pick up de map2" << std::endl;
+    //     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
+    //         std::cout << "entro a pick up de map3" << std::endl;
+    //         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
+    //             std::cout << "entro a pick up de map4" << std::endl;
+    //             std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
+    //             if (other_weapon != nullptr) {
+    //                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
+    //                 pickables.push_back(other_weapon);
+    //             }
+    //             it = pickables.erase(it);
+    //             break;
+    //         }
+    //         ++it;
+    //     }
+    // }
 
 bool MapGame::already_exist_a_pickable(int x, int y){
     for (auto it = this->pickables.begin(); it != this->pickables.end(); ++it){
@@ -379,7 +398,7 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
     bool weapon_picked_up = false;
     for (auto it = this->pickables.begin(); it != this->pickables.end();) {
         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
-            std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
+            std::shared_ptr<Pickable> other_weapon = this_duck->take_weapon((*it));
             if (other_weapon != nullptr) {
                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
                 other_weapon->set_falling(true);
@@ -394,7 +413,7 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
     }
     for (auto it = this->pickables_spawned.begin(); it != this->pickables_spawned.end();) {
         if (this_duck->get_hitbox().has_collision((*it)->get_hitbox())) {
-            std::shared_ptr<Weapon> other_weapon = this_duck->take_weapon((*it));
+            std::shared_ptr<Pickable> other_weapon = this_duck->take_weapon((*it));
             if (other_weapon != nullptr) {
                 other_weapon->move_to((*it)->get_x(), (*it)->get_y());
                 other_weapon->set_falling(true);
@@ -412,7 +431,7 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
         return;
     }
     if(this_duck->has_weapon()){
-        std::shared_ptr<Weapon> weapon = this_duck->throw_weapon();
+        std::shared_ptr<Pickable> weapon = this_duck->throw_weapon();
         if(weapon == nullptr){
             return;
         }
@@ -426,7 +445,7 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
     }
 }
 
-void MapGame::add_weapon(std::shared_ptr<Weapon> new_weapon, int x, int y){
+void MapGame::add_weapon(std::shared_ptr<Pickable> new_weapon, int x, int y){
     if (!this->can_move_hitbox(new_weapon->get_hitbox(), x, y)) {
         throw MapError("game can't add weapon to map");
     }
