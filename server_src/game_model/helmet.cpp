@@ -2,9 +2,12 @@
 
 #include "duck.h"
 
-Helmet::Helmet(): Pickable() {}
+Helmet::Helmet(int width, int height): Pickable(0, 0, width, height) {}
 
-void Helmet::use() { this->duck->add_helmet(); }
+void Helmet::use() { 
+    this->duck->add_helmet();
+    // this->duck->throw_item();
+ }
 
 Helmet::~Helmet() {}
 

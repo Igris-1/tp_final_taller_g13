@@ -63,6 +63,13 @@ public:
     int get_y() { return this->y; }
     int get_width() { return this->width; }
     int get_height() { return this->height; }
+
+    void change_size(int width, int height){ //no funca lol
+        
+        
+
+        return;
+    }
 };
 
 #endif

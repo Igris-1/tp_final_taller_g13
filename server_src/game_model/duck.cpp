@@ -16,34 +16,32 @@ Duck::Duck(int health, int id):
         begin_health(health),
         item_in_hands(nullptr),
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
-        duck_id(id) {}
+        duck_id(id) {
+            this->has_armor = false;
+            this->has_helmet = false;
+        }
 
 void Duck::reset() {
     this->health = this->begin_health;
     this->item_in_hands = nullptr;
-    // this->respawn_time = 0;
 }
-std::shared_ptr<Pickable> Duck::throw_weapon() {
-    if (this->item_in_hands == nullptr) {
+std::shared_ptr<Pickable> Duck::throw_item() {
+    if (!this->has_item()) {
         return nullptr;
     }
-
-    // auto weapon_list = this->item_in_hands->get_list();
-    return this->take_weapon(nullptr);
+    return this->take_item(nullptr);
 }
 
 int Duck::get_health() { return this->health; }
 
 int Duck::get_id() { return this->duck_id; }
 
-std::shared_ptr<Pickable> Duck::take_weapon(std::shared_ptr<Pickable> item) {
+std::shared_ptr<Pickable> Duck::take_item(std::shared_ptr<Pickable> item) {
     std::shared_ptr<Pickable> aux = this->item_in_hands;
-
     if (item == nullptr) {
         this->item_in_hands = item;
         return aux;
     }
-
     this->item_in_hands = item;
     this->item_in_hands->set_falling(false);
     this->item_in_hands->set_moving(true);
@@ -51,30 +49,22 @@ std::shared_ptr<Pickable> Duck::take_weapon(std::shared_ptr<Pickable> item) {
     return aux;
 }
 
-
-// std::shared_ptr<Armor> Duck::take_armor(std::shared_ptr<Armor> armor) {
-//     std::shared_ptr<Armor> aux = this->armor;
-//     this->armor = armor;
-//     return aux;
-// }
-
-// std::shared_ptr<Helmet> Duck::take_helmet(std::shared_ptr<Helmet> helmet) {
-//     std::shared_ptr<Helmet> aux = this->helmet;
-//     this->helmet = helmet;
-//     return aux;
-// }
-
-bool Duck::has_weapon() {
+bool Duck::has_item() {
     if (this->item_in_hands == nullptr) {
         return false;
     }
     return this->item_in_hands->get_id() != 0;
 }
 
-void Duck::add_armor() { this->has_armor = true; }
+void Duck::add_armor() { 
+    this->has_armor = true;
+   this->item_in_hands = nullptr;
+}
 
-void Duck::add_helmet() { this->has_helmet = true; }
-
+void Duck::add_helmet() { 
+    this->has_helmet = true;
+    this->item_in_hands = nullptr;
+}
 
 bool Duck::is_alive() { return !(this->health <= 0); }
 
@@ -103,19 +93,18 @@ duck_DTO Duck::to_DTO() {
     dto.y = this->hitbox.get_y();
     dto.width = this->hitbox.get_width();
     dto.height = this->hitbox.get_height();
-    // uint8_t duck_hp = this->health;
+    dto.armor_equipped = this->has_armor;
+    dto.helmet_equipped = this->has_helmet;
     if (item_in_hands == nullptr) {
         dto.weapon_id = 0;
     } else {
         dto.weapon_id = this->item_in_hands->get_id();
     }
-    // bool helmet_equipped;
-    // bool armor_equipped;
     return dto;
 }
 
 void Duck::continue_fire_rate() {
-    if (this->item_in_hands == nullptr) {
+    if(!this->has_item()) {
         return;
     }
     this->item_in_hands->fire_rate_down();
@@ -147,12 +136,15 @@ void Duck::continue_fire_rate() {
 // }
 
 void Duck::use_item(int x_direction, int y_direction, MapGame& map, bool is_holding) {
-    if (!this->has_weapon()) {
+    if (!this->has_item()) {
         return;
     }
     this->item_in_hands->set_direction(x_direction, y_direction);
     this->item_in_hands->set_holding(is_holding);
     this->item_in_hands->use();
+    if(item_in_hands== nullptr){
+        return;
+    }
     int recoil = this->item_in_hands->recoil_produced();
     map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, 0);
 }
@@ -169,4 +161,8 @@ int Duck::get_respawn_time() { return this->respawn_time; }
 void Duck::set_health(int health) {
     this->health = health;
     this->respawn_time = 100;
+}
+
+void Duck::kill(){
+    this->health = 0;
 }

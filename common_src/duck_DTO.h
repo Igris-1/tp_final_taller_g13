@@ -2,7 +2,6 @@
 #define DUCK_INFO_T_H
 #include <cstdint>
 
-
 typedef struct duck_DTO {
 
     uint8_t duck_id;  // id del color del pato
@@ -10,7 +9,6 @@ typedef struct duck_DTO {
     uint16_t y;
     bool is_moving_right = false;
     bool is_moving_left = false;
-    // uint8_t duck_hp;
     bool shooting = false;
     bool jumping = false;
     bool falling = false;
@@ -18,11 +16,8 @@ typedef struct duck_DTO {
     uint16_t height;
     bool is_alive = true;
     uint8_t weapon_id = 0;
-    // bool helmet_equipped;
-    // bool armor_equipped;
-
-    // int id_arma; // 1 = pistola / 2 = escopeta
-
+    bool helmet_equipped;
+    bool armor_equipped;
 } __attribute__((packed))
 duck_DTO;  // es necesario el packed aca, no lo saquen
            // va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding

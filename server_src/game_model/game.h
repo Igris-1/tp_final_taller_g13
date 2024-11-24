@@ -34,7 +34,7 @@
 #define ADD_FACTOR_JUMP 3
 #define PRODUCT_FACTOR_GRAVITY 2
 #define ADD_FACTOR_GRAVITY 8
-#define TIME_TO_RESPAWN 300
+#define TIME_TO_RESPAWN 400
 
 typedef struct {
     bool is_jumping = false;
@@ -84,11 +84,12 @@ public:
     void jump_duck(int id, bool jump);
     void stop_jump_duck(int id, bool stop_jump);
 
-    //  WEAPONS
+    //  ITEMS
     void use_duck_item(int id, bool fire);
     void keep_using_item();
     void stop_duck_item(int id, bool stop_fire);
     void pick_up_item(int id, bool pick_up);
+    void throw_item(int id, bool throw_item);
 
     // DATA
     game_snapshot_t get_snapshot();
@@ -99,7 +100,7 @@ public:
     // MAP FUNCTIONS
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
-    void add_weapon_on_map(std::string type_weapon, int x, int y);
+    void add_item_on_map(std::string type, int x, int y);
     void add_spawn_position(int x, int y);  // agrega una posicion de spawn de armas
     void add_box(Hitbox hitbox);
 

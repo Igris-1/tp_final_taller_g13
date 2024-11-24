@@ -1,7 +1,5 @@
 #include "game.h"
-
 #include <algorithm>
-
 #include <unistd.h>
 
 Game::Game(int height, int width):
@@ -254,10 +252,19 @@ void Game::add_new_platform(Hitbox hitbox) {
 
 void Game::add_box(Hitbox hitbox) { this->map.add_box(hitbox); }
 
-void Game::add_weapon_on_map(std::string type_weapon, int x, int y) {
+void Game::add_item_on_map(std::string type, int x, int y) {
+    if(type == "helmet"){
+        std::shared_ptr<Helmet> helmet = std::make_shared<Helmet>(32, 32);
+        this->map.add_item(helmet, x, y);
+        return;
+    }else if(type == "armor"){
+        std::shared_ptr<Armor> armor = std::make_shared<Armor>(40, 40);
+        this->map.add_item(armor, x, y);
+        return;
+    }
     std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(
-            WeaponFactory::createWeapon(this->map.get_bullets_list(), type_weapon));
-    this->map.add_weapon(weapon, x, y);
+            WeaponFactory::createWeapon(this->map.get_bullets_list(), type));
+    this->map.add_item(weapon, x, y);
 }
 
 void Game::pick_up_item(int duck_id, bool pick_up) {
@@ -265,6 +272,13 @@ void Game::pick_up_item(int duck_id, bool pick_up) {
         return;
     }
     this->map.ducks_try_throw(duck_id, this->ducks_states[duck_id]->facing_direction);
+}
+
+void Game::throw_item(int id, bool throw_item){
+    if (!throw_item || !this->map.duck_exist(id) || !this->map.duck_is_alive(id)) {
+        return;
+    }
+    this->map.throw_item(id, this->ducks_states[id]->facing_direction);
 }
 
 void Game::start_game() {
@@ -305,7 +319,7 @@ void Game::random_weapon_spawn(bool on_game) {
         if (this->map.already_exist_a_pickable(std::get<0>(pos), std::get<1>(pos))) {
             continue;
         } else {
-            this->map.add_weapon(std::make_shared<Weapon>(WeaponFactory::createWeapon(
+            this->map.add_item(std::make_shared<Weapon>(WeaponFactory::createWeapon(
                                          this->map.get_bullets_list(), "random")),
                                  std::get<0>(pos), std::get<1>(pos));
         }

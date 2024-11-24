@@ -29,7 +29,7 @@ action_t ProtocolServer::receive_action() {
                                    action.stop_right, action.stop_left, action.jump,
                                    action.stop_jump, action.press_action_button,
                                    action.unpress_action_button, action.press_pick_up_button,
-                                   action.unpress_pick_up_button);
+                                   action.unpress_pick_up_button, action.press_throw_button);
         connection.recvall(&action.player_id, sizeof(uint8_t), &socket_is_closed);
         return action;
     } catch (const LibError& e) {

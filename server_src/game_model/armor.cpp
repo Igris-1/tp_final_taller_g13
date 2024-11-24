@@ -2,9 +2,12 @@
 
 #include "duck.h"
 
-Armor::Armor(): Pickable() {}
+Armor::Armor(int width, int height): Pickable(0, 0, width, height) {}
 
-void Armor::use() { this->duck->add_armor(); }
+void Armor::use() { 
+    this->duck->add_armor();
+    // this->duck->throw_item();
+}
 
 int Armor::get_id() { return ARMOR_ID; }
 

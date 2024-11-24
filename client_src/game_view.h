@@ -35,6 +35,7 @@ private:
     std::vector<DuckView> duck_views;
     std::vector<Texture> scoreboard_font;
     std::vector<Texture> box_sprites;
+    std::vector<Texture> accessories_sprites;
 
     void set_up_game();
     void load_map();

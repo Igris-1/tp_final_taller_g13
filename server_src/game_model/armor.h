@@ -8,7 +8,7 @@
 class Armor: public Pickable {
 private:
 public:
-    explicit Armor();
+    explicit Armor(int width, int height);
     void use();
     int get_id();
     weapon_DTO to_DTO() override;

@@ -80,7 +80,7 @@ void GameView::set_up_game() {
         std::cout << "Error al abrir audio" << std::endl;
     }
 
-    Mix_Music* efecto = Mix_LoadMUS("unapalabra.mp3");
+    Mix_Music* efecto = Mix_LoadMUS("../assets/music/unapalabra.mp3");
 
     if (efecto == NULL) {
         std::cout << "Error al cargar musica" << std::endl;
@@ -156,6 +156,9 @@ void GameView::set_up_game() {
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/shotgunShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/magnumShell.png"));
 
+    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/helmet.png"));
+    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/armor.png"));
+
 
     Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
 
@@ -171,13 +174,14 @@ void GameView::load_game(game_snapshot_t gs) {
     add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no
                     // siempre. Despues hay que cambiarlo
 
-    zoom(gs);
+    //zoom(gs);
 
     load_map();
+    load_boxes(gs);
     load_ducks(gs);
     load_bullets(gs);
     load_weapons(gs);
-    load_boxes(gs);
+    
     renderer.Present();
 }
 
@@ -193,7 +197,7 @@ void GameView::add_ducks(game_snapshot_t gs) {
 
             duck_DTO duck = gs.ducks[i];
             duck_views.emplace_back(renderer, duck_sprites[duck_id], wing_sprites[duck_id],
-                                    weapon_sprites);
+                                    weapon_sprites, accessories_sprites);
         }
     }
 }
@@ -212,16 +216,16 @@ void GameView::zoom(game_snapshot_t gs) {
         }
     }
 
-    int x_min = gs.ducks[0].x - 100;
-    int y_min = gs.ducks[0].y - 100;
-    int x_max = gs.ducks[0].x + 100;
-    int y_max = gs.ducks[0].y + 100;
+    int x_min = gs.ducks[0].x - 32;
+    int y_min = gs.ducks[0].y - 32;
+    int x_max = gs.ducks[0].x + 32;
+    int y_max = gs.ducks[0].y + 32;
 
     for (const auto& duck: gs.ducks) {
-        x_min = std::min(x_min, duck.x - 100);
-        y_min = std::min(y_min, duck.y - 100);
-        x_max = std::max(x_max, duck.x + 100);
-        y_max = std::max(y_max, duck.y + 100);
+        x_min = std::min(x_min, duck.x - 32);
+        y_min = std::min(y_min, duck.y - 32);
+        x_max = std::max(x_max, duck.x + 32);
+        y_max = std::max(y_max, duck.y + 32);
     }
 
     int ducks_width = x_max - x_min;
@@ -336,8 +340,8 @@ void GameView::load_map() {
 
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
-        renderer.Copy(platform_sprites[0], SDL_Rect{0, 11 * 7, 16, 8},
-                      SDL_Rect{platform.x, platform.y, platform.width, platform.height});
+        renderer.Copy(platform_sprites[0], SDL_Rect{0, 10 * 8, 16, 8},
+                      SDL_Rect{platform.x, platform.y, platform.width , platform.height});
     }
 }
 

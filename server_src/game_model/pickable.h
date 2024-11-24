@@ -20,7 +20,6 @@ typedef enum {
     BANANA_ID,
     HELMET_ID,
     ARMOR_ID,
-
 } ITEM_ID;
 
 class Duck;

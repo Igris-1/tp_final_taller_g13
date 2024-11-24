@@ -33,18 +33,17 @@ private:
     std::set<Hitbox> platforms;
     std::map<int, std::shared_ptr<Duck>> ducks;
     std::map<int, std::shared_ptr<Duck>> ducks_dead;
-    // std::list<std::shared_ptr<Weapon>> pickables;
-    // std::list<std::shared_ptr<Weapon>> pickables_spawned;
     std::list<std::shared_ptr<Pickable>> pickables;
     std::list<std::shared_ptr<Pickable>> pickables_spawned;
     std::list<std::shared_ptr<BulletInterface>> bullets;
 
-    bool hitbox_in_range(Hitbox hitbox);
-    bool position_is_valid(Hitbox hitbox);
+    bool hitbox_in_range(Hitbox hitbox, bool can_fall);
+    bool position_is_valid(Hitbox hitbox, bool can_fall);
+    bool out_of_map(Hitbox hitbox);
     bool not_in_invalid_position(Hitbox hitbox);
     bool not_in_platforms(Hitbox hitbox);
     bool not_in_boxes(Hitbox hitbox);
-    bool can_move_hitbox(Hitbox hitbox, int dx, int dy);
+    bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
     // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
 
 public:
@@ -72,8 +71,9 @@ public:
     void bullets_next_movement();
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
     void ducks_try_pick_up(int id_duck);
+    void throw_item(int duck_id, bool right_direction);
     void ducks_try_throw(int id_duck, bool right_direction);
-    void add_weapon(std::shared_ptr<Pickable> new_weapon, int x, int y);
+    void add_item(std::shared_ptr<Pickable> new_weapon, int x, int y);
     void gravity_weapon();
     void inertia_weapon();
 

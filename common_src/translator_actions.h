@@ -14,6 +14,7 @@ enum {
     UNPRESS_ACTION_BUTTON = 1 << 9,   // 0b0000001000000000
     PRESS_PICKUP_BUTTON = 1 << 10,    // 0b0000010000000000
     UNPRESS_PICKUP_BUTTON = 1 << 11,  // 0b0000100000000000
+    PRESS_THROW_BUTTON = 1 << 12,     // 0b0001000000000000
 };
 
 class TranslatorActions {
@@ -22,7 +23,7 @@ public:
     uint16_t create_flag(bool left, bool right, bool up, bool down, bool stop_right, bool stop_left,
                          bool jump, bool stop_jump, bool press_action_button,
                          bool unpress_action_button, bool press_pick_up_button,
-                         bool unpress_pick_up_button) {
+                         bool unpress_pick_up_button, bool press_throw_button) {
 
         uint16_t flags = 0;
         flags |= (left ? LEFT : 0);
@@ -37,12 +38,13 @@ public:
         flags |= (unpress_action_button ? UNPRESS_ACTION_BUTTON : 0);
         flags |= (press_pick_up_button ? PRESS_PICKUP_BUTTON : 0);
         flags |= (unpress_pick_up_button ? UNPRESS_PICKUP_BUTTON : 0);
+        flags |= (press_throw_button ? PRESS_THROW_BUTTON : 0);
         return flags;
     };
     void translate_flags(const uint16_t action, bool& left, bool& right, bool& up, bool& down,
                          bool& stop_right, bool& stop_left, bool& jump, bool& stop_jump,
                          bool& press_action_button, bool& unpress_action_button,
-                         bool& press_pick_up_button, bool& unpress_pick_up_button) {
+                         bool& press_pick_up_button, bool& unpress_pick_up_button, bool& press_throw_button) {
         left = action & LEFT;
         right = action & RIGHT;
         up = action & UP;
@@ -55,6 +57,7 @@ public:
         unpress_action_button = action & UNPRESS_ACTION_BUTTON;
         press_pick_up_button = action & PRESS_PICKUP_BUTTON;
         unpress_pick_up_button = action & UNPRESS_PICKUP_BUTTON;
+        press_throw_button = action & PRESS_THROW_BUTTON;
         // player_id = action & PLAYER_ID;
     };
 };

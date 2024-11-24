@@ -26,52 +26,46 @@ private:
     int health;
     int begin_health;
     int respawn_time = 100;
-    // std::shared_ptr<Weapon> items_in_hands;
     bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;
     std::shared_ptr<Pickable> item_in_hands;
 
 public:
-    // por defecto empieza en la posicion -1,-1 (fuera del mapa), con una armadura, casco y arma
-    // nula (osea posicion -1,-1)
+
+    // DUCK LOGIC
     explicit Duck(int health, int id);
-
-    // devuelve la posicion actual y setea la nueva posicion (tambien mueve la armadura, casco y
-    // arma)
-    std::shared_ptr<Pickable> throw_weapon();
-    std::shared_ptr<Pickable> take_weapon(std::shared_ptr<Pickable> item);
-
-    void add_armor();
-    void add_helmet();
-    // Weapon& get_weapon();
-    // Armor& get_armor();
-    // Helmet& get_helmet();
-    int get_health();
-    int get_id();
-
-    void reset();
-    void tick_respawn_time();
-    int get_respawn_time();
-    void set_health(int health);
-
-    void use_item(int x_direction, int y_direction, MapGame& map, bool is_holding);
     bool is_alive();
     bool is_this_duck(int id);
     void receive_damage(int damage);
-    Hitbox get_hitbox();
+    void kill();
+    ~Duck() {}
+
+    // ITEMS LOGICS
+    void use_item(int x_direction, int y_direction, MapGame& map, bool is_holding);
+    std::shared_ptr<Pickable> throw_item();
+    std::shared_ptr<Pickable> take_item(std::shared_ptr<Pickable> item);
+    void add_armor();
+    void add_helmet();
+    bool has_item();
+
     void continue_fire_rate();
-    bool has_weapon();
-    // para granadas y bananas
     bool has_explosive_weapon();
     bool has_active_explosive_weapon();
     void activation_explosive_weapon();
     bool already_exploted();
 
-    /*  devuelve los estados internos del duck en un dto (vida, id, posicion).
-        no sabe nada de estados de jumping, running, ni nada*/
+    // GETTERS
+    int get_health();
+    int get_id();
+    Hitbox get_hitbox();
     duck_DTO to_DTO();
-    ~Duck() {}
+
+    // RESPWAN LOGIC
+    void reset();
+    void tick_respawn_time();
+    int get_respawn_time();
+    void set_health(int health);
 };
 
 #endif

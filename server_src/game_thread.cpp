@@ -83,19 +83,27 @@ void GameThread::run() {
         //                          x, y, width, height
         game.add_new_platform(Hitbox(0, 200, 200, 16));
         game.add_new_platform(Hitbox(25, 350, 450, 16));
+        //game.add_new_platform(Hitbox(25, 310, 450, 16));//esta es nueva
         game.add_new_platform(Hitbox(40, 420, 600, 16));
         game.add_new_platform(Hitbox(0, 510, 300, 16));
         game.add_new_platform(Hitbox(580, 200, 200, 16));
         game.add_new_platform(Hitbox(600, 350, 400, 16));
         game.add_new_platform(Hitbox(200, 600, 100, 16));
         game.add_new_platform(Hitbox(0, 600, 300, 16));
+        //game.add_new_platform(Hitbox(230, 200, 300, 16));
 
-        game.add_box(Hitbox(500, 500, 32, 32));
+        game.add_box(Hitbox(500, 500, 50, 50));
 
-        game.add_invalid_position(Hitbox(0, 670, 1365, 2));
+        game.add_new_platform(Hitbox(0, 654, 700, 16));
+        game.add_new_platform(Hitbox(700, 654, 465, 16));
+
+        game.add_item_on_map("helmet", 0, 0);
+        game.add_item_on_map("armor", 600, 555);
     } catch (const GameError& e) {
         std::cerr << e.what() << std::endl;
-    } catch (...) {
+    }catch (MapError& e) {
+        std::cerr << "Map Error " << e.what() << std::endl;
+    }catch (...) {
         std::cerr << "Error desconocido" << std::endl;
     }
 
@@ -112,7 +120,7 @@ void GameThread::run() {
     }
 
     while (this->game.get_duck_DTO_list().size() < 4) {
-
+        std::cout << "Waiting for players to join" << std::endl;
         usleep(SLEEP_TIME);
     }
     send_map();
