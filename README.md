@@ -2,7 +2,7 @@
 
 ## Requisitos de Instalación
 
-Para correr este programa, es necesario instalar las siguientes dependencias:
+Para correr este programa, es necesario instalar las siguientes dependencias que por el momento **no** se instalan automaticamente:
 - Qt6
 - QtMediaDev
 - SDL2
