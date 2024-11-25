@@ -26,6 +26,8 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+find_package(yaml-cpp REQUIRED)
+
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
 
@@ -76,11 +78,13 @@ if (SERVER)
         "server_src/game_model/weapon/*.cpp"
         "server_src/game_model/weapon/bullets_strategy/*.cpp"
         "server_src/game_model/weapon/weapons_strategy/*.cpp"
+        "configuration_yaml/*.cpp"
     )
 
     add_executable(${SERVER_EXECUTABLE} ${SERVER_SOURCES})
     target_link_libraries(${SERVER_EXECUTABLE} PRIVATE common_lib)
     target_include_directories(${SERVER_EXECUTABLE} PRIVATE server_src)
+    target_link_libraries(${SERVER_EXECUTABLE} PRIVATE yaml-cpp)
 endif()
 
 # ---------------- EDITOR SECTION ---------------- terminar

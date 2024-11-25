@@ -48,6 +48,8 @@ std::vector<duck_DTO> Game::get_duck_DTO_list() {
         it.jumping = this->ducks_states[it.duck_id]->is_jumping;
         it.falling = this->ducks_states[it.duck_id]->is_falling;
         it.shooting = this->ducks_states[it.duck_id]->holding_action;
+        it.crouching = this->ducks_states[it.duck_id]->crouching;
+        it.looking_up = this->ducks_states[it.duck_id]->looking_up;
     }
     return list_DTO;
 }
@@ -218,7 +220,7 @@ void Game::stop_jump_duck(int id, bool stop_jump) {
 void Game::use_duck_item(int id, bool fire) {
     if (fire && this->map.duck_is_alive(id)) {
         this->ducks_states[id]->holding_action = true;
-        this->map.use_item(id, this->ducks_states[id]->facing_direction, false);
+        this->map.use_item(id, this->ducks_states[id]->facing_direction, false, this->ducks_states[id]->looking_up);
     }
 }
 
@@ -240,19 +242,21 @@ void Game::keep_using_item() {
     for (auto& id: ducks_id) {
         this->map.continue_fire_rate(id);
         if (this->ducks_states[id]->holding_action) {
-            this->map.use_item(id, this->ducks_states[id]->facing_direction, true);
+            this->map.use_item(id, this->ducks_states[id]->facing_direction, true, this->ducks_states[id]->looking_up);
         }
     }
 }
 
 void Game::add_spawn_duck(int x, int y){
-    this->map.approximate_spawn_to_platform(x, y, DUCK_WIDTH, DUCK_HEIGHT, false);
-    this->spawn_ducks.push_back(std::make_tuple(x, y));
+    if(this->map.approximate_spawn_to_platform(x, y, DUCK_WIDTH, DUCK_HEIGHT, false)){
+        this->spawn_ducks.push_back(std::make_tuple(x, y));
+    }
 }
 
 void Game::add_spawn_position(int x, int y) {
-    this->map.approximate_spawn_to_platform(x, y, 36, 18, true);
-    this->spawn_positions.push_back(std::make_tuple(x, y));
+    if(this->map.approximate_spawn_to_platform(x, y, 36, 18, true)){
+        this->spawn_positions.push_back(std::make_tuple(x, y));
+    }
 }
 
 void Game::stop_duck_item(int id, bool stop_fire) {
@@ -262,6 +266,23 @@ void Game::stop_duck_item(int id, bool stop_fire) {
     }
 }
 
+void Game::duck_looks_up(int id, bool looking_up) {
+   
+    if (looking_up) {
+         std::cout << "looking up" << std::endl;
+        this->ducks_states[id]->looking_up = true;
+        return;
+    }
+}
+
+void Game::duck_stops_looking_up(int id, bool stops_looking_up) {
+    
+    if (stops_looking_up) {
+        std::cout << "stops looking up" << std::endl;
+        this->ducks_states[id]->looking_up = false;
+        return;
+    }
+}
 
 void Game::add_invalid_position(Hitbox hitbox) {
     if (!this->map.add_invalid_position(hitbox)) {
@@ -275,21 +296,19 @@ void Game::add_new_platform(Hitbox hitbox) {
     }
 }
 
-void Game::add_box(Hitbox hitbox) { this->map.add_box(hitbox); }
+void Game::add_box(Hitbox hitbox) { 
+    this->map.add_box(hitbox); 
+    }
 
 void Game::add_item_on_map(std::string type, int x, int y) {
-    if(type == "helmet"){
-        std::shared_ptr<Helmet> helmet = std::make_shared<Helmet>(32, 32);
-        this->map.add_item(helmet, x, y);
-        return;
-    }else if(type == "armor"){
-        std::shared_ptr<Armor> armor = std::make_shared<Armor>(40, 40);
-        this->map.add_item(armor, x, y);
-        return;
+    try{
+
+        std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->map.get_bullets_list(), type);
+        this->map.add_item(item, x, y);
+    }catch(MapError& e){
+        std::cerr << e.what() << std::endl;
+        std::cerr << "Error al agregar item " << type << " en posicion (" << x << " " <<  y << ") "<< std::endl;   
     }
-    std::shared_ptr<Weapon> weapon = std::make_shared<Weapon>(
-            WeaponFactory::createWeapon(this->map.get_bullets_list(), type));
-    this->map.add_item(weapon, x, y);
 }
 
 void Game::pick_up_item(int duck_id, bool pick_up) {
@@ -344,9 +363,16 @@ void Game::random_item_spawn(bool on_game) {
         if (this->map.already_exist_a_pickable(std::get<0>(pos), std::get<1>(pos))) {
             continue;
         } else {
-            this->map.add_item(std::make_shared<Weapon>(WeaponFactory::createWeapon(
-                                         this->map.get_bullets_list(), "random")),
+            try{
+                this->map.add_item(WeaponFactory::createWeapon(
+                                         this->map.get_bullets_list(), "random"),
                                  std::get<0>(pos), std::get<1>(pos));
+                }catch(MapError& e){
+                    std::cerr << e.what() << std::endl;
+                    std::cerr << "Error al agregar arma random en posicion (" << std::get<0>(pos) << " " <<  std::get<1>(pos) << ") " << std::endl;
+                    continue;
+                }
+            
         }
     }
     this->time_to_respawn = TIME_TO_RESPAWN;

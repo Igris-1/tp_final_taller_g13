@@ -1,6 +1,9 @@
 #ifndef HITBOX_H
 #define HITBOX_H
 
+#include <set>
+#include <iostream>
+
 class Hitbox {
 private:
     /*
@@ -26,13 +29,14 @@ public:
     }
 
     bool has_collision_above(const Hitbox& other) const {
-        bool horizontal_overlap = (this->x < other.x + other.width) &&
-                                (this->x + this->width > other.x);
+        // bool horizontal_overlap = (this->x < other.x + other.width) &&
+        //                         (this->x + this->width > other.x);
 
-        bool above_overlap = (this->y > other.y + other.height) &&
-                         (this->y - (this->height - other.height) <= other.y);
+        // bool above_overlap = (this->y > other.y + other.height) &&
+        //                  (this->y - (this->height - other.height) <= other.y);
 
-        return horizontal_overlap && above_overlap;
+        // return horizontal_overlap && above_overlap;
+        return (this->y<other.y + other.height&& this->y + this->height> other.y);
     }
 
     Hitbox& operator=(const Hitbox& other) {
@@ -77,13 +81,42 @@ public:
     int get_width() { return this->width; }
     int get_height() { return this->height; }
 
-    void change_size(int new_width, int new_height) {
+    // void change_size(int new_width, int new_height) {
+    //     if (new_height > this->height) {
+    //         int height_difference = new_height - this->height;
+    //         this->y -= height_difference;
+    //     }
+    //     this->width = new_width;
+    //     this->height = new_height;
+    // }
+
+    bool change_size(int new_width, int new_height, const std::set<Hitbox>& potential_collisions) {
         if (new_height > this->height) {
+            // Calculate how much the hitbox would move upwards
             int height_difference = new_height - this->height;
-            this->y -= height_difference;
+            int new_y = this->y - height_difference;
+
+            // Check for collisions with the new size
+            Hitbox new_hitbox = *this;
+            new_hitbox.y = new_y;
+            new_hitbox.height = new_height;
+
+            for (const Hitbox& other : potential_collisions) {
+                if (new_hitbox.has_collision(other)) {
+                    // Collision detected, cancel resizing
+                    std::cout << "Collision detected above, resizing canceled!" << std::endl;
+                    return false;
+                }
+            }
+
+            // No collisions, apply the resize
+            this->y = new_y;
         }
+
+        // Update width and height
         this->width = new_width;
         this->height = new_height;
+        return true;
     }
 
     

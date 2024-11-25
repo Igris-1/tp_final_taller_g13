@@ -1,6 +1,6 @@
 #include "helmet.h"
 
-#include "duck.h"
+#include "../duck.h"
 
 Helmet::Helmet(int width, int height): Pickable(0, 0, width, height) {}
 

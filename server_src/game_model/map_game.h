@@ -21,6 +21,7 @@
 #define RIGHT_DIRECTION 1
 #define LEFT_DIRECTION -1
 #define NO_DIRECTION 0
+#define UP_DIRECTION -1
 #define GRAVITY 1
 #define JUMP_DIRECTION -1
 
@@ -54,7 +55,7 @@ public:
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
-    void approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item);
+    bool approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item);
     bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
 
     // DUCKS
@@ -65,7 +66,7 @@ public:
     void remove_duck(int id);
     bool move_relative_if_posible(int duck_id, int dx, int dy);
     void continue_fire_rate(int id);
-    void use_item(int duck_id, bool right_direction, bool is_holding);
+    void use_item(int duck_id, bool right_direction, bool is_holding, bool looking_up);
     bool crouch_duck(int id, bool crouch);
     // void keep_using_item(int duck_id, bool right_direction);
 

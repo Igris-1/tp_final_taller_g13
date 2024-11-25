@@ -10,11 +10,14 @@ std::vector<std::shared_ptr<BulletInterface>> Shotgun::fire(std::shared_ptr<Duck
     if (this->ammo == 0) {
         return bullets;
     }
-    if (this->reload) {
+    if (this->reload && !is_holding_button) {
+        std::cout << "Reloading shotgun" << std::endl;
         this->fire_rate = FIRE_RATE_SHOTGUN;
         this->reload = false;
+        return bullets;
     }
-    if (this->fire_rate == 0) {
+    if (this->fire_rate == 0 && !is_holding_button) {
+        std::cout << "fire shotgun" << std::endl;
         bullets.push_back(std::make_shared<Pellet>(duck_trigger->get_id(), x_position, y_position,
                                                    x_direction, y_direction,
                                                    TRAVEL_DISTANCE_SHOTGUN));
@@ -46,7 +49,7 @@ std::vector<std::shared_ptr<BulletInterface>> Shotgun::fire(std::shared_ptr<Duck
 int Shotgun::get_id() { return SHOTGUN_ID; }
 
 int Shotgun::recoil_produced() {
-    if (this->fire_rate > 0) {
+    if (this->fire_rate > 0 && !this->reload){
         return SHOTGUN_RECOIL;
     }
     return 0;

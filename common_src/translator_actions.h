@@ -13,8 +13,12 @@ enum {
     PRESS_ACTION_BUTTON = 1 << 8,     // 0b0000000100000000
     UNPRESS_ACTION_BUTTON = 1 << 9,   // 0b0000001000000000
     PRESS_PICKUP_BUTTON = 1 << 10,    // 0b0000010000000000
-    UNPRESS_PICKUP_BUTTON = 1 << 11,  // 0b0000100000000000
-    PRESS_THROW_BUTTON = 1 << 12,     // 0b0001000000000000
+    PRESS_THROW_BUTTON = 1 << 11,     // 0b0000100000000000
+    
+    PRESS_CROUCH_BUTTON = 1 << 12,    // 0b0001000000000000
+    UNPRESS_CROUCH_BUTTON = 1 << 13,  // 0b0010000000000000
+    PRESS_LOOK_UP_BUTTON = 1 << 14,   // 0b0100000000000000
+    UNPRESS_LOOK_UP_BUTTON = 1 << 15  // 0b1000000000000000
 };
 
 class TranslatorActions {
@@ -23,8 +27,7 @@ public:
     uint16_t create_flag(bool left, bool right, bool up, bool down, bool stop_right, bool stop_left,
                          bool jump, bool stop_jump, bool press_action_button,
                          bool unpress_action_button, bool press_pick_up_button,
-                         bool unpress_pick_up_button, bool press_throw_button) {
-
+                         bool press_throw_button, bool press_crouch_button, bool unpress_crouch_button, bool press_look_up_button, bool unpress_look_up_button) {
         uint16_t flags = 0;
         flags |= (left ? LEFT : 0);
         flags |= (right ? RIGHT : 0);
@@ -37,14 +40,18 @@ public:
         flags |= (press_action_button ? PRESS_ACTION_BUTTON : 0);
         flags |= (unpress_action_button ? UNPRESS_ACTION_BUTTON : 0);
         flags |= (press_pick_up_button ? PRESS_PICKUP_BUTTON : 0);
-        flags |= (unpress_pick_up_button ? UNPRESS_PICKUP_BUTTON : 0);
         flags |= (press_throw_button ? PRESS_THROW_BUTTON : 0);
+        flags |= (press_crouch_button ? PRESS_CROUCH_BUTTON : 0);
+        flags |= (unpress_crouch_button ? UNPRESS_CROUCH_BUTTON : 0);
+        flags |= (press_look_up_button ? PRESS_LOOK_UP_BUTTON : 0);
+        flags |= (unpress_look_up_button ? UNPRESS_LOOK_UP_BUTTON : 0);
+
         return flags;
     };
     void translate_flags(const uint16_t action, bool& left, bool& right, bool& up, bool& down,
                          bool& stop_right, bool& stop_left, bool& jump, bool& stop_jump,
                          bool& press_action_button, bool& unpress_action_button,
-                         bool& press_pick_up_button, bool& unpress_pick_up_button, bool& press_throw_button) {
+                         bool& press_pick_up_button, bool& press_throw_button, bool& press_crouch_button, bool& unpress_crouch_button, bool& press_look_up_button, bool& unpress_look_up_button) {
         left = action & LEFT;
         right = action & RIGHT;
         up = action & UP;
@@ -56,8 +63,12 @@ public:
         press_action_button = action & PRESS_ACTION_BUTTON;
         unpress_action_button = action & UNPRESS_ACTION_BUTTON;
         press_pick_up_button = action & PRESS_PICKUP_BUTTON;
-        unpress_pick_up_button = action & UNPRESS_PICKUP_BUTTON;
         press_throw_button = action & PRESS_THROW_BUTTON;
+
+        press_crouch_button = action & PRESS_CROUCH_BUTTON;
+        unpress_crouch_button = action & UNPRESS_CROUCH_BUTTON;
+        press_look_up_button = action & PRESS_LOOK_UP_BUTTON;
+        unpress_look_up_button = action & UNPRESS_LOOK_UP_BUTTON;
         // player_id = action & PLAYER_ID;
     };
 };

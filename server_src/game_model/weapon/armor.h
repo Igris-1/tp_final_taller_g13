@@ -1,8 +1,7 @@
 #ifndef ARMOR_H
 #define ARMOR_H
 
-// #include "positionable.h"
-#include "pickable.h"
+#include "../pickable.h"
 
 
 class Armor: public Pickable {

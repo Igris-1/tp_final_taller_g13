@@ -33,7 +33,7 @@ void ProtocolClient::send_action(action_t& action) {
     uint16_t action_16bits = translator.create_flag(
             action.left, action.right, action.up, action.down, action.stop_right, action.stop_left,
             action.jump, action.stop_jump, action.press_action_button, action.unpress_action_button,
-            action.press_pick_up_button, action.unpress_pick_up_button, action.press_throw_button);
+            action.press_pick_up_button, action.press_throw_button, action.press_crouch_button, action.unpress_crouch_button, action.press_look_up_button, action.unpress_look_up_button);
     connection.sendall(&action_16bits, TWO_BYTES, &socket_is_closed);
     connection.sendall(&action.player_id, ONE_BYTE, &socket_is_closed);
 }

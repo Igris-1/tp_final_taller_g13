@@ -10,6 +10,7 @@
 
 #include "receiver_thread.h"
 #include "sender_thread.h"
+#include "../configuration_yamls/parser_singleton.h"
 
 #define SPEED_MOVEMENTS 10
 #define SLEEP_TIME 40000
@@ -78,47 +79,35 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
-
-    try {
-        //                          x, y, width, height
-        game.add_new_platform(Hitbox(0, 200, 200, 16));
-        game.add_new_platform(Hitbox(25, 350, 450, 16));
-        game.add_new_platform(Hitbox(40, 280, 450, 16));//esta es nueva
-        game.add_new_platform(Hitbox(40, 420, 600, 16));
-        game.add_new_platform(Hitbox(0, 510, 300, 16));
-        game.add_new_platform(Hitbox(580, 200, 400, 16));
-        game.add_new_platform(Hitbox(580, 140, 200, 16)); //new 2 esta
-        game.add_new_platform(Hitbox(600, 350, 400, 16));
-        //game.add_new_platform(Hitbox(1900, 310, 400, 16));//new
-        game.add_new_platform(Hitbox(200, 600, 100, 16));
-        game.add_new_platform(Hitbox(0, 600, 300, 16));
-        //game.add_new_platform(Hitbox(230, 200, 300, 16));
-
-        game.add_box(Hitbox(500, 500, 50, 50));
-
-        game.add_new_platform(Hitbox(0, 654, 700, 16));
-        game.add_new_platform(Hitbox(700, 654, 465, 16));
-
-        game.add_item_on_map("helmet", 0, 0);
-        game.add_item_on_map("armor", 600, 555);
-    } catch (const GameError& e) {
-        std::cerr << e.what() << std::endl;
-    }catch (MapError& e) {
-        std::cerr << "Map Error " << e.what() << std::endl;
-    }catch (...) {
-        std::cerr << "Error desconocido" << std::endl;
+    // singleton del parser de yaml
+    ParserYAML* parser =  ParserSingleton::get_instance();
+    parser->load_files("../configuration_yamls/default_map_config.yaml", "../configuration_yamls/default_config.yaml");
+    
+    // pide todas las plataformas y las agrega al juego
+    std::vector<std::tuple<int, int, int, int>> aux_tuple_of_four =  parser->get_map_structure("platforms");
+    for(auto& platform : aux_tuple_of_four){
+        game.add_new_platform(Hitbox(std::get<0>(platform), std::get<1>(platform), std::get<2>(platform), std::get<3>(platform)));
     }
 
-    game.add_spawn_position(15, 180);
-    game.add_spawn_position(30, 300);
-    game.add_spawn_position(500, 350);
-    game.add_spawn_position(650, 490);
+    // pide todas las cajas y las agrega al juego
+    std::vector<std::tuple<int, int>> aux_tuple_of_two =  parser->get_spawn_points("boxes");
+    for(auto& box : aux_tuple_of_two){
+        game.add_box(Hitbox(std::get<0>(box), std::get<1>(box), 50, 50));
+    }
 
-    game.add_spawn_duck(0,0);
-    game.add_spawn_duck(100,100);
-    game.add_spawn_duck(250,270);
-    game.add_spawn_duck(0,400);
+    // pide las posiciones donde estaran los spawns de armas
+    aux_tuple_of_two =  parser->get_spawn_points("weapons");
+    for(auto& weapon : aux_tuple_of_two){
+        game.add_spawn_position(std::get<0>(weapon), std::get<1>(weapon));
+    }
 
+    // pide las posiciones donde estaran los spawns de patos
+    aux_tuple_of_two =  parser->get_spawn_points("ducks");
+    for(auto& duck : aux_tuple_of_two){
+        game.add_spawn_duck(std::get<0>(duck), std::get<1>(duck));
+    } 
+
+    // spawnea armas para el comienzo de la partida
     game.random_item_spawn(false);
     int start_flag = 0;
 
@@ -127,11 +116,9 @@ void GameThread::run() {
     }
 
     while (this->game.get_duck_DTO_list().size() < 4) {
-        std::cout << "Waiting for players to join" << std::endl;
         usleep(SLEEP_TIME);
     }
     send_map();
-
 
     while (_keep_running) {
         game.keep_using_item();

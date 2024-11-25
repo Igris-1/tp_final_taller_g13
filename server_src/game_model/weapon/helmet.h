@@ -1,8 +1,7 @@
 #ifndef HELMET_H
 #define HELMET_H
 
-// #include "positionable.h"
-#include "pickable.h"
+#include "../pickable.h"
 
 class Helmet: public Pickable {
 private:

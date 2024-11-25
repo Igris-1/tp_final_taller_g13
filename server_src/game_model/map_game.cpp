@@ -33,8 +33,11 @@ bool MapGame::not_in_platforms(Hitbox hitbox, bool to_stand) {
         return true;
     }
     for (Hitbox platform: this->platforms) {
-            if (platform.has_collision_above(hitbox)) {
-                return false;
+            while(platform.has_collision_above(hitbox)){
+                std::cout << "hitbox is trying to move up" << std::endl;
+                if(!move_relative_if_posible(hitbox, 0, 1)){
+                    return false;
+                }
             }
         }
         return true;
@@ -77,13 +80,7 @@ bool MapGame::hitbox_in_range(Hitbox hitbox, bool can_fall) {
 }
 
 bool MapGame::change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand) {
-    Hitbox aux = Hitbox(hitbox.get_x(), hitbox.get_y(), width, height);
-    if(position_is_valid(aux, false, to_stand)){
-        std::cout << "hitbox is trying to change size" << std::endl;
-        hitbox.change_size(width, height);
-        return true;
-    }
-    return false;
+    return hitbox.change_size(width, height, this->platforms);
 }
 
 bool MapGame::crouch_duck(int id, bool crouch){
@@ -223,6 +220,7 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
         aux.move_relative(step_dx, step_dy);
         if(this->out_of_map(aux)){
             duck->kill();
+            this->ducks_dead[duck_id] = duck;
             return false;
         }
         if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy, true) && this->not_in_boxes(aux, false)) {
@@ -374,13 +372,11 @@ void MapGame::bullets_next_movement() {
                     box->receive_damage(damage);
                     if (box->is_destroyed()) {
                         if (box->get_reward()) {
-                            std::shared_ptr<Weapon> weapon =
-                                    std::make_shared<Weapon>(WeaponFactory::createWeapon(
-                                            this->get_bullets_list(), "random"));
-                            weapon->set_falling(true);
+                            std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->get_bullets_list(), "random");
+                            item->set_falling(true);
                             // this->add_weapon(weapon, box->get_x(), box->get_y());
-                            weapon->move_to(box->get_x(), box->get_y());
-                            this->pickables.push_back(weapon);
+                            item->move_to(box->get_x(), box->get_y());
+                            this->pickables.push_back(item);
                         }
                         this->boxes.remove(box);
                         bullet = bullets.erase(bullet);
@@ -419,8 +415,13 @@ bool MapGame::move_relative_if_posible(Hitbox& hitbox, int dx, int dy) {
     return true;
 }
 
-void MapGame::use_item(int duck_id, bool right_direction, bool is_holding) {
-    if (!this->duck_exist(duck_id) || !this->duck_is_alive(duck_id)) {
+void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool looking_up) {
+    
+    if (!this->duck_exist(duck_id) || !this->duck_is_alive(duck_id)){
+        return;
+    }
+    if(looking_up){
+        this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, *this, is_holding);
         return;
     }
     if (right_direction) {
@@ -428,6 +429,7 @@ void MapGame::use_item(int duck_id, bool right_direction, bool is_holding) {
     } else {
         this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, *this, is_holding);
     }
+
 }
 
 // void MapGame::keep_using_item(int duck_id, bool right_direction) {
@@ -525,7 +527,9 @@ void MapGame::ducks_try_throw(int id_duck, bool right_direction) {
 }
 
 void MapGame::add_item(std::shared_ptr<Pickable> new_weapon, int x, int y) {
-    
+    if(new_weapon == nullptr){
+        return;
+    }
     if (!this->can_move_hitbox(new_weapon->get_hitbox(), x, y, false)) {
         throw MapError("game can't add item to map");
     }
@@ -566,23 +570,32 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) 
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }
 
-void MapGame::approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item) {
+bool MapGame::approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item) {
     while (true) {
         bool collision_found = false;
         for (auto& platform : this->platforms) {
-            Hitbox hitbox(x, y, width, height);
-            if (platform.has_collision(hitbox)) {
+            if (platform.has_collision(Hitbox(x, y, width, height))) {
                 collision_found = true;
                 break;
             }
         }
-        if (collision_found) {
-            y -= 1;
+
+        if (!collision_found) {
+            y += 1;
+        } else {
+            y -= 1; 
             break;
         }
-        y += 1;
+        if(y >= this->height){
+            y = 0;
+            return false;
+        }
+
     }
-    if(is_item){
+    if (is_item) {
         y -= 15;
+    }else{
+        y-= 2;
     }
+    return true;
 }

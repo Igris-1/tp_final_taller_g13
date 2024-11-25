@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "../common_src/duck_DTO.h"
-
 #include "positionable.h"
 
 typedef enum {
@@ -27,6 +26,7 @@ class Duck;
 class Pickable: public Positionable {
 
 protected:
+    // ammo_values[COWBOY_PISTOL_ID] = ParserSingleton::get_instance()->get_value_game("weapon cowboy_pistol shot");
     int air_time_x = 300;
     int air_time_y = 50;
 
@@ -35,7 +35,6 @@ protected:
 
     int y_direction = 0;
     bool falling = false;
-
     std::shared_ptr<Duck> duck;
 
 public:
@@ -63,6 +62,7 @@ public:
     virtual int recoil_produced();
     virtual void set_holding(bool is_holding);
     virtual void fire_rate_down();
+    void set_looking_up(bool looking_up);
 
     virtual ~Pickable() {}
 };

@@ -13,10 +13,9 @@ void Weapon::use() {
     if (this->is_not_a_weapon()) {
         return;
     }
-
     std::vector<std::shared_ptr<BulletInterface>> new_bullets = weapon_strategy->fire(
             duck, duck->get_hitbox().get_x() + (duck->get_hitbox().get_width() / 2),
-            duck->get_hitbox().get_y() + (duck->get_hitbox().get_height() / 2), x_direction,
+            duck->get_hitbox().get_y() + (duck->get_hitbox().get_height() * (3/4)), x_direction,
             y_direction, this->holding_button);
     int size = new_bullets.size();
     for (int i = 0; i < size; i++) {

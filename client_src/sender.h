@@ -23,8 +23,8 @@ private:
     int localPlayers = 2;
     std::map<SDL_Keycode, int> key_player = {
             {SDLK_a, PLAYER_1}, {SDLK_d, PLAYER_1},    {SDLK_SPACE, PLAYER_1}, {SDLK_f, PLAYER_1},
-            {SDLK_g, PLAYER_1}, {SDLK_e, PLAYER_1}, {SDLK_LEFT, PLAYER_2}, {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2},
-            {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}, {SDLK_k, PLAYER_2}};
+            {SDLK_g, PLAYER_1}, {SDLK_e, PLAYER_1}, {SDLK_s, PLAYER_1}, {SDLK_w, PLAYER_1}, {SDLK_LEFT, PLAYER_2}, {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2},
+            {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}, {SDLK_k, PLAYER_2}, {SDLK_DOWN, PLAYER_2}, {SDLK_UP, PLAYER_2}};
 
     // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
     void map_key_to_action_1(const SDL_Event& e, action_t& action) {
@@ -52,6 +52,14 @@ private:
                     std::cout << "PRESSED E" << std::endl;
                     action.press_throw_button = true;
                     break;
+                case SDLK_s:
+                    std::cout << "PRESSED S" << std::endl;
+                    action.press_crouch_button = true;
+                    break;
+                case SDLK_w:
+                    std::cout << "PRESSED W" << std::endl;
+                    action.press_look_up_button = true;
+                    break;
                 default:
                     break;
             }
@@ -70,8 +78,13 @@ private:
                 case SDLK_f:
                     action.unpress_action_button = true;
                     break;
-                case SDLK_g:
-                    action.unpress_pick_up_button = true;
+                case SDLK_s:
+                    std::cout << "PRESSED S" << std::endl;
+                    action.unpress_crouch_button = true;
+                    break;
+                case SDLK_w:
+                    std::cout << "PRESSED W" << std::endl;
+                    action.unpress_look_up_button = true;
                     break;
                 default:
                     break;
@@ -103,6 +116,12 @@ private:
                 case SDLK_k:
                     action.press_throw_button = true;
                     break;
+                case SDLK_DOWN:
+                    action.press_crouch_button = true;
+                    break;
+                case SDLK_UP:
+                    action.press_look_up_button = true;
+                    break;
                 default:
                     break;
             }
@@ -121,8 +140,11 @@ private:
                 case SDLK_p:
                     action.unpress_action_button = true;
                     break;
-                case SDLK_i:
-                    action.unpress_pick_up_button = true;
+                case SDLK_DOWN:
+                    action.unpress_crouch_button = true;
+                    break;
+                case SDLK_UP:
+                    action.unpress_look_up_button = true;
                     break;
                 default:
                     break;

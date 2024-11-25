@@ -6,10 +6,7 @@
 
 #include "../../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
-#include "weapon/weapons_strategy/weapon_factory.h"
-
-#include "armor.h"
-#include "helmet.h"
+#include "weapon/weapon_factory.h"
 #include "positionable.h"
 
 

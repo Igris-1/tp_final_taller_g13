@@ -24,8 +24,8 @@ public:
     // Método para cargar los archivos YAML
     void load_files(const std::string& map_file, const std::string& game_file) {
         try {
-            map_data = YAML::LoadFile(map_file);
-            game_data = YAML::LoadFile(game_file);
+            if(map_file != "")  map_data = YAML::LoadFile(map_file);
+            if(game_file != "") game_data = YAML::LoadFile(game_file);
         } catch (const std::exception& e) {
             throw std::runtime_error(std::string("Error loading YAML files: ") + e.what());
         }

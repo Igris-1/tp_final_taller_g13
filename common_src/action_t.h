@@ -14,8 +14,11 @@ typedef struct action {  // comento lo q no se usa todavia
     bool press_action_button = false;
     bool unpress_action_button = false;
     bool press_pick_up_button = false;
-    bool unpress_pick_up_button = false;
     bool press_throw_button = false;
+    bool press_crouch_button = false;
+    bool unpress_crouch_button = false;
+    bool press_look_up_button = false;
+    bool unpress_look_up_button = false;
 
     // bool create_duck = false;
     // representar con un solo byte

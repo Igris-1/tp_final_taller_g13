@@ -13,8 +13,7 @@
 #include "../../common_src/game_snapshot_t.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapons_strategy/weapon.h"
-#include "weapon/weapons_strategy/weapon_factory.h"
-
+#include "weapon/weapon_factory.h"
 #include "duck.h"
 #include "map_game.h"
 
@@ -34,7 +33,7 @@
 #define ADD_FACTOR_JUMP 3
 #define PRODUCT_FACTOR_GRAVITY 2
 #define ADD_FACTOR_GRAVITY 8
-#define TIME_TO_RESPAWN 400
+#define TIME_TO_RESPAWN 300
 
 typedef struct {
     bool is_jumping = false;
@@ -53,6 +52,8 @@ typedef struct {
 
     bool crouching = false;
     bool trying_to_stand = false;
+
+    bool looking_up = false;
 
 } duck_state;
 
@@ -90,6 +91,10 @@ public:
     void stop_jump_duck(int id, bool stop_jump);
     void crouch_duck(int id, bool crouch);
     void stop_crouch_duck(int id, bool stop_crouch);
+
+    // LOOK UP
+    void duck_looks_up(int id, bool looking_up);
+    void duck_stops_looking_up(int id, bool looking_up);
     
     //  ITEMS
     void use_duck_item(int id, bool fire);

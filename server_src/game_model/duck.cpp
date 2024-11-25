@@ -8,9 +8,6 @@
 #include "map_game.h"
 #include "pickable.h"
 
-// Duck::Duck(int health) : health(health), armor(0), helmet(0), weapon(0), Positionable(-1,-1),
-// duck_id(0) {}
-
 Duck::Duck(int health, int id):
         health(health),
         begin_health(health),
@@ -22,6 +19,8 @@ Duck::Duck(int health, int id):
         }
 
 void Duck::reset() {
+    this->has_armor = false;
+    this->has_helmet = false;
     this->health = this->begin_health;
     this->item_in_hands = nullptr;
 }

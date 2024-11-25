@@ -18,6 +18,8 @@ typedef struct duck_DTO {
     uint8_t weapon_id = 0;
     bool helmet_equipped;
     bool armor_equipped;
+    bool looking_up = false;
+    bool crouching = false;
 } __attribute__((packed))
 duck_DTO;  // es necesario el packed aca, no lo saquen
            // va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding
