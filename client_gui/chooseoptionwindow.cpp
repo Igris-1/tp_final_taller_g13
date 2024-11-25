@@ -5,6 +5,7 @@
 #include <QScreen>
 #include <iostream>
 #include "ui_chooseoptionwindow.h"
+#include "editor.h"
 
 ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString port):
         QDialog(parent),
@@ -12,8 +13,9 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
         player(new QMediaPlayer(this)),
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
-    this->joinGame = new JoinGame(nullptr, this->player, address, port);
     this->newGameWindow = new NewGameWindow(nullptr, this->player, address, port);
+    this->joinGame = new JoinGame(nullptr, this->player, address, port);
+    this->editorWindow = new Editor(nullptr, this->player);
     this->aboutWindow = new AboutWindow(nullptr);
 
     // Config player
@@ -38,6 +40,12 @@ void ChooseOptionWindow::on_joinGameButton_clicked() {
     this->hide();
     this->joinGame->on_open_join_game();
     this->joinGame->exec();
+    this->show();
+}
+
+void ChooseOptionWindow::on_editorButton_clicked() {
+    this->hide();
+    this->editorWindow->exec();
     this->show();
 }
 
