@@ -35,6 +35,7 @@ private:
     void draw_falling_duck(duck_DTO& duck, Texture* weapon_texture);
     void draw_moving_duck(duck_DTO& duck, Texture* weapon_texture);
     void draw_idle_duck(duck_DTO& duck, Texture* weapon_texture);
+    SDL_Rect createDuckRect(int x, int y, int h, int w);
 
 public:
     DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_sprites,

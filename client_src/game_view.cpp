@@ -75,7 +75,7 @@ void GameView::load_endgame_score(score_DTO score) {
 }
 
 void GameView::set_up_game() {
-    int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    /*int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     if (a < 0) {
         std::cout << "Error al abrir audio" << std::endl;
     }
@@ -90,7 +90,7 @@ void GameView::set_up_game() {
 
     if (TTF_Init() == -1) {
         std::cout << "Error al iniciar TTF" << std::endl;
-    }
+    }*/
 
 
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));

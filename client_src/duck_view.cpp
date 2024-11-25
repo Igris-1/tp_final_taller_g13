@@ -64,11 +64,14 @@ void DuckView::draw_duck(duck_DTO& duck) {
     walk_frame = (walk_frame < 20) ? (walk_frame + 1) : 0;
 }
 
+SDL_Rect DuckView::createDuckRect(int x, int y, int w, int h) {
+    return SDL_Rect{x - 16, y - 16, w+32, h+16};
+}
 
 void DuckView::draw_dead_duck(duck_DTO& duck) {
     Texture dead_duck(renderer, "../assets/sprites/cookedDuck.png");
     renderer.Copy(dead_duck, SDL_Rect{0, 0, 16, 16},
-                  SDL_Rect{duck.x, duck.y-16 + 32, duck.width, duck.height - 16}, 0, NullOpt,
+                  createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
 }
 
@@ -77,7 +80,7 @@ void DuckView::draw_jumping_duck(duck_DTO& duck, Texture* weapon_texture) {
     int duck_id = duck.duck_id;
 
     renderer.Copy(duck_texture, SDL_Rect{1 * 32, 40, 32, 32},
-                  SDL_Rect{duck.x - 16, duck.y-16, 64, 64}, 0, NullOpt,
+                  createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
     if (weapon_id == 1) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 22, 11},
@@ -110,7 +113,7 @@ void DuckView::draw_falling_duck(duck_DTO& duck, Texture* weapon_texture) {
     int duck_id = duck.duck_id;
 
     renderer.Copy(duck_texture, SDL_Rect{3 * 32, 40, 32, 32},
-                  SDL_Rect{duck.x - 16, duck.y-16, duck.width + 32, duck.height + 16}, 0, NullOpt,
+                  createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
     if (weapon_id == 1) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 22, 11},
@@ -151,7 +154,7 @@ void DuckView::draw_moving_duck(duck_DTO& duck, Texture* weapon_texture) {
 
     renderer.Copy(duck_texture,
                   SDL_Rect{walk_frames[walk_frame / 4].x, walk_frames[walk_frame / 4].y, 32, 32},
-                  SDL_Rect{duck.x - 16, duck.y-16, duck.width + 32, duck.height + 16}, 0, NullOpt,
+                  createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
 
     if (weapon_id == 1) {
@@ -161,7 +164,7 @@ void DuckView::draw_moving_duck(duck_DTO& duck, Texture* weapon_texture) {
     } else if (weapon_id == 2) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 32, 32},
                       SDL_Rect{duck.x - 16 + 12 - facing_direction * 7, duck.y-16 + 10,
-                               duck.width + 16, duck.width + 16},
+                               48, 48},
                       0, NullOpt, facing_direction);
     } else if (weapon_id > 0) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 32, 32},
@@ -189,7 +192,7 @@ void DuckView::draw_idle_duck(duck_DTO& duck, Texture* weapon_texture) {
     int helmet = duck.helmet_equipped;
 
     renderer.Copy(duck_texture, SDL_Rect{0, 0, 32, 32},
-                  SDL_Rect{duck.x - 16, duck.y-16, duck.width + 32, duck.height + 16}, 0, NullOpt,
+                  createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
 
     if (weapon_id == 1) {
@@ -199,15 +202,14 @@ void DuckView::draw_idle_duck(duck_DTO& duck, Texture* weapon_texture) {
     } else if (weapon_id == 2) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 32, 32},
                       SDL_Rect{duck.x - 16 + 12 - facing_direction * 7, duck.y-16 + 10,
-                               duck.width + 16, duck.width + 16},
+                               48, 48},
                       0, NullOpt, facing_direction);
     } else if (weapon_id > 0) {
         renderer.Copy(*weapon_texture, SDL_Rect{0, 0, 32, 32},
                       SDL_Rect{duck.x - 16 + 22 - facing_direction * 7, duck.y-16 + 10,
-                               duck.width + 16, duck.width + 16},
+                               48, 48},
                       0, NullOpt, facing_direction);
-    }
-    if (weapon_id > 0) {
+    }if (weapon_id > 0) {
         renderer.Copy(wing_texture, SDL_Rect{0, 6 * 8, 16, 16},
                       SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 27, 32, 32}, 0,
                       NullOpt, facing_direction);
@@ -216,14 +218,12 @@ void DuckView::draw_idle_duck(duck_DTO& duck, Texture* weapon_texture) {
                       SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 25, 32, 32}, 0,
                       NullOpt, facing_direction);
     } if (armor){
-        Texture armor_texture(renderer, "../assets/sprites/armor.png");
-        renderer.Copy(armor_texture, SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{duck.x - 16, duck.y-16, duck.width + 32, duck.height + 16}, 0, NullOpt,
+        renderer.Copy(accessories_sprites[1], SDL_Rect{0, 0, 16, 16},
+                      SDL_Rect{duck.x - 16, duck.y-16 + 32, 32, 32}, 0, NullOpt,
                       facing_direction);
     } if (helmet){
-        Texture helmet_texture(renderer, "../assets/sprites/helmet.png");
-        renderer.Copy(helmet_texture, SDL_Rect{0, 0, 32, 32},
-                      SDL_Rect{duck.x - 16, duck.y-16, duck.width + 32, duck.height + 16}, 0, NullOpt,
+        renderer.Copy(accessories_sprites[0], SDL_Rect{8, 10, 16, 16},
+                      SDL_Rect{duck.x - 16 + 10, duck.y-16+27, 32, 32}, 0, NullOpt,
                       facing_direction);
     }
 }

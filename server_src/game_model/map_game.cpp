@@ -106,12 +106,7 @@ bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand) {
 
     bool uno = not_in_invalid_position(hitbox, to_stand);
     bool dos = not_in_platforms(hitbox, to_stand);
-    if(!uno){
-        std::cout << "invalid position" << std::endl;
-    }
-    if(!dos){
-        std::cout << "platform position" << std::endl;
-    }
+
     return uno && dos;
 }
 
