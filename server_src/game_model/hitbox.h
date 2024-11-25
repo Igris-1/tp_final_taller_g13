@@ -24,12 +24,13 @@ public:
         return (this->x<other.x + other.width&& this->x + this->width> other.x) &&
                (this->y<other.y + other.height&& this->y + this->height> other.y);
     }
+
     bool has_collision_above(const Hitbox& other) const {
         bool horizontal_overlap = (this->x < other.x + other.width) &&
                                 (this->x + this->width > other.x);
 
         bool above_overlap = (this->y > other.y + other.height) &&
-                            (this->y <= other.y);
+                         (this->y - (this->height - other.height) <= other.y);
 
         return horizontal_overlap && above_overlap;
     }
