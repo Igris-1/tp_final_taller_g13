@@ -59,6 +59,7 @@ public:
     int get_health();
     int get_id();
     Hitbox get_hitbox();
+    Hitbox& get_hitbox_reference();
     duck_DTO to_DTO();
 
     // RESPWAN LOGIC

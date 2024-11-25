@@ -84,6 +84,8 @@ void Duck::receive_damage(int damage) {
 
 Hitbox Duck::get_hitbox() { return this->hitbox; }
 
+Hitbox& Duck::get_hitbox_reference() { return this->hitbox; }
+
 bool Duck::is_this_duck(int id) { return this->duck_id == id; }
 
 duck_DTO Duck::to_DTO() {

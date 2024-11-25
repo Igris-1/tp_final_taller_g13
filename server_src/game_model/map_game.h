@@ -38,11 +38,11 @@ private:
     std::list<std::shared_ptr<BulletInterface>> bullets;
 
     bool hitbox_in_range(Hitbox hitbox, bool can_fall);
-    bool position_is_valid(Hitbox hitbox, bool can_fall);
+    bool position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand);
     bool out_of_map(Hitbox hitbox);
-    bool not_in_invalid_position(Hitbox hitbox);
-    bool not_in_platforms(Hitbox hitbox);
-    bool not_in_boxes(Hitbox hitbox);
+    bool not_in_invalid_position(Hitbox hitbox, bool to_stand);
+    bool not_in_platforms(Hitbox hitbox, bool to_stand);
+    bool not_in_boxes(Hitbox hitbox, bool to_stand);
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
     // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
 
@@ -50,21 +50,23 @@ public:
     explicit MapGame(int width, int height);
 
     // MAP STRUCTURE
-    bool add_invalid_position(Hitbox hitbox);
+    bool add_invalid_position(Hitbox hitbox); 
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
-    void approximate_spawn_to_platform(int x, int& y, int width, int height);
+    void approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item);
+    bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
 
     // DUCKS
     bool duck_exist(int id);
     bool set_duck_start_position(int duck_id, int x, int y);
     bool duck_is_alive(int id);
-    void respawn_ducks();
+    void respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn);
     void remove_duck(int id);
     bool move_relative_if_posible(int duck_id, int dx, int dy);
     void continue_fire_rate(int id);
     void use_item(int duck_id, bool right_direction, bool is_holding);
+    bool crouch_duck(int id, bool crouch);
     // void keep_using_item(int duck_id, bool right_direction);
 
     // BULLETS AND PICKABLE
@@ -89,7 +91,7 @@ public:
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
     int ducks_dead_size();
-    void clean_map();  // tiene que recibir donde spawnea en un futuro
+    void clean_map(std::vector<std::tuple<int, int>> positions_to_respawn);  // tiene que recibir donde spawnea en un futuro
 };
 
 class MapError: public std::exception {

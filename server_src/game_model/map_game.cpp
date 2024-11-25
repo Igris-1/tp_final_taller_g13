@@ -6,27 +6,51 @@ MapGame::MapGame(int width, int height): height(height), width(width) {}
 
 bool MapGame::duck_exist(int id) { return this->ducks.find(id) != this->ducks.end(); }
 
-bool MapGame::not_in_invalid_position(Hitbox hitbox) {
+bool MapGame::not_in_invalid_position(Hitbox hitbox, bool to_stand) {
+    if(!to_stand){        
+        for (Hitbox invalid_position: this->invalid_positions) {
+            if (invalid_position.has_collision(hitbox)) {
+                return false;
+            }
+        }
+        return true;
+    }
     for (Hitbox invalid_position: this->invalid_positions) {
-        if (invalid_position.has_collision(hitbox)) {
+        if (invalid_position.has_collision_above(hitbox)) {
             return false;
         }
     }
     return true;
 }
 
-bool MapGame::not_in_platforms(Hitbox hitbox) {
+bool MapGame::not_in_platforms(Hitbox hitbox, bool to_stand) {
+    if(!to_stand){
+        for (Hitbox platform: this->platforms) {
+            if (platform.has_collision(hitbox)) {
+                return false;
+            }
+        }
+        return true;
+    }
     for (Hitbox platform: this->platforms) {
-        if (platform.has_collision(hitbox)) {
-            return false;
+            if (platform.has_collision_above(hitbox)) {
+                return false;
+            }
         }
-    }
-    return true;
+        return true;
 }
 
-bool MapGame::not_in_boxes(Hitbox hitbox) {
+bool MapGame::not_in_boxes(Hitbox hitbox, bool to_stand) {
+    if(!to_stand){
+        for (auto& box: this->boxes) {
+            if (box->get_hitbox().has_collision(hitbox)) {
+                return false;
+            }
+        }
+        return true;
+    }
     for (auto& box: this->boxes) {
-        if (box->get_hitbox().has_collision(hitbox)) {
+        if (box->get_hitbox().has_collision_above(hitbox)) {
             return false;
         }
     }
@@ -52,11 +76,43 @@ bool MapGame::hitbox_in_range(Hitbox hitbox, bool can_fall) {
 
 }
 
-bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall) {
+bool MapGame::change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand) {
+    Hitbox aux = Hitbox(hitbox.get_x(), hitbox.get_y(), width, height);
+    if(position_is_valid(aux, false, to_stand)){
+        std::cout << "hitbox is trying to change size" << std::endl;
+        hitbox.change_size(width, height);
+        return true;
+    }
+    return false;
+}
+
+bool MapGame::crouch_duck(int id, bool crouch){
+    Hitbox& duck_hitbox = this->ducks[id]->get_hitbox_reference();
+    if(!crouch){
+        std::cout << "duck is trying to stand" << std::endl;
+    }
+    if(crouch){
+        std::cout << "duck is trying to crouch" << std::endl;
+        return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT/2, false);
+    }
+    return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT, true);
+}
+
+bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand) {
     if (!hitbox_in_range(hitbox, can_fall)) {
         return false;
     }
-    return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
+    //return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
+
+    bool uno = not_in_invalid_position(hitbox, to_stand);
+    bool dos = not_in_platforms(hitbox, to_stand);
+    if(!uno){
+        std::cout << "invalid position" << std::endl;
+    }
+    if(!dos){
+        std::cout << "platform position" << std::endl;
+    }
+    return uno && dos;
 }
 
 bool MapGame::set_duck_start_position(int id, int x, int y) {
@@ -67,7 +123,7 @@ bool MapGame::set_duck_start_position(int id, int x, int y) {
     this->ducks[id] = new_duck;
     Hitbox aux = new_duck->get_hitbox();
     aux.move(x, y);
-    if (!position_is_valid(aux, true)) {
+    if (!position_is_valid(aux, true, false)) {
         return false;
     }
     new_duck->move_to(x, y);
@@ -112,7 +168,7 @@ bool MapGame::duck_is_alive(int id) {
 }
 
 bool MapGame::add_invalid_position(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox, false) && not_in_platforms(hitbox)) {
+    if (!hitbox_in_range(hitbox, false) && not_in_platforms(hitbox, false)) {
         return false;
     }
     this->invalid_positions.insert(hitbox);
@@ -120,7 +176,7 @@ bool MapGame::add_invalid_position(Hitbox hitbox) {
 }
 
 bool MapGame::add_platform(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox)) {
+    if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox, false)) {
         return false;
     }
     this->platforms.insert(hitbox);
@@ -128,7 +184,7 @@ bool MapGame::add_platform(Hitbox hitbox) {
 }
 
 bool MapGame::add_box(Hitbox hitbox) {
-    if (!position_is_valid(hitbox, false)) {
+    if (!position_is_valid(hitbox, false, false)) {
         return false;
     }
     this->boxes.push_back(std::make_shared<Box>(hitbox.get_x(), hitbox.get_y(), hitbox.get_width(),
@@ -138,7 +194,7 @@ bool MapGame::add_box(Hitbox hitbox) {
 
 bool MapGame::can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall) {
     hitbox.move_relative(dx, dy);
-    if (position_is_valid(hitbox, can_fall)) {
+    if (position_is_valid(hitbox, can_fall, false)) {
         return true;
     }
     return false;
@@ -158,6 +214,11 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
 
     int remaining_dx = std::abs(dx);
     int remaining_dy = std::abs(dy);
+    
+    if(duck_id == 0){
+        // Hitbox hitbo = duck->get_hitbox();
+        // std::cout << "id: " << duck_id << "x: " << hitbo.get_x() << " y: " << hitbo.get_y() << "height: " << hitbo.get_height() << "width: " << hitbo.get_width() << std::endl;
+    }
 
     while (remaining_dx > 0 || remaining_dy > 0) {
         int step_dx = (remaining_dx > 0) ? x_step : 0;
@@ -169,7 +230,7 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
             duck->kill();
             return false;
         }
-        if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy, false) && this->not_in_boxes(aux)) {
+        if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy, true) && this->not_in_boxes(aux, false)) {
             duck->move_relative_to(step_dx, step_dy);
         } else {
             return false;
@@ -182,10 +243,20 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
     return true;
 }
 
-void MapGame::respawn_ducks() {
+void MapGame::respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn) {
+    int actual_respawn = 0;
     for (auto it = this->ducks_dead.begin(); it != this->ducks_dead.end();) {
         if (it->second->get_respawn_time() == 0) {
             it->second->set_health(HEALTH);
+            if(actual_respawn < positions_to_respawn.size()){
+                it->second->move_to(std::get<0>(positions_to_respawn[actual_respawn]),
+                                std::get<1>(positions_to_respawn[actual_respawn]));
+            }else{
+                actual_respawn = 0;
+                it->second->move_to(std::get<0>(positions_to_respawn[actual_respawn]),
+                                std::get<1>(positions_to_respawn[actual_respawn]));
+            }
+            actual_respawn++;
             this->ducks[it->first] = it->second;
             it = this->ducks_dead.erase(it);
         } else {
@@ -470,7 +541,8 @@ void MapGame::add_item(std::shared_ptr<Pickable> new_weapon, int x, int y) {
 
 std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list() { return this->bullets; }
 
-void MapGame::clean_map() {
+void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) {
+    int actual_respawn = 0;
     for (auto& [id, duck]: this->ducks) {
         duck->reset();
     }
@@ -478,6 +550,17 @@ void MapGame::clean_map() {
         duck->reset();
         this->ducks[id] = duck;
         // hay que saber donde tienen que respawnear segun el mapa
+    }
+    for(auto& [id, duck]: this->ducks){
+         if(actual_respawn < positions_to_respawn.size()){
+            duck->move_to(std::get<0>(positions_to_respawn[actual_respawn]),
+                            std::get<1>(positions_to_respawn[actual_respawn]));
+        }else{
+            actual_respawn = 0;
+            duck->move_to(std::get<0>(positions_to_respawn[actual_respawn]),
+                            std::get<1>(positions_to_respawn[actual_respawn]));
+        }
+        actual_respawn++;
     }
     this->ducks_dead.clear();
     this->bullets.clear();
@@ -488,21 +571,23 @@ void MapGame::clean_map() {
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }
 
-void MapGame::approximate_spawn_to_platform(int x, int& y, int width, int height) {
-    bool cond = true;
-    while (cond) {
-        for (auto& platform: this->platforms) {
-            const Hitbox hitbox(x, y, width, height);
+void MapGame::approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item) {
+    while (true) {
+        bool collision_found = false;
+        for (auto& platform : this->platforms) {
+            Hitbox hitbox(x, y, width, height);
             if (platform.has_collision(hitbox)) {
-                cond = false;
-                y -= 10;
+                collision_found = true;
                 break;
             }
         }
-        if (!cond) {
+        if (collision_found) {
+            y -= 1;
             break;
         }
-        // si se va de mapa?
-        y += 10;
+        y += 1;
+    }
+    if(is_item){
+        y -= 15;
     }
 }

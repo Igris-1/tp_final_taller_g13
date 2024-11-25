@@ -10,9 +10,11 @@ private:
     int y;
     int width;
     int height;
-
+    int original_DY;
 public:
-    Hitbox(int x, int y, int width, int height): x(x), y(y), width(width), height(height){};
+    Hitbox(int x, int y, int width, int height): x(x), y(y), width(width), height(height){
+        this->original_DY = height-y;
+    };
 
     bool has_collision(const int x, const int y) {
         return (x >= this->x && x <= this->x + this->width && y >= this->y &&
@@ -22,6 +24,16 @@ public:
         return (this->x<other.x + other.width&& this->x + this->width> other.x) &&
                (this->y<other.y + other.height&& this->y + this->height> other.y);
     }
+    bool has_collision_above(const Hitbox& other) const {
+        bool horizontal_overlap = (this->x < other.x + other.width) &&
+                                (this->x + this->width > other.x);
+
+        bool above_overlap = (this->y > other.y + other.height) &&
+                            (this->y <= other.y);
+
+        return horizontal_overlap && above_overlap;
+    }
+
     Hitbox& operator=(const Hitbox& other) {
         if (this != &other) {
             x = other.x;
@@ -64,12 +76,16 @@ public:
     int get_width() { return this->width; }
     int get_height() { return this->height; }
 
-    void change_size(int width, int height){ //no funca lol
-        
-        
-
-        return;
+    void change_size(int new_width, int new_height) {
+        if (new_height > this->height) {
+            int height_difference = new_height - this->height;
+            this->y -= height_difference;
+        }
+        this->width = new_width;
+        this->height = new_height;
     }
+
+    
 };
 
 #endif

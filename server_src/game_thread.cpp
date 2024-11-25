@@ -83,11 +83,13 @@ void GameThread::run() {
         //                          x, y, width, height
         game.add_new_platform(Hitbox(0, 200, 200, 16));
         game.add_new_platform(Hitbox(25, 350, 450, 16));
-        //game.add_new_platform(Hitbox(25, 310, 450, 16));//esta es nueva
+        game.add_new_platform(Hitbox(40, 280, 450, 16));//esta es nueva
         game.add_new_platform(Hitbox(40, 420, 600, 16));
         game.add_new_platform(Hitbox(0, 510, 300, 16));
-        game.add_new_platform(Hitbox(580, 200, 200, 16));
+        game.add_new_platform(Hitbox(580, 200, 400, 16));
+        game.add_new_platform(Hitbox(580, 140, 200, 16)); //new 2 esta
         game.add_new_platform(Hitbox(600, 350, 400, 16));
+        //game.add_new_platform(Hitbox(1900, 310, 400, 16));//new
         game.add_new_platform(Hitbox(200, 600, 100, 16));
         game.add_new_platform(Hitbox(0, 600, 300, 16));
         //game.add_new_platform(Hitbox(230, 200, 300, 16));
@@ -112,7 +114,12 @@ void GameThread::run() {
     game.add_spawn_position(500, 350);
     game.add_spawn_position(650, 490);
 
-    game.random_weapon_spawn(false);
+    game.add_spawn_duck(0,0);
+    game.add_spawn_duck(100,100);
+    game.add_spawn_duck(250,270);
+    game.add_spawn_duck(0,400);
+
+    game.random_item_spawn(false);
     int start_flag = 0;
 
     for (int i = 0; i < 4; i++) {
@@ -138,7 +145,7 @@ void GameThread::run() {
 
         game.continue_vertical_movements(SPEED_MOVEMENTS);
         game.continue_horizontal_movements(SPEED_MOVEMENTS);
-        game.random_weapon_spawn(true);
+        game.random_item_spawn(true);
         // game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
 
 

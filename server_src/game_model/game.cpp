@@ -81,7 +81,7 @@ score_DTO Game::get_score_DTO() {
     return score;
 }
 
-void Game::respawner() { this->map.respawn_ducks(); }
+void Game::respawner() { this->map.respawn_ducks(this->spawn_ducks); }
 
 void Game::continue_horizontal_movements(int count) {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
@@ -112,6 +112,12 @@ void Game::continue_horizontal_movements(int count) {
 void Game::continue_vertical_movements(int count) {
     std::vector<int> ducks_id = this->map.get_all_duck_ids();
     for (auto& id: ducks_id) {
+        if(this->ducks_states[id]->trying_to_stand){
+            if(this->map.crouch_duck(id, false)){
+                this->ducks_states[id]->crouching = false;
+                this->ducks_states[id]->trying_to_stand = false;
+            }
+        }
         if (this->ducks_states[id]->is_jumping) {
             for (int i = 0; i < (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++) {
                 if (this->ducks_states[id]->tiles_to_jump > 0) {
@@ -216,6 +222,19 @@ void Game::use_duck_item(int id, bool fire) {
     }
 }
 
+
+void Game::crouch_duck(int id, bool crouch){
+    if(crouch && this->map.duck_is_alive(id)){
+        this->ducks_states[id]->crouching = true;
+        this->map.crouch_duck(id, true);
+    }
+}
+void Game::stop_crouch_duck(int id, bool stop_crouch){
+    if(stop_crouch && this->map.duck_is_alive(id)){
+        this->ducks_states[id]->trying_to_stand = true;
+    }
+}
+
 void Game::keep_using_item() {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
     for (auto& id: ducks_id) {
@@ -226,8 +245,13 @@ void Game::keep_using_item() {
     }
 }
 
+void Game::add_spawn_duck(int x, int y){
+    this->map.approximate_spawn_to_platform(x, y, DUCK_WIDTH, DUCK_HEIGHT, false);
+    this->spawn_ducks.push_back(std::make_tuple(x, y));
+}
+
 void Game::add_spawn_position(int x, int y) {
-    // this->map.approximate_spawn_to_platform(x, y, 36, 18);
+    this->map.approximate_spawn_to_platform(x, y, 36, 18, true);
     this->spawn_positions.push_back(std::make_tuple(x, y));
 }
 
@@ -237,6 +261,7 @@ void Game::stop_duck_item(int id, bool stop_fire) {
         return;
     }
 }
+
 
 void Game::add_invalid_position(Hitbox hitbox) {
     if (!this->map.add_invalid_position(hitbox)) {
@@ -310,7 +335,7 @@ bool Game::check_if_winner() {
     return false;
 }
 
-void Game::random_weapon_spawn(bool on_game) {
+void Game::random_item_spawn(bool on_game) {
     if (on_game && this->time_to_respawn > 0) {
         this->time_to_respawn -= 1;
         return;
@@ -329,9 +354,9 @@ void Game::random_weapon_spawn(bool on_game) {
 
 // preguntar por esto
 void Game::reset_round() {
-    this->map.clean_map();
+    this->map.clean_map(this->spawn_ducks);
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {
-        this->random_weapon_spawn(false);
+        this->random_item_spawn(false);
     }
 }

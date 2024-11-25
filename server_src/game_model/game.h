@@ -44,11 +44,15 @@ typedef struct {
     int air_time = 0;
     bool is_falling = false;
     int time_to_respawn = 0;
+    
     bool is_moving_right = false;
     bool is_moving_left = false;
-    // true  -> derecha | false -> izquierda
-    bool facing_direction = true;
+    
+    bool facing_direction = true;// true  -> derecha | false -> izquierda
     bool holding_action = false;
+
+    bool crouching = false;
+    bool trying_to_stand = false;
 
 } duck_state;
 
@@ -57,6 +61,7 @@ private:
     std::map<int, std::shared_ptr<duck_state>> ducks_states;  // tiene el estado de cada pato
     std::map<int, int> ducks_score;                           // tiene los puntos de cada pato
     std::vector<std::tuple<int, int>> spawn_positions;  // tiene las posiciones de spawn de armas
+    std::vector<std::tuple<int, int>> spawn_ducks;
     MapGame map;                                        // sabe donde esta todo posicionado
     int actual_round;
     int time_to_respawn;
@@ -80,10 +85,12 @@ public:
     void continue_horizontal_movements(int count = 1);
     void continue_vertical_movements(int count = 1);
 
-    // JUMP
+    // JUMP and CROUCH
     void jump_duck(int id, bool jump);
     void stop_jump_duck(int id, bool stop_jump);
-
+    void crouch_duck(int id, bool crouch);
+    void stop_crouch_duck(int id, bool stop_crouch);
+    
     //  ITEMS
     void use_duck_item(int id, bool fire);
     void keep_using_item();
@@ -102,6 +109,7 @@ public:
     void add_new_platform(Hitbox hitbox);
     void add_item_on_map(std::string type, int x, int y);
     void add_spawn_position(int x, int y);  // agrega una posicion de spawn de armas
+    void add_spawn_duck(int x, int y);
     void add_box(Hitbox hitbox);
 
     // game logic
@@ -109,7 +117,7 @@ public:
     void reset_round();
     bool check_if_round_finished();
     bool check_if_winner();
-    void random_weapon_spawn(bool on_game);
+    void random_item_spawn(bool on_game);
 };
 
 class GameError: public std::exception {
