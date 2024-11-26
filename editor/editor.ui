@@ -56,7 +56,7 @@ border-image: transparent;</string>
     <string>Music</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="backButton">
+  <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
      <x>10</x>

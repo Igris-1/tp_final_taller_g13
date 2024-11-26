@@ -1,23 +1,23 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QMediaPlayer>
 
 namespace Ui {
 class Editor;
 }
 
-class Editor: public QDialog {
+class Editor: public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Editor(QWidget* parent, QMediaPlayer* player);
+    explicit Editor(QWidget* parent = nullptr, QMediaPlayer* player);
 
     ~Editor();
 
 private slots:
-
+    void on_exitButton_clicked();
     void on_musicButton_clicked();
     void on_saveButton_clicked();
 
@@ -29,7 +29,7 @@ private slots:
     
 private:
     Ui::Editor* ui;
-    QMediaPlayer* player;
+    QMediaPlayer* mediaPlayer;
     int itemCounter;
 
     void deleteItems();

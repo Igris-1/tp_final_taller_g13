@@ -6,9 +6,11 @@
 #include "chooseoptionwindow.h"
 
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
 class ConnectionWindow;
 }
+
 QT_END_NAMESPACE
 
 class ConnectionWindow: public QMainWindow {
