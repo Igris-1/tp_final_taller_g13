@@ -42,82 +42,6 @@
 background-image: transparent;
 border-image: transparent;</string>
    </property>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>210</y>
-      <width>141</width>
-      <height>191</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="6" column="0">
-        <widget class="QPushButton" name="exitGameButton">
-         <property name="styleSheet">
-          <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);
-</string>
-         </property>
-         <property name="text">
-          <string>Exit</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QPushButton" name="joinGameButton">
-         <property name="styleSheet">
-          <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);
-</string>
-         </property>
-         <property name="text">
-          <string>Join Game</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QPushButton" name="editorButton">
-         <property name="styleSheet">
-          <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);
-</string>
-         </property>
-         <property name="text">
-          <string>Editor</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="newGameButton">
-         <property name="styleSheet">
-          <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);
-</string>
-         </property>
-         <property name="text">
-          <string>New Game</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QPushButton" name="aboutGameButton">
-         <property name="styleSheet">
-          <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);
-</string>
-         </property>
-         <property name="text">
-          <string>About</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="musicButton">
     <property name="geometry">
      <rect>
@@ -136,6 +60,66 @@ color: rgb(255, 255, 0);
     <property name="text">
      <string>Music</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>200</y>
+      <width>139</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="4" column="0">
+      <widget class="QPushButton" name="joinGameButton">
+       <property name="styleSheet">
+        <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+</string>
+       </property>
+       <property name="text">
+        <string>Join Game</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="aboutGameButton">
+       <property name="styleSheet">
+        <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+</string>
+       </property>
+       <property name="text">
+        <string>About</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QPushButton" name="exitGameButton">
+       <property name="styleSheet">
+        <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+</string>
+       </property>
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="newGameButton">
+       <property name="styleSheet">
+        <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+</string>
+       </property>
+       <property name="text">
+        <string>New Game</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>

@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/">
+    <file>../assets/music/menu_song.mp3</file>
+    
     <file>../assets/images/image_1.png</file>
     <file>../assets/images/image_2.png</file>
     <file>../assets/images/image_3.png</file>
@@ -8,17 +10,5 @@
 
     <file>../assets/images/mapa_1.jpeg</file>
     <file>../assets/images/mapa_2.png</file>
-
-    <file>../assets/images/editor.png</file>
-    <file>../assets/images/editor/box.png</file>
-    <file>../assets/images/editor/land.png</file>
-    <file>../assets/images/editor/rock.png</file>
-    <file>../assets/images/editor/land_rock.png</file>
-    <file>../assets/images/editor/vertical_rock.png</file>
-    <file>../assets/images/editor/vertical_rock_2.png</file>
-    <file>../assets/images/editor/horizontal_rock.png</file>
-    <file>../assets/images/editor/horizontal_rock_2.png</file>
-
-    <file>../assets/music/menu_song.mp3</file>
   </qresource>
 </RCC>
