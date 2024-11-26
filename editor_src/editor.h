@@ -2,17 +2,22 @@
 #define EDITOR_H
 
 #include <QMainWindow>
+#include <QAudioOutput>
 #include <QMediaPlayer>
+
+QT_BEGIN_NAMESPACE
 
 namespace Ui {
 class Editor;
 }
 
+QT_END_NAMESPACE
+
 class Editor: public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit Editor(QWidget* parent = nullptr, QMediaPlayer* player);
+    explicit Editor(QWidget* parent = nullptr);
 
     ~Editor();
 
@@ -30,6 +35,7 @@ private slots:
 private:
     Ui::Editor* ui;
     QMediaPlayer* mediaPlayer;
+    QAudioOutput* audioOutput;
     int itemCounter;
 
     void deleteItems();
