@@ -41,8 +41,9 @@ void Client::run() {
         Receiver receiver(protocol, receiver_queue);
         Sender sender(protocol, localPlayers);
         while (sender.is_alive() && receiver.is_alive()) {
+            // cuesta entender que es lo que está sucediendo acá
+            // los mensajes podrían ser objetos con metodos que encapsulen el comportamiento para evitar esto
             Message m(0);
-
             if (receiver_queue.try_pop(m)) {
                 if (m.get_code() == MAP_CODE) {
                     map_structure_t map = m.get_map();
@@ -58,6 +59,7 @@ void Client::run() {
                     game_view.load_endgame_score(score);
                     break;
                 } else if (m.get_code() == GAMES_INFO_CODE) {
+                    // ?
                     continue;
                     std::string input;
                     std::getline(std::cin, input);
@@ -74,11 +76,13 @@ void Client::run() {
                     // }
                 } else if (m.get_code() == PLAYERS_CODE) {
                     sender.send_players();
+                // que es 0x06? esto rompe el encapsulamiento del protocolo
                 } else if (m.get_code() == 0x06) {
                     sender.send_players();
                     sender.send_game_to_join(this->game_to_join);
                 }
             }
+            // TODO: constant rate loop
             usleep(SLEEP_TIME_CLIENT);
         }
         protocol.shutDown();

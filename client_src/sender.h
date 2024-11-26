@@ -21,6 +21,8 @@ private:
     ProtocolClient& protocol;
     SDL_Event last_event;
     int localPlayers = 2;
+
+    // esto no es responsabilidad del sender, debería estar en el hilo principal
     std::map<SDL_Keycode, int> key_player = {
             {SDLK_a, PLAYER_1}, {SDLK_d, PLAYER_1},    {SDLK_SPACE, PLAYER_1}, {SDLK_f, PLAYER_1},
             {SDLK_g, PLAYER_1}, {SDLK_e, PLAYER_1}, {SDLK_LEFT, PLAYER_2}, {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2},

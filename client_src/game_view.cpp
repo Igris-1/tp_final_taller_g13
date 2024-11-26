@@ -22,6 +22,7 @@ GameView::GameView():
     set_up_game();
 }
 
+// eliminar todas las copias innecesarias
 void GameView::add_map(map_structure_t map) { this->map = map; }
 
 void GameView::draw_scoreboard(score_DTO score) {

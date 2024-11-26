@@ -39,6 +39,10 @@ void Acceptor::run() {
             */
             uint8_t buffer;
             bool aux;
+            // no es responsabilidad del aceptador
+            // no se pueden aceptar partidas de manera concurrente
+            // el aceptador debería aceptar clientes, y la logica de Lobby debería manejarse en otro lado
+            // si un cliente se cuelga enviando mensajes al servidor, ningun otro cliente va a poder crear partidas
             ss.recvall(&buffer, 1, &aux);
             if (buffer == NEW_GAME) {
                 this->games_manager.create_new_game();

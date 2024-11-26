@@ -72,7 +72,13 @@ private:
     void run() override {
         while (!protocol.socket_closed() && _keep_running) {
             try {
-
+                // probablemente este codigo debería estar en el protocolo
+                /*
+                    while (...) {
+                        Message msg = protocol.get_message();
+                        queue.push(msg);
+                    }
+                 */
                 uint8_t code = protocol.read_number();
                 if (code == MAP_CODE) {
                     receive_map();
@@ -89,7 +95,7 @@ private:
                 } else if (code == 0x06) {
                     send_players_and_game_id();
                 }
-
+                // no hay necesidad de hacer un sleep acá
                 usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;

@@ -20,6 +20,7 @@ void GamesManager::create_new_game() {
 }
 
 void GamesManager::add_client_to_game(int game_id, Socket&& ss, int number_of_players) {
+    // podrían haber utilizado un std::map...
     for (auto& game: this->games) {
         if (game->game_id == game_id) {
             game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);

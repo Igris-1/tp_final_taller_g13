@@ -17,6 +17,7 @@
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(768, 1366), gameQueue(gameQueue), clients(clients) {
+    // no es buena practica llamar a una funcion virtual dentro del constructor de la clase
     start();
 }
 
@@ -78,7 +79,7 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
-
+    // todo este codigo de inicializacion podría estar en el constructor
     try {
         //                          x, y, width, height
         game.add_new_platform(Hitbox(0, 200, 200, 16));

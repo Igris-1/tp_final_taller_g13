@@ -46,7 +46,7 @@ uint8_t ProtocolClient::read_number() {
 }
 
 uint16_t ProtocolClient::read_long_number() {
-
+    // endianness?
     uint16_t buffer;
 
     connection.recvall(&buffer, sizeof(uint16_t), &socket_is_closed);
