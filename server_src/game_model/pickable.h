@@ -3,8 +3,11 @@
 
 #include <memory>
 
+// #include "map_game.h"
 #include "../common_src/duck_DTO.h"
 #include "positionable.h"
+
+class MapGame;
 
 typedef enum {
     COWBOY_PISTOL_ID = 1,
@@ -41,9 +44,8 @@ public:
     Pickable(int x, int y, int width, int height);  // penes de madera
     Pickable();
 
-    virtual void use() = 0;
+    virtual void use(MapGame& map) = 0;
     void add_owner(std::shared_ptr<Duck> new_duck);
-    // void add_owner2(std::shared_ptr<Hitbox> new_hitbox);
 
     // para la caida cool
     virtual int get_id() = 0;

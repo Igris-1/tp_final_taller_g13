@@ -13,9 +13,9 @@
 #include "weapons_strategy/pew_pew.h"
 #include "weapons_strategy/shotgun.h"
 #include "weapons_strategy/sniper.h"
-#include "../pickable.h"
 
-class Weapon;
+
+class Pickable;
 
 class WeaponFactory {
 public:

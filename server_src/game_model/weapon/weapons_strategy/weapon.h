@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "../../pickable.h"
-
 #include "weapon_interface.h"
+
 
 class Weapon: public Pickable {
 protected:
@@ -42,7 +42,7 @@ public:
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
 
-    void use() override;
+    void use(MapGame& map) override;
     ~Weapon();
 };
 

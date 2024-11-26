@@ -3,6 +3,7 @@
 #include "weapons_strategy/weapon.h"
 #include "helmet.h"
 #include "armor.h"
+#include "../pickable.h"
 
 std::string last_weapon = "";
 

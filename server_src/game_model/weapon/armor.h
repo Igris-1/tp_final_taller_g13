@@ -8,7 +8,7 @@ class Armor: public Pickable {
 private:
 public:
     explicit Armor(int width, int height);
-    void use();
+    void use(MapGame& map);
     int get_id();
     weapon_DTO to_DTO() override;
 };

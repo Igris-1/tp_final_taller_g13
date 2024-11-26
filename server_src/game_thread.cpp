@@ -15,7 +15,6 @@
 #define SPEED_MOVEMENTS 10
 #define SLEEP_TIME 40000
 
-
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(768, 1366), gameQueue(gameQueue), clients(clients) {
     start();

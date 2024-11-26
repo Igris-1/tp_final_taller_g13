@@ -254,7 +254,7 @@ void Game::add_spawn_duck(int x, int y){
 }
 
 void Game::add_spawn_position(int x, int y) {
-    if(this->map.approximate_spawn_to_platform(x, y, 36, 18, true)){
+    if(this->map.approximate_spawn_to_platform(x, y, 64, 64, true)){
         this->spawn_positions.push_back(std::make_tuple(x, y));
     }
 }

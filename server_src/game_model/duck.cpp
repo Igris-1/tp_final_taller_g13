@@ -142,12 +142,12 @@ void Duck::use_item(int x_direction, int y_direction, MapGame& map, bool is_hold
     }
     this->item_in_hands->set_direction(x_direction, y_direction);
     this->item_in_hands->set_holding(is_holding);
-    this->item_in_hands->use();
-    if(item_in_hands== nullptr){
-        return;
-    }
-    int recoil = this->item_in_hands->recoil_produced();
-    map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, 0);
+    this->item_in_hands->use(map);
+    // if(item_in_hands== nullptr){
+    //     return;
+    // }
+    // int recoil = this->item_in_hands->recoil_produced();
+    // map.move_relative_if_posible(this->duck_id, (-x_direction) * recoil, 0);
 }
 
 

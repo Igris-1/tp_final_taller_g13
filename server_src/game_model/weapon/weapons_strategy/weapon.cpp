@@ -2,6 +2,7 @@
 
 #include "../../../../common_src/duck_DTO.h"
 #include "../../duck.h"
+#include "../../map_game.h"
 
 bool Weapon::is_not_a_weapon() { return this->weapon_strategy == nullptr; }
 
@@ -9,7 +10,7 @@ Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height,
                std::list<std::shared_ptr<BulletInterface>>& bullets):
         Pickable(0, 0, width, height), weapon_strategy(weapon_strategy), bullets(bullets) {}
 
-void Weapon::use() {
+void Weapon::use(MapGame& map) {
     if (this->is_not_a_weapon()) {
         return;
     }
@@ -20,6 +21,10 @@ void Weapon::use() {
     int size = new_bullets.size();
     for (int i = 0; i < size; i++) {
         this->bullets.push_back(new_bullets[i]);
+    }
+    if(size > 0 ){
+        int recoil = weapon_strategy->recoil_produced();
+        map.move_relative_if_posible(this->duck->get_id(), (-x_direction) * recoil, 0);
     }
 }
 

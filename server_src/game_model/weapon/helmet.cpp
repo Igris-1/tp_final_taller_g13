@@ -4,9 +4,8 @@
 
 Helmet::Helmet(int width, int height): Pickable(0, 0, width, height) {}
 
-void Helmet::use() { 
+void Helmet::use(MapGame& map) { 
     this->duck->add_helmet();
-    // this->duck->throw_item();
  }
 
 Helmet::~Helmet() {}
