@@ -1,15 +1,15 @@
-#ifndef BOX_H
-#define BOX_H
+#ifndef STRUCTURE_H
+#define STRUCTURE_H
 
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QPoint>
 
-class Box : public QPushButton {
+class Structure : public QPushButton {
     Q_OBJECT
 
 public:
-    explicit Box(QWidget *parent = nullptr);
+    explicit Structure(QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -19,9 +19,9 @@ private:
     QPoint dragStartPosition;
 
     // destructor
-    ~Box() = default;
+    ~Structure() = default;
 
     void deleteItem();
 };
 
-#endif // BOX_H
+#endif // STRUCTURE_H
