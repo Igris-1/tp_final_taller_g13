@@ -17,12 +17,12 @@ Para correr este programa, es necesario instalar las siguientes dependencias que
    
    - Para iniciar el servidor:
      ```sh
-     ./server 8080
+     ./duckGameServer 8080
      ```
 
    - Para iniciar un cliente:
      ```sh
-     ./client_qt
+     ./duckGameClient
      ```
 > El server se puede levantar en cualquier puerto y el cliente por default se autocompleta con puerto 8080 e ip localhost, ambos modificables
 
