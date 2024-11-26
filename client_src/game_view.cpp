@@ -18,8 +18,10 @@ GameView::GameView():
         wing_sprites(),
         weapon_sprites(),
         bullet_sprites(),
-        duck_views() {
+        duck_views(),
+        gear_view(renderer, weapon_sprites, accessories_sprites) {
     set_up_game();
+    std::cout << "GameView created" << std::endl;
 }
 
 void GameView::add_map(map_structure_t map) { this->map = map; }
@@ -196,8 +198,7 @@ void GameView::add_ducks(game_snapshot_t gs) {
             int duck_id = static_cast<int>(gs.ducks[i].duck_id);
 
             duck_DTO duck = gs.ducks[i];
-            duck_views.emplace_back(renderer, duck_sprites[duck_id], wing_sprites[duck_id],
-                                    weapon_sprites, accessories_sprites);
+            duck_views.emplace_back(renderer, duck_sprites[duck_id], wing_sprites[duck_id], gear_view);
         }
     }
 }
@@ -260,22 +261,7 @@ void GameView::load_boxes(game_snapshot_t gs) {
 void GameView::load_weapons(game_snapshot_t gs) {
     for (int i = 0; i < gs.weapons.size(); i++) {
         weapon_DTO weapon = gs.weapons[i];
-        int weapon_id = weapon.weapon_id;
-        Texture& weaponTexture = weapon_sprites[weapon_id - 1];
-        if (weapon_id == 1) {
-            renderer.Copy(weaponTexture, SDL_Rect{0, 0, 22, 11},
-                          SDL_Rect{weapon.x - 14, weapon.y - 7, 36, 18}, 0, NullOpt, 0);
-        } else if (weapon_id == 2) {
-            renderer.Copy(
-                    weaponTexture, SDL_Rect{0, 0, 32, 32},
-                    SDL_Rect{weapon.x - 8, weapon.y - 8, weapon.width + 16, weapon.width + 16}, 0,
-                    NullOpt, 0);
-        } else if (weapon_id > 0) {
-            renderer.Copy(
-                    weaponTexture, SDL_Rect{0, 0, 32, 32},
-                    SDL_Rect{weapon.x - 8, weapon.y - 8, weapon.width + 16, weapon.width + 16}, 0,
-                    NullOpt, 0);
-        }
+        gear_view.draw_gear(weapon);
     }
 }
 

@@ -13,7 +13,7 @@
 #include <SDL2pp/Window.hh>
 
 #include "../common_src/game_snapshot_t.h"
-
+#include "gear_view.h"
 
 using namespace SDL2pp;
 
@@ -27,19 +27,17 @@ private:
     Renderer& renderer;
     Texture& duck_texture;
     Texture& wing_texture;
-    std::vector<Texture>& weapon_textures;
-    std::vector<Texture>& accessories_sprites;
+    GearView gear_view;
 
     void draw_dead_duck(duck_DTO& duck);
-    void draw_jumping_duck(duck_DTO& duck, Texture* weapon_texture);
-    void draw_falling_duck(duck_DTO& duck, Texture* weapon_texture);
-    void draw_moving_duck(duck_DTO& duck, Texture* weapon_texture);
-    void draw_idle_duck(duck_DTO& duck, Texture* weapon_texture);
+    void draw_jumping_duck(duck_DTO& duck);
+    void draw_falling_duck(duck_DTO& duck);
+    void draw_moving_duck(duck_DTO& duck);
+    void draw_idle_duck(duck_DTO& duck);
     SDL_Rect createDuckRect(int x, int y, int h, int w);
 
 public:
-    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_sprites,
-             std::vector<Texture>& weapon_sprites, std::vector<Texture>& accessories_sprites);
+    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_sprites, GearView gear_view);
     void draw_duck(duck_DTO& duck);
 
     ~DuckView();

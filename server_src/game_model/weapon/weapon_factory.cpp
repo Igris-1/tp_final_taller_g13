@@ -14,16 +14,16 @@ std::shared_ptr<Pickable> WeaponFactory::createWeapon(std::list<std::shared_ptr<
         return std::make_shared<Weapon>(new CowboyPistol(), 36, 18, bullets);
     }
     if (weapon_name == "AK47") {
-        return std::make_shared<Weapon>(new AK47(), 36, 18, bullets);
+        return std::make_shared<Weapon>(new AK47(), 64, 64, bullets);
     }
     if (weapon_name == "shotgun") {
-        return std::make_shared<Weapon>(new Shotgun(), 36, 18, bullets);
+        return std::make_shared<Weapon>(new Shotgun(), 64, 64, bullets);
     }
     // if(weapon_name == "pew_pew"){
     //     return Weapon(new PewPew());
     // }
     if (weapon_name == "laser_rifle") {
-        return std::make_shared<Weapon>(new LaserRifle(), 36, 18, bullets);
+        return std::make_shared<Weapon>(new LaserRifle(), 64, 64, bullets);
     }
     if(weapon_name == "armor"){
         return std::make_shared<Armor>(25,25);

@@ -16,6 +16,7 @@
 #include "../common_src/game_snapshot_t.h"
 
 #include "duck_view.h"
+#include "gear_view.h"
 
 using namespace SDL2pp;
 
@@ -32,10 +33,12 @@ private:
     std::vector<Texture> wing_sprites;
     std::vector<Texture> weapon_sprites;
     std::vector<Texture> bullet_sprites;
-    std::vector<DuckView> duck_views;
     std::vector<Texture> scoreboard_font;
     std::vector<Texture> box_sprites;
     std::vector<Texture> accessories_sprites;
+    
+    std::vector<DuckView> duck_views;
+    GearView gear_view;
 
     void set_up_game();
     void load_map();
