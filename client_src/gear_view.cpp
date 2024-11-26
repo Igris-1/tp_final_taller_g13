@@ -63,6 +63,14 @@ void GearView::push_gear_frame_for_idle_walking_duck(){
 	gear_frames[IDLE_WALKING_DUCK].push_back(0);
 	gear_frames[IDLE_WALKING_DUCK].push_back(0);
 	gear_frames[IDLE_WALKING_DUCK].push_back(0);
+	// helmet frames
+	gear_frames[IDLE_WALKING_DUCK].push_back(-4);
+	gear_frames[IDLE_WALKING_DUCK].push_back(10);
+	gear_frames[IDLE_WALKING_DUCK].push_back(-9);
+	// armor frames
+	gear_frames[IDLE_WALKING_DUCK].push_back(0);
+	gear_frames[IDLE_WALKING_DUCK].push_back(0);
+	gear_frames[IDLE_WALKING_DUCK].push_back(0);
 }
 
 void GearView::push_gear_frame_for_jumping_falling_duck() {
@@ -181,7 +189,6 @@ void GearView::draw_gear(weapon_DTO& weapon) {
 	int y = weapon.y;
 	int width = weapon.width;
 	int height = weapon.height;
-	std::cout << "gear id" << gear_id << std::endl;
 
 	switch (gear_id){
 		case 1:
@@ -199,6 +206,34 @@ void GearView::draw_gear(weapon_DTO& weapon) {
 	}
 }
 
+void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int gear_id, int action){
+	int x = duck.x;
+	int y = duck.y;
+	int width = duck.width;
+	int height = duck.height;
+
+	int x_sum_value;
+	int x_mult_value;
+	int y_sum_value;
+
+	
+	
+	if (duck.helmet_equipped){
+		x_sum_value = gear_frames[action][gear_id];
+		x_mult_value = gear_frames[action][gear_id+1];
+		y_sum_value = gear_frames[action][gear_id+2];
+		renderer.Copy(accessories_sprites[0], SDL_Rect{8, 10, 16, 16},
+                      SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 32, 32}, 0, NullOpt,
+                      facing_direction);
+	} else if (duck.armor_equipped){
+		x_sum_value = gear_frames[action][gear_id];
+		x_mult_value = gear_frames[action][gear_id+1];
+		y_sum_value = gear_frames[action][gear_id+2];
+		renderer.Copy(accessories_sprites[1], SDL_Rect{0, 0, 16, 16},
+                      SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 32, 32}, 0, NullOpt,
+                      facing_direction);
+	}
+}
 //dibujar gear que tiene un pato
 void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 	int gear_id = duck.weapon_id-1;
@@ -214,23 +249,26 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 		x_sum_value = gear_frames[JUMPING_FALLING_DUCK][gear_id];
 		x_mult_value = gear_frames[JUMPING_FALLING_DUCK][gear_id+1];
 		y_sum_value = gear_frames[JUMPING_FALLING_DUCK][gear_id+2];
+		draw_accessories(duck, facing_direction, gear_id, JUMPING_FALLING_DUCK);
 	} else if (duck.falling){
 		x_sum_value = gear_frames[FLYING_DUCK][gear_id];
 		x_mult_value = gear_frames[FLYING_DUCK][gear_id+1];
 		y_sum_value = gear_frames[FLYING_DUCK][gear_id+2];
 		inclination = -90 + facing_direction * 180;
+		draw_accessories(duck, facing_direction, gear_id, JUMPING_FALLING_DUCK);
 		
 	} else {
 		x_sum_value = gear_frames[IDLE_WALKING_DUCK][gear_id];
 		x_mult_value = gear_frames[IDLE_WALKING_DUCK][gear_id+1];
 		y_sum_value = gear_frames[IDLE_WALKING_DUCK][gear_id+2];
+		draw_accessories(duck, facing_direction, gear_id, JUMPING_FALLING_DUCK);
 	}
 	if(gear_id == 1){
 		renderer.Copy(gear_textures[gear_id], SDL_Rect{0, 0, 22, 11},
-						SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 36, 18}, inclination, NullOpt, facing_direction);
+				SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 36, 18}, inclination, NullOpt, facing_direction);
 	}else{
 		renderer.Copy(gear_textures[gear_id], SDL_Rect{0, 0, 32, 32},
-				SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 32, 32}, inclination, NullOpt, facing_direction);
+				SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 64, 64}, inclination, NullOpt, facing_direction);
 	}
 
 	

@@ -322,7 +322,7 @@ void Game::throw_item(int id, bool throw_item){
     if (!throw_item || !this->map.duck_exist(id) || !this->map.duck_is_alive(id)) {
         return;
     }
-    this->map.throw_item(id, this->ducks_states[id]->facing_direction);
+    this->map.throw_item(id, this->ducks_states[id]->facing_direction, this->ducks_states[id]->looking_up);
 }
 
 void Game::start_game() {

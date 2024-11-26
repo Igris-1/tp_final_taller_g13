@@ -54,3 +54,16 @@ void Pickable::fire_rate_down() { return; }
 int Pickable::recoil_produced() { return 0; }
 
 void Pickable::set_holding(bool is_holding) { return; }
+
+bool Pickable::is_explosive(){
+    return false;
+}
+bool Pickable::is_active(){
+    return false;
+}
+void Pickable::activation(){
+    return;
+}
+bool Pickable::exploted(){
+    return false;
+}

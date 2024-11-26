@@ -63,17 +63,5 @@ int Weapon::get_id() {
     return this->weapon_strategy->get_id();
 }
 
-/* GRANADA Y BANANA VAN A USAR ESTO*/
-bool Weapon::is_explosive() {
-    if (this->weapon_strategy == nullptr) {
-        return false;
-    }
-    return this->weapon_strategy->is_explosive();
-}
-
-bool Weapon::is_active() { return this->weapon_strategy->is_active(); }
-void Weapon::activation() { this->weapon_strategy->activation(); }
-
-bool Weapon::exploted() { return this->weapon_strategy->exploted(); }
 
 Weapon::~Weapon() {}

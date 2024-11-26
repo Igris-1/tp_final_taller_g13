@@ -74,7 +74,7 @@ public:
     void bullets_next_movement();
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
     void ducks_try_pick_up(int id_duck);
-    void throw_item(int duck_id, bool right_direction);
+    void throw_item(int duck_id, bool right_direction, bool looking_up);
     void ducks_try_throw(int id_duck, bool right_direction);
     void add_item(std::shared_ptr<Pickable> new_weapon, int x, int y);
     void gravity_weapon();

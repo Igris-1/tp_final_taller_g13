@@ -24,7 +24,6 @@ typedef enum {
 typedef enum {
     FIRE_RATE_COWBOY_PISTOL = 20,
     FIRE_RATE_LASER_RIFLE = 5,
-    FIRE_RATE_GRENADE = 1000,
     FIRE_RATE_AK47 = 2,
     FIRE_RATE_SHOTGUN = 35,
 } FIRE_RATE;
@@ -50,12 +49,6 @@ public:
     virtual void fire_rate_down();
     virtual int recoil_produced() = 0;
     virtual int get_id() = 0;
-    // logico solo para explosivos
-    virtual bool is_explosive();
-    virtual bool is_active();
-    virtual void activation();
-    virtual bool exploted();
-    // ---------------------------
     virtual ~WeaponInterface() {}
 };
 

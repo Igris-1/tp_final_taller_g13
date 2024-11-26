@@ -477,7 +477,7 @@ bool MapGame::already_exist_a_pickable(int x, int y) {
     return false;
 }
 
-void MapGame::throw_item(int id_duck, bool right_direction) {
+void MapGame::throw_item(int id_duck, bool right_direction, bool looking_up) {
     std::shared_ptr<Duck> this_duck = this->ducks[id_duck];
     if (this_duck->has_item()) {
         std::shared_ptr<Pickable> weapon = this_duck->throw_item();
@@ -485,7 +485,10 @@ void MapGame::throw_item(int id_duck, bool right_direction) {
             return;
         }
         weapon->move_to(this_duck->get_x(), this_duck->get_y());
-        if (right_direction) {
+        if(looking_up){
+            weapon->set_direction(NO_DIRECTION, UP_DIRECTION);
+            return;
+        }else if (right_direction) {
             weapon->set_direction(RIGHT_DIRECTION, JUMP_DIRECTION);
         } else {
             weapon->set_direction(LEFT_DIRECTION, JUMP_DIRECTION);

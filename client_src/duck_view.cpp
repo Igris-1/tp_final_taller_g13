@@ -63,7 +63,7 @@ SDL_Rect DuckView::createDuckRect(int x, int y, int w, int h) {
 void DuckView::draw_dead_duck(duck_DTO& duck) {
     Texture dead_duck(renderer, "../assets/sprites/cookedDuck.png"); //TODO: poner esto en el sprite de duck
     renderer.Copy(dead_duck, SDL_Rect{0, 0, 16, 16},
-                  SDL_Rect{duck.x - 16, duck.y - 16, 16, 16}, 0, NullOpt,
+                  SDL_Rect{duck.x - 16, duck.y - 16, 32, 32}, 0, NullOpt,
                   facing_direction);
 }
 
@@ -77,7 +77,7 @@ void DuckView::draw_jumping_duck(duck_DTO& duck) {
     
     if (weapon_id > 0) {
         renderer.Copy(wing_texture, SDL_Rect{0, 6 * 8, 16, 16},
-                      SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 15, 32, 32}, 0,
+                      SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 15, 32, 32}, 0,    
                       NullOpt, facing_direction);
         gear_view.draw_held_gear(facing_direction, duck);
     } else {

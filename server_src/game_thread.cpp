@@ -14,6 +14,7 @@
 
 #define SPEED_MOVEMENTS 10
 #define SLEEP_TIME 40000
+#define AMOUNT_OF_PLAYERS 2
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(768, 1366), gameQueue(gameQueue), clients(clients) {
@@ -110,11 +111,11 @@ void GameThread::run() {
     game.random_item_spawn(false);
     int start_flag = 0;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < AMOUNT_OF_PLAYERS; i++) {
         blocking_execute_commands();
     }
 
-    while (this->game.get_duck_DTO_list().size() < 4) {
+    while (this->game.get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
         usleep(SLEEP_TIME);
     }
     send_map();

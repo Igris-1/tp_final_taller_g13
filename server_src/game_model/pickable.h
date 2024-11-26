@@ -66,6 +66,12 @@ public:
     virtual void fire_rate_down();
     void set_looking_up(bool looking_up);
 
+    // explosivos
+    virtual bool is_explosive();
+    virtual bool is_active();
+    virtual void activation();
+    virtual bool exploted();
+
     virtual ~Pickable() {}
 };
 

@@ -33,11 +33,7 @@ public:
     int recoil_produced() override;
     // especiales para la granada y banana
     // void add_owner(std::shared_ptr<Duck> new_duck);
-    bool is_explosive();
-    bool is_active();
     void set_holding(bool holding) override;
-    void activation();
-    bool exploted();
     int get_ammo();
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
