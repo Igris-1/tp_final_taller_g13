@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="/">
     <file>../assets/music/menu_song.mp3</file>
+    <file>../assets/music/complete_menu_song.mp3</file>
     
     <file>../assets/images/image_1.png</file>
     <file>../assets/images/image_2.png</file>
