@@ -142,12 +142,14 @@ void GameView::set_up_game() {
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/activeGrenade.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
+    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/activeBanana.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
     weapon_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
 
@@ -321,8 +323,6 @@ void GameView::load_map() {
     Texture& backgroundTexture = background_sprites[0];
     renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2425, 1451},
                   SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
-    /*renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2560, 1440},
-                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});*/
 
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];

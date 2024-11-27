@@ -104,6 +104,7 @@ void Game::continue_horizontal_movements(int count) {
     }
     for (int j = 0; j < count * 4; j++) {
         this->map.bullets_next_movement();
+        this->map.explosives_on_map();
     }
 
     for (int j = 0; j < (count * 3); j++) {

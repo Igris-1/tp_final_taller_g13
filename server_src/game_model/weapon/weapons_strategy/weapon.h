@@ -31,8 +31,6 @@ public:
     weapon_DTO to_DTO();
     int get_id();
     int recoil_produced() override;
-    // especiales para la granada y banana
-    // void add_owner(std::shared_ptr<Duck> new_duck);
     void set_holding(bool holding) override;
     int get_ammo();
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }

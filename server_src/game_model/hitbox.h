@@ -81,15 +81,6 @@ public:
     int get_width() { return this->width; }
     int get_height() { return this->height; }
 
-    // void change_size(int new_width, int new_height) {
-    //     if (new_height > this->height) {
-    //         int height_difference = new_height - this->height;
-    //         this->y -= height_difference;
-    //     }
-    //     this->width = new_width;
-    //     this->height = new_height;
-    // }
-
     bool change_size(int new_width, int new_height, const std::set<Hitbox>& potential_collisions) {
         if (new_height > this->height) {
             // Calculate how much the hitbox would move upwards

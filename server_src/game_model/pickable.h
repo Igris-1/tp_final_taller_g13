@@ -3,10 +3,11 @@
 
 #include <memory>
 
-// #include "map_game.h"
 #include "../common_src/duck_DTO.h"
 #include "positionable.h"
+#include <vector>
 
+class BulletInterface;
 class MapGame;
 
 typedef enum {
@@ -14,15 +15,19 @@ typedef enum {
     LASER_RIFLE_ID,
     AK_47_ID,
     GRENADE_ID,
+    ACTIVATED_GRENADE_ID,
     MAGNUM_ID,
     OLD_PISTOL_ID,
     PEW_PEW_LASER_ID,
     SHOTGUN_ID,
     SNIPER_ID,
     BANANA_ID,
+    OPENED_BANANA_ID,
     HELMET_ID,
     ARMOR_ID,
 } ITEM_ID;
+
+#define TRAVEL_DISTANCE_GRENADE 70
 
 class Duck;
 
@@ -59,6 +64,7 @@ public:
     int get_x_direction();
     void set_direction(int x, int y);
     virtual weapon_DTO to_DTO() = 0;
+    void set_airtime_y(int airtime);
 
     // metodos vacios
     virtual int recoil_produced();
@@ -71,6 +77,8 @@ public:
     virtual bool is_active();
     virtual void activation();
     virtual bool exploted();
+    virtual bool is_exploding();
+    virtual std::vector<std::shared_ptr<BulletInterface>> get_explotion(Hitbox hitbox);
 
     virtual ~Pickable() {}
 };

@@ -14,6 +14,10 @@ void Pickable::air_time_down_y() {
     }
 }
 
+void Pickable::set_airtime_y(int airtime) {
+    this->air_time_y = airtime;
+}
+
 void Pickable::air_time_down_x() {
     if (this->air_time_x > 0) {
         this->air_time_x--;
@@ -66,4 +70,12 @@ void Pickable::activation(){
 }
 bool Pickable::exploted(){
     return false;
+}
+
+bool Pickable::is_exploding(){
+    return false;
+}
+
+std::vector<std::shared_ptr<BulletInterface>> Pickable::get_explotion(Hitbox hitbox){
+    return std::vector<std::shared_ptr<BulletInterface>>();
 }

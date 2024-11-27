@@ -86,10 +86,8 @@ bool MapGame::change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_
 bool MapGame::crouch_duck(int id, bool crouch){
     Hitbox& duck_hitbox = this->ducks[id]->get_hitbox_reference();
     if(!crouch){
-        std::cout << "duck is trying to stand" << std::endl;
     }
     if(crouch){
-        std::cout << "duck is trying to crouch" << std::endl;
         return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT/2, false);
     }
     return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT, true);
@@ -146,6 +144,10 @@ std::vector<weapon_DTO> MapGame::get_weapons_DTO_list() {
         list_DTO.push_back(new_dto);
     }
     for (auto it = this->pickables_spawned.begin(); it != this->pickables_spawned.end(); it++) {
+        weapon_DTO new_dto = (*it)->to_DTO();
+        list_DTO.push_back(new_dto);
+    }
+    for (auto it = this->explosives.begin(); it != this->explosives.end(); it++) {
         weapon_DTO new_dto = (*it)->to_DTO();
         list_DTO.push_back(new_dto);
     }
@@ -333,6 +335,17 @@ void MapGame::gravity_weapon() {
             this->move_relative_if_posible(hitbox, 0, GRAVITY);
         }
     }
+    for(auto explosive = explosives.begin(); explosive != explosives.end(); ++explosive){
+        (*explosive)->air_time_down_y();
+        Hitbox& hitbox = (*explosive)->get_reference_hitbox();
+        if (!(*explosive)->is_falling()) {
+            this->move_relative_if_posible(hitbox, 0, JUMP_DIRECTION);
+            continue;
+        }
+        if ((*explosive)->is_falling()) {
+            this->move_relative_if_posible(hitbox, 0, GRAVITY);
+        }
+    }
 }
 
 void MapGame::inertia_weapon() {
@@ -348,7 +361,59 @@ void MapGame::inertia_weapon() {
             this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
         }
     }
+    for (auto explosive = explosives.begin(); explosive != explosives.end(); ++explosive) {
+        (*explosive)->air_time_down_x();
+        Hitbox& hitbox = (*explosive)->get_reference_hitbox();
+        if ((*explosive)->is_moving() && (*explosive)->get_x_direction() > 0) {
+            this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, 0);
+            continue;
+        }
+        if ((*explosive)->is_moving() && (*explosive)->get_x_direction() < 0) {
+            this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
+        }
+    }
 }
+
+void MapGame::explosives_on_map(){
+    for(auto explosive = this->explosives.begin(); explosive != this->explosives.end(); ){
+        int banana_flag = 0;
+        for (auto it = this->ducks.begin(); it != ducks.end(); ++it) {            
+            if (it->second->get_hitbox().has_collision((*explosive)->get_hitbox())) {
+                Hitbox& hitbox = it->second->get_hitbox_reference();
+                for(int i = 0; i < 100; i++){  //jugar con el numero 30 a ver si subirlo o bajarlo 
+                    this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, JUMP_DIRECTION); //si, para arriba tambn, quiero madnarlo a la mierda :]
+                }
+                explosive = this->explosives.erase(explosive);
+                std::cout << "erase banana" << std::endl;
+                banana_flag = 1;
+                break;
+            }
+        }
+        if(banana_flag == 1){ // si no hago esto, va a chequear la banana q ya borre con las cosas d abajo
+            continue;
+        }
+        if((*explosive)->exploted()){
+            std::cout << "exploted grenade" << std::endl;
+            Hitbox position = (*explosive)->get_hitbox();
+            std::vector<std::shared_ptr<BulletInterface>> explotion_bullets = (*explosive)->get_explotion(position);  
+            for (int i = 0; i < explotion_bullets.size(); i++) {
+                std::cout << "add bullet of explotion" << std::endl;
+                this->bullets.push_back(explotion_bullets[i]);
+            }
+            if(!(*explosive)->is_exploding()){
+                explosive = this->explosives.erase(explosive);
+                std::cout << "erase grenade" << std::endl;
+                continue;
+            }
+            //break; pq este break? no me permite explotar mas de una granada en el mismo gameloop
+            ++explosive;
+            continue;    
+        }
+        (*explosive)->fire_rate_down();
+        ++explosive;
+    }
+}
+
 
 void MapGame::bullets_next_movement() {
     for (auto bullet = bullets.begin(); bullet != bullets.end();) {
@@ -368,13 +433,12 @@ void MapGame::bullets_next_movement() {
             }
             for (auto& box: this->boxes) {
                 if (box->get_hitbox().has_collision((*bullet)->get_hitbox())) {
-                    int damage = (*bullet)->damage_generated(0);
+                    int damage = (*bullet)->damage_generated(NOT_OWNER);
                     box->receive_damage(damage);
                     if (box->is_destroyed()) {
                         if (box->get_reward()) {
                             std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->get_bullets_list(), "random");
                             item->set_falling(true);
-                            // this->add_weapon(weapon, box->get_x(), box->get_y());
                             item->move_to(box->get_x(), box->get_y());
                             this->pickables.push_back(item);
                         }
@@ -487,11 +551,21 @@ void MapGame::throw_item(int id_duck, bool right_direction, bool looking_up) {
         weapon->move_to(this_duck->get_x(), this_duck->get_y());
         if(looking_up){
             weapon->set_direction(NO_DIRECTION, UP_DIRECTION);
+            weapon->set_airtime_y(150);
+            if(weapon->is_explosive() && weapon->is_active()){
+                this->explosives.push_back(weapon);
+                return;
+            }
+            pickables.push_back(weapon);
             return;
         }else if (right_direction) {
             weapon->set_direction(RIGHT_DIRECTION, JUMP_DIRECTION);
         } else {
             weapon->set_direction(LEFT_DIRECTION, JUMP_DIRECTION);
+        }
+        if(weapon->is_explosive() && weapon->is_active()){
+            this->explosives.push_back(weapon);
+            return;
         }
         pickables.push_back(weapon);
     }
@@ -567,8 +641,10 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) 
     this->ducks_dead.clear();
     this->bullets.clear();
     this->pickables.clear();
+    this->pickables_spawned.clear();
+    this->explosives.clear();
 
-    // hay que saber donde tienen que respawnear segun el mapa
+    // hay que saber donde tienen que respawnear segun el mapa // falso
 }
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }

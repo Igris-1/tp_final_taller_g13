@@ -25,6 +25,8 @@
 #define GRAVITY 1
 #define JUMP_DIRECTION -1
 
+#define NOT_OWNER -1
+
 class MapGame {
 private:
     int height;
@@ -37,6 +39,7 @@ private:
     std::list<std::shared_ptr<Pickable>> pickables;
     std::list<std::shared_ptr<Pickable>> pickables_spawned;
     std::list<std::shared_ptr<BulletInterface>> bullets;
+    std::list<std::shared_ptr<Pickable>> explosives;
 
     bool hitbox_in_range(Hitbox hitbox, bool can_fall);
     bool position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand);
@@ -46,6 +49,7 @@ private:
     bool not_in_boxes(Hitbox hitbox, bool to_stand);
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
     // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
+
 
 public:
     explicit MapGame(int width, int height);
@@ -79,6 +83,7 @@ public:
     void add_item(std::shared_ptr<Pickable> new_weapon, int x, int y);
     void gravity_weapon();
     void inertia_weapon();
+    void explosives_on_map();
 
     // DTO
     std::vector<bullet_DTO> get_bullets_DTO_list();
