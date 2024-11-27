@@ -31,7 +31,7 @@ private:
     std::vector<Texture> platform_sprites;
     std::vector<Texture> duck_sprites;
     std::vector<Texture> wing_sprites;
-    std::vector<Texture> weapon_sprites;
+    std::vector<Texture> gear_sprites;
     std::vector<Texture> bullet_sprites;
     std::vector<Texture> scoreboard_font;
     std::vector<Texture> box_sprites;

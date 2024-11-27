@@ -6,11 +6,12 @@
 #define FLYING_DUCK 2
 #define CROUCHING_DUCK 3
 
-GearView::GearView(Renderer& renderer, std::vector<Texture>& gear_textures, std::vector<Texture>& accessories_sprites):
+GearView::GearView(Renderer& renderer, std::vector<Texture>& gear_textures, std::vector<Texture>& accessories_textures):
         renderer(renderer),
         gear_textures(gear_textures),
-		accessories_sprites(accessories_sprites){
+		accessories_textures(accessories_textures){
 		gear_frames.resize(AMOUNT_OF_DUCK_ACTIONS);
+		accessories_frames.resize(AMOUNT_OF_DUCK_ACTIONS);
 
 		push_gear_frame_values();
 }
@@ -78,6 +79,14 @@ void GearView::push_gear_frame_for_idle_walking_duck(){
 	gear_frames[IDLE_WALKING_DUCK].push_back(2);
 	gear_frames[IDLE_WALKING_DUCK].push_back(4);
 	gear_frames[IDLE_WALKING_DUCK].push_back(12);
+	// helmet accessory frames
+	accessories_frames[IDLE_WALKING_DUCK].push_back(-5);
+	accessories_frames[IDLE_WALKING_DUCK].push_back(11);
+	accessories_frames[IDLE_WALKING_DUCK].push_back(-8);
+	// armor accessory frames
+	accessories_frames[IDLE_WALKING_DUCK].push_back(5);
+	accessories_frames[IDLE_WALKING_DUCK].push_back(-2);
+	accessories_frames[IDLE_WALKING_DUCK].push_back(15);
 }
 
 void GearView::push_gear_frame_for_jumping_falling_duck() {
@@ -137,6 +146,14 @@ void GearView::push_gear_frame_for_jumping_falling_duck() {
     gear_frames[JUMPING_FALLING_DUCK].push_back(2);
     gear_frames[JUMPING_FALLING_DUCK].push_back(4);
     gear_frames[JUMPING_FALLING_DUCK].push_back(0);
+	// helmet accessory frames
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(0);
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(8);
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(-22);
+	// armor accessory frames
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(3);
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(2);
+	accessories_frames[JUMPING_FALLING_DUCK].push_back(-3);
 }
 
 void GearView::push_gear_frame_for_flying_duck() {
@@ -191,11 +208,19 @@ void GearView::push_gear_frame_for_flying_duck() {
     // helmet frames
     gear_frames[FLYING_DUCK].push_back(-17);
     gear_frames[FLYING_DUCK].push_back(36);
-    gear_frames[FLYING_DUCK].push_back(-25);
+    gear_frames[FLYING_DUCK].push_back(-10);
     // armor frames
-    gear_frames[FLYING_DUCK].push_back(-15);
-    gear_frames[FLYING_DUCK].push_back(34);
-    gear_frames[FLYING_DUCK].push_back(-15);
+    gear_frames[FLYING_DUCK].push_back(-10);
+    gear_frames[FLYING_DUCK].push_back(24);
+    gear_frames[FLYING_DUCK].push_back(-10);
+	// helmet accessory frames
+	accessories_frames[FLYING_DUCK].push_back(-4);
+    accessories_frames[FLYING_DUCK].push_back(10);
+    accessories_frames[FLYING_DUCK].push_back(-30);
+	// armor accessory frames
+	accessories_frames[FLYING_DUCK].push_back(5);
+    accessories_frames[FLYING_DUCK].push_back(0);
+    accessories_frames[FLYING_DUCK].push_back(-2);
 }
 
 
@@ -295,7 +320,7 @@ void GearView::draw_gear_in_hands(int x, int y, int gear, int inclination, int f
 	}
 }
 
-void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int gear, int action){
+void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int action){
 	int x = duck.x;
 	int y = duck.y;
 	int width = duck.width;
@@ -306,18 +331,28 @@ void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int gear, 
 	int y_sum_value;
 	
 	if (duck.helmet_equipped){
-		x_sum_value = gear_frames[action][gear*3];
-		x_mult_value = gear_frames[action][gear*3+1];
-		y_sum_value = gear_frames[action][gear*3+2];
-		renderer.Copy(accessories_sprites[0], SDL_Rect{8, 10, 16, 16},
+		x_sum_value = accessories_frames[action][0];
+		x_mult_value = accessories_frames[action][1];
+		y_sum_value = accessories_frames[action][2];
+		std::cout << "x_sum_value: " << x_sum_value << std::endl;	
+		std::cout << "x_mult_value: " << x_mult_value << std::endl;
+		std::cout << "y_sum_value: " << y_sum_value << std::endl;
+		if (action == JUMPING_FALLING_DUCK){
+			renderer.Copy(accessories_textures[0], SDL_Rect{8, 10, 16, 16},
+                      SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 24, 24}, 0, NullOpt,
+                      facing_direction);
+		} else {
+			renderer.Copy(accessories_textures[0], SDL_Rect{8, 10, 16, 16},
                       SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 32, 32}, 0, NullOpt,
                       facing_direction);
+		}
+		
 	} else if (duck.armor_equipped){
-		x_sum_value = gear_frames[action][gear*3];
-		x_mult_value = gear_frames[action][gear*3+1];
-		y_sum_value = gear_frames[action][gear*3+2];
-		renderer.Copy(accessories_sprites[1], SDL_Rect{0, 0, 16, 16},
-                      SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 32, 32}, 0, NullOpt,
+		x_sum_value = accessories_frames[action][3];
+		x_mult_value = accessories_frames[action][4];
+		y_sum_value = accessories_frames[action][5];
+		renderer.Copy(accessories_textures[1], SDL_Rect{8, 8, 16, 16},
+                      SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 24, 24}, 0, NullOpt,
                       facing_direction);
 	}
 }
@@ -338,7 +373,7 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 			x_mult_value = gear_frames[JUMPING_FALLING_DUCK][gear*3+1];
 			y_sum_value = gear_frames[JUMPING_FALLING_DUCK][gear*3+2];
 		}
-		draw_accessories(duck, facing_direction, gear, JUMPING_FALLING_DUCK);
+		draw_accessories(duck, facing_direction, JUMPING_FALLING_DUCK);
 
 	} else if (duck.falling){
 		if (gear >= 0) {
@@ -347,7 +382,7 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 			y_sum_value = gear_frames[FLYING_DUCK][gear*3+2];
 			inclination = -90 + facing_direction * 180;
 		}
-		draw_accessories(duck, facing_direction, gear, FLYING_DUCK);
+		draw_accessories(duck, facing_direction, FLYING_DUCK);
 
 	} else {
 		if (gear >= 0) {
@@ -355,7 +390,7 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 			x_mult_value = gear_frames[IDLE_WALKING_DUCK][gear*3+1];
 			y_sum_value = gear_frames[IDLE_WALKING_DUCK][gear*3+2];
 		}
-		draw_accessories(duck, facing_direction, gear, IDLE_WALKING_DUCK);
+		draw_accessories(duck, facing_direction, IDLE_WALKING_DUCK);
 
 	} if (gear >= 0) {
 		draw_gear_in_hands(x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, gear, inclination, facing_direction);

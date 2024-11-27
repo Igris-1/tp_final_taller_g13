@@ -16,10 +16,10 @@ GameView::GameView():
         platform_sprites(),
         duck_sprites(),
         wing_sprites(),
-        weapon_sprites(),
+        gear_sprites(),
         bullet_sprites(),
         duck_views(),
-        gear_view(renderer, weapon_sprites, accessories_sprites) {
+        gear_view(renderer, gear_sprites, accessories_sprites) {
     set_up_game();
     std::cout << "GameView created" << std::endl;
 }
@@ -138,20 +138,20 @@ void GameView::set_up_game() {
     wing_sprites.push_back(std::move(wing3Texture));
     wing_sprites.push_back(std::move(wing4Texture));
 
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/activeGrenade.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/activeBanana.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
-    weapon_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeGrenade.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeBanana.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
 
     box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
 
