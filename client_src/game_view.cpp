@@ -21,7 +21,6 @@ GameView::GameView():
         duck_views(),
         gear_view(renderer, gear_sprites, accessories_sprites) {
     set_up_game();
-    std::cout << "GameView created" << std::endl;
 }
 
 void GameView::add_map(map_structure_t map) { this->map = map; }
@@ -117,10 +116,29 @@ void GameView::set_up_game() {
     Texture duck4Texture(renderer, "../assets/sprites/duck.png");
     duck4Texture.SetColorMod(40, 40, 200);
 
+    Texture duck1TextureUp(renderer, "../assets/sprites/duckUp.png");
+
+    Texture duck2TextureUp(renderer, "../assets/sprites/duckUp.png");
+    duck2TextureUp.SetColorMod(200, 40, 40);
+
+    Texture duck3TextureUp(renderer, "../assets/sprites/duckUp.png");
+    duck3TextureUp.SetColorMod(40, 200, 40);
+
+    Texture duck4TextureUp(renderer, "../assets/sprites/duckUp.png");
+    duck4TextureUp.SetColorMod(40, 40, 200);
+
     duck_sprites.push_back(std::move(duck1Texture));
     duck_sprites.push_back(std::move(duck2Texture));
     duck_sprites.push_back(std::move(duck3Texture));
     duck_sprites.push_back(std::move(duck4Texture));
+
+    duck_looking_up_sprites.push_back(std::move(duck1TextureUp));
+    duck_looking_up_sprites.push_back(std::move(duck2TextureUp));
+    duck_looking_up_sprites.push_back(std::move(duck3TextureUp));
+    duck_looking_up_sprites.push_back(std::move(duck4TextureUp));
+
+    Texture dead_duck(renderer, "../assets/sprites/cookedDuck.png");
+    dead_duck_sprites.push_back(std::move(dead_duck));
 
     Texture wing1Texture(renderer, "../assets/sprites/wing.png");
 
@@ -132,6 +150,7 @@ void GameView::set_up_game() {
 
     Texture wing4Texture(renderer, "../assets/sprites/wing.png");
     wing4Texture.SetColorMod(40, 40, 200);
+
 
     wing_sprites.push_back(std::move(wing1Texture));
     wing_sprites.push_back(std::move(wing2Texture));
@@ -200,7 +219,7 @@ void GameView::add_ducks(game_snapshot_t gs) {
             int duck_id = static_cast<int>(gs.ducks[i].duck_id);
 
             duck_DTO duck = gs.ducks[i];
-            duck_views.emplace_back(renderer, duck_sprites[duck_id], wing_sprites[duck_id], gear_view);
+            duck_views.emplace_back(renderer, duck_sprites[duck_id], duck_looking_up_sprites[duck_id], dead_duck_sprites[0], wing_sprites[duck_id], gear_view);
         }
     }
 }

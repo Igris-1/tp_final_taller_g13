@@ -26,19 +26,21 @@ private:
     int flying_frame;
     Renderer& renderer;
     Texture& duck_texture;
+    Texture& duck_looking_up_texture;
+    Texture& duck_dead_texture;
     Texture& wing_texture;
     GearView gear_view;
 
     void draw_dead_duck(duck_DTO& duck);
-    void draw_jumping_duck(duck_DTO& duck);
-    void draw_falling_duck(duck_DTO& duck);
-    void draw_moving_duck(duck_DTO& duck);
-    void draw_idle_duck(duck_DTO& duck);
-    void draw_crouching_duck(duck_DTO& duck);
+    void draw_jumping_duck(duck_DTO& duck, Texture* duck_text);
+    void draw_falling_duck(duck_DTO& duck, Texture* duck_text);
+    void draw_moving_duck(duck_DTO& duck, Texture* duck_text);
+    void draw_idle_duck(duck_DTO& duck, Texture* duck_text);
+    void draw_crouching_duck(duck_DTO& duck, Texture* duck_text);
     SDL_Rect createDuckRect(int x, int y, int h, int w);
 
 public:
-    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& wing_sprites, GearView gear_view);
+    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& duck_looking_up_texture, Texture& duck_dead_texture, Texture& wing_sprites, GearView& gear_view);
     void draw_duck(duck_DTO& duck);
 
     ~DuckView();

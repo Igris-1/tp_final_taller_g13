@@ -29,7 +29,8 @@ private:
     void push_gear_frame_for_idle_walking_crouching_duck();
     void push_gear_frame_for_jumping_falling_duck();
     void push_gear_frame_for_flying_duck();
-    void push_gear_frame_for_crouching_duck();
+    void push_gear_frame_for_crouching_jumping_duck();
+    void push_gear_frame_for_crouching_idle_duck();
     void draw_accessories(duck_DTO duck, bool facing_direction, int action);
     void draw_gear_in_hands(int x, int y, int gear, int inclination, int facing_direction);
 

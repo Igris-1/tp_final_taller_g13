@@ -1,9 +1,11 @@
 #include "gear_view.h"
 
-#define AMOUNT_OF_DUCK_ACTIONS 3
+#define AMOUNT_OF_DUCK_ACTIONS 5
 #define IDLE_WALKING_CROUCHING_DUCK 0
 #define JUMPING_FALLING_DUCK 1
 #define FLYING_DUCK 2
+#define LOOKING_UP_IDLE_DUCK 3
+#define LOOKING_UP_JUMPING_DUCK 4
 
 GearView::GearView(Renderer& renderer, std::vector<Texture>& gear_textures, std::vector<Texture>& accessories_textures):
         renderer(renderer),
@@ -11,7 +13,6 @@ GearView::GearView(Renderer& renderer, std::vector<Texture>& gear_textures, std:
 		accessories_textures(accessories_textures){
 		gear_frames.resize(AMOUNT_OF_DUCK_ACTIONS);
 		accessories_frames.resize(AMOUNT_OF_DUCK_ACTIONS);
-
 		push_gear_frame_values();
 }
 
@@ -19,6 +20,9 @@ void GearView::push_gear_frame_values(){
 	push_gear_frame_for_idle_walking_crouching_duck();
 	push_gear_frame_for_jumping_falling_duck();
 	push_gear_frame_for_flying_duck();
+	push_gear_frame_for_crouching_idle_duck();
+	push_gear_frame_for_crouching_jumping_duck();
+	
 }
 
 void GearView::push_gear_frame_for_idle_walking_crouching_duck(){
@@ -222,29 +226,140 @@ void GearView::push_gear_frame_for_flying_duck() {
     accessories_frames[FLYING_DUCK].push_back(-2);
 }
 
+void GearView::push_gear_frame_for_crouching_jumping_duck() {
+    // cowboyPistol frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-11);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(16);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-11);
+    // laserRifle frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-25);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(25);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-14);
+    // ak47 frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(23);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-12);
+    // grenade frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+	// active grenade frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // magnum frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // oldPistol frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // pewpewLaser frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // shotgun frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-20);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(18);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-13);
+    // sniper frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // banana frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+	// active banana frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-22);
+    // helmet frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(36);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-5);
+    // armor frames
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-10);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(24);
+    gear_frames[LOOKING_UP_JUMPING_DUCK].push_back(-5);
+	// helmet accessory frames
+	accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(-4);
+    accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(10);
+    accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(-25);
+	// armor accessory frames
+	accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(5);
+    accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(0);
+    accessories_frames[LOOKING_UP_JUMPING_DUCK].push_back(3);
+}
 
 
-/*void GearView::push_gear_frame_for_crouching_duck() {
-	// cowboyPistol frames
-	gear_frames[CROUCHING_DUCK].push_back(6);
-	gear_frames[CROUCHING_DUCK].push_back(12);
-	gear_frames[CROUCHING_DUCK].push_back(11);
-	// laserRifle frames
-	gear_frames[CROUCHING_DUCK].push_back(-4);
-	gear_frames[CROUCHING_DUCK].push_back(7);
-	gear_frames[CROUCHING_DUCK].push_back(-6);
-	// ak47 frames
-	gear_frames[CROUCHING_DUCK].push_back(6);
-	gear_frames[CROUCHING_DUCK].push_back(7);
-	gear_frames[CROUCHING_DUCK].push_back(-6);
-	// grenade frames
-	// magnum frames
-	// oldPistol frames
-	// pewpewLaser frames
-	// shotgun frames
-	// sniper frames
-	// banana frames
-}*/
+void GearView::push_gear_frame_for_crouching_idle_duck() {
+    // cowboyPistol frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-11);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(16);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(1);
+    // laserRifle frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-25);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(25);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-2);
+    // ak47 frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-22);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(23);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(0);
+    // grenade frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+	// active grenade frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // magnum frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // oldPistol frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // pewpewLaser frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // shotgun frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-20);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(18);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-1);
+    // sniper frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // banana frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+	// active banana frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(30);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    // helmet frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-17);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(36);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(7);
+    // armor frames
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(-10);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(24);
+    gear_frames[LOOKING_UP_IDLE_DUCK].push_back(7);
+	// helmet accessory frames
+	accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(-4);
+    accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(10);
+    accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(-13);
+	// armor accessory frames
+	accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(5);
+    accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(0);
+    accessories_frames[LOOKING_UP_IDLE_DUCK].push_back(15);
+}
 
 
 //dibujar gear en el mapa
@@ -333,9 +448,6 @@ void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int action
 		x_sum_value = accessories_frames[action][0];
 		x_mult_value = accessories_frames[action][1];
 		y_sum_value = accessories_frames[action][2];
-		std::cout << "x_sum_value: " << x_sum_value << std::endl;	
-		std::cout << "x_mult_value: " << x_mult_value << std::endl;
-		std::cout << "y_sum_value: " << y_sum_value << std::endl;
 		if (action == JUMPING_FALLING_DUCK){
 			renderer.Copy(accessories_textures[0], SDL_Rect{8, 10, 16, 16},
                       SDL_Rect{x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, 24, 24}, 0, NullOpt,
@@ -366,34 +478,32 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck){
 	int y_sum_value;
 	int inclination = 0;
 
-	if (duck.jumping){
-		if (gear >= 0) {
-			x_sum_value = gear_frames[JUMPING_FALLING_DUCK][gear*3];
-			x_mult_value = gear_frames[JUMPING_FALLING_DUCK][gear*3+1];
-			y_sum_value = gear_frames[JUMPING_FALLING_DUCK][gear*3+2];
-		}
-		draw_accessories(duck, facing_direction, JUMPING_FALLING_DUCK);
+	int action;
 
-	} else if (duck.falling){
-		if (gear >= 0) {
-			x_sum_value = gear_frames[FLYING_DUCK][gear*3];
-			x_mult_value = gear_frames[FLYING_DUCK][gear*3+1];
-			y_sum_value = gear_frames[FLYING_DUCK][gear*3+2];
+	
+	if (duck.jumping){
+		action = JUMPING_FALLING_DUCK;
+		if (duck.looking_up){
+			action = LOOKING_UP_JUMPING_DUCK;
 			inclination = -90 + facing_direction * 180;
 		}
-		draw_accessories(duck, facing_direction, FLYING_DUCK);
+	} else if (duck.falling){
+		action = FLYING_DUCK;
+		inclination = -90 + facing_direction * 180;
 
 	} else {
-		if (gear >= 0) {
-			x_sum_value = gear_frames[IDLE_WALKING_CROUCHING_DUCK][gear*3];
-			x_mult_value = gear_frames[IDLE_WALKING_CROUCHING_DUCK][gear*3+1];
-			y_sum_value = gear_frames[IDLE_WALKING_CROUCHING_DUCK][gear*3+2];
+		action = IDLE_WALKING_CROUCHING_DUCK;
+		if (duck.looking_up){
+			action = LOOKING_UP_IDLE_DUCK;
+			inclination = -90 + facing_direction * 180;
 		}
-		draw_accessories(duck, facing_direction, IDLE_WALKING_CROUCHING_DUCK);
-
 	} if (gear >= 0) {
+		x_sum_value = gear_frames[action][gear*3];
+		x_mult_value = gear_frames[action][gear*3+1];
+		y_sum_value = gear_frames[action][gear*3+2];
 		draw_gear_in_hands(x + x_sum_value + facing_direction*x_mult_value, y + y_sum_value, gear, inclination, facing_direction);
 	}
+	draw_accessories(duck, facing_direction, action);
 	
 }
 
