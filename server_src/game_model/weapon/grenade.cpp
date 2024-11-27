@@ -73,7 +73,6 @@ bool Grenade::is_exploding() {
 
 void Grenade::fire_rate_down(){
     if(this->is_active()){
-        std::cout << "Grenade fire rate down" << std::endl;
         this->explosive_time--;
     }
 }

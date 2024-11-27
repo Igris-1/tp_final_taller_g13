@@ -10,6 +10,7 @@
 
 #include "receiver_thread.h"
 #include "sender_thread.h"
+#include "../configuration_yamls/game_config.h"
 #include "../configuration_yamls/parser_singleton.h"
 
 #define SPEED_MOVEMENTS 10
@@ -79,6 +80,31 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
+
+    // GameConfig game_config("../configuration_yamls/default_map_config.yaml", "../configuration_yamls/default_config.yaml");
+
+    // std::vector<std::tuple<int, int, int, int>> aux_tuple =  game_config.get_item("platforms");
+    // for(auto& platform : aux_tuple){
+    //     game.add_new_platform(Hitbox(std::get<0>(platform), std::get<1>(platform), std::get<2>(platform), std::get<3>(platform)));
+    // }
+
+    // aux_tuple =  game_config.get_item("boxes");
+    // for(auto& box : aux_tuple){
+    //     game.add_box(Hitbox(std::get<0>(box), std::get<1>(box), std::get<2>(box), std::get<3>(box)));
+    // }
+
+    // aux_tuple =  game_config.get_item("ducks_spawn");
+    // for(auto& duck_spawn : aux_tuple){
+    //     // game.add_spawn_duck(Hitbox(std::get<0>(duck_spawn), std::get<1>(duck_spawn), std::get<2>(duck_spawn), std::get<3>(duck_spawn)));
+    //     game.add_spawn_duck(std::get<0>(duck_spawn), std::get<1>(duck_spawn));
+    // }
+
+    // aux_tuple =  game_config.get_item("weapons_spawn");
+    // for(auto& weapon_spawn : aux_tuple){
+    //     // game.add_spawn_position(Hitbox(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn), std::get<2>(weapon_spawn), std::get<3>(weapon_spawn)));
+    //     game.add_spawn_position(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn));
+    // }
+
     // singleton del parser de yaml
     ParserYAML* parser =  ParserSingleton::get_instance();
     parser->load_files("../configuration_yamls/default_map_config.yaml", "../configuration_yamls/default_config.yaml");

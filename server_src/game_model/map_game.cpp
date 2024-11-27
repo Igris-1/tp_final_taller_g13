@@ -320,6 +320,9 @@ void MapGame::continue_fire_rate(int id) {
     if (this->duck_exist(id)) {
         this->ducks[id]->continue_fire_rate();
     }
+    // for(auto explosive = this->explosives.begin(); explosive != this->explosives.end(); ){
+    //     (*explosive)->fire_rate_down();
+    // }
 }
 
 void MapGame::gravity_weapon() {
@@ -376,7 +379,7 @@ void MapGame::inertia_weapon() {
 
 void MapGame::explosives_on_map(){
     for(auto explosive = this->explosives.begin(); explosive != this->explosives.end(); ){
-        int banana_flag = 0;
+        bool banana_flag = false;
         for (auto it = this->ducks.begin(); it != ducks.end(); ++it) {            
             if (it->second->get_hitbox().has_collision((*explosive)->get_hitbox())) {
                 Hitbox& hitbox = it->second->get_hitbox_reference();
@@ -385,11 +388,11 @@ void MapGame::explosives_on_map(){
                 }
                 explosive = this->explosives.erase(explosive);
                 std::cout << "erase banana" << std::endl;
-                banana_flag = 1;
+                banana_flag = true;
                 break;
             }
         }
-        if(banana_flag == 1){ // si no hago esto, va a chequear la banana q ya borre con las cosas d abajo
+        if(banana_flag){ // si no hago esto, va a chequear la banana q ya borre con las cosas d abajo
             continue;
         }
         if((*explosive)->exploted()){

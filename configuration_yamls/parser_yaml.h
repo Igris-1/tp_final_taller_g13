@@ -40,7 +40,27 @@ public:
             if (current_node[word]) {
                 current_node = current_node[word]; // Navegamos al siguiente nodo
             } else {
-                return -1; // Si alguna clave no existe
+                return -1; 
+            }
+        }
+
+        if (current_node.IsScalar()) {
+            return current_node.as<int>();
+        }else {
+            return -1;
+        }
+    }
+    
+    int get_value_map(const std::string& path){
+        std::istringstream stream(path);
+        std::string word;
+        YAML::Node current_node = this->map_data;
+
+        while (stream >> word) {
+            if (current_node[word]) {
+                current_node = current_node[word]; // Navegamos al siguiente nodo
+            } else {
+                return -1; 
             }
         }
 

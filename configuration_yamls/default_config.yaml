@@ -16,6 +16,7 @@ weapon:
     shot: 1
     damage: 20
     recoil: 0
+    scope: 0
     reload_time: 10 # time to explode
     hitbox_width: 36
     hitbox_height: 18
@@ -24,6 +25,7 @@ weapon:
     shot: 1
     damage: 10
     recoil: 0
+    scope: 0
     reload_time: 0 # never explodes
     hitbox_width: 36
     hitbox_height: 18

@@ -68,6 +68,9 @@ void Duck::add_helmet() {
 bool Duck::is_alive() { return !(this->health <= 0); }
 
 void Duck::receive_damage(int damage) {
+    if(damage == 0){
+        return;
+    }
     if (this->has_armor) {
         this->has_armor = false;
         return;
