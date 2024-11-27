@@ -26,7 +26,7 @@ private:
     std::vector<std::vector<int>> accessories_frames;
 
     void push_gear_frame_values();
-    void push_gear_frame_for_idle_walking_duck();
+    void push_gear_frame_for_idle_walking_crouching_duck();
     void push_gear_frame_for_jumping_falling_duck();
     void push_gear_frame_for_flying_duck();
     void push_gear_frame_for_crouching_duck();

@@ -15,6 +15,7 @@ class Weapon;
 
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 48
+#define DUCK_CROUCH_HEIGHT 36
 
 class Duck: public Positionable, public std::enable_shared_from_this<Duck> {
 private:
