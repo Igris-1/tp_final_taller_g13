@@ -226,7 +226,8 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
             return false;
         }
         if (can_move_hitbox(duck->get_hitbox(), step_dx, step_dy, true) && this->not_in_boxes(aux, false)) {
-            duck->move_relative_to(step_dx, step_dy);
+            duck->move_duck_relative(step_dx, step_dy);
+            duck->set_direction(step_dx, step_dy);
         } else {
             return false;
         }
@@ -382,10 +383,11 @@ void MapGame::explosives_on_map(){
         bool banana_flag = false;
         for (auto it = this->ducks.begin(); it != ducks.end(); ++it) {            
             if (it->second->get_hitbox().has_collision((*explosive)->get_hitbox())) {
-                Hitbox& hitbox = it->second->get_hitbox_reference();
-                for(int i = 0; i < 100; i++){  //jugar con el numero 30 a ver si subirlo o bajarlo 
-                    this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, JUMP_DIRECTION); //si, para arriba tambn, quiero madnarlo a la mierda :]
-                }
+                // Hitbox& hitbox = it->second->get_hitbox_reference();
+                // for(int i = 0; i < 100; i++){  //jugar con el numero 30 a ver si subirlo o bajarlo 
+                //     this->move_relative_if_posible(hitbox, it->second->get_x_direction(), JUMP_DIRECTION); //si, para arriba tambn, quiero madnarlo a la mierda :]
+                // }
+                it->second->set_sliding(true);
                 explosive = this->explosives.erase(explosive);
                 std::cout << "erase banana" << std::endl;
                 banana_flag = true;

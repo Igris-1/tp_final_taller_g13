@@ -27,6 +27,10 @@ private:
     bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;
+    int x_direction;
+    int y_direction;
+    bool is_sliding = false;
+    int sliding_counter = 100;
     std::shared_ptr<Pickable> item_in_hands;
 
 public:
@@ -37,6 +41,9 @@ public:
     bool is_this_duck(int id);
     void receive_damage(int damage);
     void kill();
+    void set_direction(int step_dx, int step_dy);
+    void set_sliding(bool sliding);
+    void move_duck_relative(int x, int y);
     ~Duck() {}
 
     // ITEMS LOGICS
@@ -56,6 +63,8 @@ public:
     // GETTERS
     int get_health();
     int get_id();
+    int get_x_direction();
+    int get_y_direction();
     Hitbox get_hitbox();
     Hitbox& get_hitbox_reference();
     duck_DTO to_DTO();

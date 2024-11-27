@@ -165,3 +165,29 @@ void Duck::set_health(int health) {
 void Duck::kill(){
     this->health = 0;
 }
+
+void Duck::set_direction(int step_dx, int step_dy){
+    this->x_direction = step_dx;
+    this->y_direction = step_dy;
+}
+
+int Duck::get_x_direction() { return this->x_direction; }
+
+int Duck::get_y_direction() { return this->y_direction; }
+
+void Duck::set_sliding(bool sliding){
+    this->is_sliding = sliding;
+}
+
+void Duck::move_duck_relative(int x, int y){
+    if(this->is_sliding){
+        this->hitbox.move_relative(this->x_direction, y);
+        this->sliding_counter--;
+        if(this->sliding_counter <= 0){
+            this->is_sliding = false;
+            this->sliding_counter = 100;
+        }
+        return;
+    }
+    this->hitbox.move_relative(x, y);
+}
