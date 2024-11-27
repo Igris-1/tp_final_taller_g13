@@ -34,6 +34,7 @@ private:
     void draw_falling_duck(duck_DTO& duck);
     void draw_moving_duck(duck_DTO& duck);
     void draw_idle_duck(duck_DTO& duck);
+    void draw_crouching_duck(duck_DTO& duck);
     SDL_Rect createDuckRect(int x, int y, int h, int w);
 
 public:

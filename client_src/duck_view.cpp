@@ -48,6 +48,8 @@ void DuckView::draw_duck(duck_DTO& duck) {
 
         draw_moving_duck(duck);
 
+    } else if(duck.crouching){
+        draw_crouching_duck(duck);
     } else {
         draw_idle_duck(duck);
     }
@@ -162,6 +164,25 @@ void DuckView::draw_idle_duck(duck_DTO& duck) {
     
 }
 
-// void DuckView::draw_crouching_duck(duck_DTO& duck)
+void DuckView::draw_crouching_duck(duck_DTO& duck){
+    int weapon_id = duck.weapon_id;
+    int duck_id = duck.duck_id;
+    int armor = duck.armor_equipped;
+    int helmet = duck.helmet_equipped;
+
+    renderer.Copy(duck_texture, SDL_Rect{5*32, 32, 32, 32},
+                  createDuckRect(duck.x, duck.y-12, 32, 48), 0, NullOpt,
+                  facing_direction);
+    gear_view.draw_held_gear(facing_direction, duck);
+    if (weapon_id > 0) {
+        renderer.Copy(wing_texture, SDL_Rect{0, 6 * 8, 16, 16},
+                      SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 27, 32, 32}, 0,
+                      NullOpt, facing_direction);
+    } else {
+        renderer.Copy(wing_texture, SDL_Rect{0, 0, 16, 16},
+                      SDL_Rect{duck.x - 16 + 10 + facing_direction * 12, duck.y-16 + 25, 32, 32}, 0,
+                      NullOpt, facing_direction);
+    }
+}
 
 DuckView::~DuckView() {}

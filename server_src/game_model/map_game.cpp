@@ -88,7 +88,7 @@ bool MapGame::crouch_duck(int id, bool crouch){
     if(!crouch){
     }
     if(crouch){
-        return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT/2, false);
+        return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_CROUCH_HEIGHT, false);
     }
     return this->change_hitbox_size(duck_hitbox, DUCK_WIDTH, DUCK_HEIGHT, true);
 }
