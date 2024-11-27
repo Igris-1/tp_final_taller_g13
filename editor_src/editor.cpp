@@ -19,9 +19,9 @@ Editor::Editor(QWidget* parent):
     
     // Config mediaPlayer
     mediaPlayer->setAudioOutput(audioOutput);
-    mediaPlayer->setSource(QUrl("qrc:/assets/music/menu_song.mp3"));
+    mediaPlayer->setSource(QUrl("qrc:/assets/music/editor_music.mp3"));
     this->mediaPlayer->setLoops(QMediaPlayer::Infinite);
-    audioOutput->setVolume(0.4);
+    audioOutput->setVolume(0.2);
     mediaPlayer->play();
 }
 

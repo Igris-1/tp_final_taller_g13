@@ -8,5 +8,7 @@
     <file>../assets/images/vertical_wood.png</file>
     <file>../assets/images/respawn.png</file>
     <file>../assets/images/gunSpawner.png</file>
+
+    <file>../assets/music/editor_music.mp3</file>
   </qresource>
 </RCC>
