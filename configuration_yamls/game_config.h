@@ -48,6 +48,7 @@ class GameConfig{
         const duck_config& get_duck_config();
         const std::vector<std::tuple<int, int, int, int>>& get_item(const std::string& type);
         const weapon_config&  get_weapon_config(const std::string& type);
+        void print();
 };
 
 class GameConfigError: public std::exception {

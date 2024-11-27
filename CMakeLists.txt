@@ -95,13 +95,13 @@ if (SERVER)
     set(SRV_EXECUTABLE duckGameServer)
 
     file(GLOB SERVER_SOURCES
+        "configuration_yamls/*.cpp"
         "server_src/*.cpp"
         "server_src/game_model/*.cpp"
         "server_src/actions/*.cpp"
         "server_src/game_model/weapon/*.cpp"
         "server_src/game_model/weapon/bullets_strategy/*.cpp"
         "server_src/game_model/weapon/weapons_strategy/*.cpp"
-        "configuration_yaml/*.cpp"
     )
 
     add_executable(${SRV_EXECUTABLE} ${SERVER_SOURCES})
