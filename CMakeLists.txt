@@ -147,9 +147,18 @@ endif()
 # set(CONF_INSTALL_DIR "/etc/TPDuckGame") # archivos de configuración
 # set(ASSETS_INSTALL_DIR "/usr/share/TPDuckGame") # assets
 
-# install(TARGETS duckGameServer duckGameClient duckGameEditor DESTINATION ${BIN_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
-# install(TARGETS common_lib DESTINATION ${SHARED_DIR} PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+# # Install executables
+# install(TARGETS duckGameServer duckGameClient duckGameEditor 
+#     DESTINATION ${BIN_INSTALL_DIR} 
+#     PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
-# # Using PATTERN to set permissions for directories
-# install(DIRECTORY "configuration_yamls" DESTINATION ${CONF_INSTALL_DIR} PERMISSIONS WORLD_READ WORLD_WRITE)
-# install(DIRECTORY "assets" DESTINATION ${ASSETS_INSTALL_DIR} PERMISSIONS WORLD_READ)
+# # Install common library
+# install(TARGETS common_lib 
+#     DESTINATION ${SHARED_DIR} 
+#     PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
+# # Install configuration files
+# install(DIRECTORY "configuration_yamls" DESTINATION ${CONF_INSTALL_DIR})
+
+# # Install assets
+# install(DIRECTORY "assets" DESTINATION ${ASSETS_INSTALL_DIR})

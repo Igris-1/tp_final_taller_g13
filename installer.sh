@@ -137,7 +137,7 @@ install_game() {
   mkdir build
   cd build
   cmake -DCMAKE_BUILD_TYPE=Release ..
-  if sudo make release -j$(nproc); then
+  if sudo make install -j$(nproc); then
     echo -e "${GREEN}Build complete! Ready for use!${NC}"
   else
     echo -e "${RED}Error: Failed to install. Check the error message above for details.${NC}"
@@ -149,6 +149,7 @@ uninstall_game() {
   echo -e "${GREEN}Uninstalling game...${NC}"
   sudo rm /usr/bin/duckGameClient || true
   sudo rm /usr/bin/duckGameServer || true
+  sudo rm /usr/bin/duckGameEditor || true
   sudo rm -rf /etc/TPDuckGame || true
   sudo rm -rf /usr/lib/TPDuckGame || true
   sudo rm -rf /usr/share/TPDuckGame || true
@@ -169,19 +170,19 @@ uninstall_dependencies() {
     if [[ "$ID_LIKE" == *"debian"* || "$ID" == "ubuntu" ]]; then
       echo -e "${BLUE}Detected Ubuntu/Debian-based system...${NC}"
       sudo sh -c '
-        apt-get remove --purge -y cmake
-        apt-get remove --purge -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
-        apt-get remove --purge -y qt6-base-dev qt6-multimedia
-        apt-get autoremove -y
+        apt-get remove --purge -y cmake 2>/dev/null
+        apt-get remove --purge -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev 2>/dev/null
+        apt-get remove --purge -y qt6-base-dev qt6-multimedia 2>/dev/null
+        apt-get autoremove -y 2>/dev/null
       ' | while IFS= read -r line; do
         echo -e "${GRAY}${line}${NC}"
       done
     elif [[ "$ID_LIKE" == *"arch"* || "$ID" == "arch" || "$ID" == "manjaro" ]]; then
       echo -e "${BLUE}Detected Arch-based system...${NC}"
       sudo sh -c '
-        pacman -Rns --noconfirm cmake
-        pacman -Rns --noconfirm sdl2 sdl2_image sdl2_mixer sdl2_ttf
-        pacman -Rns --noconfirm qt6-base qt6-multimedia
+        pacman -Rns --noconfirm cmake 2>/dev/null
+        pacman -Rns --noconfirm sdl2 sdl2_image sdl2_mixer sdl2_ttf 2>/dev/null
+        pacman -Rns --noconfirm qt6-base qt6-multimedia 2>/dev/null
       ' | while IFS= read -r line; do
         echo -e "${GRAY}${line}${NC}"
       done
@@ -196,6 +197,7 @@ uninstall_dependencies() {
 
   echo -e "${GREEN}Dependencies removed successfully!${NC}"
 }
+
 
 
 main
