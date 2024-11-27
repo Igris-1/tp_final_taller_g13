@@ -1,0 +1,15 @@
+map:
+  map_width: 820
+  map_height: 500
+boxes:
+  - {x: 299, y: 242, width: 32, height: 32}
+  - {x: 350, y: 222, width: 32, height: 32}
+ducks:
+  - {x: 530, y: 264, width: 32, height: 51}
+  - {x: 615, y: 247, width: 32, height: 51}
+weapons:
+  - {x: 178, y: 231, width: 32, height: 16}
+  - {x: 143, y: 394, width: 32, height: 16}
+platforms:
+  - {x: 278, y: 374, width: 131, height: 32}
+  - {x: 282, y: 338, width: 131, height: 32}

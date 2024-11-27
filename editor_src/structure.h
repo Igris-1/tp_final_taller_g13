@@ -4,12 +4,19 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QPoint>
+#include <yaml-cpp/yaml.h>
 
 class Structure : public QPushButton {
     Q_OBJECT
 
 public:
     explicit Structure(QWidget *parent = nullptr);
+    QString type;
+    ~Structure() = default;
+
+    void toYaml(YAML::Emitter& out) const;
+    void setType(const QString& type);
+    QString getType() const;
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -17,9 +24,7 @@ protected:
 
 private:
     QPoint dragStartPosition;
-
-    // destructor
-    ~Structure() = default;
+    bool alive;
 
     void deleteItem();
 };

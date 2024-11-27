@@ -6,5 +6,7 @@
     <file>../assets/images/one_block.png</file>
     <file>../assets/images/horizontal_wood.png</file>
     <file>../assets/images/vertical_wood.png</file>
+    <file>../assets/images/respawn.png</file>
+    <file>../assets/images/gunSpawner.png</file>
   </qresource>
 </RCC>

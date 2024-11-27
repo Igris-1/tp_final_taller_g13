@@ -79,7 +79,7 @@ border-image: transparent;</string>
    <widget class="QPushButton" name="item_2">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>440</x>
       <y>50</y>
       <width>32</width>
       <height>32</height>
@@ -141,7 +141,7 @@ border-image: transparent;</string>
      <rect>
       <x>340</x>
       <y>10</y>
-      <width>128</width>
+      <width>131</width>
       <height>32</height>
      </rect>
     </property>
@@ -161,7 +161,7 @@ border-image: transparent;</string>
    <widget class="QPushButton" name="item_1">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>390</x>
       <y>50</y>
       <width>32</width>
       <height>32</height>
@@ -200,6 +200,50 @@ border-image: transparent;</string>
      <string>Music</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="item_5">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>90</y>
+      <width>32</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>BusyCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/assets/images/respawn.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="item_6">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>60</y>
+      <width>32</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>BusyCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/assets/images/gunSpawner.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>cleanButton</zorder>
    <zorder>saveButton</zorder>
    <zorder>exitButton</zorder>
@@ -208,6 +252,8 @@ border-image: transparent;</string>
    <zorder>item_1</zorder>
    <zorder>item_3</zorder>
    <zorder>item_4</zorder>
+   <zorder>item_5</zorder>
+   <zorder>item_6</zorder>
   </widget>
  </widget>
  <resources>

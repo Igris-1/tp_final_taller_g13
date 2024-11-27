@@ -131,7 +131,7 @@ if (EDITOR)
     )
 
     target_include_directories(${EDITOR_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-    target_link_libraries(${EDITOR_EXECUTABLE} PRIVATE common_lib Qt6::Widgets Qt6::Multimedia)
+    target_link_libraries(${EDITOR_EXECUTABLE} PRIVATE common_lib yaml-cpp Qt6::Widgets Qt6::Multimedia)
 endif()
 
 
