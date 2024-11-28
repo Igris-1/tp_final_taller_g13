@@ -22,7 +22,7 @@ project(DuckGame
 # Options to enable/disable components
 option(CLIENT "Enable / disable client GUI program." ON)
 option(SERVER "Enable / disable server program." ON)
-option(EDITOR "Enable / disable editor program." OFF)
+option(EDITOR "Enable / disable editor program." ON)
 option(TESTS "Enable / disable tests." OFF)
 
 # Include compiler warnings configuration
@@ -47,7 +47,7 @@ include_directories(${SDL2_INCLUDE_DIRS}
 
 
 # ---------------- COMMON SECTION ----------------
-file(GLOB COMMON_SOURCES "common_src/*.cpp" "configuration_yaml/*.cpp")
+file(GLOB COMMON_SOURCES "common_src/*.cpp")
 add_library(common_lib STATIC ${COMMON_SOURCES})
 target_include_directories(common_lib PUBLIC common_src)
 

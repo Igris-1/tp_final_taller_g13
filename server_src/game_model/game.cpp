@@ -100,6 +100,7 @@ void Game::continue_horizontal_movements(int count) {
                 this->ducks_states[id]->facing_direction = true;
                 this->map.move_relative_if_posible(id, RIGHT_MOVEMENT, 0);
             }
+            this->map.move_relative_if_posible(id, 0, 0);//no borrar :], hace q el pato siga patinandose
         }
     }
     for (int j = 0; j < count * 4; j++) {
@@ -114,14 +115,17 @@ void Game::continue_horizontal_movements(int count) {
 
 void Game::continue_vertical_movements(int count) {
     std::vector<int> ducks_id = this->map.get_all_duck_ids();
+
     for (auto& id: ducks_id) {
         if(this->ducks_states[id]->trying_to_stand){
+            
             if(this->map.crouch_duck(id, false)){
                 this->ducks_states[id]->crouching = false;
                 this->ducks_states[id]->trying_to_stand = false;
             }
         }
         if (this->ducks_states[id]->is_jumping) {
+            
             for (int i = 0; i < (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++) {
                 if (this->ducks_states[id]->tiles_to_jump > 0) {
                     this->map.move_relative_if_posible(id, 0, JUMP_DIRECTION);
@@ -137,6 +141,7 @@ void Game::continue_vertical_movements(int count) {
                 }
             }
         } else if (this->ducks_states[id]->falling_with_style) {
+
             for (int i = 0; i < (count) + ADD_FACTOR_GRAVITY; i++) {
                 if (this->ducks_states[id]->falling_with_style && i % 2 == 0) {
                     this->ducks_states[id]->is_falling =
@@ -144,6 +149,7 @@ void Game::continue_vertical_movements(int count) {
                 }
             }
         } else {
+
             for (int i = 0; i < (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++) {
                 // this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0,
                 // GRAVITY);
@@ -268,7 +274,6 @@ void Game::stop_duck_item(int id, bool stop_fire) {
 }
 
 void Game::duck_looks_up(int id, bool looking_up) {
-   
     if (looking_up) {
          std::cout << "looking up" << std::endl;
         this->ducks_states[id]->looking_up = true;
@@ -365,6 +370,7 @@ void Game::random_item_spawn(bool on_game) {
             continue;
         } else {
             try{
+                std::cout << "agregando arma random en posicion (" << std::get<0>(pos) << " " <<  std::get<1>(pos) << ") " << std::endl;
                 this->map.add_item(WeaponFactory::createWeapon(
                                          this->map.get_bullets_list(), "random"),
                                  std::get<0>(pos), std::get<1>(pos));
@@ -385,5 +391,29 @@ void Game::reset_round() {
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {
         this->random_item_spawn(false);
+    }
+}
+
+void Game::load_configuration(GameConfig& config){
+    std::vector<std::tuple<int, int, int, int>> aux_tuple =  config.get_item("platforms");
+    for(auto& platform : aux_tuple){
+        this->add_new_platform(Hitbox(std::get<0>(platform), std::get<1>(platform), std::get<2>(platform), std::get<3>(platform)));
+    }
+
+    aux_tuple =  config.get_item("boxes");
+    for(auto& box : aux_tuple){
+        this->add_box(Hitbox(std::get<0>(box), std::get<1>(box), std::get<2>(box), std::get<3>(box)));
+    }
+
+    aux_tuple =  config.get_item("ducks_spawn");
+    for(auto& duck_spawn : aux_tuple){
+        // this->add_spawn_duck(Hitbox(std::get<0>(duck_spawn), std::get<1>(duck_spawn), std::get<2>(duck_spawn), std::get<3>(duck_spawn)));
+        this->add_spawn_duck(std::get<0>(duck_spawn), std::get<1>(duck_spawn));
+    }
+
+    aux_tuple =  config.get_item("weapons_spawn");
+    for(auto& weapon_spawn : aux_tuple){
+        // this->add_spawn_position(Hitbox(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn), std::get<2>(weapon_spawn), std::get<3>(weapon_spawn)));
+        this->add_spawn_position(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn));
     }
 }

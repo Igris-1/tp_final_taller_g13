@@ -30,7 +30,7 @@ private:
     int x_direction;
     int y_direction;
     bool is_sliding = false;
-    int sliding_counter = 100;
+    int sliding_counter = 10000;
     std::shared_ptr<Pickable> item_in_hands;
 
 public:

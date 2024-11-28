@@ -16,7 +16,7 @@
 #include "weapon/weapon_factory.h"
 #include "duck.h"
 #include "map_game.h"
-
+#include "../../configuration_yamls/game_config.h"
 
 // movimientos laterales
 #define RIGHT_MOVEMENT 1
@@ -116,6 +116,7 @@ public:
     void add_spawn_position(int x, int y);  // agrega una posicion de spawn de armas
     void add_spawn_duck(int x, int y);
     void add_box(Hitbox hitbox);
+    void load_configuration(GameConfig& config);
 
     // game logic
     void start_game();

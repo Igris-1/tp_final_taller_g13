@@ -5,13 +5,13 @@
         parser.load_files(map_file, game_file);
 
         // ducks config
-        this->ducks_config.health = parser.get_value_game("ducks_config health");
-        this->ducks_config.tiles_per_jump = parser.get_value_game("ducks_config tiles_per_jump");
-        this->ducks_config.product_factor_jump = parser.get_value_game("ducks_config product_factor_jump");
-        this->ducks_config.add_factor_jump = parser.get_value_game("ducks_config add_factor_jump");
-        this->ducks_config.product_factor_gravity = parser.get_value_game("ducks_config product_factor_gravity");
-        this->ducks_config.add_factor_gravity = parser.get_value_game("ducks_config add_factor_gravity");
-        this->ducks_config.speed_of_game = parser.get_value_game("ducks_config speed_of_game");
+        this->ducks_config.health = parser.get_value_game("ducks_config.health");
+        this->ducks_config.tiles_per_jump = parser.get_value_game("ducks_config.tiles_per_jump");
+        this->ducks_config.product_factor_jump = parser.get_value_game("ducks_config.product_factor_jump");
+        this->ducks_config.add_factor_jump = parser.get_value_game("ducks_config.add_factor_jump");
+        this->ducks_config.product_factor_gravity = parser.get_value_game("ducks_config.product_factor_gravity");
+        this->ducks_config.add_factor_gravity = parser.get_value_game("ducks_config.add_factor_gravity");
+        this->ducks_config.speed_of_game = parser.get_value_game("ducks_config.speed_of_game");
         
         // weapons config
         std::vector<std::string> weapons_name = { "grenade", "banana", "pew_pew_laser", "laser_rifle", "ak_47", 
@@ -20,24 +20,24 @@
         for(auto weapon: weapons_name){
             weapon_config aux;
             aux.name = weapon;
-            aux.shot = parser.get_value_game(weapon + " shot");
-            aux.damage = parser.get_value_game(weapon + " damage");
-            aux.recoil = parser.get_value_game(weapon + " recoil");
-            aux.scope = parser.get_value_game(weapon + " scope");
-            aux.reload_time = parser.get_value_game(weapon + " reload_time");
-            aux.hitbox_width = parser.get_value_game(weapon + " hitbox_width");
-            aux.hitbox_height = parser.get_value_game(weapon + " hitbox_height");   
+            aux.shot = parser.get_value_game("weapon." + weapon + ".shot");
+            aux.damage = parser.get_value_game("weapon." + weapon + ".damage");
+            aux.recoil = parser.get_value_game("weapon." + weapon + ".recoil");
+            aux.scope = parser.get_value_game("weapon." + weapon + ".scope");
+            aux.reload_time = parser.get_value_game("weapon." + weapon + ".reload_time");
+            aux.hitbox_width = parser.get_value_game("weapon." + weapon + ".hitbox_width");
+            aux.hitbox_height = parser.get_value_game("weapon." + weapon + ".hitbox_height");   
             this->weapons_config[weapon] = aux;
         }
 
         // map config
-        this->map_height = parser.get_value_map("map map_height");
-        this->map_width = parser.get_value_map("map map_width");
+        this->map_height = parser.get_value_map("map.map_height");
+        this->map_width = parser.get_value_map("map.map_width");
 
         this->platforms = parser.get_map_structure("platforms");
         this->boxes = parser.get_map_structure("boxes");
-        this->ducks_spawn = parser.get_map_structure("ducks_spawn");
-        this->weapons_spawn = parser.get_map_structure("weapons_spawn");
+        this->ducks_spawn = parser.get_map_structure("ducks");
+        this->weapons_spawn = parser.get_map_structure("weapons");
     }
 
     const duck_config& GameConfig::get_duck_config(){
@@ -72,22 +72,22 @@
     void GameConfig::print(){
         for(auto b : this->boxes){
             std::cout<< "box { x:" << std::get<0>(b) << ", y:" << std::get<1>(b)
-                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << std::endl;
+                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << " }" << std::endl;
         }
         std::cout << "\n\n";
         for(auto b : this->platforms){
             std::cout<< "platform { x:" << std::get<0>(b) << ", y:" << std::get<1>(b)
-                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << std::endl;
+                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << " }" << std::endl;
         }
         std::cout << "\n\n";
         for(auto b : this->ducks_spawn){
             std::cout<< "duck { x:" << std::get<0>(b) << ", y:" << std::get<1>(b)
-                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << std::endl;
+                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << " }" << std::endl;
         }
         std::cout << "\n\n";
         for(auto b : this->weapons_spawn){
             std::cout<< "weapon { x:" << std::get<0>(b) << ", y:" << std::get<1>(b)
-                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << std::endl;
+                 << ", w:" << std::get<2>(b)  << ", h:" << std::get<3>(b) << " }" << std::endl;
         }
         std::cout << "\n\n";
 

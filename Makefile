@@ -4,6 +4,7 @@ BUILD_DIR = build
 # Detectar el número de núcleos disponibles
 CORES = $(shell nproc)
 
+
 # Tipo de compilación: Debug o Release (por defecto Debug)
 BUILD_TYPE ?= Debug
 

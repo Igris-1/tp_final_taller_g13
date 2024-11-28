@@ -26,6 +26,8 @@ typedef enum {
     FIRE_RATE_LASER_RIFLE = 5,
     FIRE_RATE_AK47 = 2,
     FIRE_RATE_SHOTGUN = 35,
+    FIRE_RATE_PEW_PEW = 10,
+    
 } FIRE_RATE;
 
 typedef enum {
@@ -33,6 +35,7 @@ typedef enum {
     TRAVEL_DISTANCE_LASER_RIFLE = 1000,
     TRAVEL_DISTANCE_AK47 = 700,
     TRAVEL_DISTANCE_SHOTGUN = 400,
+    TRAVEL_DISTANCE_PEW_PEW = 500,
 } TRAVEL_DISTANCE;
 
 class Duck;

@@ -11,6 +11,7 @@
 #include "receiver_thread.h"
 #include "sender_thread.h"
 #include "../configuration_yamls/game_config.h"
+// #include "../configuration_yamls/parser_singleton.h"
 
 #define SPEED_MOVEMENTS 10
 #define SLEEP_TIME 40000
@@ -29,11 +30,13 @@ GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsM
 // }
 
 void GameThread::send_snapshots() {
+
     instruction_for_client_t instruction;
     instruction.id = 1;
     instruction.gs = game.get_snapshot();
     // if (instruction.gs.ducks_len != 0) {
     clients.enqueue_instruction(instruction);
+
     //}
 }
 
@@ -41,7 +44,9 @@ void GameThread::send_map() {
     instruction_for_client_t instruction;
     instruction.id = 0;
     instruction.map = game.get_map_structure();
+
     clients.enqueue_instruction(instruction);
+
 }
 
 // void GameThread::send_instructions() {
@@ -79,46 +84,27 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
-    // GameConfig game_config("../configuration_yamls/custom_map.yaml", "../configuration_yamls/default_config.yaml");
 
+    GameConfig game_config("../configuration_yamls/default_map.yaml", "../configuration_yamls/default_config.yaml");
+
+    game.load_configuration(game_config);
     // game_config.print();
-    // std::vector<std::tuple<int, int, int, int>> aux_tuple =  game_config.get_item("platforms");
-    // for(auto& platform : aux_tuple){
-    //     game.add_new_platform(Hitbox(std::get<0>(platform), std::get<1>(platform), std::get<2>(platform), std::get<3>(platform)));
-    // }
+    // game.add_new_platform(Hitbox(0, 200, 200, 16));
+    // game.add_new_platform(Hitbox(25, 350, 450, 16));
+    // game.add_new_platform(Hitbox(40, 420, 600, 16));
+    // game.add_new_platform(Hitbox(0, 510, 300, 16));
+    // game.add_new_platform(Hitbox(580, 200, 200, 16));
+    // game.add_new_platform(Hitbox(600, 350, 400, 16));
+    // game.add_new_platform(Hitbox(200, 600, 100, 16));
+    // game.add_new_platform(Hitbox(0, 600, 300, 16));
 
-    // aux_tuple =  game_config.get_item("boxes");
-    // for(auto& box : aux_tuple){
-    //     game.add_box(Hitbox(std::get<0>(box), std::get<1>(box), std::get<2>(box), std::get<3>(box)));
-    // }
+    // // game.add_box(Hitbox(500, 500, 32, 32));
 
-    // aux_tuple =  game_config.get_item("ducks_spawn");
-    // for(auto& duck_spawn : aux_tuple){
-    //     // game.add_spawn_duck(Hitbox(std::get<0>(duck_spawn), std::get<1>(duck_spawn), std::get<2>(duck_spawn), std::get<3>(duck_spawn)));
-    //     game.add_spawn_duck(std::get<0>(duck_spawn), std::get<1>(duck_spawn));
-    // }
+    // game.add_spawn_position(15, 180);
+    // game.add_spawn_position(30, 300);
+    // game.add_spawn_position(500, 350);
+    // game.add_spawn_position(650, 490);
 
-    // aux_tuple =  game_config.get_item("weapons_spawn");
-    // for(auto& weapon_spawn : aux_tuple){
-    //     // game.add_spawn_position(Hitbox(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn), std::get<2>(weapon_spawn), std::get<3>(weapon_spawn)));
-    //     game.add_spawn_position(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn));
-    // }
-
-    game.add_new_platform(Hitbox(0, 200, 200, 16));
-    game.add_new_platform(Hitbox(25, 350, 450, 16));
-    game.add_new_platform(Hitbox(40, 420, 600, 16));
-    game.add_new_platform(Hitbox(0, 510, 300, 16));
-    game.add_new_platform(Hitbox(580, 200, 200, 16));
-    game.add_new_platform(Hitbox(600, 350, 400, 16));
-    game.add_new_platform(Hitbox(200, 600, 100, 16));
-    game.add_new_platform(Hitbox(0, 600, 300, 16));
-
-    game.add_box(Hitbox(500, 500, 32, 32));
-
-    game.add_spawn_position(15, 180);
-    game.add_spawn_position(30, 300);
-    game.add_spawn_position(500, 350);
-    game.add_spawn_position(650, 490);
 
     // spawnea armas para el comienzo de la partida
     game.random_item_spawn(false);
@@ -130,7 +116,7 @@ void GameThread::run() {
 
     while (this->game.get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
         usleep(SLEEP_TIME);
-    }
+    }    
     send_map();
 
     while (_keep_running) {
@@ -147,9 +133,8 @@ void GameThread::run() {
         game.continue_horizontal_movements(SPEED_MOVEMENTS);
         game.random_item_spawn(true);
         // game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
-
-
         if (game.check_if_round_finished()) {
+
             send_snapshots();
             if (game.check_if_winner()) {
                 send_endgame_score();
@@ -167,6 +152,7 @@ void GameThread::run() {
             continue;
             usleep(SLEEP_TIME);
         }
+        
         send_snapshots();
 
         usleep(SLEEP_TIME);
