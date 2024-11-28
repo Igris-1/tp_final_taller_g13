@@ -177,6 +177,7 @@ void GameView::set_up_game() {
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/shotgunShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/explosion.png"));
     bullet_sprites.push_back(Texture(renderer, "../assets/sprites/magnumShell.png"));
 
     accessories_sprites.push_back(Texture(renderer, "../assets/sprites/helmet.png"));
@@ -194,8 +195,7 @@ void GameView::set_up_game() {
 void GameView::load_game(game_snapshot_t gs) {
     renderer.Clear();
 
-    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no
-                    // siempre. Despues hay que cambiarlo
+    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
 
     //zoom(gs);
     load_map();
@@ -293,46 +293,43 @@ void GameView::load_bullets(game_snapshot_t gs) {
         if (bullet_id == 1) {
             renderer.SetDrawColor(Color(143, 142, 137, 0));
 
-            int yellow_x = (bullet.x_direction == 1) ? bullet.x - bullet.width * 4 : bullet.x;
-
             renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
-            renderer.FillRect(
-                    SDL_Rect{yellow_x, bullet.y + 8, bullet.width * 4, bullet.height / 8});
+            for (int b_pos = 0; b_pos < 16; b_pos++){
+                int dir_x = -bullet.x_direction;
+                int dir_y = -bullet.y_direction; 
+                renderer.FillRect(
+                    SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8});
+            }
+            
         } else if (bullet.bullet_id == 2) {
-            for (int x = 0; x < 32; x++) {
-                if (bullet.x_direction == 1 && bullet.y_direction == 1) {
-                    renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                                  SDL_Rect{bullet.x - x, bullet.y - x, 1, 8}, 0, NullOpt,
+            for (int b_pos = 0; b_pos < 32; b_pos++) {
+                int dir_x = -bullet.x_direction;
+                int dir_y = -bullet.y_direction;  
+                renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
+                                  SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8}, 0, NullOpt,
                                   bullet.x_direction);
-
-                } else if (bullet.x_direction != 1 && bullet.y_direction != 1) {
-                    renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                                  SDL_Rect{bullet.x + x, bullet.y + x, 1, 8}, 0, NullOpt,
-                                  bullet.x_direction);
-                } else if (bullet.x_direction == 1 && bullet.y_direction != 1) {
-                    renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                                  SDL_Rect{bullet.x - x, bullet.y + x, 1, 8}, 0, NullOpt,
-                                  bullet.x_direction);
-
-                } else if (bullet.x_direction != 1 && bullet.y_direction == 1) {
-                    renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                                  SDL_Rect{bullet.x + x, bullet.y - x, 1, 8}, 0, NullOpt,
-                                  bullet.x_direction);
-                }
             }
 
         } else if (bullet_id == 3) {
             renderer.SetDrawColor(Color(143, 142, 137, 0));
 
-            int yellow_x = (bullet.x_direction == 1) ? bullet.x - bullet.width * 4 : bullet.x;
+            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
+                          SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
+                          bullet.x_direction);
+
+            for (int b_pos = 0; b_pos < 16; b_pos++){
+                int dir_x = -bullet.x_direction;
+                int dir_y = -bullet.y_direction; 
+                renderer.FillRect(
+                    SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8});
+            }
+        } else if (bullet_id == 4) {
 
             renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
-            renderer.FillRect(
-                    SDL_Rect{yellow_x, bullet.y + 8, bullet.width * 4, bullet.height / 8});
         }
     }
 }
