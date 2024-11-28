@@ -27,7 +27,6 @@ typedef enum {
     ARMOR_ID,
 } ITEM_ID;
 
-#define TRAVEL_DISTANCE_GRENADE 70
 
 class Duck;
 
@@ -46,7 +45,7 @@ protected:
     std::shared_ptr<Duck> duck;
 
 public:
-    Pickable(int x, int y, int width, int height);  // penes de madera
+    Pickable(int x, int y, int width, int height);
     Pickable();
 
     virtual void use(MapGame& map) = 0;
@@ -74,6 +73,7 @@ public:
 
     // explosivos
     virtual bool is_explosive();
+    virtual bool is_banana();
     virtual bool is_active();
     virtual void activation();
     virtual bool exploted();

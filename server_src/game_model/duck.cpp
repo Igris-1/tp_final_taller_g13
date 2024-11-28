@@ -181,6 +181,7 @@ void Duck::set_sliding(bool sliding){
 
 void Duck::move_duck_relative(int x, int y){
     if(this->is_sliding){
+
         this->hitbox.move_relative(this->x_direction, y);
         this->sliding_counter--;
         if(this->sliding_counter <= 0){
@@ -190,4 +191,8 @@ void Duck::move_duck_relative(int x, int y){
         return;
     }
     this->hitbox.move_relative(x, y);
+}
+
+bool Duck::get_is_sliding(){
+    return this->is_sliding;
 }

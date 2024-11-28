@@ -85,7 +85,7 @@ void GameThread::blocking_execute_commands() {
 
 void GameThread::run() {
 
-    GameConfig game_config("../configuration_yamls/default_map.yaml", "../configuration_yamls/default_config.yaml");
+    GameConfig game_config("../configuration_yamls/custom_map.yaml", "../configuration_yamls/default_config.yaml");
 
     game.load_configuration(game_config);
     // game_config.print();

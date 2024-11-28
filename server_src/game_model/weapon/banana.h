@@ -16,7 +16,7 @@ class Banana: public Pickable{
         void use(MapGame& map);
         int get_id() override;
         bool is_active() override;
-        bool is_explosive() override;
+        bool is_banana() override;
         weapon_DTO to_DTO() override;
         ~Banana();
 

@@ -213,7 +213,25 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
         // Hitbox hitbo = duck->get_hitbox();
         // std::cout << "id: " << duck_id << "x: " << hitbo.get_x() << " y: " << hitbo.get_y() << "height: " << hitbo.get_height() << "width: " << hitbo.get_width() << std::endl;
     }
-
+    if(duck->get_is_sliding()){
+        Hitbox aux = duck->get_hitbox();
+        aux.move_relative(duck->get_x_direction(), 0);
+        if(this->out_of_map(aux)){
+            duck->kill();
+            this->ducks_dead[duck_id] = duck;
+            duck->set_sliding(false);
+            return false;
+        }
+        if (can_move_hitbox(duck->get_hitbox(), duck->get_x_direction(), 0, true) && this->not_in_boxes(aux, false)) {
+            duck->move_duck_relative(duck->get_x_direction(), 0);
+            duck->set_direction(duck->get_x_direction(), 0);
+        } else {
+            duck->set_sliding(false);
+            return false;
+        }
+        
+        return true;
+    }
     while (remaining_dx > 0 || remaining_dy > 0) {
         int step_dx = (remaining_dx > 0) ? x_step : 0;
         int step_dy = (remaining_dy > 0) ? y_step : 0;
@@ -383,10 +401,11 @@ void MapGame::explosives_on_map(){
         bool banana_flag = false;
         for (auto it = this->ducks.begin(); it != ducks.end(); ++it) {            
             if (it->second->get_hitbox().has_collision((*explosive)->get_hitbox())) {
-                // Hitbox& hitbox = it->second->get_hitbox_reference();
-                // for(int i = 0; i < 100; i++){  //jugar con el numero 30 a ver si subirlo o bajarlo 
-                //     this->move_relative_if_posible(hitbox, it->second->get_x_direction(), JUMP_DIRECTION); //si, para arriba tambn, quiero madnarlo a la mierda :]
-                // }
+                if(!(*explosive)->is_banana()){
+                    std::cout << "no es banana" << std::endl;
+                    continue;
+                }
+                std::cout << "deslizando" << std::endl;
                 it->second->set_sliding(true);
                 explosive = this->explosives.erase(explosive);
                 std::cout << "erase banana" << std::endl;
@@ -557,7 +576,7 @@ void MapGame::throw_item(int id_duck, bool right_direction, bool looking_up) {
         if(looking_up){
             weapon->set_direction(NO_DIRECTION, UP_DIRECTION);
             weapon->set_airtime_y(150);
-            if(weapon->is_explosive() && weapon->is_active()){
+            if(weapon->is_explosive() && weapon->is_active() || weapon->is_banana() && weapon->is_active()){
                 this->explosives.push_back(weapon);
                 return;
             }
@@ -568,7 +587,7 @@ void MapGame::throw_item(int id_duck, bool right_direction, bool looking_up) {
         } else {
             weapon->set_direction(LEFT_DIRECTION, JUMP_DIRECTION);
         }
-        if(weapon->is_explosive() && weapon->is_active()){
+        if(weapon->is_explosive() && weapon->is_active() || weapon->is_banana() && weapon->is_active()){
             this->explosives.push_back(weapon);
             return;
         }

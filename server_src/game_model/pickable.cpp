@@ -62,6 +62,9 @@ void Pickable::set_holding(bool is_holding) { return; }
 bool Pickable::is_explosive(){
     return false;
 }
+bool Pickable::is_banana(){
+    return false;
+}
 bool Pickable::is_active(){
     return false;
 }

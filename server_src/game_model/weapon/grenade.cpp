@@ -41,28 +41,44 @@ std::vector<std::shared_ptr<BulletInterface>> Grenade::get_explotion(Hitbox hitb
     int y = hitbox.get_y();
     bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 0,
                                             TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, 1,
-                                            TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 1,
-                                            TRAVEL_DISTANCE_GRENADE));
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, 1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
     bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, 0,
                                             TRAVEL_DISTANCE_GRENADE));
     bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, -1,
                                             TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, -1,
-                                            TRAVEL_DISTANCE_GRENADE));
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, -1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
     bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 0,
                                             TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, 1,
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, 1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x, y-10, -1, 0,
+        //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x, y-30, -1, -1,
+        //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x, y-10, -1, -1,
+        //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x+10, y-10, 0, -1,
+        //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x+20, y-10, 0, -1,
+        //                                         TRAVEL_DISTANCE_GRENADE));
+        // bullets.push_back(std::make_shared<Laser>(-1, x-10, y-10, 0, -1,
+                                            // TRAVEL_DISTANCE_GRENADE));
+    bullets.push_back(std::make_shared<Laser>(-1, x-20, y-10, 0, -1,
                                             TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, 1, 1,
+    bullets.push_back(std::make_shared<Laser>(-1, x, y-30, 1, -1,
                                             TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, 0,
-                                            TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, -1,
-                                            TRAVEL_DISTANCE_GRENADE));
-    bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, -1,
-                                            TRAVEL_DISTANCE_GRENADE));
+    bullets.push_back(std::make_shared<Laser>(-1, x, y-10, 1, -1,
+                                            TRAVEL_DISTANCE_GRENADE));                                            
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, 0, -1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
+    // bullets.push_back(std::make_shared<Laser>(-1, x, y, -1, -1,
+    //                                         TRAVEL_DISTANCE_GRENADE));
     this->explotion_time--;                                            
     return bullets;
 }

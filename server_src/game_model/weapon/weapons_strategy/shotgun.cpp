@@ -49,8 +49,8 @@ std::vector<std::shared_ptr<BulletInterface>> Shotgun::fire(std::shared_ptr<Duck
 int Shotgun::get_id() { return SHOTGUN_ID; }
 
 int Shotgun::recoil_produced() {
-    if (this->fire_rate > 0 && !this->reload){
-        return SHOTGUN_RECOIL;
-    }
+    
+    return SHOTGUN_RECOIL;
+    
     return 0;
 }

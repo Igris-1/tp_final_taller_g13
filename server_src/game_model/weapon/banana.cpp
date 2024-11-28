@@ -19,7 +19,7 @@ bool Banana::is_active(){
     return this->active;   
 }
 
-bool Banana::is_explosive(){
+bool Banana::is_banana(){
     return true;
 }
 

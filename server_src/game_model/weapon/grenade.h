@@ -7,12 +7,13 @@
 #include "bullets_strategy/bullet.h"
 #include "bullets_strategy/laser.h"
 #include "bullets_strategy/pellet.h"
+#include "weapons_strategy/weapon_interface.h"
 
 class Grenade: public Pickable{
 private:
     bool active = false;
     int explosive_time = 2000;
-    int explotion_time = 1000;
+    int explotion_time = 500;
 
 public:
     explicit Grenade(int width, int height);

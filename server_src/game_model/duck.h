@@ -68,6 +68,7 @@ public:
     Hitbox get_hitbox();
     Hitbox& get_hitbox_reference();
     duck_DTO to_DTO();
+    bool get_is_sliding();
 
     // RESPWAN LOGIC
     void reset();
