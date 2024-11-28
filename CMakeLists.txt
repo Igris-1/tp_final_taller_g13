@@ -47,7 +47,7 @@ include_directories(${SDL2_INCLUDE_DIRS}
 
 
 # ---------------- COMMON SECTION ----------------
-file(GLOB COMMON_SOURCES "common_src/*.cpp")
+file(GLOB COMMON_SOURCES "common_src/*.cpp" "configuration_yamls/*.cpp")
 add_library(common_lib STATIC ${COMMON_SOURCES})
 target_include_directories(common_lib PUBLIC common_src)
 
@@ -95,7 +95,6 @@ if (SERVER)
     set(SRV_EXECUTABLE duckGameServer)
 
     file(GLOB SERVER_SOURCES
-        "configuration_yamls/*.cpp"
         "server_src/*.cpp"
         "server_src/game_model/*.cpp"
         "server_src/actions/*.cpp"

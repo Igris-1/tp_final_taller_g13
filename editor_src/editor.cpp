@@ -89,8 +89,8 @@ void Editor::on_saveButton_clicked() {
 
     // Información del mapa
     out << YAML::Key << "map" << YAML::Value << YAML::BeginMap
-        << YAML::Key << "map_width" << YAML::Value << 820
-        << YAML::Key << "map_height" << YAML::Value << 500
+        << YAML::Key << "map_width" << YAML::Value << this->width()
+        << YAML::Key << "map_height" << YAML::Value << this->height()
         << YAML::EndMap;
     
     // Agrupaciones
