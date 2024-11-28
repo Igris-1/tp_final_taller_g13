@@ -34,9 +34,9 @@ void DuckView::draw_duck(duck_DTO& duck) {
 
     Texture* current_duck_texture = &duck_texture;
 
-    /*if (duck.looking_up){
+    if (duck.looking_up){
         current_duck_texture = &duck_looking_up_texture;
-    }*/
+    }
 
     if (duck.is_moving_right) {
         facing_direction = false;
@@ -85,17 +85,17 @@ void DuckView::draw_jumping_duck(duck_DTO& duck, Texture* current_duck_texture) 
         inclination = -90+ facing_direction * 180;
     }
 
-    renderer.Copy(*current_duck_texture, SDL_Rect{1 * 32, 40, 32, 32},
+    renderer.Copy(*current_duck_texture, SDL_Rect{1 * 32, 32, 32, 32},
                   createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
     gear_view.draw_held_gear(facing_direction, duck);
     if (weapon_id > 0) {
         renderer.Copy(wing_texture, SDL_Rect{0, 6 * 8, 16, 16},
-                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y-1, 32, 32}, inclination,    
+                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y+7, 32, 32}, inclination,    
                       NullOpt, facing_direction);
     } else {
         renderer.Copy(wing_texture, SDL_Rect{16, 16, 16, 16},
-                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y-4, 32, 32}, 0,
+                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y+4, 32, 32}, 0,
                       NullOpt, facing_direction);
     }
 }
@@ -104,24 +104,24 @@ void DuckView::draw_falling_duck(duck_DTO& duck, Texture* current_duck_texture) 
     int weapon_id = duck.weapon_id;
     int duck_id = duck.duck_id;
 
-    renderer.Copy(*current_duck_texture, SDL_Rect{3 * 32, 40, 32, 32},
+    renderer.Copy(*current_duck_texture, SDL_Rect{3 * 32, 32, 32, 32},
                   createDuckRect(duck.x, duck.y, duck.width, duck.height), 0, NullOpt,
                   facing_direction);
     gear_view.draw_held_gear(facing_direction, duck);
     if (weapon_id > 0) {
         renderer.Copy(wing_texture, SDL_Rect{0, 6 * 8, 16, 16},
-                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y-6, 32, 32},
+                      SDL_Rect{duck.x -6 + facing_direction * 12, duck.y+2, 32, 32},
                       -90 + facing_direction * 180, NullOpt, facing_direction);
     } else {
         renderer.Copy(
                 wing_texture,
                 SDL_Rect{flying_frames[flying_frame].x, flying_frames[flying_frame].y, 16, 16},
-                SDL_Rect{duck.x -4 + facing_direction * 12, duck.y-6, 32, 32}, 0, NullOpt,
+                SDL_Rect{duck.x -4 + facing_direction * 12, duck.y+2, 32, 32}, 0, NullOpt,
                 facing_direction);
     }
     renderer.Copy(wing_texture,
                   SDL_Rect{flying_frames[flying_frame].x, flying_frames[flying_frame].y, 16, 16},
-                  SDL_Rect{duck.x +6 - facing_direction * 12, duck.y-6, 32, 32}, 0,
+                  SDL_Rect{duck.x +6 - facing_direction * 12, duck.y+2, 32, 32}, 0,
                   NullOpt, !facing_direction);
 }
 

@@ -198,7 +198,6 @@ void GameView::load_game(game_snapshot_t gs) {
                     // siempre. Despues hay que cambiarlo
 
     //zoom(gs);
-
     load_map();
     load_boxes(gs);
     load_ducks(gs);
