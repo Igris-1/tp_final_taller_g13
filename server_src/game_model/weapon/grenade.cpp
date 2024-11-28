@@ -2,7 +2,7 @@
 
 Grenade::Grenade(int width, int height) : Pickable(0, 0, width, height){}
 
-void Grenade::use(MapGame& map){
+void Grenade::use(){
     this->active = true;
 }
 

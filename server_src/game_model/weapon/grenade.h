@@ -17,7 +17,7 @@ private:
 
 public:
     explicit Grenade(int width, int height);
-    void use(MapGame& map);
+    void use();
     std::vector<std::shared_ptr<BulletInterface>> get_explotion(Hitbox hitbox);
     int get_id() override;
     bool is_explosive() override;

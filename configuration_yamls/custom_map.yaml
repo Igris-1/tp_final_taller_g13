@@ -1,6 +1,6 @@
 map:
-  map_width: 820
-  map_height: 500
+  map_width: 1366
+  map_height: 768
 boxes:
   - {x: 22, y: 291, width: 32, height: 32}
   - {x: 82, y: 292, width: 32, height: 32}

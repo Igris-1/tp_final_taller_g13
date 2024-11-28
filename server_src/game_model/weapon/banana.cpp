@@ -4,7 +4,7 @@ Banana::Banana(int width, int height) : Pickable(0, 0, width, height){
 
 }
 
-void Banana::use(MapGame& map){
+void Banana::use(){
     this->active = true;
 }
 

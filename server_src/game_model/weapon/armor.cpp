@@ -4,7 +4,7 @@
 
 Armor::Armor(int width, int height): Pickable(0, 0, width, height) {}
 
-void Armor::use(MapGame& map) { 
+void Armor::use() { 
     this->duck->add_armor();
 }
 

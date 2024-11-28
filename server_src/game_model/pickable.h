@@ -8,7 +8,6 @@
 #include <vector>
 
 class BulletInterface;
-class MapGame;
 
 typedef enum {
     COWBOY_PISTOL_ID = 1,
@@ -48,7 +47,7 @@ public:
     Pickable(int x, int y, int width, int height);
     Pickable();
 
-    virtual void use(MapGame& map) = 0;
+    virtual void use() = 0;
     void add_owner(std::shared_ptr<Duck> new_duck);
 
     // para la caida cool

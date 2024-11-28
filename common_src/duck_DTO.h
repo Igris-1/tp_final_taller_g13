@@ -3,7 +3,6 @@
 #include <cstdint>
 
 typedef struct duck_DTO {
-
     uint8_t duck_id;  // id del color del pato
     uint16_t x;
     uint16_t y;
@@ -42,8 +41,8 @@ typedef struct bullet_DTO {
     uint16_t y;
     uint16_t width;
     uint16_t height;
-    uint16_t x_direction;
-    uint16_t y_direction;
+    int8_t x_direction;
+    int8_t y_direction;
 } __attribute__((packed)) bullet_DTO;
 
 

@@ -213,6 +213,24 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
         // Hitbox hitbo = duck->get_hitbox();
         // std::cout << "id: " << duck_id << "x: " << hitbo.get_x() << " y: " << hitbo.get_y() << "height: " << hitbo.get_height() << "width: " << hitbo.get_width() << std::endl;
     }
+
+    if(duck->has_recoil()){
+        Hitbox aux = duck->get_hitbox();
+        aux.move_relative(-(duck->get_x_direction()), 0);
+        if(this->out_of_map(aux)){
+            duck->kill();
+            this->ducks_dead[duck_id] = duck;
+            return false;
+        }
+        if (can_move_hitbox(duck->get_hitbox(), -1*(duck->get_x_direction()), 0, true) && this->not_in_boxes(aux, false)) {
+            duck->move_duck_relative(-(duck->get_x_direction()), 0);
+            duck->set_direction(duck->get_x_direction(), 0);
+        } else {
+            duck->set_recoil(-1);
+            return false;
+        }
+    }
+
     if(duck->get_is_sliding()){
         Hitbox aux = duck->get_hitbox();
         aux.move_relative(duck->get_x_direction(), 0);
@@ -509,13 +527,13 @@ void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool 
         return;
     }
     if(looking_up){
-        this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, *this, is_holding);
+        this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, is_holding);
         return;
     }
     if (right_direction) {
-        this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, *this, is_holding);
+        this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, is_holding);
     } else {
-        this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, *this, is_holding);
+        this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, is_holding);
     }
 
 }

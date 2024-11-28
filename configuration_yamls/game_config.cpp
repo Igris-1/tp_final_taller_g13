@@ -60,13 +60,8 @@
         throw GameConfigError(type + " no existe en el yaml leido\n");
     }
 
-    const weapon_config& GameConfig::get_weapon_config(const std::string& type){
-        try{
-            return this->weapons_config[type];
-        }
-        catch(const std::exception& e){
-            throw GameConfigError(type + " no existe en las armas leidas\n");
-        }
+    const std::map<std::string, weapon_config>& GameConfig::get_weapon_config(){
+        return this->weapons_config;
     }
 
     void GameConfig::print(){
@@ -112,4 +107,12 @@
             std::cout << "\t product_factor_gravity: " << this->ducks_config.product_factor_gravity << std::endl;
             std::cout << "\t add_factor_gravity: " << this->ducks_config.add_factor_gravity << std::endl;
             std::cout << "\t speed_of_game: " << this->ducks_config.speed_of_game << std::endl;
+    }
+
+    int GameConfig::get_map_width(){
+        return this->map_width;
+    }
+
+    int GameConfig::get_map_height(){
+        return this->map_height;
     }

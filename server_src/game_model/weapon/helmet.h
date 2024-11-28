@@ -7,7 +7,7 @@ class Helmet: public Pickable {
 private:
 public:
     explicit Helmet(int width, int height);
-    void use(MapGame& map) override;
+    void use() override;
     int get_id();
     weapon_DTO to_DTO() override;
     ~Helmet();

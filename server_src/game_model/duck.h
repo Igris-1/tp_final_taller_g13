@@ -31,6 +31,8 @@ private:
     int y_direction;
     bool is_sliding = false;
     int sliding_counter = 10000;
+    bool suffering_recoil = false;
+    int recoil_counter = 0;
     std::shared_ptr<Pickable> item_in_hands;
 
 public:
@@ -47,7 +49,7 @@ public:
     ~Duck() {}
 
     // ITEMS LOGICS
-    void use_item(int x_direction, int y_direction, MapGame& map, bool is_holding);
+    void use_item(int x_direction, int y_direction, bool is_holding);
     std::shared_ptr<Pickable> throw_item();
     std::shared_ptr<Pickable> take_item(std::shared_ptr<Pickable> item);
     void add_armor();
@@ -59,6 +61,7 @@ public:
     bool has_active_explosive_weapon();
     void activation_explosive_weapon();
     bool already_exploted();
+    void set_recoil(int recoil);
 
     // GETTERS
     int get_health();
@@ -69,12 +72,14 @@ public:
     Hitbox& get_hitbox_reference();
     duck_DTO to_DTO();
     bool get_is_sliding();
+    bool has_recoil();
 
     // RESPWAN LOGIC
     void reset();
     void tick_respawn_time();
     int get_respawn_time();
     void set_health(int health);
+    
 };
 
 #endif

@@ -27,12 +27,12 @@
 #define JUMP_DIRECTION -1
 
 // factores para el salto y gravedad
-#define TILES_FOR_JUMP 175
-#define PRODUCT_FACTOR_JUMP \
-    2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
-#define ADD_FACTOR_JUMP 3
-#define PRODUCT_FACTOR_GRAVITY 2
-#define ADD_FACTOR_GRAVITY 8
+
+// #define TILES_FOR_JUMP 175
+// #define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
+// #define ADD_FACTOR_JUMP 3
+// #define PRODUCT_FACTOR_GRAVITY 2
+// #define ADD_FACTOR_GRAVITY 8
 #define TIME_TO_RESPAWN 300
 
 typedef struct {
@@ -59,19 +59,33 @@ typedef struct {
 
 class Game {
 private:
+    MapGame map;    
     std::map<int, std::shared_ptr<duck_state>> ducks_states;  // tiene el estado de cada pato
     std::map<int, int> ducks_score;                           // tiene los puntos de cada pato
     std::vector<std::tuple<int, int>> spawn_positions;  // tiene las posiciones de spawn de armas
     std::vector<std::tuple<int, int>> spawn_ducks;
-    MapGame map;                                        // sabe donde esta todo posicionado
     int actual_round;
     int time_to_respawn;
     bool started_game;
+
+    // yaml things
+    std::map<std::string, weapon_config> weapons_config;
+    duck_config ducks_config;
+    
+    // "defines" from yaml
+    const int TILES_FOR_JUMP = 175;
+    const int PRODUCT_FACTOR_JUMP = 2;
+    const int ADD_FACTOR_JUMP = 3;
+    const int PRODUCT_FACTOR_GRAVITY = 2;
+    const int ADD_FACTOR_GRAVITY = 8;
+    const int SPEED_OF_GAME = 10;
+
+    // private methods
     void duck_exist(int id);
 
 public:
-    Game(int high, int width);
-
+    // Game(int high, int width);
+    Game (GameConfig& config);
 
     // DUCK
     void set_duck_start_position(int id, int x, int y);
@@ -83,8 +97,8 @@ public:
     void stop_run_duck(int id, bool stop_left, bool stop_right);
 
     // MOVEMENTS
-    void continue_horizontal_movements(int count = 1);
-    void continue_vertical_movements(int count = 1);
+    void continue_horizontal_movements();
+    void continue_vertical_movements();
 
     // JUMP and CROUCH
     void jump_duck(int id, bool jump);

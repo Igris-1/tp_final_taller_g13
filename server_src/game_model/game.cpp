@@ -2,12 +2,27 @@
 #include <algorithm>
 #include <unistd.h>
 
-Game::Game(int height, int width):
-        map(width, height),
-        ducks_states(),
-        time_to_respawn(300),
-        actual_round(0),
-        started_game(false) {}
+// Game::Game(int height, int width):
+//         map(width, height),
+//         ducks_states(),
+//         time_to_respawn(300),
+//         actual_round(0),
+//         started_game(false) {}
+
+    Game::Game (GameConfig& config):
+            map(config.get_map_width(), config.get_map_height()),
+            ducks_states(),
+            time_to_respawn(TIME_TO_RESPAWN),
+            actual_round(0),
+            started_game(false),
+            ducks_config(config.get_duck_config()),
+            weapons_config(config.get_weapon_config()),
+            TILES_FOR_JUMP(config.get_duck_config().tiles_per_jump),
+            PRODUCT_FACTOR_JUMP(config.get_duck_config().product_factor_jump),
+            ADD_FACTOR_JUMP(config.get_duck_config().add_factor_jump),
+            PRODUCT_FACTOR_GRAVITY(config.get_duck_config().product_factor_gravity),
+            ADD_FACTOR_GRAVITY(config.get_duck_config().add_factor_gravity),
+            SPEED_OF_GAME(config.get_duck_config().speed_of_game) {}
 
 void Game::duck_exist(int id) {
     this->map.duck_exist(id);
@@ -85,10 +100,10 @@ score_DTO Game::get_score_DTO() {
 
 void Game::respawner() { this->map.respawn_ducks(this->spawn_ducks); }
 
-void Game::continue_horizontal_movements(int count) {
+void Game::continue_horizontal_movements() {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < SPEED_OF_GAME; i++) {
         for (auto& id: ducks_id) {
             // se mueve para la left si is_moving_left is true
             if (this->ducks_states[id]->is_moving_left) {
@@ -103,17 +118,17 @@ void Game::continue_horizontal_movements(int count) {
             this->map.move_relative_if_posible(id, 0, 0);//no borrar :], hace q el pato siga patinandose
         }
     }
-    for (int j = 0; j < count * 4; j++) {
+    for (int j = 0; j < SPEED_OF_GAME * 4; j++) {
         this->map.bullets_next_movement();
         this->map.explosives_on_map();
     }
 
-    for (int j = 0; j < (count * 3); j++) {
+    for (int j = 0; j < (SPEED_OF_GAME * 3); j++) {
         this->map.inertia_weapon();
     }
 }
 
-void Game::continue_vertical_movements(int count) {
+void Game::continue_vertical_movements() {
     std::vector<int> ducks_id = this->map.get_all_duck_ids();
 
     for (auto& id: ducks_id) {
@@ -126,7 +141,7 @@ void Game::continue_vertical_movements(int count) {
         }
         if (this->ducks_states[id]->is_jumping) {
             
-            for (int i = 0; i < (count * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++) {
+            for (int i = 0; i < (SPEED_OF_GAME * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++) {
                 if (this->ducks_states[id]->tiles_to_jump > 0) {
                     this->map.move_relative_if_posible(id, 0, JUMP_DIRECTION);
                     this->ducks_states[id]->tiles_to_jump--;
@@ -142,7 +157,7 @@ void Game::continue_vertical_movements(int count) {
             }
         } else if (this->ducks_states[id]->falling_with_style) {
 
-            for (int i = 0; i < (count) + ADD_FACTOR_GRAVITY; i++) {
+            for (int i = 0; i < (SPEED_OF_GAME) + ADD_FACTOR_GRAVITY; i++) {
                 if (this->ducks_states[id]->falling_with_style && i % 2 == 0) {
                     this->ducks_states[id]->is_falling =
                             this->map.move_relative_if_posible(id, 0, GRAVITY) ? true : false;
@@ -150,7 +165,7 @@ void Game::continue_vertical_movements(int count) {
             }
         } else {
 
-            for (int i = 0; i < (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++) {
+            for (int i = 0; i < (SPEED_OF_GAME * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++) {
                 // this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0,
                 // GRAVITY);
                 if (this->map.move_relative_if_posible(id, 0, GRAVITY)) {
@@ -162,7 +177,7 @@ void Game::continue_vertical_movements(int count) {
         }
     }
 
-    for (int j = 0; j < (count * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++) {
+    for (int j = 0; j < (SPEED_OF_GAME * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; j++) {
         this->map.gravity_weapon();
     }
 }

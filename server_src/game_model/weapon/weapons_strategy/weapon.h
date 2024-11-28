@@ -36,7 +36,7 @@ public:
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
 
-    void use(MapGame& map) override;
+    void use() override;
     ~Weapon();
 };
 

@@ -10,7 +10,7 @@ Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height,
                std::list<std::shared_ptr<BulletInterface>>& bullets):
         Pickable(0, 0, width, height), weapon_strategy(weapon_strategy), bullets(bullets) {}
 
-void Weapon::use(MapGame& map) {
+void Weapon::use() {
     if (this->is_not_a_weapon()) {
         return;
     }
@@ -24,7 +24,8 @@ void Weapon::use(MapGame& map) {
     }
     if(size > 0 ){
         int recoil = weapon_strategy->recoil_produced();
-        map.move_relative_if_posible(this->duck->get_id(), (-x_direction) * recoil, 0);
+        this->duck->set_recoil(recoil);
+
     }
 }
 

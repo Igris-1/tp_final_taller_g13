@@ -13,7 +13,7 @@ class Banana: public Pickable{
     public:
 
         Banana(int width, int height);
-        void use(MapGame& map);
+        void use();
         int get_id() override;
         bool is_active() override;
         bool is_banana() override;

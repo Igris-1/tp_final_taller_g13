@@ -11,14 +11,12 @@
 #include "receiver_thread.h"
 #include "sender_thread.h"
 #include "../configuration_yamls/game_config.h"
-// #include "../configuration_yamls/parser_singleton.h"
 
-#define SPEED_MOVEMENTS 10
 #define SLEEP_TIME 40000
 #define AMOUNT_OF_PLAYERS 2
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
-        game(768, 1366), gameQueue(gameQueue), clients(clients) {
+        game(nullptr), gameQueue(gameQueue), clients(clients) {
     start();
 }
 
@@ -33,7 +31,7 @@ void GameThread::send_snapshots() {
 
     instruction_for_client_t instruction;
     instruction.id = 1;
-    instruction.gs = game.get_snapshot();
+    instruction.gs = game->get_snapshot();
     // if (instruction.gs.ducks_len != 0) {
     clients.enqueue_instruction(instruction);
 
@@ -43,7 +41,7 @@ void GameThread::send_snapshots() {
 void GameThread::send_map() {
     instruction_for_client_t instruction;
     instruction.id = 0;
-    instruction.map = game.get_map_structure();
+    instruction.map = game->get_map_structure();
 
     clients.enqueue_instruction(instruction);
 
@@ -59,35 +57,36 @@ void GameThread::send_map() {
 void GameThread::send_game_score() {
     instruction_for_client_t instruction;
     instruction.id = 2;
-    instruction.score = game.get_score_DTO();
+    instruction.score = game->get_score_DTO();
     clients.enqueue_instruction(instruction);
 }
 
 void GameThread::send_endgame_score() {
     instruction_for_client_t instruction;
     instruction.id = 3;
-    instruction.score = game.get_score_DTO();
+    instruction.score = game->get_score_DTO();
     clients.enqueue_instruction(instruction);
 }
 
 void GameThread::execute_commands() {
     std::shared_ptr<Action> c_action;
     while (gameQueue.try_pop(c_action)) {
-        c_action->execute(game);
+        c_action->execute((*this->game));
     }
 }
 
 void GameThread::blocking_execute_commands() {
     std::shared_ptr<Action> c_action = gameQueue.pop();
-    c_action->execute(game);
+    c_action->execute((*this->game));
 }
 
 
 void GameThread::run() {
-
     GameConfig game_config("../configuration_yamls/custom_map.yaml", "../configuration_yamls/default_config.yaml");
-
-    game.load_configuration(game_config);
+    
+    Game aux(game_config);
+    this->game = &aux;
+    this->game->load_configuration(game_config);
     // game_config.print();
     // game.add_new_platform(Hitbox(0, 200, 200, 16));
     // game.add_new_platform(Hitbox(25, 350, 450, 16));
@@ -107,20 +106,20 @@ void GameThread::run() {
 
 
     // spawnea armas para el comienzo de la partida
-    game.random_item_spawn(false);
+    this->game->random_item_spawn(false);
     int start_flag = 0;
 
     for (int i = 0; i < AMOUNT_OF_PLAYERS; i++) {
         blocking_execute_commands();
     }
 
-    while (this->game.get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
+    while (this->game->get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
         usleep(SLEEP_TIME);
     }    
     send_map();
 
     while (_keep_running) {
-        game.keep_using_item();
+        this->game->keep_using_item();
         try {
             execute_commands();
 
@@ -129,14 +128,14 @@ void GameThread::run() {
             stop();
         }
 
-        game.continue_vertical_movements(SPEED_MOVEMENTS);
-        game.continue_horizontal_movements(SPEED_MOVEMENTS);
-        game.random_item_spawn(true);
+        this->game->continue_vertical_movements();
+        this->game->continue_horizontal_movements();
+        this->game->random_item_spawn(true);
         // game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
-        if (game.check_if_round_finished()) {
+        if (this->game->check_if_round_finished()) {
 
             send_snapshots();
-            if (game.check_if_winner()) {
+            if (this->game->check_if_winner()) {
                 send_endgame_score();
                 this->_is_alive = false;
                 return;
@@ -147,7 +146,7 @@ void GameThread::run() {
                 this->round_counter = 5;
                 // usleep(1000000);
             }
-            game.reset_round();
+            this->game->reset_round();
             usleep(SLEEP_TIME);
             continue;
             usleep(SLEEP_TIME);
