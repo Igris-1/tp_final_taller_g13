@@ -76,8 +76,8 @@ public:
         this->y = y;
     }
 
-    int get_x() { return this->x; }
-    int get_y() { return this->y; }
+    int get_x() const { return this->x; }
+    int get_y() const { return this->y; }
     int get_width() { return this->width; }
     int get_height() { return this->height; }
 

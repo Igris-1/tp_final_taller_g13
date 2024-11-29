@@ -177,10 +177,31 @@ bool MapGame::add_invalid_position(Hitbox hitbox) {
 }
 
 bool MapGame::add_platform(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox, false)) {
-        return false;
+    // if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox, false)) {
+    //     return false;
+    // }
+
+    if(hitbox.get_y() < 0){
+        hitbox.move(hitbox.get_x(), 0);
     }
+    if(hitbox.get_y() + hitbox.get_height() > this->height){
+        hitbox.move(hitbox.get_x(), this->height - hitbox.get_height());
+    }
+    if(hitbox.get_x() < 0){
+        hitbox.move(0, hitbox.get_y());
+    }
+    if(hitbox.get_x() + hitbox.get_width() > this->width){
+        hitbox.move(this->width - hitbox.get_width(), hitbox.get_y());
+    }
+    for (const auto& existing_hitbox : this->platforms) {
+        if (std::abs(existing_hitbox.get_y() - hitbox.get_y()) <= 10) {
+            hitbox.move(hitbox.get_x() ,existing_hitbox.get_y());
+            break; // No need to continue once we've aligned the Y position
+        }
+    }
+    
     this->platforms.insert(hitbox);
+
     return true;
 }
 

@@ -51,7 +51,7 @@ weapon:
   ak_47:
     shot: 50
     damage: 5
-    recoil: 5
+    recoil: 10
     scope: 32 # distnace of shot in tiles
     reload_time: 6 #time between shots
     hitbox_width: 48
@@ -60,7 +60,7 @@ weapon:
   dueling_pistol:
     shot: 1
     damage: 40
-    recoil: 9
+    recoil: 20
     scope: 25 # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 36
@@ -78,8 +78,8 @@ weapon:
   magnum:
     shot: 6
     damage: 7
-    recoil: 12
-    scope: 20 # distnace of shot in tiles
+    recoil: 30
+    scope: 30 # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
@@ -87,7 +87,7 @@ weapon:
   shotgun:
     shot: 2
     damage: 7
-    recoil: 12
+    recoil: 80
     scope: 8 # distnace of shot in tiles
     reload_time: 10 #time after recharge
     hitbox_width: 36

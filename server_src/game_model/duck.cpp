@@ -169,7 +169,9 @@ void Duck::kill(){
 }
 
 void Duck::set_direction(int step_dx, int step_dy){
-    this->x_direction = step_dx;
+    if(step_dx != 0){
+        this->x_direction = step_dx;
+    }
     this->y_direction = step_dy;
 }
 
