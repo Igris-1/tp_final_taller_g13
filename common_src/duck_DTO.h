@@ -19,13 +19,14 @@ typedef struct duck_DTO {
     bool armor_equipped;
     bool looking_up = false;
     bool crouching = false;
-} __attribute__((packed))
-duck_DTO;  // es necesario el packed aca, no lo saquen
-           // va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding
-           // al struct, entonces si no se pone packed, el padding puede hacer que el tamanio de la
-           // estructura que se recibe sea distinto
-           //  al que estoy recibiendo, pero como es todo en una sola pc, no deberia haber problema.
-           //  igual, no lo saquemos.
+} __attribute__((packed)) duck_DTO;
+
+            // es necesario el packed aca, no lo saquen
+            // va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding
+            // al struct, entonces si no se pone packed, el padding puede hacer que el tamanio de la
+            // estructura que se recibe sea distinto
+            //  al que estoy recibiendo, pero como es todo en una sola pc, no deberia haber problema.
+            //  igual, no lo saquemos.
 
 
 typedef struct platform_DTO {
@@ -81,6 +82,16 @@ typedef struct games_DTO {
     uint8_t max_players;
     uint8_t current_players;
 } __attribute__((packed)) games_DTO;
+
+
+typedef struct sounds_DTO {
+    bool death = false;
+    bool shooting_small_weapon = false;
+    bool shooting_big_weapon = false;
+    bool shooting_laser_weapon = false;
+    bool explotion = false;
+    bool duck_sliding = false;
+} __attribute__((packed)) sounds_DTO;
 
 
 #endif  // DUCK_INFO_T_H

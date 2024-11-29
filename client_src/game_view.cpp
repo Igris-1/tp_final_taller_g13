@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <iostream>
-
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
 #define DELAY_AFTER_SCORE 7000
@@ -25,7 +24,7 @@ GameView::GameView():
 
 void GameView::add_map(map_structure_t map) { this->map = map; }
 
-void GameView::draw_scoreboard(score_DTO score) {
+void GameView::render_scoreboard(score_DTO score) {
     renderer.SetDrawColor(Color(0, 0, 0, 0));
     renderer.FillRect(
             SDL_Rect{SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
@@ -58,46 +57,32 @@ void GameView::draw_scoreboard(score_DTO score) {
                   SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 266, 32, 32}, 0, NullOpt, 0);
 }
 
-void GameView::load_score(score_DTO score) {
-    draw_scoreboard(score);
+void GameView::render_score(score_DTO score) {
+    render_scoreboard(score);
     renderer.Present();
     SDL_Delay(DELAY_AFTER_SCORE);
 }
 
-void GameView::load_endgame_score(score_DTO score) {
+void GameView::render_endgame_score(score_DTO score) {
 
-    draw_scoreboard(score);
+    render_scoreboard(score);
     renderer.Present();
     SDL_Delay(DELAY_AFTER_SCORE);
     window.Hide();
     Mix_CloseAudio();
-
-    std::cout << "Termino el juego todo el mundo a casa" << std::endl;
 }
 
-void GameView::set_up_game() {
-    /*int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    if (a < 0) {
-        std::cout << "Error al abrir audio" << std::endl;
-    }
+void GameView::show_loading_screen(){
+    Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
 
-    Mix_Music* efecto = Mix_LoadMUS("../assets/music/unapalabra.mp3");
+    renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
+                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
 
-    if (efecto == NULL) {
-        std::cout << "Error al cargar musica" << std::endl;
-    }
+    renderer.Present();
+}
 
-    Mix_PlayMusic(efecto, -1);
-
-    if (TTF_Init() == -1) {
-        std::cout << "Error al iniciar TTF" << std::endl;
-    }*/
-
-
+void GameView::load_map_textures(){
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
-
-    // background_sprites.push_back(Texture(renderer, "../assets/images/boca.jpg"));
-
 
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
 
@@ -105,6 +90,36 @@ void GameView::set_up_game() {
 
     scoreboard_font.push_back(Texture(renderer, "../assets/fonts/duck_game_title.png"));
 
+    box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
+}
+
+void GameView::load_gear_textures(){
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeGrenade.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeBanana.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
+    gear_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
+
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/shotgunShell.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/explosion.png"));
+    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/magnumShell.png"));
+
+    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/helmet.png"));
+    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/armor.png"));
+}
+
+void GameView::load_duck_textures(){
     Texture duck1Texture(renderer, "../assets/sprites/duck.png");
 
     Texture duck2Texture(renderer, "../assets/sprites/duck.png");
@@ -156,53 +171,48 @@ void GameView::set_up_game() {
     wing_sprites.push_back(std::move(wing2Texture));
     wing_sprites.push_back(std::move(wing3Texture));
     wing_sprites.push_back(std::move(wing4Texture));
-
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/grenade.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeGrenade.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/magnum.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/oldPistol.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/pewpewLaser.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/shotgun.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/sniper.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/banana.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/activeBanana.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/helmetPickup.png"));
-    gear_sprites.push_back(Texture(renderer, "../assets/sprites/armorPickup.png"));
-
-    box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
-
-    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/pistolShell.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/laserBeam.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/shotgunShell.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/explosion.png"));
-    bullet_sprites.push_back(Texture(renderer, "../assets/sprites/magnumShell.png"));
-
-    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/helmet.png"));
-    accessories_sprites.push_back(Texture(renderer, "../assets/sprites/armor.png"));
-
-
-    Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
-
-    renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
-                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
-
-    renderer.Present();
 }
 
-void GameView::load_game(game_snapshot_t gs) {
+void GameView::load_music(){
+    int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    if (a < 0) {
+        std::cout << "Error al abrir audio" << std::endl;
+    }
+
+    Mix_Music* efecto = Mix_LoadMUS("../assets/music/arcade.mp3");
+
+    if (efecto == NULL) {
+        std::cout << "Error al cargar musica" << std::endl;
+    }
+    Mix_VolumeMusic(40);
+    Mix_PlayMusic(efecto, -1);
+
+    if (TTF_Init() == -1) {
+        std::cout << "Error al iniciar TTF" << std::endl;
+    }
+}
+
+void GameView::set_up_game() {
+    
+    load_duck_textures();
+    load_gear_textures();
+    load_map_textures();
+    load_music();
+
+    show_loading_screen();
+}
+
+void GameView::render_game(game_snapshot_t gs) {
     renderer.Clear();
 
     add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
 
     //zoom(gs);
-    load_map();
-    load_boxes(gs);
-    load_ducks(gs);
-    load_bullets(gs);
-    load_weapons(gs);
+    render_map();
+    render_boxes(gs);
+    render_ducks(gs);
+    render_bullets(gs);
+    render_weapons(gs);
     
     renderer.Present();
 }
@@ -270,7 +280,7 @@ void GameView::zoom(game_snapshot_t gs) {
     SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 }
 
-void GameView::load_boxes(game_snapshot_t gs) {
+void GameView::render_boxes(game_snapshot_t gs) {
     for (int i = 0; i < gs.boxes.size(); i++) {
         box_DTO box = gs.boxes[i];
         renderer.Copy(box_sprites[0], SDL_Rect{0, 16, 16, 16},
@@ -278,67 +288,51 @@ void GameView::load_boxes(game_snapshot_t gs) {
     }
 }
 
-void GameView::load_weapons(game_snapshot_t gs) {
+void GameView::render_weapons(game_snapshot_t gs) {
     for (int i = 0; i < gs.weapons.size(); i++) {
         weapon_DTO weapon = gs.weapons[i];
         gear_view.draw_gear(weapon);
     }
 }
 
-void GameView::load_bullets(game_snapshot_t gs) {
+void GameView::render_bullets(game_snapshot_t gs) {
     for (int i = 0; i < gs.bullets.size(); i++) {
         bullet_DTO bullet = gs.bullets[i];
         int bullet_id = bullet.bullet_id;
         Texture& bulletTexture = bullet_sprites[bullet_id - 1];
         if (bullet_id == 1) {
-            renderer.SetDrawColor(Color(143, 142, 137, 0));
-
-            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
+            renderer.Copy(bulletTexture, SDL_Rect{6, 6, 6, 3},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
-            for (int b_pos = 0; b_pos < 16; b_pos++){
-                int dir_x = -bullet.x_direction;
-                int dir_y = -bullet.y_direction; 
-                renderer.FillRect(
-                    SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8});
-            }
-            
         } else if (bullet.bullet_id == 2) {
             for (int b_pos = 0; b_pos < 32; b_pos++) {
                 int dir_x = -bullet.x_direction;
-                int dir_y = -bullet.y_direction;  
+                int dir_y = -bullet.y_direction;
+                int angle = 0;
+                if (dir_x == 0) {
+                    angle = -90;
+                }
+
                 renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                                  SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8}, 0, NullOpt,
+                                  SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8}, angle, NullOpt,
                                   bullet.x_direction);
             }
-
         } else if (bullet_id == 3) {
-            renderer.SetDrawColor(Color(143, 142, 137, 0));
-
-            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
+            renderer.Copy(bulletTexture, SDL_Rect{5, 7, 6, 3},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
-
-            for (int b_pos = 0; b_pos < 16; b_pos++){
-                int dir_x = -bullet.x_direction;
-                int dir_y = -bullet.y_direction; 
-                renderer.FillRect(
-                    SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8});
-            }
         } else if (bullet_id == 4) {
-
-            renderer.Copy(bulletTexture, SDL_Rect{0, 0, 16, 16},
+            renderer.Copy(bulletTexture, SDL_Rect{25*8, 2*8, 32, 32},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
         }
     }
 }
 
-void GameView::load_map() {
+void GameView::render_map() {
     Texture& backgroundTexture = background_sprites[0];
     renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2425, 1451},
                   SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
-
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
         renderer.Copy(platform_sprites[0], SDL_Rect{0, 10 * 8, 16, 8},
@@ -346,10 +340,9 @@ void GameView::load_map() {
     }
 }
 
-void GameView::load_ducks(game_snapshot_t gs) {
+void GameView::render_ducks(game_snapshot_t gs) {
     for (int i = 0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
-
         duck_views[i].draw_duck(duck);
     }
 }

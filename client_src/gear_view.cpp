@@ -162,6 +162,10 @@ void GearView::draw_gear(weapon_DTO& weapon) {
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
 			SDL_Rect{x, y, width, height}, 0, NullOpt, 0);
 			break;
+		case 9:
+			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 33, 9},
+                SDL_Rect{x, y, 36, 18}, 0, NullOpt, 0);
+			break;
 		case 10:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
 			SDL_Rect{x, y, width, height}, 0, NullOpt, 0);
@@ -198,6 +202,10 @@ void GearView::draw_gear_in_hands(int x, int y, int gear, int inclination, int f
 		case 4:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
                 SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+			break;
+		case 9:
+			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 33, 9},
+                SDL_Rect{x, y, 36, 18}, inclination, NullOpt, 0);
 			break;
 		case 10:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
@@ -279,16 +287,15 @@ void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck, int inclin
         a_f = &accessories_vertical_frames;
     }
 
-    if (gear >= 0) {
+	draw_accessories(duck, facing_direction, inclination, x + x_sum_value, y + y_sum_value, a_f);
 
+    if (gear >= 0) {
         int x_s = (*g_f)[gear*3];
         int x_m = (*g_f)[gear*3+1];
         int y_s = (*g_f)[gear*3+2];
-
         draw_gear_in_hands(x + x_sum_value + x_s + facing_direction*x_m, y + y_sum_value + y_s, gear, inclination, facing_direction);
     }
 
-    draw_accessories(duck, facing_direction, inclination, x + x_sum_value, y + y_sum_value, a_f);
 }
 
 GearView::~GearView() {

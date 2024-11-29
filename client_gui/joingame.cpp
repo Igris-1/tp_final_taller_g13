@@ -22,8 +22,6 @@ JoinGame::~JoinGame() {
     }
 
 void JoinGame::on_open_join_game() {
-    std::cout << "open_join_game" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
@@ -41,8 +39,6 @@ void JoinGame::on_backButton_clicked() { this->close(); }
 
 
 void JoinGame::on_musicButton_clicked() {
-    std::cout << "musicButton clicked" << std::endl;
-
     if (this->player->playbackState() == QMediaPlayer::PlayingState) {
         this->player->pause();
     } else {
@@ -51,8 +47,6 @@ void JoinGame::on_musicButton_clicked() {
 }
 
 void JoinGame::on_player2Button_clicked() {
-    std::cout << "player2Button clicked" << std::endl;
-
     if (ui->player2Button->isChecked()) {
         localPlayers = 2;
     } else {
@@ -61,8 +55,6 @@ void JoinGame::on_player2Button_clicked() {
 }
 
 void JoinGame::on_refreshButton_clicked() {
-    std::cout << "refreshButton clicked" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
@@ -79,8 +71,6 @@ void JoinGame::on_refreshButton_clicked() {
 }
 
 void JoinGame::on_startButton_clicked() {
-    std::cout << "startButton clicked" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();

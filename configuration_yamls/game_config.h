@@ -47,9 +47,9 @@ class GameConfig{
         GameConfig(const std::string& map_file, const std::string& game_file);
         int get_map_width();
         int get_map_height();
-        const duck_config& get_duck_config();
+        duck_config get_duck_config();
         const std::vector<std::tuple<int, int, int, int>>& get_item(const std::string& type);
-        const std::map<std::string, weapon_config>&  get_weapon_config();
+        std::map<std::string, weapon_config>  get_weapon_config();
         void print();
 };
 

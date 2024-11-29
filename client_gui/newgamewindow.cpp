@@ -27,8 +27,6 @@ NewGameWindow::~NewGameWindow() {
 void NewGameWindow::on_backButton_clicked() { this->close(); }
 
 void NewGameWindow::on_musicButton_clicked() {
-    std::cout << "musicButton clicked" << std::endl;
-
     if (this->player->playbackState() == QMediaPlayer::PlayingState) {
         this->player->pause();
     } else {
@@ -42,8 +40,6 @@ void NewGameWindow::on_selectPlayers_activated() {
 }
 
 void NewGameWindow::on_player2Button_clicked() {
-    std::cout << "player2Button clicked" << std::endl;
-
     if (ui->player2Button->isChecked()) {
         localPlayers = 2;
     } else {
@@ -52,8 +48,6 @@ void NewGameWindow::on_player2Button_clicked() {
 }
 
 void NewGameWindow::on_mapaUnoButton_clicked() {
-    std::cout << "mapaUnoButton clicked" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
@@ -74,14 +68,11 @@ void NewGameWindow::on_mapaDosButton_clicked() {
 
 void NewGameWindow::on_maps_activated() {
     // setear mapa para iniciar la partida
-    std::cout << "maps clicked" << std::endl;
     this->map = ui->maps->currentIndex();
 }
 
 void NewGameWindow::on_startButton_clicked() {
     // levantar el mapa seleccionado
-    std::cout << "startButton clicked" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();

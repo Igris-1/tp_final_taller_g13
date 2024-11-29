@@ -28,10 +28,13 @@ typedef struct game_snapshot {
 
     uint16_t boxes_len = 0;
     std::vector<box_DTO> boxes;  // 2 bytes
-
+    
+    sounds_DTO sounds;
 } game_snapshot_t;
 
 typedef struct map_structure_t {
+    uint16_t width;
+    uint16_t height;
     uint16_t platforms_len = 0;
     std::vector<platform_DTO> platforms;
 } map_structure_t;

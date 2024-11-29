@@ -71,12 +71,15 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     for (uint16_t i = 0; i < game_snapshot.boxes_len; i++) {
         connection.sendall(&game_snapshot.boxes[i], sizeof(box_DTO), &socket_is_closed);
     }
+    connection.sendall(&game_snapshot.sounds, sizeof(sounds_DTO), &socket_is_closed);
 }
 
 void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
     std::lock_guard<std::mutex> lock(mutex);
     uint8_t protocol_name = 0x00;
     connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
+    connection.sendall(&map_structure.width, sizeof(uint16_t), &socket_is_closed);
+    connection.sendall(&map_structure.height, sizeof(uint16_t), &socket_is_closed);
     connection.sendall(&map_structure.platforms_len, sizeof(uint16_t), &socket_is_closed);
     for (int i = 0; i < map_structure.platforms_len; i++) {
         connection.sendall(&map_structure.platforms[i], sizeof(platform_DTO), &socket_is_closed);

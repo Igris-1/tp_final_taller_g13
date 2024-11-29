@@ -1,7 +1,7 @@
 #ifndef BOX_H
 #define BOX_H
 
-#define RESISTANCE 10
+#define RESISTANCE 1
 
 #include <cstdlib>
 #include <ctime>

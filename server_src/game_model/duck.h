@@ -49,7 +49,7 @@ public:
     ~Duck() {}
 
     // ITEMS LOGICS
-    void use_item(int x_direction, int y_direction, bool is_holding);
+    int use_item(int x_direction, int y_direction, bool is_holding);
     std::shared_ptr<Pickable> throw_item();
     std::shared_ptr<Pickable> take_item(std::shared_ptr<Pickable> item);
     void add_armor();

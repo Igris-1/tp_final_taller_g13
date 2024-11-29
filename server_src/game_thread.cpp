@@ -86,28 +86,12 @@ void GameThread::run() {
     
     Game aux(game_config);
     this->game = &aux;
+    game_config.print();
     this->game->load_configuration(game_config);
-    // game_config.print();
-    // game.add_new_platform(Hitbox(0, 200, 200, 16));
-    // game.add_new_platform(Hitbox(25, 350, 450, 16));
-    // game.add_new_platform(Hitbox(40, 420, 600, 16));
-    // game.add_new_platform(Hitbox(0, 510, 300, 16));
-    // game.add_new_platform(Hitbox(580, 200, 200, 16));
-    // game.add_new_platform(Hitbox(600, 350, 400, 16));
-    // game.add_new_platform(Hitbox(200, 600, 100, 16));
-    // game.add_new_platform(Hitbox(0, 600, 300, 16));
-
-    // // game.add_box(Hitbox(500, 500, 32, 32));
-
-    // game.add_spawn_position(15, 180);
-    // game.add_spawn_position(30, 300);
-    // game.add_spawn_position(500, 350);
-    // game.add_spawn_position(650, 490);
-
-
+    
     // spawnea armas para el comienzo de la partida
     this->game->random_item_spawn(false);
-    int start_flag = 0;
+    // int start_flag = 0;
 
     for (int i = 0; i < AMOUNT_OF_PLAYERS; i++) {
         blocking_execute_commands();
@@ -134,6 +118,12 @@ void GameThread::run() {
         // game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
         if (this->game->check_if_round_finished()) {
 
+            send_snapshots();
+            this->game->continue_vertical_movements();
+            this->game->continue_horizontal_movements();
+            send_snapshots();
+            this->game->continue_vertical_movements();
+            this->game->continue_horizontal_movements();
             send_snapshots();
             if (this->game->check_if_winner()) {
                 send_endgame_score();

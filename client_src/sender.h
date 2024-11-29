@@ -49,15 +49,12 @@ private:
                     action.press_pick_up_button = true;
                     break;
                 case SDLK_e:
-                    std::cout << "PRESSED E" << std::endl;
                     action.press_throw_button = true;
                     break;
                 case SDLK_s:
-                    std::cout << "PRESSED S" << std::endl;
                     action.press_crouch_button = true;
                     break;
                 case SDLK_w:
-                    std::cout << "PRESSED W" << std::endl;
                     action.press_look_up_button = true;
                     break;
                 default:
@@ -79,11 +76,9 @@ private:
                     action.unpress_action_button = true;
                     break;
                 case SDLK_s:
-                    std::cout << "PRESSED S" << std::endl;
                     action.unpress_crouch_button = true;
                     break;
                 case SDLK_w:
-                    std::cout << "PRESSED W" << std::endl;
                     action.unpress_look_up_button = true;
                     break;
                 default:

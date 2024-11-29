@@ -1,5 +1,5 @@
-#ifndef COWBOY_PISTOL_H
-#define COWBOY_PISTOL_H
+#ifndef DUELING_PISTOL_H
+#define DUELING_PISTOL_H
 
 #include <memory>
 
@@ -10,11 +10,11 @@
 #include "weapon_interface.h"
 
 
-class CowboyPistol: public WeaponInterface {
+class DuelingPistol: public WeaponInterface {
 private:
 
 public:
-    CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time);
+    DuelingPistol(int shot, int damage, int recoil, int scope, int reload_time);
     std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,
                                                        int x_position, int y_position,
                                                        int x_direction, int y_direction,
@@ -22,7 +22,7 @@ public:
     int get_id() override;
     int recoil_produced() override;
     int get_sound() override;
-    ~CowboyPistol() override {}
+    ~DuelingPistol() override {}
 };
 
 #endif

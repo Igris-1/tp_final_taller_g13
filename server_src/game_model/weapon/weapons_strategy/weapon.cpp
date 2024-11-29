@@ -6,17 +6,18 @@
 
 bool Weapon::is_not_a_weapon() { return this->weapon_strategy == nullptr; }
 
-Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height,
-               std::list<std::shared_ptr<BulletInterface>>& bullets):
+Weapon::Weapon(WeaponInterface* weapon_strategy, int width, int height, 
+        std::list<std::shared_ptr<BulletInterface>>& bullets) :
         Pickable(0, 0, width, height), weapon_strategy(weapon_strategy), bullets(bullets) {}
+        //shot(shot), damage(damage), recoil(recoil), scope(scope), reload_time(reload_time) {}
 
 void Weapon::use() {
     if (this->is_not_a_weapon()) {
         return;
-    }
+    }//(duck->get_hitbox().get_height() * (4/8))
     std::vector<std::shared_ptr<BulletInterface>> new_bullets = weapon_strategy->fire(
             duck, duck->get_hitbox().get_x() + (duck->get_hitbox().get_width() / 2),
-            duck->get_hitbox().get_y() + (duck->get_hitbox().get_height() * (3/4)), x_direction,
+            duck->get_hitbox().get_y() + (duck->get_hitbox().get_height() / 2) - 10, x_direction,
             y_direction, this->holding_button);
     int size = new_bullets.size();
     for (int i = 0; i < size; i++) {
@@ -27,6 +28,13 @@ void Weapon::use() {
         this->duck->set_recoil(recoil);
 
     }
+}
+
+int Weapon::get_sound() {
+    if (this->is_not_a_weapon()) {
+        return 0;
+    }
+    return this->weapon_strategy->get_sound();
 }
 
 void Weapon::set_holding(bool holding) {

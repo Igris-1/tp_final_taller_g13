@@ -1,11 +1,11 @@
-#include "cowboy_pistol.h"
+#include "dueling_pistol.h"
 
 #include "../../duck.h"
 
-CowboyPistol::CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(shot, damage, recoil, scope, reload_time) {}
+DuelingPistol::DuelingPistol(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
 
-std::vector<std::shared_ptr<BulletInterface>> CowboyPistol::fire(std::shared_ptr<Duck> duck_trigger,
+std::vector<std::shared_ptr<BulletInterface>> DuelingPistol::fire(std::shared_ptr<Duck> duck_trigger,
                                                                  int x_position, int y_position,
                                                                  int x_direction, int y_direction,
                                                                  bool is_holding_button) {
@@ -23,8 +23,8 @@ std::vector<std::shared_ptr<BulletInterface>> CowboyPistol::fire(std::shared_ptr
     return bullets;
 }
 
-int CowboyPistol::get_id() { return COWBOY_PISTOL_ID; }
+int DuelingPistol::get_id() { return DUELING_PISTOL_ID; }
 
-int CowboyPistol::recoil_produced() { return this->recoil; }
+int DuelingPistol::recoil_produced() { return this->recoil; }
 
-int CowboyPistol::get_sound() { return 1; }
+int DuelingPistol::get_sound() { return 1; }

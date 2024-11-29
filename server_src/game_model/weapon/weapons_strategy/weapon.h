@@ -11,9 +11,10 @@
 
 class Weapon: public Pickable {
 protected:
-    int dispersion;
-    int recoil;
-    bool reload_time;
+
+    // int dispersion;
+    // int recoil;
+    // bool reload_time;
     bool holding_button;
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;
@@ -23,8 +24,8 @@ protected:
     bool is_not_a_weapon();
 
 public:
-    Weapon(WeaponInterface* weapon_strategy, int width, int height,
-           std::list<std::shared_ptr<BulletInterface>>& bullets);
+    Weapon(WeaponInterface* weapon_strategy, int width, int height, 
+        std::list<std::shared_ptr<BulletInterface>>& bullets);
 
 
     void fire_rate_down() override;
@@ -35,7 +36,7 @@ public:
     int get_ammo();
     std::list<std::shared_ptr<BulletInterface>> get_list() { return this->bullets; }
     // -----------------------------------
-
+    int get_sound() override;
     void use() override;
     ~Weapon();
 };

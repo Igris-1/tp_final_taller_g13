@@ -49,13 +49,13 @@ void Client::run() {
                     game_view.add_map(map);
                 } else if (m.get_code() == GAME_SNAPSHOT_CODE) {
                     game_snapshot_t gs = m.get_game_snapshot();
-                    game_view.load_game(gs);
+                    game_view.render_game(gs);
                 } else if (m.get_code() == SCORE_CODE) {
                     score_DTO score = m.get_score();
-                    game_view.load_score(score);
+                    game_view.render_score(score);
                 } else if (m.get_code() == END_SCORE_CODE) {
                     score_DTO score = m.get_score();
-                    game_view.load_endgame_score(score);
+                    game_view.render_endgame_score(score);
                     break;
                 } else if (m.get_code() == GAMES_INFO_CODE) {
                     continue;

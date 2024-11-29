@@ -40,7 +40,7 @@
         this->weapons_spawn = parser.get_map_structure("weapons");
     }
 
-    const duck_config& GameConfig::get_duck_config(){
+    duck_config GameConfig::get_duck_config(){
         return this->ducks_config;
     }
 
@@ -60,7 +60,7 @@
         throw GameConfigError(type + " no existe en el yaml leido\n");
     }
 
-    const std::map<std::string, weapon_config>& GameConfig::get_weapon_config(){
+    std::map<std::string, weapon_config> GameConfig::get_weapon_config(){
         return this->weapons_config;
     }
 

@@ -95,7 +95,6 @@ public:
             for (const Hitbox& other : potential_collisions) {
                 if (new_hitbox.has_collision(other)) {
                     // Collision detected, cancel resizing
-                    std::cout << "Collision detected above, resizing canceled!" << std::endl;
                     return false;
                 }
             }

@@ -2,7 +2,14 @@
 
 #include <iostream>
 
-MapGame::MapGame(int width, int height): height(height), width(width) {}
+MapGame::MapGame(int width, int height, int health): height(height), width(width), HEALTH(health) {}
+
+int MapGame::get_width(){
+    return this->width;
+}
+int MapGame::get_height(){
+    return this->height;
+}
 
 bool MapGame::duck_exist(int id) { return this->ducks.find(id) != this->ducks.end(); }
 
@@ -423,10 +430,9 @@ void MapGame::explosives_on_map(){
                     std::cout << "no es banana" << std::endl;
                     continue;
                 }
-                std::cout << "deslizando" << std::endl;
+                this->sounds.duck_sliding = true;
                 it->second->set_sliding(true);
                 explosive = this->explosives.erase(explosive);
-                std::cout << "erase banana" << std::endl;
                 banana_flag = true;
                 break;
             }
@@ -435,19 +441,16 @@ void MapGame::explosives_on_map(){
             continue;
         }
         if((*explosive)->exploted()){
-            std::cout << "exploted grenade" << std::endl;
+            this->sounds.explotion = true;
             Hitbox position = (*explosive)->get_hitbox();
             std::vector<std::shared_ptr<BulletInterface>> explotion_bullets = (*explosive)->get_explotion(position);  
             for (int i = 0; i < explotion_bullets.size(); i++) {
-                std::cout << "add bullet of explotion" << std::endl;
                 this->bullets.push_back(explotion_bullets[i]);
             }
             if(!(*explosive)->is_exploding()){
                 explosive = this->explosives.erase(explosive);
-                std::cout << "erase grenade" << std::endl;
                 continue;
             }
-            //break; pq este break? no me permite explotar mas de una granada en el mismo gameloop
             ++explosive;
             continue;    
         }
@@ -457,7 +460,7 @@ void MapGame::explosives_on_map(){
 }
 
 
-void MapGame::bullets_next_movement() {
+void MapGame::bullets_next_movement(const std::map<std::string, weapon_config>& weapons_config) {
     for (auto bullet = bullets.begin(); bullet != bullets.end();) {
         if ((*bullet)->next_position(*this)) {
             for (auto& [id, duck]: this->ducks) {
@@ -476,10 +479,11 @@ void MapGame::bullets_next_movement() {
             for (auto& box: this->boxes) {
                 if (box->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(NOT_OWNER);
+                    std::cout << "damage: " << damage << " a caja"<< std::endl;
                     box->receive_damage(damage);
                     if (box->is_destroyed()) {
                         if (box->get_reward()) {
-                            std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->get_bullets_list(), "random");
+                            std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->get_bullets_list(), "random", weapons_config);
                             item->set_falling(true);
                             item->move_to(box->get_x(), box->get_y());
                             this->pickables.push_back(item);
@@ -522,20 +526,33 @@ bool MapGame::move_relative_if_posible(Hitbox& hitbox, int dx, int dy) {
 }
 
 void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool looking_up) {
-    
+    int sound;
     if (!this->duck_exist(duck_id) || !this->duck_is_alive(duck_id)){
         return;
     }
     if(looking_up){
-        this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, is_holding);
+        sound = this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, is_holding);
+        set_bullet_sound(sound);
         return;
     }
     if (right_direction) {
-        this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, is_holding);
+        sound = this->ducks[duck_id]->use_item(RIGHT_DIRECTION, NO_DIRECTION, is_holding);
     } else {
-        this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, is_holding);
+        sound = this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, is_holding);
     }
+    set_bullet_sound(sound);
+}
 
+void MapGame::set_bullet_sound(int sound){
+    if(sound == 1){
+        this->sounds.shooting_small_weapon = true;
+    }
+    if(sound == 2){
+        this->sounds.shooting_big_weapon = true;
+    }
+    if(sound == 3){
+        this->sounds.shooting_laser_weapon = true;
+    }
 }
 
 // void MapGame::keep_using_item(int duck_id, bool right_direction) {
@@ -691,32 +708,38 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) 
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }
 
-bool MapGame::approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item) {
+bool MapGame::approximate_spawn_to_platform(Hitbox& hitbox, bool is_item) {
     while (true) {
         bool collision_found = false;
         for (auto& platform : this->platforms) {
-            if (platform.has_collision(Hitbox(x, y, width, height))) {
+            if (platform.has_collision(hitbox)) {
                 collision_found = true;
                 break;
             }
         }
 
         if (!collision_found) {
-            y += 1;
+            hitbox.move_relative(0, 1);
         } else {
-            y -= 1; 
+            hitbox.move_relative(0, -1);
             break;
         }
-        if(y >= this->height){
-            y = 0;
+        if(hitbox.get_y() >= this->height){
+            hitbox.move(hitbox.get_x(), 0);
             return false;
         }
 
     }
     if (is_item) {
-        y -= 15;
+        hitbox.move_relative(0, -12);
     }else{
-        y-= 2;
+        hitbox.move_relative(0, -2);
     }
     return true;
+}
+
+sounds_DTO MapGame::get_sounds_DTO() {
+    sounds_DTO dto = this->sounds;
+    this->sounds = sounds_DTO();
+    return dto;
 }

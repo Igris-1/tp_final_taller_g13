@@ -56,6 +56,7 @@ uint16_t ProtocolClient::read_long_number() {
 
 void ProtocolClient::receive_games(int size, Message& message) {
     std::vector<games_DTO> available_games;
+
     available_games.resize(size);
     for (int i = 0; i < size; i++) {
         games_DTO game;
@@ -69,6 +70,8 @@ bool ProtocolClient::socket_closed() { return socket_is_closed; }
 
 map_structure_t ProtocolClient::receive_map() {
     map_structure_t map;
+    map.width = read_long_number();
+    map.height = read_long_number();
     uint16_t n = read_long_number();
     platform_DTO platform;
     map.platforms_len = n;
@@ -120,6 +123,10 @@ game_snapshot_t ProtocolClient::read_snapshot() {
         connection.recvall(&box, sizeof(box_DTO), &socket_is_closed);
         game_snapshot.boxes[i] = box;
     }
+    sounds_DTO sounds;
+    connection.recvall(&sounds, sizeof(sounds_DTO), &socket_is_closed);
+    game_snapshot.sounds = sounds;
+    
     return game_snapshot;
 }
 

@@ -16,7 +16,7 @@ typedef enum {
     GRENADE_ID,
     ACTIVATED_GRENADE_ID,
     MAGNUM_ID,
-    OLD_PISTOL_ID,
+    DUELING_PISTOL_ID,
     PEW_PEW_LASER_ID,
     SHOTGUN_ID,
     SNIPER_ID,
@@ -32,7 +32,6 @@ class Duck;
 class Pickable: public Positionable {
 
 protected:
-    // ammo_values[COWBOY_PISTOL_ID] = ParserSingleton::get_instance()->get_value_game("weapon cowboy_pistol shot");
     int air_time_x = 300;
     int air_time_y = 50;
 
@@ -60,6 +59,7 @@ public:
     void set_moving(bool moving);
     int get_air_time_y();
     int get_x_direction();
+    virtual int get_sound();
     void set_direction(int x, int y);
     virtual weapon_DTO to_DTO() = 0;
     void set_airtime_y(int airtime);

@@ -139,13 +139,15 @@ void Duck::continue_fire_rate() {
 //     return this->item_in_hands->exploded();
 // }
 
-void Duck::use_item(int x_direction, int y_direction, bool is_holding) {
+int Duck::use_item(int x_direction, int y_direction, bool is_holding) {
     if (!this->has_item()) {
-        return;
+        return 0;
     }
     this->item_in_hands->set_direction(x_direction, y_direction);
     this->item_in_hands->set_holding(is_holding);
+    int sound = this->item_in_hands->get_sound();
     this->item_in_hands->use();
+    return sound;
 }
 
 

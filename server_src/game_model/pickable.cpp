@@ -79,6 +79,10 @@ bool Pickable::is_exploding(){
     return false;
 }
 
+int Pickable::get_sound(){
+    return 0;
+}
+
 std::vector<std::shared_ptr<BulletInterface>> Pickable::get_explotion(Hitbox hitbox){
     return std::vector<std::shared_ptr<BulletInterface>>();
 }

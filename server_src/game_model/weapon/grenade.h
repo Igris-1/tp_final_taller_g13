@@ -7,16 +7,21 @@
 #include "bullets_strategy/bullet.h"
 #include "bullets_strategy/laser.h"
 #include "bullets_strategy/pellet.h"
+#include "bullets_strategy/explotion.h"
 #include "weapons_strategy/weapon_interface.h"
 
 class Grenade: public Pickable{
 private:
     bool active = false;
-    int explosive_time = 2000;
-    int explotion_time = 500;
+    int explotion_time = 100;
+
+     // yaml read
+    int damage;
+    int scope;
+    int reload_time; // es el tiempo hasta que explota la granada
 
 public:
-    explicit Grenade(int width, int height);
+    explicit Grenade(int width, int height, int damage, int scope, int reload_time);
     void use();
     std::vector<std::shared_ptr<BulletInterface>> get_explotion(Hitbox hitbox);
     int get_id() override;

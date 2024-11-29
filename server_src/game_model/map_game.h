@@ -17,7 +17,6 @@
 #include "pickable.h"
 #include "positionable.h"
 
-#define HEALTH 20
 #define RIGHT_DIRECTION 1
 #define LEFT_DIRECTION -1
 #define NO_DIRECTION 0
@@ -25,7 +24,7 @@
 #define GRAVITY 1
 #define JUMP_DIRECTION -1
 
-#define NOT_OWNER -1
+#define NOT_OWNER -2
 
 class MapGame {
 private:
@@ -40,6 +39,9 @@ private:
     std::list<std::shared_ptr<Pickable>> pickables_spawned;
     std::list<std::shared_ptr<BulletInterface>> bullets;
     std::list<std::shared_ptr<Pickable>> explosives;
+    sounds_DTO sounds;
+
+    const int HEALTH = 20;
 
     bool hitbox_in_range(Hitbox hitbox, bool can_fall);
     bool position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand);
@@ -52,14 +54,16 @@ private:
 
 
 public:
-    explicit MapGame(int width, int height);
+    explicit MapGame(int width, int height, int health);
+    int get_width();
+    int get_height();
 
     // MAP STRUCTURE
     bool add_invalid_position(Hitbox hitbox); 
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
-    bool approximate_spawn_to_platform(int x, int& y, int width, int height, bool is_item);
+    bool approximate_spawn_to_platform(Hitbox& hitbox, bool is_item);
     bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
 
     // DUCKS
@@ -75,7 +79,7 @@ public:
     // void keep_using_item(int duck_id, bool right_direction);
 
     // BULLETS AND PICKABLE
-    void bullets_next_movement();
+    void bullets_next_movement(const std::map<std::string, weapon_config>& weapons_config);
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
     void ducks_try_pick_up(int id_duck);
     void throw_item(int duck_id, bool right_direction, bool looking_up);
@@ -91,6 +95,8 @@ public:
     std::vector<weapon_DTO> get_weapons_DTO_list();
     std::vector<platform_DTO> get_platforms_DTO();
     std::vector<box_DTO> get_boxes_DTO();
+    sounds_DTO get_sounds_DTO();
+    void set_bullet_sound(int sound);
 
     // MANAGE DUCKS
     std::list<std::shared_ptr<BulletInterface>>& get_bullets_list();

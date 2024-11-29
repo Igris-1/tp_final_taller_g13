@@ -10,7 +10,7 @@
 //         started_game(false) {}
 
     Game::Game (GameConfig& config):
-            map(config.get_map_width(), config.get_map_height()),
+            map(config.get_map_width(), config.get_map_height(), config.get_duck_config().health),
             ducks_states(),
             time_to_respawn(TIME_TO_RESPAWN),
             actual_round(0),
@@ -119,7 +119,7 @@ void Game::continue_horizontal_movements() {
         }
     }
     for (int j = 0; j < SPEED_OF_GAME * 4; j++) {
-        this->map.bullets_next_movement();
+        this->map.bullets_next_movement(this->weapons_config);
         this->map.explosives_on_map();
     }
 
@@ -204,11 +204,21 @@ game_snapshot_t Game::get_snapshot() {
     snapshot.weapons_len = snapshot.weapons.size();
     snapshot.boxes = this->map.get_boxes_DTO();
     snapshot.boxes_len = snapshot.boxes.size();
+    snapshot.sounds = this->map.get_sounds_DTO();
+    for (auto it = ducks_states.begin(); it != ducks_states.end(); ++it) {
+        //if(it->second->is_dea 
+        if(!this->map.duck_is_alive(it->first)){
+            snapshot.sounds.death = true;
+            break;
+        }
+    }
     return snapshot;
 }
 
 map_structure_t Game::get_map_structure() {
     map_structure_t map_structure;
+    map_structure.height = this->map.get_height();
+    map_structure.width = this->map.get_width();
     map_structure.platforms = this->map.get_platforms_DTO();
     map_structure.platforms_len = static_cast<uint16_t>(map_structure.platforms.size());
     return map_structure;
@@ -269,15 +279,15 @@ void Game::keep_using_item() {
     }
 }
 
-void Game::add_spawn_duck(int x, int y){
-    if(this->map.approximate_spawn_to_platform(x, y, DUCK_WIDTH, DUCK_HEIGHT, false)){
-        this->spawn_ducks.push_back(std::make_tuple(x, y));
+void Game::add_spawn_duck(Hitbox hitbox) {
+    if(this->map.approximate_spawn_to_platform(hitbox, false)){
+        this->spawn_ducks.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
     }
 }
 
-void Game::add_spawn_position(int x, int y) {
-    if(this->map.approximate_spawn_to_platform(x, y, 64, 64, true)){
-        this->spawn_positions.push_back(std::make_tuple(x, y));
+void Game::add_spawn_position(Hitbox hitbox) {
+    if(this->map.approximate_spawn_to_platform(hitbox, true)){
+        this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
     }
 }
 
@@ -290,7 +300,6 @@ void Game::stop_duck_item(int id, bool stop_fire) {
 
 void Game::duck_looks_up(int id, bool looking_up) {
     if (looking_up) {
-         std::cout << "looking up" << std::endl;
         this->ducks_states[id]->looking_up = true;
         return;
     }
@@ -299,7 +308,6 @@ void Game::duck_looks_up(int id, bool looking_up) {
 void Game::duck_stops_looking_up(int id, bool stops_looking_up) {
     
     if (stops_looking_up) {
-        std::cout << "stops looking up" << std::endl;
         this->ducks_states[id]->looking_up = false;
         return;
     }
@@ -320,17 +328,6 @@ void Game::add_new_platform(Hitbox hitbox) {
 void Game::add_box(Hitbox hitbox) { 
     this->map.add_box(hitbox); 
     }
-
-void Game::add_item_on_map(std::string type, int x, int y) {
-    try{
-
-        std::shared_ptr<Pickable> item = WeaponFactory::createWeapon(this->map.get_bullets_list(), type);
-        this->map.add_item(item, x, y);
-    }catch(MapError& e){
-        std::cerr << e.what() << std::endl;
-        std::cerr << "Error al agregar item " << type << " en posicion (" << x << " " <<  y << ") "<< std::endl;   
-    }
-}
 
 void Game::pick_up_item(int duck_id, bool pick_up) {
     if (!pick_up || !this->map.duck_exist(duck_id) || !this->map.duck_is_alive(duck_id)) {
@@ -387,7 +384,7 @@ void Game::random_item_spawn(bool on_game) {
             try{
                 std::cout << "agregando arma random en posicion (" << std::get<0>(pos) << " " <<  std::get<1>(pos) << ") " << std::endl;
                 this->map.add_item(WeaponFactory::createWeapon(
-                                         this->map.get_bullets_list(), "random"),
+                                         this->map.get_bullets_list(), "random", this->weapons_config),
                                  std::get<0>(pos), std::get<1>(pos));
                 }catch(MapError& e){
                     std::cerr << e.what() << std::endl;
@@ -422,13 +419,12 @@ void Game::load_configuration(GameConfig& config){
 
     aux_tuple =  config.get_item("ducks_spawn");
     for(auto& duck_spawn : aux_tuple){
-        // this->add_spawn_duck(Hitbox(std::get<0>(duck_spawn), std::get<1>(duck_spawn), std::get<2>(duck_spawn), std::get<3>(duck_spawn)));
-        this->add_spawn_duck(std::get<0>(duck_spawn), std::get<1>(duck_spawn));
+        this->add_spawn_duck(Hitbox(std::get<0>(duck_spawn), std::get<1>(duck_spawn), std::get<2>(duck_spawn), std::get<3>(duck_spawn)));
     }
 
     aux_tuple =  config.get_item("weapons_spawn");
     for(auto& weapon_spawn : aux_tuple){
-        // this->add_spawn_position(Hitbox(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn), std::get<2>(weapon_spawn), std::get<3>(weapon_spawn)));
-        this->add_spawn_position(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn));
+        this->add_spawn_position(Hitbox(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn), std::get<2>(weapon_spawn), std::get<3>(weapon_spawn)));
+        // this->add_spawn_position(std::get<0>(weapon_spawn), std::get<1>(weapon_spawn));
     }
 }

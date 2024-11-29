@@ -16,26 +16,26 @@ weapon:
     shot: 1
     damage: 20
     recoil: 0
-    scope: 0
-    reload_time: 10 # time to explode
-    hitbox_width: 36
-    hitbox_height: 18
-  
+    scope: 7 # distnace of the explosion in tiles
+    reload_time: 1500 # time to explode
+    hitbox_width: 25
+    hitbox_height: 25
+
   banana:
     shot: 1
     damage: 10
-    recoil: 0
-    scope: 0
+    recoil: 0 # no recoil
+    scope: 0 # no scope
     reload_time: 0 # never explodes
-    hitbox_width: 36
-    hitbox_height: 18
+    hitbox_width: 25
+    hitbox_height: 25
 
   pew_pew_laser:
     shot: 12
     damage: 8
     recoil: 0
-    scope: 35
-    reload_time: 0 # time to reload
+    scope: 35 # distnace of shot in tiles
+    reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
 
@@ -43,35 +43,35 @@ weapon:
     shot: 10
     damage: 15
     recoil: 0
-    scope: 30
-    reload_time: 0
-    hitbox_width: 36
-    hitbox_height: 18
+    scope: 62 # distnace of shot in tiles
+    reload_time: 5 #time between shots
+    hitbox_width: 48
+    hitbox_height: 24
 
   ak_47:
-    shot: 30
+    shot: 50
     damage: 5
     recoil: 5
-    scope: 13
-    reload_time: 0
-    hitbox_width: 36
-    hitbox_height: 18
+    scope: 32 # distnace of shot in tiles
+    reload_time: 6 #time between shots
+    hitbox_width: 48
+    hitbox_height: 24
 
   dueling_pistol:
     shot: 1
     damage: 40
     recoil: 9
-    scope: 5
-    reload_time: 0
+    scope: 25 # distnace of shot in tiles
+    reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
 
   cowboy_pistol:
     shot: 6
     damage: 5
-    recoil: 10
-    scope: 20
-    reload_time: 0
+    recoil: 0
+    scope: 25  # distnace of shot in tiles
+    reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
 
@@ -79,8 +79,8 @@ weapon:
     shot: 6
     damage: 7
     recoil: 12
-    scope: 20
-    reload_time: 0 
+    scope: 20 # distnace of shot in tiles
+    reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
 
@@ -88,16 +88,16 @@ weapon:
     shot: 2
     damage: 7
     recoil: 12
-    scope: 8
-    reload_time: 0 
+    scope: 8 # distnace of shot in tiles
+    reload_time: 10 #time after recharge
     hitbox_width: 36
     hitbox_height: 18
-  
+
   sniper:
     shot: 3
     damage: 50
     recoil: 0
-    scope: 64
-    reload_time: 6 
-    hitbox_width: 36
-    hitbox_height: 18
+    scope: 64 # distnace of shot in tiles
+    reload_time: 10 #time after recharge
+    hitbox_width: 33
+    hitbox_height: 9

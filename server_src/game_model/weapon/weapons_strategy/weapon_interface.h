@@ -6,6 +6,7 @@
 
 #include "../bullets_strategy/bullet_interface.h"
 
+#define TILE_SIZE 16
 /*
     todas las armas deben tener dispersion, retroceso y tiempo de recarga,
     PERO no todas las armas son afectadas por estos o de la misma forma.
@@ -13,39 +14,21 @@
    establecida.
 */
 
-typedef enum {
-    COWBOY_PISTOL_RECOIL = 0,
-    LASER_RIFLE_RECOIL = 0,
-    GRENADE_RECOIL = 0,
-    AK47_RECOIL = 10,
-    SHOTGUN_RECOIL = 150,
-} RECOIL;
-
-typedef enum {
-    FIRE_RATE_COWBOY_PISTOL = 20,
-    FIRE_RATE_LASER_RIFLE = 5,
-    FIRE_RATE_AK47 = 6,
-    FIRE_RATE_SHOTGUN = 10,
-    FIRE_RATE_PEW_PEW = 10,
-    
-} FIRE_RATE;
-
-typedef enum {
-    TRAVEL_DISTANCE_COWBOY_PISTOL = 500,
-    TRAVEL_DISTANCE_LASER_RIFLE = 1000,
-    TRAVEL_DISTANCE_AK47 = 700,
-    TRAVEL_DISTANCE_SHOTGUN = 125,
-    TRAVEL_DISTANCE_PEW_PEW = 500,
-    TRAVEL_DISTANCE_GRENADE = 40,
-} TRAVEL_DISTANCE;
-
 class Duck;
 
 class WeaponInterface {
 protected:
     int fire_rate = 0;
+    
+     // yaml read
+    int shot;
+    int damage;
+    int recoil;
+    int scope;
+    int reload_time;
 
 public:
+    WeaponInterface(int shot, int damage, int recoil, int scope, int reload_time);
     virtual std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,
                                                                int x_position, int y_position,
                                                                int x_direction, int y_direction,
@@ -53,6 +36,7 @@ public:
     virtual void fire_rate_down();
     virtual int recoil_produced() = 0;
     virtual int get_id() = 0;
+    virtual int get_sound();
     virtual ~WeaponInterface() {}
 };
 

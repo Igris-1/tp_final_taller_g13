@@ -69,8 +69,8 @@ private:
     bool started_game;
 
     // yaml things
-    std::map<std::string, weapon_config> weapons_config;
-    duck_config ducks_config;
+    const std::map<std::string, weapon_config> weapons_config;
+    const duck_config ducks_config;
     
     // "defines" from yaml
     const int TILES_FOR_JUMP = 175;
@@ -126,9 +126,8 @@ public:
     // MAP FUNCTIONS
     void add_invalid_position(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
-    void add_item_on_map(std::string type, int x, int y);
-    void add_spawn_position(int x, int y);  // agrega una posicion de spawn de armas
-    void add_spawn_duck(int x, int y);
+    void add_spawn_position(Hitbox hitbox);  // agrega una posicion de spawn de armas
+    void add_spawn_duck(Hitbox hitbox);
     void add_box(Hitbox hitbox);
     void load_configuration(GameConfig& config);
 

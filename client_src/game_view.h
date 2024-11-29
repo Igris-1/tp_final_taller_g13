@@ -43,21 +43,26 @@ private:
     GearView gear_view;
 
     void set_up_game();
-    void load_map();
-    void load_ducks(game_snapshot_t gs);
-    void load_bullets(game_snapshot_t gs);
-    void load_weapons(game_snapshot_t gs);
-    void draw_scoreboard(score_DTO score);
+    void render_map();
+    void render_ducks(game_snapshot_t gs);
+    void render_bullets(game_snapshot_t gs);
+    void render_weapons(game_snapshot_t gs);
+    void render_scoreboard(score_DTO score);
     void zoom(game_snapshot_t gs);
-    void load_boxes(game_snapshot_t gs);
+    void render_boxes(game_snapshot_t gs);
     void add_ducks(game_snapshot_t gs);
+    void load_duck_textures();
+    void load_music();
+    void load_gear_textures();
+    void load_map_textures();
+    void show_loading_screen();
 
 public:
     GameView();
     void add_map(map_structure_t map);
-    void load_score(score_DTO score);
-    void load_endgame_score(score_DTO score);
-    void load_game(game_snapshot_t gs);
+    void render_score(score_DTO score);
+    void render_endgame_score(score_DTO score);
+    void render_game(game_snapshot_t gs);
     ~GameView();
 };
 
