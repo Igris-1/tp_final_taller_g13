@@ -169,11 +169,15 @@ bool MapGame::add_invalid_position(Hitbox hitbox) {
 }
 
 bool MapGame::add_platform(Hitbox hitbox) {
+<<<<<<< HEAD
     // if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox, false)) {
     //     return false;
     // }
 
     if (hitbox.get_y() < 0) {
+=======
+    if(hitbox.get_y() < 0){
+>>>>>>> 60d29d16e31af12f659d913abef7236cc12bd21c
         hitbox.move(hitbox.get_x(), 0);
     }
     if (hitbox.get_y() + hitbox.get_height() > this->height) {
@@ -187,11 +191,18 @@ bool MapGame::add_platform(Hitbox hitbox) {
     }
     for (const auto& existing_hitbox: this->platforms) {
         if (std::abs(existing_hitbox.get_y() - hitbox.get_y()) <= 10) {
+<<<<<<< HEAD
             hitbox.move(hitbox.get_x(), existing_hitbox.get_y());
             break;  // No need to continue once we've aligned the Y position
         }
     }
 
+=======
+            hitbox.move(hitbox.get_x() ,existing_hitbox.get_y());
+            break; 
+        }
+    }
+>>>>>>> 60d29d16e31af12f659d913abef7236cc12bd21c
     this->platforms.insert(hitbox);
 
     return true;

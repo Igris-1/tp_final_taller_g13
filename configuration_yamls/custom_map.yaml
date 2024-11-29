@@ -24,7 +24,7 @@ platforms:
   - {x: 963, y: 127, width: 131, height: 32}
   - {x: 486, y: 235, width: 131, height: 32}
   - {x: 747, y: 234, width: 131, height: 32}
-  - {x: 621, y: 414, width: 131, height: 32}
+  - {x: 621, y: 425, width: 131, height: 32}
   - {x: 667, y: 302, width: 32, height: 32}
   - {x: 1233, y: 711, width: 131, height: 32}
   - {x: 1104, y: 710, width: 131, height: 32}
