@@ -2,6 +2,9 @@
 
 #include "../../duck.h"
 
+
+#define BULLET_SIZE 8
+
 AK47::AK47(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
@@ -14,9 +17,23 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
         return bullets;
     }
     if (this->fire_rate == 0) {
-        bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
-                                                   x_direction, y_direction,
-                                                   TILE_SIZE * this->scope, this->damage, 8));
+        if(!is_holding_button){
+            std::cout << "no se esta manteniendo el boton" << std::endl;
+            this->dispersion = 0;
+        }
+        bullets.push_back(std::make_shared<AKBullet>( duck_trigger->get_id(), x_position, y_position + this->dispersion, 
+                        x_direction , y_direction, TILE_SIZE * this->scope, this->damage,
+                        BULLET_SIZE, 0));
+
+        if(this->dispersion == 0){
+            this->dispersion = 25;
+        }
+        if(this->dispersion == 25){
+            this->dispersion = -25;
+        }
+        if(this->dispersion == -25){
+            this->dispersion = 0;
+        }
         this->shot--;
         this->fire_rate = this->reload_time;
     }

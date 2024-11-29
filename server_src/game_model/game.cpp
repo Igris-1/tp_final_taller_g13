@@ -154,6 +154,12 @@ void Game::stop_run_duck(int id, bool stop_left, bool stop_right) {
     }
 }
 
+void Game::reset_death_sound(){
+    for (auto it = ducks_states.begin(); it != ducks_states.end(); ++it) {
+        it->second->do_death_sound = true;
+    }
+}
+
 game_snapshot_t Game::get_snapshot() {
     game_snapshot_t snapshot;
     snapshot.ducks = this->get_duck_DTO_list();  // usar el de this y no el de map
@@ -167,8 +173,9 @@ game_snapshot_t Game::get_snapshot() {
     snapshot.sounds = this->map.get_sounds_DTO();
     for (auto it = ducks_states.begin(); it != ducks_states.end(); ++it) {
         // if(it->second->is_dea
-        if (!this->map.duck_is_alive(it->first)) {
+        if (!this->map.duck_is_alive(it->first) && this->ducks_states[it->first]->do_death_sound) {
             snapshot.sounds.death = true;
+            this->ducks_states[it->first]->do_death_sound = false;
             break;
         }
     }
@@ -306,6 +313,7 @@ bool Game::check_if_round_finished() {
         if (ids_ducks.size() == 1) {
             this->ducks_score[ids_ducks[0]] += 1;
         }
+        reset_death_sound();
         return true;
     }
     return false;

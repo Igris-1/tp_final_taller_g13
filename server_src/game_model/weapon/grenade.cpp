@@ -27,74 +27,37 @@ weapon_DTO Grenade::to_DTO() {
     return dto;
 }
 
+std::vector<std::shared_ptr<BulletInterface>> Grenade::create_explosion(int x, int y) {
+    std::vector<std::shared_ptr<BulletInterface>> bullets;
+    
+    const int DX[] = {RIGHT_DIRECTION, NO_DIRECTION, RIGHT_DIRECTION, LEFT_DIRECTION, NO_DIRECTION, LEFT_DIRECTION, RIGHT_DIRECTION};
+    const int DY[] = {NO_DIRECTION, DOWN_DIRECTION, DOWN_DIRECTION, NO_DIRECTION, UP_DIRECTION, UP_DIRECTION, UP_DIRECTION};
+    const int DISPERSIONS[] = {0, -DISPERSION_SMALL, -DISPERSION_MEDIUM, -DISPERSION_BIG, -DISPERSION_HUGE};
+
+    for (int dir = 0; dir < sizeof(DX) / sizeof(DX[0]); ++dir) { // todas las direcciones
+        for (int d = 0; d < sizeof(DISPERSIONS) / sizeof(DISPERSIONS[0]); ++d) { // todas las dispersiones
+            bullets.push_back(
+                std::make_shared<Explotion>( NO_OWNER, x + DISPERSIONS[d] * DX[dir], 
+                    y + DISPERSIONS[d] * DY[dir], DX[dir], DY[dir], TILE_SIZE * this->scope,
+                    this->damage, SHRAPNEL_SIZE));
+        }
+    }
+    return bullets;
+}
+
 std::vector<std::shared_ptr<BulletInterface>> Grenade::get_explotion(Hitbox hitbox) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
-    int x = hitbox.get_x() + hitbox.get_width() / 2;
+    int x = hitbox.get_x() + hitbox.get_width() / HALF;
     int y = hitbox.get_y();
-    bullets.push_back(
-            std::make_shared<Explotion>(-1, x, y, 1, 0, TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(
-            std::make_shared<Explotion>(-1, x, y, 0, 1, TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(
-            std::make_shared<Explotion>(-1, x, y, 1, 1, TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y, -1, 0, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y, 0, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y, -1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(
-            std::make_shared<Explotion>(-1, x, y, 1, 0, TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 10, y, 1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 15, 1, 0, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 15, -1, 0, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(
-            std::make_shared<Explotion>(-1, x, y, 1, 1, TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 10, -1, 0, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 30, -1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 10, -1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x + 10, y - 10, 0, -1,
-                                                  TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x + 20, y - 10, 0, -1,
-                                                  TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 10, y - 10, 0, -1,
-                                                  TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 20, y - 10, 0, -1,
-                                                  TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 30, 1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y - 10, 1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 5, y - 10, 1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 10, y - 10, 1, -1,
-                                                  TILE_SIZE * this->scope, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 20, y - 10, 1, -1,
-                                                  (TILE_SIZE * this->scope) / 2, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x - 30, y - 10, 1, -1,
-                                                  (TILE_SIZE * this->scope) / 2, this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x, y, 0, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-    bullets.push_back(std::make_shared<Explotion>(-1, x + 10, y, -1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
-
-    bullets.push_back(std::make_shared<Explotion>(-1, x + 30, y, -1, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 32));
+    bullets = this->create_explosion(x, y);
     this->explotion_time--;
     return bullets;
 }
 
-bool Grenade::is_exploding() { return this->explotion_time > 0; }
+bool Grenade::is_exploding() { return this->explotion_time > NO_TIME;}
 
 void Grenade::fire_rate_down() {
     if (this->is_active()) {
         this->reload_time--;
-        std::cout << "reload time: " << this->reload_time << std::endl;
     }
 }

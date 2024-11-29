@@ -2,7 +2,7 @@
 
 #include "../duck.h"
 
-Helmet::Helmet(int width, int height): Pickable(0, 0, width, height) {}
+Helmet::Helmet(int width, int height): Pickable(DEFAULT_X, DEFAULT_Y, width, height) {}
 
 void Helmet::use() { this->duck->add_helmet(); }
 

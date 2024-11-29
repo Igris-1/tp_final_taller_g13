@@ -8,19 +8,19 @@ Box::Box(int x, int y, int width, int height):
 
 void Box::receive_damage(int damage) {
     this->resistance -= damage;
-    if (this->resistance < 0) {
-        this->resistance = 0;
+    if (this->resistance < NO_RESISTANCE) {
+        this->resistance = NO_RESISTANCE;
     }
 }
 
-bool Box::is_destroyed() { return this->resistance == 0; }
+bool Box::is_destroyed() { return this->resistance == NO_RESISTANCE; }
 
 bool Box::get_reward() {
-    // std::srand(std::time(0));
-    // if(std::rand() % 2){
-    //     return true;
-    // }
-    return true;
+    std::srand(std::time(0));
+    if(std::rand() % 2){
+        return true;
+    }
+    return false;
 }
 
 box_DTO Box::get_DTO() {

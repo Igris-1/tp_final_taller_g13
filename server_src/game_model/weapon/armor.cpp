@@ -2,7 +2,7 @@
 
 #include "../duck.h"
 
-Armor::Armor(int width, int height): Pickable(0, 0, width, height) {}
+Armor::Armor(int width, int height): Pickable(DEFAULT_X, DEFAULT_Y, width, height) {}
 
 void Armor::use() { this->duck->add_armor(); }
 

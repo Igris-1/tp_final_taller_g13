@@ -6,6 +6,9 @@
 #include "weapon.h"
 #include "weapon_interface.h"
 
+#define DOWN_DISPERSION 1
+#define UP_DISPERSION -1
+#define NO_DISPERSION 0
 
 class PewPew: public WeaponInterface {
 private:
@@ -20,16 +23,5 @@ public:
     int get_sound() override;
     ~PewPew() override{};
 };
-
-
-//  std::vector<BulletInterface> fire(Position start_position, Position direction) {
-//             std::vector<BulletInterface> bullets;
-//             bullets.push_back(Laser(start_position, direction, TILES_LASER_DISTANCE));
-//             bullets.push_back(Laser(start_position, direction + Position(1,0),
-//         TILES_LASER_DISTANCE));
-//             bullets.push_back(Laser(start_position, direction + Position(-1,0),
-//         TILES_LASER_DISTANCE));
-//             return bullets;
-//         }
 
 #endif

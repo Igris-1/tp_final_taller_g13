@@ -13,6 +13,14 @@
 #define NO_AIRE_TIME 0
 #define NO_DIRECTION 0
 
+// defines for bullets
+#define NO_OWNER -1
+#define RIGHT_DIRECTION 1 
+#define LEFT_DIRECTION -1
+#define UP_DIRECTION -1
+#define DOWN_DIRECTION 1
+#define NO_DIRECTION 0
+
 class BulletInterface;
 
 typedef enum {

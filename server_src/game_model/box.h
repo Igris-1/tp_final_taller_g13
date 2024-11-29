@@ -9,9 +9,12 @@
 #include "DTOs.h"
 #include "positionable.h"
 
+#define NO_RESISTANCE 0
+#define RESISTANCE 1
+
 class Box: public Positionable {
 private:
-    int resistance;
+    int resistance ;
 
 public:
     Box(Hitbox hitbox);

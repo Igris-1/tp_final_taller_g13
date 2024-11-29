@@ -9,4 +9,4 @@ void WeaponInterface::fire_rate_down() {
     }
 }
 
-int WeaponInterface::get_sound() { return 0; }
+int WeaponInterface::get_sound() { return NO_SOUND; }

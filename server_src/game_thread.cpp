@@ -12,7 +12,7 @@
 #include "sender_thread.h"
 
 #define LOOP_TIME 40000
-#define AMOUNT_OF_PLAYERS 2
+#define AMOUNT_OF_PLAYERS 4
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(nullptr), gameQueue(gameQueue), clients(clients) {

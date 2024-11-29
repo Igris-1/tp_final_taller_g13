@@ -11,15 +11,29 @@
 #include "bullets_strategy/pellet.h"
 #include "weapons_strategy/weapon_interface.h"
 
+#define EXPLOTION_TIME 100
+#define SHRAPNEL_SIZE 32
+#define NO_TIME 0
+
+// relatives directions
+#define DISPERSION_SMALL 10
+#define DISPERSION_MEDIUM 15
+#define DISPERSION_BIG 20
+#define DISPERSION_HUGE 30
+
+#define HALF 2
+
 class Grenade: public Pickable {
 private:
     bool active = false;
-    int explotion_time = 100;
+    int explotion_time = EXPLOTION_TIME;
 
     // yaml read
     int damage;
     int scope;
     int reload_time;  // es el tiempo hasta que explota la granada
+
+    std::vector<std::shared_ptr<BulletInterface>> create_explosion(int x, int y);
 
 public:
     explicit Grenade(int width, int height, int damage, int scope, int reload_time);

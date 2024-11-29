@@ -9,12 +9,15 @@
 
 #include "weapon_interface.h"
 
+#define HALF 2
+#define DIFFERENTIAL_Y -10
+
+#define NO_BULLETS 0
+#define NO_WEAPON_SOUND 0
+
 
 class Weapon: public Pickable {
 protected:
-    // int dispersion;
-    // int recoil;
-    // bool reload_time;
     bool holding_button;
 
     std::list<std::shared_ptr<BulletInterface>>& bullets;

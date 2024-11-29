@@ -504,8 +504,7 @@ bool MapGame::approximate_spawn_to_platform(Hitbox& hitbox, bool is_item) {
 }
 
 sounds_DTO MapGame::get_sounds_DTO() {
-    return sounds_DTO();
-    // sounds_DTO dto = this->sounds;
-    // this->sounds = sounds_DTO();
-    // return dto;
+    sounds_DTO dto = this->sounds;
+    this->sounds = sounds_DTO();
+    return dto;
 }

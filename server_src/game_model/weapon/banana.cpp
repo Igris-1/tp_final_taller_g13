@@ -1,6 +1,6 @@
 #include "banana.h"
 
-Banana::Banana(int width, int height): Pickable(0, 0, width, height) {}
+Banana::Banana(int width, int height): Pickable(DEFAULT_X, DEFAULT_Y, width, height) {}
 
 void Banana::use() { this->active = true; }
 

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../bullets_strategy/bullet.h"
+#include "../bullets_strategy/AKBullet.h"
 #include "../bullets_strategy/bullet_interface.h"
 
 #include "weapon.h"
@@ -12,6 +13,7 @@
 
 class AK47: public WeaponInterface {
 private:
+    int dispersion = 0;
 public:
     AK47(int shot, int damage, int recoil, int scope, int reload_time);
     std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,

@@ -3,12 +3,13 @@
 
 #include <memory>
 
-#include "../bullets_strategy/bullet.h"
+#include "../bullets_strategy/fmj_bullet.h"
 #include "../bullets_strategy/bullet_interface.h"
 
 #include "weapon.h"
 #include "weapon_interface.h"
 
+#define SNIPER_SOUND 2
 
 class Sniper: public WeaponInterface {
 private:

@@ -3,6 +3,7 @@
 #include "../../duck.h"
 
 #define LASER_PER_SHOT 3
+#define LASER_SIZE 8
 
 PewPew::PewPew(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(LASER_PER_SHOT * shot, damage, recoil, scope, reload_time) {}
@@ -18,14 +19,14 @@ std::vector<std::shared_ptr<BulletInterface>> PewPew::fire(std::shared_ptr<Duck>
     }
     if (this->fire_rate == 0) {
         bullets.push_back(std::make_shared<Laser>(duck_trigger->get_id(), x_position, y_position,
-                                                  x_direction, 1, TILE_SIZE * this->scope,
-                                                  this->damage, 8));
+                                                  x_direction, DOWN_DISPERSION, TILE_SIZE * this->scope,
+                                                  this->damage, LASER_SIZE));
         bullets.push_back(std::make_shared<Laser>(duck_trigger->get_id(), x_position, y_position,
-                                                  x_direction, 0, TILE_SIZE * this->scope,
-                                                  this->damage, 8));
+                                                  x_direction, NO_DISPERSION, TILE_SIZE * this->scope,
+                                                  this->damage, LASER_SIZE));
         bullets.push_back(std::make_shared<Laser>(duck_trigger->get_id(), x_position, y_position,
-                                                  x_direction, -1, TILE_SIZE * this->scope,
-                                                  this->damage, 8));
+                                                  x_direction, UP_DISPERSION, TILE_SIZE * this->scope,
+                                                  this->damage, LASER_SIZE));
         ;
 
         this->shot--;

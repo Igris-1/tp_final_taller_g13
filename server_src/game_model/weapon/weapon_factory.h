@@ -21,10 +21,10 @@ class Pickable;
 
 class WeaponFactory {
 public:
-    // "cowboy", "sniper", "shotgun", "pew_pew", "laser_rifle", "" (no weapon)
+    /* "grenade", "banana", "pew_pew_laser", "laser_rifle", "ak_47", "dueling_pistol",
+            "cowboy_pistol", "magnum", "shotgun", "sniper", "armor", "helmet" */
     static std::shared_ptr<Pickable> createWeapon(
             std::list<std::shared_ptr<BulletInterface>>& bullets, std::string weapon_name,
             const std::map<std::string, weapon_config>& weapons_config);
 };
-
 #endif  // WEAPON_FACTORY_H

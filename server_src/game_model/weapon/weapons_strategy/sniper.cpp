@@ -2,6 +2,7 @@
 
 #include "../../duck.h"
 
+#define FMJ_SIZE 10
 
 Sniper::Sniper(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -21,9 +22,14 @@ std::vector<std::shared_ptr<BulletInterface>> Sniper::fire(std::shared_ptr<Duck>
         return bullets;
     }
     if (this->fire_rate == 0 && !is_holding_button) {
-        bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
-                                                   x_direction, y_direction,
-                                                   TILE_SIZE * this->scope, this->damage, 8));
+        bool vertical = true;
+
+        if(x_direction * x_direction > y_direction * y_direction){ 
+            vertical = false;
+        }
+        bullets.push_back(std::make_shared<FMJ>( duck_trigger->get_id(), x_position, y_position, 
+                        x_direction , y_direction, TILE_SIZE * this->scope, this->damage,
+                         FMJ_SIZE, vertical));
         this->shot -= bullets.size();
         this->reload = true;
     }
@@ -33,4 +39,4 @@ std::vector<std::shared_ptr<BulletInterface>> Sniper::fire(std::shared_ptr<Duck>
 int Sniper::get_id() { return SNIPER_ID; }
 
 int Sniper::recoil_produced() { return this->recoil; }
-int Sniper::get_sound() { return 2; }
+int Sniper::get_sound() { return SNIPER_SOUND; }

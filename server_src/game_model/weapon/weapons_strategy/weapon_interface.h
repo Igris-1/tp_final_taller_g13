@@ -7,13 +7,14 @@
 #include "../bullets_strategy/bullet_interface.h"
 
 #define TILE_SIZE 16
+
+#define NO_SOUND 0
 /*
     todas las armas deben tener dispersion, retroceso y tiempo de recarga,
     PERO no todas las armas son afectadas por estos o de la misma forma.
     todas las armas devuelven una lista de balas que se disparan con una direccion y distancia
    establecida.
 */
-
 class Duck;
 
 class WeaponInterface {

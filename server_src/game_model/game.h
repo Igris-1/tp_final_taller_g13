@@ -60,6 +60,7 @@ typedef struct {
     bool crouching = false;
     bool trying_to_stand = false;
     bool looking_up = false;
+    bool do_death_sound = true;
 
 } duck_state;
 
@@ -95,6 +96,7 @@ private:
     void load_boxes(std::vector<std::tuple<int, int, int, int>>& spawns);
     void load_spawn_ducks(std::vector<std::tuple<int, int, int, int>>& spawns);
     void load_spawn_weapons(std::vector<std::tuple<int, int, int, int>>& spawns);
+    void reset_death_sound();
 
     // MAP FUNCTIONS
     void add_invalid_position(Hitbox hitbox);
