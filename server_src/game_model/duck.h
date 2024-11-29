@@ -7,6 +7,7 @@
 #include "../../common_src/duck_DTO.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapon_factory.h"
+
 #include "positionable.h"
 
 
@@ -36,7 +37,6 @@ private:
     std::shared_ptr<Pickable> item_in_hands;
 
 public:
-
     // DUCK LOGIC
     explicit Duck(int health, int id);
     bool is_alive();
@@ -79,7 +79,6 @@ public:
     void tick_respawn_time();
     int get_respawn_time();
     void set_health(int health);
-    
 };
 
 #endif

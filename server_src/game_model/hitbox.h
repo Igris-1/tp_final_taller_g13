@@ -1,8 +1,8 @@
 #ifndef HITBOX_H
 #define HITBOX_H
 
-#include <set>
 #include <iostream>
+#include <set>
 
 class Hitbox {
 private:
@@ -14,9 +14,10 @@ private:
     int width;
     int height;
     int original_DY;
+
 public:
-    Hitbox(int x, int y, int width, int height): x(x), y(y), width(width), height(height){
-        this->original_DY = height-y;
+    Hitbox(int x, int y, int width, int height): x(x), y(y), width(width), height(height) {
+        this->original_DY = height - y;
     };
 
     bool has_collision(const int x, const int y) {
@@ -92,7 +93,7 @@ public:
             new_hitbox.y = new_y;
             new_hitbox.height = new_height;
 
-            for (const Hitbox& other : potential_collisions) {
+            for (const Hitbox& other: potential_collisions) {
                 if (new_hitbox.has_collision(other)) {
                     // Collision detected, cancel resizing
                     return false;
@@ -108,8 +109,6 @@ public:
         this->height = new_height;
         return true;
     }
-
-    
 };
 
 #endif

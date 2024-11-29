@@ -13,6 +13,7 @@
 #include <SDL2pp/Window.hh>
 
 #include "../common_src/game_snapshot_t.h"
+
 #include "gear_view.h"
 
 using namespace SDL2pp;
@@ -40,7 +41,8 @@ private:
     SDL_Rect createDuckRect(int x, int y, int h, int w);
 
 public:
-    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& duck_looking_up_texture, Texture& duck_dead_texture, Texture& wing_sprites, GearView& gear_view);
+    DuckView(Renderer& renderer, Texture& duck_sprites, Texture& duck_looking_up_texture,
+             Texture& duck_dead_texture, Texture& wing_sprites, GearView& gear_view);
     void draw_duck(duck_DTO& duck);
 
     ~DuckView();

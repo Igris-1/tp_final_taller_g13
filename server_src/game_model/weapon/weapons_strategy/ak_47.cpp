@@ -2,7 +2,8 @@
 
 #include "../../duck.h"
 
-AK47::AK47(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(shot, damage, recoil, scope, reload_time) {}
+AK47::AK47(int shot, int damage, int recoil, int scope, int reload_time):
+        WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
 std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> duck_trigger,
                                                          int x_position, int y_position,
@@ -16,7 +17,8 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
     if (this->fire_rate == 0) {
         std::cout << "fire AK47" << std::endl;
         bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
-                                                   x_direction, y_direction, TILE_SIZE * this->scope, this->damage, 8));
+                                                   x_direction, y_direction,
+                                                   TILE_SIZE * this->scope, this->damage, 8));
         this->shot--;
         this->fire_rate = this->reload_time;
     }

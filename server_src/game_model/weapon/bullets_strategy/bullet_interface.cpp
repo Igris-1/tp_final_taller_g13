@@ -3,7 +3,7 @@
 
 BulletInterface::BulletInterface(int duck_trigger_id, int x, int y, int x_direction,
                                  int y_direction, int damage, int size):
-        Positionable(x, y, size, size/2), duck_trigger_id(duck_trigger_id), damage(damage) {
+        Positionable(x, y, size, size / 2), duck_trigger_id(duck_trigger_id), damage(damage) {
     this->x_direction = x_direction;
     this->y_direction = y_direction;
 }

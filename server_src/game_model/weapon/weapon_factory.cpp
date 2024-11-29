@@ -1,13 +1,15 @@
 #include "weapon_factory.h"
+
 #include <cstdlib>
 #include <ctime>
 
-#include "weapons_strategy/weapon.h"
-#include "helmet.h"
-#include "armor.h"
-#include "grenade.h"
-#include "banana.h"
 #include "../pickable.h"
+#include "weapons_strategy/weapon.h"
+
+#include "armor.h"
+#include "banana.h"
+#include "grenade.h"
+#include "helmet.h"
 
 #define SIZE_ARMOR 24
 #define SIZE_HELMET 30
@@ -15,13 +17,13 @@
 std::string last_weapon = "";
 int i = -1;
 
-std::shared_ptr<Pickable> WeaponFactory::createWeapon(std::list<std::shared_ptr<BulletInterface>>& bullets,
-                                   std::string weapon_name,
-                                    const std::map<std::string, weapon_config>& weapons_config) {
+std::shared_ptr<Pickable> WeaponFactory::createWeapon(
+        std::list<std::shared_ptr<BulletInterface>>& bullets, std::string weapon_name,
+        const std::map<std::string, weapon_config>& weapons_config) {
 
-    static const std::vector<std::string> weapon_names = 
-    {"grenade", "banana", "pew_pew_laser", "laser_rifle", "ak_47", "dueling_pistol",
-         "cowboy_pistol" , "magnum", "shotgun", "sniper", "armor", "helmet"};
+    static const std::vector<std::string> weapon_names = {
+            "grenade",       "banana", "pew_pew_laser", "laser_rifle", "ak_47", "dueling_pistol",
+            "cowboy_pistol", "magnum", "shotgun",       "sniper",      "armor", "helmet"};
 
 #ifdef RANDOM
     if (weapon_name == "random") {
@@ -37,7 +39,7 @@ std::shared_ptr<Pickable> WeaponFactory::createWeapon(std::list<std::shared_ptr<
 #ifndef RANDOM
     if (weapon_name == "random") {
         i++;
-        if(i == weapon_names.size()){
+        if (i == weapon_names.size()) {
             i = 0;
         }
         return createWeapon(bullets, weapon_names[i], weapons_config);
@@ -53,7 +55,8 @@ std::shared_ptr<Pickable> WeaponFactory::createWeapon(std::list<std::shared_ptr<
         recoil = it->second.recoil;
         scope = it->second.scope;
         reload_time = it->second.reload_time;
-        std::cout << "\n\n" << "arma creada: " << weapon_name << std::endl;
+        std::cout << "\n\n"
+                  << "arma creada: " << weapon_name << std::endl;
         std::cout << "\t\tshots: " << shot << std::endl;
         std::cout << "\t\tdamage: " << damage << std::endl;
         std::cout << "\t\trecoil: " << recoil << std::endl;
@@ -61,50 +64,50 @@ std::shared_ptr<Pickable> WeaponFactory::createWeapon(std::list<std::shared_ptr<
         std::cout << "\t\treload_time: " << reload_time << std::endl;
         std::cout << "\n\n";
     }
-    
+
     if (weapon_name == "cowboy_pistol") {
         return std::make_shared<Weapon>(new CowboyPistol(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+                                        width, height, bullets);
     }
 
-    if(weapon_name == "dueling_pistol"){
+    if (weapon_name == "dueling_pistol") {
         return std::make_shared<Weapon>(new DuelingPistol(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+                                        width, height, bullets);
     }
     if (weapon_name == "magnum") {
-        return std::make_shared<Weapon>(new Magnum(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+        return std::make_shared<Weapon>(new Magnum(shot, damage, recoil, scope, reload_time), width,
+                                        height, bullets);
     }
     if (weapon_name == "sniper") {
-        return std::make_shared<Weapon>(new Sniper(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+        return std::make_shared<Weapon>(new Sniper(shot, damage, recoil, scope, reload_time), width,
+                                        height, bullets);
     }
     if (weapon_name == "pew_pew_laser") {
-        return std::make_shared<Weapon>(new PewPew(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+        return std::make_shared<Weapon>(new PewPew(shot, damage, recoil, scope, reload_time), width,
+                                        height, bullets);
     }
     if (weapon_name == "ak_47") {
-        return std::make_shared<Weapon>(new AK47(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+        return std::make_shared<Weapon>(new AK47(shot, damage, recoil, scope, reload_time), width,
+                                        height, bullets);
     }
     if (weapon_name == "shotgun") {
         return std::make_shared<Weapon>(new Shotgun(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+                                        width, height, bullets);
     }
-    if(weapon_name == "grenade"){
+    if (weapon_name == "grenade") {
         return std::make_shared<Grenade>(width, height, damage, scope, reload_time);
     }
     if (weapon_name == "laser_rifle") {
         return std::make_shared<Weapon>(new LaserRifle(shot, damage, recoil, scope, reload_time),
-                                         width, height, bullets);
+                                        width, height, bullets);
     }
-    if(weapon_name == "armor"){
+    if (weapon_name == "armor") {
         return std::make_shared<Armor>(SIZE_ARMOR, SIZE_ARMOR);
     }
-    if(weapon_name == "helmet"){
+    if (weapon_name == "helmet") {
         return std::make_shared<Helmet>(SIZE_HELMET, SIZE_HELMET);
     }
-    if(weapon_name == "banana"){
+    if (weapon_name == "banana") {
         return std::make_shared<Banana>(width, height);
     }
     std::cout << "Weapon not found: " << weapon_name << std::endl;

@@ -52,6 +52,13 @@ private:
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
     // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
 
+    bool apply_recoil(std::shared_ptr<Duck> duck, int duck_id);
+    bool apply_sliding(std::shared_ptr<Duck> duck, int duck_id);
+    bool apply_movement(std::shared_ptr<Duck> duck, int duck_id, int& remaining_dx,
+                        int& remaining_dy, int& x_step, int& y_step);
+    void explosive_gravity(std::shared_ptr<Pickable> explosive);
+    void inertial_classic_pickable(std::shared_ptr<Pickable> Pickable);
+    void inertial_explosive_pickable(std::shared_ptr<Pickable> explosive);
 
 public:
     explicit MapGame(int width, int height, int health);
@@ -59,7 +66,7 @@ public:
     int get_height();
 
     // MAP STRUCTURE
-    bool add_invalid_position(Hitbox hitbox); 
+    bool add_invalid_position(Hitbox hitbox);
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
@@ -103,7 +110,8 @@ public:
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
     int ducks_dead_size();
-    void clean_map(std::vector<std::tuple<int, int>> positions_to_respawn);  // tiene que recibir donde spawnea en un futuro
+    void clean_map(std::vector<std::tuple<int, int>>
+                           positions_to_respawn);  // tiene que recibir donde spawnea en un futuro
 };
 
 class MapError: public std::exception {

@@ -14,9 +14,7 @@ void Pickable::air_time_down_y() {
     }
 }
 
-void Pickable::set_airtime_y(int airtime) {
-    this->air_time_y = airtime;
-}
+void Pickable::set_airtime_y(int airtime) { this->air_time_y = airtime; }
 
 void Pickable::air_time_down_x() {
     if (this->air_time_x > 0) {
@@ -59,30 +57,16 @@ int Pickable::recoil_produced() { return 0; }
 
 void Pickable::set_holding(bool is_holding) { return; }
 
-bool Pickable::is_explosive(){
-    return false;
-}
-bool Pickable::is_banana(){
-    return false;
-}
-bool Pickable::is_active(){
-    return false;
-}
-void Pickable::activation(){
-    return;
-}
-bool Pickable::exploted(){
-    return false;
-}
+bool Pickable::is_explosive() { return false; }
+bool Pickable::is_banana() { return false; }
+bool Pickable::is_active() { return false; }
+void Pickable::activation() { return; }
+bool Pickable::exploted() { return false; }
 
-bool Pickable::is_exploding(){
-    return false;
-}
+bool Pickable::is_exploding() { return false; }
 
-int Pickable::get_sound(){
-    return 0;
-}
+int Pickable::get_sound() { return 0; }
 
-std::vector<std::shared_ptr<BulletInterface>> Pickable::get_explotion(Hitbox hitbox){
+std::vector<std::shared_ptr<BulletInterface>> Pickable::get_explotion(Hitbox hitbox) {
     return std::vector<std::shared_ptr<BulletInterface>>();
 }

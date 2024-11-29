@@ -1,29 +1,21 @@
 #include "banana.h"
 
-Banana::Banana(int width, int height) : Pickable(0, 0, width, height){
+Banana::Banana(int width, int height): Pickable(0, 0, width, height) {}
 
-}
+void Banana::use() { this->active = true; }
 
-void Banana::use(){
-    this->active = true;
-}
-
-int Banana::get_id(){
-    if(this->active){
+int Banana::get_id() {
+    if (this->active) {
         return OPENED_BANANA_ID;
     }
     return BANANA_ID;
 }
 
-bool Banana::is_active(){
-    return this->active;   
-}
+bool Banana::is_active() { return this->active; }
 
-bool Banana::is_banana(){
-    return true;
-}
+bool Banana::is_banana() { return true; }
 
-weapon_DTO Banana::to_DTO(){
+weapon_DTO Banana::to_DTO() {
     weapon_DTO dto;
     dto.x = this->hitbox.get_x();
     dto.y = this->hitbox.get_y();
@@ -32,4 +24,4 @@ weapon_DTO Banana::to_DTO(){
     dto.weapon_id = this->get_id();
     return dto;
 }
-Banana::~Banana(){}
+Banana::~Banana() {}

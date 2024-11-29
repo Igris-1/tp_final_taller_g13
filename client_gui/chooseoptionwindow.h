@@ -1,14 +1,15 @@
 #ifndef CHOOSEOPTIONWINDOW_H
 #define CHOOSEOPTIONWINDOW_H
 
+#include <QAudioOutput>
 #include <QDialog>
-#include "newgamewindow.h"
-#include "joingame.h"
-#include "aboutwindow.h"
+#include <QMediaPlayer>
+
 #include "../client_src/client.h"
 
-#include <QAudioOutput>
-#include <QMediaPlayer>
+#include "aboutwindow.h"
+#include "joingame.h"
+#include "newgamewindow.h"
 
 namespace Ui {
 class ChooseOptionWindow;

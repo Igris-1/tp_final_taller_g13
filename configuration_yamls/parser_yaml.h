@@ -1,13 +1,14 @@
 #ifndef PARSER_YAML_H
 #define PARSER_YAML_H
 
-#include <iostream>
 #include <fstream>
-#include <string>
-#include <yaml-cpp/yaml.h>
-#include <stdexcept>
+#include <iostream>
 #include <memory>
 #include <mutex>
+#include <stdexcept>
+#include <string>
+
+#include <yaml-cpp/yaml.h>
 
 class ParserYAML {
 private:
@@ -45,8 +46,8 @@ public:
             throw std::runtime_error("Value at path '" + path + "' is not scalar");
         }
     }
-    
-    int get_value_map(const std::string& path){
+
+    int get_value_map(const std::string& path) {
         std::istringstream stream(path);
         std::string key;
         YAML::Node current_node = YAML::LoadFile(this->map_data);
@@ -68,7 +69,7 @@ public:
     // type_structure puede ser "platforms" , "invalid positions"
     std::vector<std::tuple<int, int, int, int>> get_map_structure(std::string type_structure) {
         std::vector<std::tuple<int, int, int, int>> platforms;
-        for (const auto& platform : YAML::LoadFile(this->map_data)[type_structure]) {
+        for (const auto& platform: YAML::LoadFile(this->map_data)[type_structure]) {
             int x = platform["x"].as<int>();
             int y = platform["y"].as<int>();
             int width = platform["width"].as<int>();
@@ -78,7 +79,6 @@ public:
         }
         return platforms;
     }
-
 };
 
-#endif // PARSER_YAML_H
+#endif  // PARSER_YAML_H

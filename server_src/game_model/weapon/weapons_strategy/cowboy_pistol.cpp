@@ -2,7 +2,8 @@
 
 #include "../../duck.h"
 
-CowboyPistol::CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(shot, damage, recoil, scope, reload_time) {}
+CowboyPistol::CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time):
+        WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
 
 std::vector<std::shared_ptr<BulletInterface>> CowboyPistol::fire(std::shared_ptr<Duck> duck_trigger,

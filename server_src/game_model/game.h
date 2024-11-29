@@ -11,12 +11,13 @@
 
 #include "../../common_src/duck_DTO.h"
 #include "../../common_src/game_snapshot_t.h"
+#include "../../configuration_yamls/game_config.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
-#include "weapon/weapons_strategy/weapon.h"
 #include "weapon/weapon_factory.h"
+#include "weapon/weapons_strategy/weapon.h"
+
 #include "duck.h"
 #include "map_game.h"
-#include "../../configuration_yamls/game_config.h"
 
 // movimientos laterales
 #define RIGHT_MOVEMENT 1
@@ -26,13 +27,17 @@
 #define GRAVITY 1
 #define JUMP_DIRECTION -1
 
+#define X_POSITION 0
+#define Y_POSITION 1
+#define WIDTH_POSITION 2
+#define HEIGHT_POSITION 3
+
 // factores para el salto y gravedad
 
 // #define TILES_FOR_JUMP 175
-// #define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea mas fuerte
-// #define ADD_FACTOR_JUMP 3
-// #define PRODUCT_FACTOR_GRAVITY 2
-// #define ADD_FACTOR_GRAVITY 8
+// #define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea
+// mas fuerte #define ADD_FACTOR_JUMP 3 #define PRODUCT_FACTOR_GRAVITY 2 #define ADD_FACTOR_GRAVITY
+// 8
 #define TIME_TO_RESPAWN 300
 
 typedef struct {
@@ -43,11 +48,11 @@ typedef struct {
     int air_time = 0;
     bool is_falling = false;
     int time_to_respawn = 0;
-    
+
     bool is_moving_right = false;
     bool is_moving_left = false;
-    
-    bool facing_direction = true;// true  -> derecha | false -> izquierda
+
+    bool facing_direction = true;  // true  -> derecha | false -> izquierda
     bool holding_action = false;
 
     bool crouching = false;
@@ -59,7 +64,7 @@ typedef struct {
 
 class Game {
 private:
-    MapGame map;    
+    MapGame map;
     std::map<int, std::shared_ptr<duck_state>> ducks_states;  // tiene el estado de cada pato
     std::map<int, int> ducks_score;                           // tiene los puntos de cada pato
     std::vector<std::tuple<int, int>> spawn_positions;  // tiene las posiciones de spawn de armas
@@ -71,7 +76,7 @@ private:
     // yaml things
     const std::map<std::string, weapon_config> weapons_config;
     const duck_config ducks_config;
-    
+
     // "defines" from yaml
     const int TILES_FOR_JUMP = 175;
     const int PRODUCT_FACTOR_JUMP = 2;
@@ -82,10 +87,17 @@ private:
 
     // private methods
     void duck_exist(int id);
+    void gravity_movement(int id_duck);
+    void jump_movement(int id_duck);
+    void jump_with_style(int id_duck);
+    void load_platforms(std::vector<std::tuple<int, int, int, int>>& spawns);
+    void load_boxes(std::vector<std::tuple<int, int, int, int>>& spawns);
+    void load_spawn_ducks(std::vector<std::tuple<int, int, int, int>>& spawns);
+    void load_spawn_weapons(std::vector<std::tuple<int, int, int, int>>& spawns);
 
 public:
     // Game(int high, int width);
-    Game (GameConfig& config);
+    Game(GameConfig& config);
 
     // DUCK
     void set_duck_start_position(int id, int x, int y);
@@ -109,7 +121,7 @@ public:
     // LOOK UP
     void duck_looks_up(int id, bool looking_up);
     void duck_stops_looking_up(int id, bool looking_up);
-    
+
     //  ITEMS
     void use_duck_item(int id, bool fire);
     void keep_using_item();

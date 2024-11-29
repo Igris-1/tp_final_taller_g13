@@ -1,8 +1,9 @@
 #ifndef NEWGAMEWINDOW_H
 #define NEWGAMEWINDOW_H
-#include "../client_src/client.h"
 #include <QDialog>
 #include <QMediaPlayer>
+
+#include "../client_src/client.h"
 
 namespace Ui {
 class NewGameWindow;

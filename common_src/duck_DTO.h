@@ -21,12 +21,12 @@ typedef struct duck_DTO {
     bool crouching = false;
 } __attribute__((packed)) duck_DTO;
 
-            // es necesario el packed aca, no lo saquen
-            // va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding
-            // al struct, entonces si no se pone packed, el padding puede hacer que el tamanio de la
-            // estructura que se recibe sea distinto
-            //  al que estoy recibiendo, pero como es todo en una sola pc, no deberia haber problema.
-            //  igual, no lo saquemos.
+// es necesario el packed aca, no lo saquen
+// va, en teoria es mandatorio pq distintos compiladores pueden agregar distinto padding
+// al struct, entonces si no se pone packed, el padding puede hacer que el tamanio de la
+// estructura que se recibe sea distinto
+//  al que estoy recibiendo, pero como es todo en una sola pc, no deberia haber problema.
+//  igual, no lo saquemos.
 
 
 typedef struct platform_DTO {

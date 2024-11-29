@@ -33,15 +33,17 @@ public:
 
         game.throw_item(this->client_id + action_to_execute.player_id,
                         action_to_execute.press_throw_button);
-        
+
         game.crouch_duck(this->client_id + action_to_execute.player_id,
                          action_to_execute.press_crouch_button);
 
         game.stop_crouch_duck(this->client_id + action_to_execute.player_id,
                               action_to_execute.unpress_crouch_button);
 
-        game.duck_looks_up(this->client_id + action_to_execute.player_id, action_to_execute.press_look_up_button);
-        game.duck_stops_looking_up(this->client_id + action_to_execute.player_id, action_to_execute.unpress_look_up_button);
+        game.duck_looks_up(this->client_id + action_to_execute.player_id,
+                           action_to_execute.press_look_up_button);
+        game.duck_stops_looking_up(this->client_id + action_to_execute.player_id,
+                                   action_to_execute.unpress_look_up_button);
 
         // game.throw_weapon(this->client_id+action_to_execute.player_id ,
         //  action_to_execute.unpress_pick_up_button);

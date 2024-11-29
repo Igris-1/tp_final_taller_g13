@@ -8,9 +8,10 @@
 
 #include <unistd.h>
 
+#include "../configuration_yamls/game_config.h"
+
 #include "receiver_thread.h"
 #include "sender_thread.h"
-#include "../configuration_yamls/game_config.h"
 
 #define SLEEP_TIME 40000
 #define AMOUNT_OF_PLAYERS 2
@@ -44,7 +45,6 @@ void GameThread::send_map() {
     instruction.map = game->get_map_structure();
 
     clients.enqueue_instruction(instruction);
-
 }
 
 // void GameThread::send_instructions() {
@@ -82,13 +82,13 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
-    GameConfig game_config("../configuration_yamls/custom_map.yaml", "../configuration_yamls/default_config.yaml");
-    
+    GameConfig game_config("../configuration_yamls/custom_map.yaml",
+                           "../configuration_yamls/default_config.yaml");
+
     Game aux(game_config);
     this->game = &aux;
-    game_config.print();
     this->game->load_configuration(game_config);
-    
+
     // spawnea armas para el comienzo de la partida
     this->game->random_item_spawn(false);
     // int start_flag = 0;
@@ -99,7 +99,7 @@ void GameThread::run() {
 
     while (this->game->get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
         usleep(SLEEP_TIME);
-    }    
+    }
     send_map();
 
     while (_keep_running) {
@@ -141,7 +141,7 @@ void GameThread::run() {
             continue;
             usleep(SLEEP_TIME);
         }
-        
+
         send_snapshots();
 
         usleep(SLEEP_TIME);

@@ -2,19 +2,19 @@
 #define TRANSLATOR_ACTIONS_H
 
 enum {
-    LEFT = 1 << 0,                    // 0b0000000000000001
-    RIGHT = 1 << 1,                   // 0b0000000000000010
-    UP = 1 << 2,                      // 0b0000000000000100
-    DOWN = 1 << 3,                    // 0b0000000000001000
-    STOP_RIGHT = 1 << 4,              // 0b0000000000010000
-    STOP_LEFT = 1 << 5,               // 0b0000000000100000
-    JUMP = 1 << 6,                    // 0b0000000001000000
-    STOP_JUMP = 1 << 7,               // 0b0000000010000000
-    PRESS_ACTION_BUTTON = 1 << 8,     // 0b0000000100000000
-    UNPRESS_ACTION_BUTTON = 1 << 9,   // 0b0000001000000000
-    PRESS_PICKUP_BUTTON = 1 << 10,    // 0b0000010000000000
-    PRESS_THROW_BUTTON = 1 << 11,     // 0b0000100000000000
-    
+    LEFT = 1 << 0,                   // 0b0000000000000001
+    RIGHT = 1 << 1,                  // 0b0000000000000010
+    UP = 1 << 2,                     // 0b0000000000000100
+    DOWN = 1 << 3,                   // 0b0000000000001000
+    STOP_RIGHT = 1 << 4,             // 0b0000000000010000
+    STOP_LEFT = 1 << 5,              // 0b0000000000100000
+    JUMP = 1 << 6,                   // 0b0000000001000000
+    STOP_JUMP = 1 << 7,              // 0b0000000010000000
+    PRESS_ACTION_BUTTON = 1 << 8,    // 0b0000000100000000
+    UNPRESS_ACTION_BUTTON = 1 << 9,  // 0b0000001000000000
+    PRESS_PICKUP_BUTTON = 1 << 10,   // 0b0000010000000000
+    PRESS_THROW_BUTTON = 1 << 11,    // 0b0000100000000000
+
     PRESS_CROUCH_BUTTON = 1 << 12,    // 0b0001000000000000
     UNPRESS_CROUCH_BUTTON = 1 << 13,  // 0b0010000000000000
     PRESS_LOOK_UP_BUTTON = 1 << 14,   // 0b0100000000000000
@@ -27,7 +27,9 @@ public:
     uint16_t create_flag(bool left, bool right, bool up, bool down, bool stop_right, bool stop_left,
                          bool jump, bool stop_jump, bool press_action_button,
                          bool unpress_action_button, bool press_pick_up_button,
-                         bool press_throw_button, bool press_crouch_button, bool unpress_crouch_button, bool press_look_up_button, bool unpress_look_up_button) {
+                         bool press_throw_button, bool press_crouch_button,
+                         bool unpress_crouch_button, bool press_look_up_button,
+                         bool unpress_look_up_button) {
         uint16_t flags = 0;
         flags |= (left ? LEFT : 0);
         flags |= (right ? RIGHT : 0);
@@ -51,7 +53,9 @@ public:
     void translate_flags(const uint16_t action, bool& left, bool& right, bool& up, bool& down,
                          bool& stop_right, bool& stop_left, bool& jump, bool& stop_jump,
                          bool& press_action_button, bool& unpress_action_button,
-                         bool& press_pick_up_button, bool& press_throw_button, bool& press_crouch_button, bool& unpress_crouch_button, bool& press_look_up_button, bool& unpress_look_up_button) {
+                         bool& press_pick_up_button, bool& press_throw_button,
+                         bool& press_crouch_button, bool& unpress_crouch_button,
+                         bool& press_look_up_button, bool& unpress_look_up_button) {
         left = action & LEFT;
         right = action & RIGHT;
         up = action & UP;

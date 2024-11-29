@@ -28,7 +28,7 @@ typedef struct game_snapshot {
 
     uint16_t boxes_len = 0;
     std::vector<box_DTO> boxes;  // 2 bytes
-    
+
     sounds_DTO sounds;
 } game_snapshot_t;
 

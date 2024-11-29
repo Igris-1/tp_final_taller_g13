@@ -26,7 +26,7 @@ ConnectionWindow::~ConnectionWindow() {
 void ConnectionWindow::on_pushButton_clicked() {
     QString port = ui->portLineEdit->text();
     QString address = ui->addressLineEdit->text();
-    
+
     if (port.isEmpty() || address.isEmpty()) {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Error");

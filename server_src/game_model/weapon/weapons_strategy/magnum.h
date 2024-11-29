@@ -2,6 +2,7 @@
 #define MAGNUM_H
 
 #include <memory>
+
 #include "../bullets_strategy/bullet.h"
 #include "../bullets_strategy/bullet_interface.h"
 
@@ -11,7 +12,6 @@
 
 class Magnum: public WeaponInterface {
 private:
-
 public:
     Magnum(int shot, int damage, int recoil, int scope, int reload_time);
     std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,

@@ -14,9 +14,9 @@ Duck::Duck(int health, int id):
         item_in_hands(nullptr),
         Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {
-            this->has_armor = false;
-            this->has_helmet = false;
-        }
+    this->has_armor = false;
+    this->has_helmet = false;
+}
 
 void Duck::reset() {
     this->has_armor = false;
@@ -55,12 +55,12 @@ bool Duck::has_item() {
     return this->item_in_hands->get_id() != 0;
 }
 
-void Duck::add_armor() { 
+void Duck::add_armor() {
     this->has_armor = true;
-   this->item_in_hands = nullptr;
+    this->item_in_hands = nullptr;
 }
 
-void Duck::add_helmet() { 
+void Duck::add_helmet() {
     this->has_helmet = true;
     this->item_in_hands = nullptr;
 }
@@ -68,7 +68,7 @@ void Duck::add_helmet() {
 bool Duck::is_alive() { return !(this->health <= 0); }
 
 void Duck::receive_damage(int damage) {
-    if(damage == 0){
+    if (damage == 0) {
         return;
     }
     if (this->has_armor) {
@@ -108,7 +108,7 @@ duck_DTO Duck::to_DTO() {
 }
 
 void Duck::continue_fire_rate() {
-    if(!this->has_item()) {
+    if (!this->has_item()) {
         return;
     }
     this->item_in_hands->fire_rate_down();
@@ -164,12 +164,10 @@ void Duck::set_health(int health) {
     this->respawn_time = 100;
 }
 
-void Duck::kill(){
-    this->health = 0;
-}
+void Duck::kill() { this->health = 0; }
 
-void Duck::set_direction(int step_dx, int step_dy){
-    if(step_dx != 0){
+void Duck::set_direction(int step_dx, int step_dy) {
+    if (step_dx != 0) {
         this->x_direction = step_dx;
     }
     this->y_direction = step_dy;
@@ -179,29 +177,28 @@ int Duck::get_x_direction() { return this->x_direction; }
 
 int Duck::get_y_direction() { return this->y_direction; }
 
-void Duck::set_sliding(bool sliding){
-    this->is_sliding = sliding;
-}
+void Duck::set_sliding(bool sliding) { this->is_sliding = sliding; }
 
-void Duck::move_duck_relative(int x, int y){
-    if(this->is_sliding){
-        this->suffering_recoil = false; //para q deje de aplicarse recoil si durante el recoil toca una banana
+void Duck::move_duck_relative(int x, int y) {
+    if (this->is_sliding) {
+        this->suffering_recoil =
+                false;  // para q deje de aplicarse recoil si durante el recoil toca una banana
         this->hitbox.move_relative(this->x_direction, y);
         this->sliding_counter--;
-        if(this->sliding_counter <= 0){
+        if (this->sliding_counter <= 0) {
             this->is_sliding = false;
             this->sliding_counter = 100;
         }
         return;
     }
-    if(this->suffering_recoil){
-        // if(this->recoil_counter > 70){            
+    if (this->suffering_recoil) {
+        // if(this->recoil_counter > 70){
         //     this->hitbox.move_relative(2*-(this->x_direction), y);
         // }else{
-            this->hitbox.move_relative(-this->x_direction, y);
+        this->hitbox.move_relative(-this->x_direction, y);
         //}
         this->recoil_counter--;
-        if(this->recoil_counter <= 0){
+        if (this->recoil_counter <= 0) {
             this->suffering_recoil = false;
             this->recoil_counter = 0;
         }
@@ -210,16 +207,12 @@ void Duck::move_duck_relative(int x, int y){
     this->hitbox.move_relative(x, y);
 }
 
-bool Duck::get_is_sliding(){
-    return this->is_sliding;
-}
+bool Duck::get_is_sliding() { return this->is_sliding; }
 
-bool Duck::has_recoil(){
-    return this->suffering_recoil;
-}
+bool Duck::has_recoil() { return this->suffering_recoil; }
 
-void Duck::set_recoil(int recoil){
-    if(recoil == -1){
+void Duck::set_recoil(int recoil) {
+    if (recoil == -1) {
         this->suffering_recoil = false;
         this->recoil_counter = 0;
         return;

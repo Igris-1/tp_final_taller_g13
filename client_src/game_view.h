@@ -38,7 +38,7 @@ private:
     std::vector<Texture> accessories_sprites;
     std::vector<Texture> duck_looking_up_sprites;
     std::vector<Texture> dead_duck_sprites;
-    
+
     std::vector<DuckView> duck_views;
     GearView gear_view;
 

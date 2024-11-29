@@ -25,11 +25,12 @@ action_t ProtocolServer::receive_action() {
         uint16_t action_16bits;
         connection.recvall(&action_16bits, sizeof(uint16_t), &socket_is_closed);
         TranslatorActions translator;
-        translator.translate_flags(action_16bits, action.left, action.right, action.up, action.down,
-                                   action.stop_right, action.stop_left, action.jump,
-                                   action.stop_jump, action.press_action_button,
-                                   action.unpress_action_button, action.press_pick_up_button,
-                                    action.press_throw_button, action.press_crouch_button, action.unpress_crouch_button, action.press_look_up_button, action.unpress_look_up_button);
+        translator.translate_flags(
+                action_16bits, action.left, action.right, action.up, action.down, action.stop_right,
+                action.stop_left, action.jump, action.stop_jump, action.press_action_button,
+                action.unpress_action_button, action.press_pick_up_button,
+                action.press_throw_button, action.press_crouch_button, action.unpress_crouch_button,
+                action.press_look_up_button, action.unpress_look_up_button);
         connection.recvall(&action.player_id, sizeof(uint8_t), &socket_is_closed);
         return action;
     } catch (const LibError& e) {

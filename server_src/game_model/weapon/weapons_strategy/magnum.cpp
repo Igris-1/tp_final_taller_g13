@@ -2,13 +2,14 @@
 
 #include "../../duck.h"
 
-Magnum::Magnum(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(shot, damage, recoil, scope, reload_time) {}
+Magnum::Magnum(int shot, int damage, int recoil, int scope, int reload_time):
+        WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
 
 std::vector<std::shared_ptr<BulletInterface>> Magnum::fire(std::shared_ptr<Duck> duck_trigger,
-                                                                 int x_position, int y_position,
-                                                                 int x_direction, int y_direction,
-                                                                 bool is_holding_button) {
+                                                           int x_position, int y_position,
+                                                           int x_direction, int y_direction,
+                                                           bool is_holding_button) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     if (this->shot == 0) {
         return bullets;

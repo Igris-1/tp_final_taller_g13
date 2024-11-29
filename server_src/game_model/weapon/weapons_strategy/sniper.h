@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "../bullets_strategy/bullet_interface.h"
 #include "../bullets_strategy/bullet.h"
+#include "../bullets_strategy/bullet_interface.h"
 
 #include "weapon.h"
 #include "weapon_interface.h"

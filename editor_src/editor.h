@@ -1,9 +1,10 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
-#include <QMainWindow>
 #include <QAudioOutput>
+#include <QMainWindow>
 #include <QMediaPlayer>
+
 #include "structure.h"
 
 QT_BEGIN_NAMESPACE

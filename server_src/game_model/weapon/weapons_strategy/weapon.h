@@ -6,12 +6,12 @@
 #include <vector>
 
 #include "../../pickable.h"
+
 #include "weapon_interface.h"
 
 
 class Weapon: public Pickable {
 protected:
-
     // int dispersion;
     // int recoil;
     // bool reload_time;
@@ -24,8 +24,8 @@ protected:
     bool is_not_a_weapon();
 
 public:
-    Weapon(WeaponInterface* weapon_strategy, int width, int height, 
-        std::list<std::shared_ptr<BulletInterface>>& bullets);
+    Weapon(WeaponInterface* weapon_strategy, int width, int height,
+           std::list<std::shared_ptr<BulletInterface>>& bullets);
 
 
     void fire_rate_down() override;

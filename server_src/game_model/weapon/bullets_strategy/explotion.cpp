@@ -3,7 +3,7 @@
 #include "../../map_game.h"
 
 Explotion::Explotion(int duck_trigger_id, int x, int y, int x_direction, int y_direction,
-               int travel_distance, int damage, int size) :
+                     int travel_distance, int damage, int size):
         BulletInterface(duck_trigger_id, x, y, x_direction, y_direction, damage, size) {
     this->travel_distance = travel_distance;
 }

@@ -22,9 +22,12 @@ private:
     SDL_Event last_event;
     int localPlayers = 2;
     std::map<SDL_Keycode, int> key_player = {
-            {SDLK_a, PLAYER_1}, {SDLK_d, PLAYER_1},    {SDLK_SPACE, PLAYER_1}, {SDLK_f, PLAYER_1},
-            {SDLK_g, PLAYER_1}, {SDLK_e, PLAYER_1}, {SDLK_s, PLAYER_1}, {SDLK_w, PLAYER_1}, {SDLK_LEFT, PLAYER_2}, {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2},
-            {SDLK_p, PLAYER_2}, {SDLK_i, PLAYER_2}, {SDLK_k, PLAYER_2}, {SDLK_DOWN, PLAYER_2}, {SDLK_UP, PLAYER_2}};
+            {SDLK_a, PLAYER_1},     {SDLK_d, PLAYER_1}, {SDLK_SPACE, PLAYER_1},
+            {SDLK_f, PLAYER_1},     {SDLK_g, PLAYER_1}, {SDLK_e, PLAYER_1},
+            {SDLK_s, PLAYER_1},     {SDLK_w, PLAYER_1}, {SDLK_LEFT, PLAYER_2},
+            {SDLK_RIGHT, PLAYER_2}, {SDLK_o, PLAYER_2}, {SDLK_p, PLAYER_2},
+            {SDLK_i, PLAYER_2},     {SDLK_k, PLAYER_2}, {SDLK_DOWN, PLAYER_2},
+            {SDLK_UP, PLAYER_2}};
 
     // Esta función maneja las acciones de cada jugador según la tecla y el tipo de evento
     void map_key_to_action_1(const SDL_Event& e, action_t& action) {

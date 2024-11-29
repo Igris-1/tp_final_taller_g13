@@ -19,8 +19,8 @@ class Duck;
 class WeaponInterface {
 protected:
     int fire_rate = 0;
-    
-     // yaml read
+
+    // yaml read
     int shot;
     int damage;
     int recoil;

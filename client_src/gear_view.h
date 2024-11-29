@@ -29,14 +29,17 @@ private:
 
     void push_gear_frame();
     void push_gear_vertical_frame();
-    void draw_accessories(duck_DTO duck, bool facing_direction, int inclination, int x, int y, std::vector<int>* a_f);
+    void draw_accessories(duck_DTO duck, bool facing_direction, int inclination, int x, int y,
+                          std::vector<int>* a_f);
     void draw_gear_in_hands(int x, int y, int gear, int inclination, int facing_direction);
 
 public:
-    GearView(Renderer& renderer, std::vector<Texture>& gear_textures, std::vector<Texture>& accessories_textures);
-    void draw_held_gear(bool& facing_direction, duck_DTO& duck, int inclination, int x_sum_value, int y_sum_value);
+    GearView(Renderer& renderer, std::vector<Texture>& gear_textures,
+             std::vector<Texture>& accessories_textures);
+    void draw_held_gear(bool& facing_direction, duck_DTO& duck, int inclination, int x_sum_value,
+                        int y_sum_value);
     void draw_gear(weapon_DTO& weapon);
     ~GearView();
 };
 
-#endif  
+#endif

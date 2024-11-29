@@ -1,25 +1,25 @@
 #include "joingame.h"
 
-#include "ui_joingame.h"
-#include <iostream>
 #include <QMessageBox>
+#include <iostream>
 #include <memory>
-#include "../common_src/duck_DTO.h"
+
 #include "../client_src/joinable_games_finder.h"
+#include "../common_src/duck_DTO.h"
 
-JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port) : 
-    QDialog(parent), 
-    ui(new Ui::JoinGame),
-    player(player),
-    localPlayers(1),
-    address(address),
-    port(port) { 
-        ui->setupUi(this);
-    }
+#include "ui_joingame.h"
 
-JoinGame::~JoinGame() { 
-        delete ui; 
-    }
+JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port):
+        QDialog(parent),
+        ui(new Ui::JoinGame),
+        player(player),
+        localPlayers(1),
+        address(address),
+        port(port) {
+    ui->setupUi(this);
+}
+
+JoinGame::~JoinGame() { delete ui; }
 
 void JoinGame::on_open_join_game() {
     QByteArray byteArrayPort = port.toUtf8();
@@ -28,12 +28,12 @@ void JoinGame::on_open_join_game() {
     char* charAddress = byteArrayAddress.data();
 
     JoinableGamesFinder dummy(charAddress, charPort);
-    std::vector <games_DTO> games = dummy.ask_for_games();
+    std::vector<games_DTO> games = dummy.ask_for_games();
 
     if (!games.empty()) {
         refresh_matches(games);
     }
-}   
+}
 
 void JoinGame::on_backButton_clicked() { this->close(); }
 
@@ -61,7 +61,7 @@ void JoinGame::on_refreshButton_clicked() {
     char* charAddress = byteArrayAddress.data();
 
     JoinableGamesFinder dummy(charAddress, charPort);
-    std::vector <games_DTO> games = dummy.ask_for_games();
+    std::vector<games_DTO> games = dummy.ask_for_games();
 
     if (!games.empty()) {
         refresh_matches(games);
@@ -88,14 +88,14 @@ void JoinGame::on_startButton_clicked() {
     }
 }
 
-void JoinGame::refresh_matches(std::vector <games_DTO> games) {
+void JoinGame::refresh_matches(std::vector<games_DTO> games) {
     if (!games.empty()) {
         ui->matchesBox->clear();
-        for (const games_DTO& game : games) {
+        for (const games_DTO& game: games) {
             QString gameInfo = QString("Game ID: %1 | Current Players: %2 | Max Players: %3")
-                            .arg(game.game_id)
-                            .arg(game.current_players)
-                            .arg(game.max_players);
+                                       .arg(game.game_id)
+                                       .arg(game.current_players)
+                                       .arg(game.max_players);
             ui->matchesBox->addItem(gameInfo);
         }
     }

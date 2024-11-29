@@ -6,7 +6,7 @@
 #include "../../../../common_src/duck_DTO.h"
 #include "../../positionable.h"
 
-typedef enum { BULLET_ID = 1, LASER_ID, PELLET_ID, EXPLOTION_ID} bullet_type;
+typedef enum { BULLET_ID = 1, LASER_ID, PELLET_ID, EXPLOTION_ID } bullet_type;
 
 class MapGame;
 
@@ -20,7 +20,8 @@ protected:
     int damage = 0;
 
 public:
-    BulletInterface(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int damage, int size);
+    BulletInterface(int duck_trigger_id, int x, int y, int x_direction, int y_direction, int damage,
+                    int size);
 
     int get_x_direction();
 

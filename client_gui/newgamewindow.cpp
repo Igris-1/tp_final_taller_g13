@@ -3,6 +3,7 @@
 #include <QMediaPlayer>
 #include <QMessageBox>
 #include <iostream>
+
 #include "../client_src/client.h"
 
 #include "ui_newgamewindow.h"
@@ -20,9 +21,7 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
 }
 
 
-NewGameWindow::~NewGameWindow() { 
-        delete ui; 
-    }
+NewGameWindow::~NewGameWindow() { delete ui; }
 
 void NewGameWindow::on_backButton_clicked() { this->close(); }
 

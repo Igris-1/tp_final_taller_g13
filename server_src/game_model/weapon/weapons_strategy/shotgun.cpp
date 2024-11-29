@@ -4,7 +4,8 @@
 
 #define PELLETS_PER_SHOT 6
 
-Shotgun::Shotgun(int shot, int damage, int recoil, int scope, int reload_time) : WeaponInterface(PELLETS_PER_SHOT * shot, damage, recoil, scope, reload_time) {}
+Shotgun::Shotgun(int shot, int damage, int recoil, int scope, int reload_time):
+        WeaponInterface(PELLETS_PER_SHOT * shot, damage, recoil, scope, reload_time) {}
 
 
 std::vector<std::shared_ptr<BulletInterface>> Shotgun::fire(std::shared_ptr<Duck> duck_trigger,
@@ -53,10 +54,6 @@ std::vector<std::shared_ptr<BulletInterface>> Shotgun::fire(std::shared_ptr<Duck
 
 int Shotgun::get_id() { return SHOTGUN_ID; }
 
-int Shotgun::recoil_produced() {
-    return this->recoil;
-}
+int Shotgun::recoil_produced() { return this->recoil; }
 
-int Shotgun::get_sound() {
-    return 2;
-}
+int Shotgun::get_sound() { return 2; }

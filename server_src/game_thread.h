@@ -16,7 +16,7 @@
 
 class GameThread: public Thread {
 private:
-     Game* game;
+    Game* game;
     Queue<std::shared_ptr<Action>>& gameQueue;
     ListOfClientsMonitor& clients;
     int round_counter = 5;

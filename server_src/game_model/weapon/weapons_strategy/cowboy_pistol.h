@@ -12,7 +12,6 @@
 
 class CowboyPistol: public WeaponInterface {
 private:
-
 public:
     CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time);
     std::vector<std::shared_ptr<BulletInterface>> fire(std::shared_ptr<Duck> duck_trigger,

@@ -3,8 +3,9 @@
 
 #include <QDialog>
 #include <QMediaPlayer>
-#include "../client_src/client.h"
 #include <memory>
+
+#include "../client_src/client.h"
 #include "../client_src/joinable_games_finder.h"
 
 
@@ -40,7 +41,7 @@ private:
     QString address;
     QString port;
 
-    void refresh_matches(std::vector <games_DTO> games);
+    void refresh_matches(std::vector<games_DTO> games);
 };
 
 #endif  // JOINGAME_H
