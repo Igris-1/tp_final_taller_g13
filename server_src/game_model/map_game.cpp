@@ -177,10 +177,6 @@ bool MapGame::add_invalid_position(Hitbox hitbox) {
 }
 
 bool MapGame::add_platform(Hitbox hitbox) {
-    // if (!hitbox_in_range(hitbox, false) && not_in_invalid_position(hitbox, false)) {
-    //     return false;
-    // }
-
     if(hitbox.get_y() < 0){
         hitbox.move(hitbox.get_x(), 0);
     }
@@ -196,10 +192,9 @@ bool MapGame::add_platform(Hitbox hitbox) {
     for (const auto& existing_hitbox : this->platforms) {
         if (std::abs(existing_hitbox.get_y() - hitbox.get_y()) <= 10) {
             hitbox.move(hitbox.get_x() ,existing_hitbox.get_y());
-            break; // No need to continue once we've aligned the Y position
+            break; 
         }
     }
-    
     this->platforms.insert(hitbox);
 
     return true;
