@@ -234,9 +234,11 @@ void GameView::add_ducks(game_snapshot_t gs) {
 }
 
 void GameView::zoom(game_snapshot_t gs) {
+    // inicializamos una posicion
     int x = gs.ducks[0].x;
     int y = gs.ducks[0].y;
 
+    // buscamos la posicion mas chica
     for (int i = 0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
         if (duck.x < x) {
@@ -247,35 +249,49 @@ void GameView::zoom(game_snapshot_t gs) {
         }
     }
 
-    int x_min = gs.ducks[0].x - 32;
-    int y_min = gs.ducks[0].y - 32;
-    int x_max = gs.ducks[0].x + 32;
-    int y_max = gs.ducks[0].y + 32;
+    // si x es menor a 0, lo ponemos en 0
+    if (x < 128) {
+        x = 0;
+    }
+
+    // si y es menor a 0, lo ponemos en 0
+    if (y < 128) {
+        y = 0;
+    }
+
+
+    // inicializamos las posiciones maximas
+    int x_min = gs.ducks[0].x - 128;
+    int y_min = gs.ducks[0].y - 128;
+    int x_max = gs.ducks[0].x + 128;
+    int y_max = gs.ducks[0].y + 128;
 
     for (const auto& duck: gs.ducks) {
-        x_min = std::min(x_min, duck.x - 32);
-        y_min = std::min(y_min, duck.y - 32);
-        x_max = std::max(x_max, duck.x + 32);
-        y_max = std::max(y_max, duck.y + 32);
+        x_min = std::min(x_min, duck.x - 128);
+        y_min = std::min(y_min, duck.y - 128);
+        x_max = std::max(x_max, duck.x + 128);
+        y_max = std::max(y_max, duck.y + 128);
+    }
+
+    // si x es mayor a 128, le restamos 128
+    if (x >= 128) {
+        x -= 128;
+    }
+
+    // si y es mayor a 128, le restamos 128
+    if (y >= 128) {
+        y -= 128;
     }
 
     int ducks_width = x_max - x_min;
     int ducks_height = y_max - y_min;
-
+    
     float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
     float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
     float scale_factor = std::min(scale_factor_x, scale_factor_y);
-    scale_factor = std::clamp(scale_factor, 1.0f, 2.0f);
+    scale_factor = std::clamp(scale_factor, 1.0f, 1.2f);
 
-    /*if (x*+SCREEN_WIDTH*scale_factor>SCREEN_WIDTH){
-        x -= x*scale_factor+SCREEN_WIDTH*scale_factor-SCREEN_WIDTH;
-    }
-    if (y+SCREEN_HEIGHT*scale_factor>SCREEN_HEIGHT){
-        y -= y+SCREEN_HEIGHT*scale_factor-SCREEN_HEIGHT;
-    }*/
-
-
-    SDL_Rect viewport = (SDL_Rect){-x, -y, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_Rect viewport = (SDL_Rect){-x/scale_factor, -y/scale_factor, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
     SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 }
