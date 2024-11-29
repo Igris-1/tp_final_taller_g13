@@ -184,7 +184,7 @@ void GameView::load_music(){
     if (efecto == NULL) {
         std::cout << "Error al cargar musica" << std::endl;
     }
-    Mix_VolumeMusic(40);
+    Mix_VolumeMusic(0);
     Mix_PlayMusic(efecto, -1);
 
     if (TTF_Init() == -1) {

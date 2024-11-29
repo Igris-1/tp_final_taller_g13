@@ -30,24 +30,24 @@ void GearView::push_gear_frame(){
 	gear_frames.push_back(-3);
 	gear_frames.push_back(0);
 	// magnum frames
-	gear_frames.push_back(0);
-	gear_frames.push_back(0);
+	gear_frames.push_back(4);
+	gear_frames.push_back(-23);
 	gear_frames.push_back(0);
 	// oldPistol frames
-	gear_frames.push_back(0);
-	gear_frames.push_back(0);
-	gear_frames.push_back(0);
+	gear_frames.push_back(5);
+	gear_frames.push_back(-26);
+	gear_frames.push_back(-5);
 	// pewpewLaser frames
 	gear_frames.push_back(0);
-	gear_frames.push_back(0);
-	gear_frames.push_back(0);
+	gear_frames.push_back(-15);
+	gear_frames.push_back(-3);
 	// shotgun frames
 	gear_frames.push_back(3);
 	gear_frames.push_back(-24);
 	gear_frames.push_back(-2);
 	// sniper frames
-	gear_frames.push_back(0);
-	gear_frames.push_back(0);
+	gear_frames.push_back(5);
+	gear_frames.push_back(-16);
 	gear_frames.push_back(0);
 	// banana frames
 	gear_frames.push_back(3);
@@ -97,25 +97,25 @@ void GearView::push_gear_vertical_frame(){
     gear_vertical_frames.push_back(13);
     gear_vertical_frames.push_back(-4);
     // magnum frames
-    gear_vertical_frames.push_back(-7);
-    gear_vertical_frames.push_back(18);
-    gear_vertical_frames.push_back(-17);
+    gear_vertical_frames.push_back(-10);
+    gear_vertical_frames.push_back(6);
+    gear_vertical_frames.push_back(-10);
     // oldPistol frames
-    gear_vertical_frames.push_back(-7);
-    gear_vertical_frames.push_back(18);
-    gear_vertical_frames.push_back(-17);
+    gear_vertical_frames.push_back(-16);
+    gear_vertical_frames.push_back(17);
+    gear_vertical_frames.push_back(-13);
     // pewpewLaser frames
-    gear_vertical_frames.push_back(-7);
-    gear_vertical_frames.push_back(18);
-    gear_vertical_frames.push_back(-17);
+    gear_vertical_frames.push_back(-15);
+    gear_vertical_frames.push_back(11);
+    gear_vertical_frames.push_back(-10);
     // shotgun frames
     gear_vertical_frames.push_back(-12);
     gear_vertical_frames.push_back(8);
     gear_vertical_frames.push_back(-8);
     // sniper frames
     gear_vertical_frames.push_back(-7);
-    gear_vertical_frames.push_back(18);
-    gear_vertical_frames.push_back(-17);
+    gear_vertical_frames.push_back(9);
+    gear_vertical_frames.push_back(0);
     // banana frames
     gear_vertical_frames.push_back(-4);
     gear_vertical_frames.push_back(15);
@@ -134,7 +134,7 @@ void GearView::push_gear_vertical_frame(){
     gear_vertical_frames.push_back(0);
     //helmet accessory frames
 	accessories_vertical_frames.push_back(4);
-	accessories_vertical_frames.push_back(-8);
+	accessories_vertical_frames.push_back(-4);
 	accessories_vertical_frames.push_back(-20);
 	// armor accessory frames
 	accessories_vertical_frames.push_back(11);
@@ -197,31 +197,31 @@ void GearView::draw_gear_in_hands(int x, int y, int gear, int inclination, int f
 			break;
         case 3:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		case 4:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		case 9:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 33, 9},
-                SDL_Rect{x, y, 36, 18}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 36, 18}, inclination, NullOpt, facing_direction);
 			break;
 		case 10:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		case 11:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		case 12:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		case 13:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 16, 16},
-                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, 0);
+                SDL_Rect{x, y, 24, 24}, inclination, NullOpt, facing_direction);
 			break;
 		default:
 			renderer.Copy(gear_textures[gear], SDL_Rect{0, 8, 32, 16},
