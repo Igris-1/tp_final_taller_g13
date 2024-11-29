@@ -6,14 +6,12 @@
 #include <iostream>
 #include <sstream>
 
-#include <unistd.h>
-
 #include "../configuration_yamls/game_config.h"
 
 #include "receiver_thread.h"
 #include "sender_thread.h"
 
-#define SLEEP_TIME 40000
+#define LOOP_TIME 40000
 #define AMOUNT_OF_PLAYERS 2
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
@@ -21,38 +19,19 @@ GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsM
     start();
 }
 
-// void GameThread::send_snapshots() {
-//     game_snapshot_t snapshot = game.get_snapshot();
-//     if (snapshot.ducks_len != 0) {
-//         clients.enqueue_snapshot(snapshot);
-//     }
-// }
-
 void GameThread::send_snapshots() {
-
     instruction_for_client_t instruction;
     instruction.id = 1;
     instruction.gs = game->get_snapshot();
-    // if (instruction.gs.ducks_len != 0) {
     clients.enqueue_instruction(instruction);
-
-    //}
 }
 
 void GameThread::send_map() {
     instruction_for_client_t instruction;
     instruction.id = 0;
     instruction.map = game->get_map_structure();
-
     clients.enqueue_instruction(instruction);
 }
-
-// void GameThread::send_instructions() {
-//     instruction_for_client_t instruction;
-//     instruction.id = game.get_message_type();
-//     instruction.gs = game.get_snapshot();
-//     clients.enqueue_instruction(instruction);
-// }
 
 void GameThread::send_game_score() {
     instruction_for_client_t instruction;
@@ -98,11 +77,12 @@ void GameThread::run() {
     }
 
     while (this->game->get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
-        usleep(SLEEP_TIME);
+        std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
     }
     send_map();
 
     while (_keep_running) {
+        auto start_time = std::chrono::steady_clock::now();
         this->game->keep_using_item();
         try {
             execute_commands();
@@ -137,13 +117,14 @@ void GameThread::run() {
                 // usleep(1000000);
             }
             this->game->reset_round();
-            usleep(SLEEP_TIME);
+            std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
             continue;
-            usleep(SLEEP_TIME);
         }
 
         send_snapshots();
-
-        usleep(SLEEP_TIME);
+        auto end_time = std::chrono::steady_clock::now();
+        auto elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        int remaining_time = LOOP_TIME - elapsed_time;
+        std::this_thread::sleep_for(std::chrono::microseconds(remaining_time));
     }
 }

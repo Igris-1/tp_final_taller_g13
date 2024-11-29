@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "../client_src/joinable_games_finder.h"
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 
 #include "ui_joingame.h"
 

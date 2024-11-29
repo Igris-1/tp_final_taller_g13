@@ -28,7 +28,6 @@ weapon_DTO Grenade::to_DTO() {
 }
 
 std::vector<std::shared_ptr<BulletInterface>> Grenade::get_explotion(Hitbox hitbox) {
-    std::cout << "Grenade explotion" << std::endl;
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     int x = hitbox.get_x() + hitbox.get_width() / 2;
     int y = hitbox.get_y();
@@ -96,5 +95,6 @@ bool Grenade::is_exploding() { return this->explotion_time > 0; }
 void Grenade::fire_rate_down() {
     if (this->is_active()) {
         this->reload_time--;
+        std::cout << "reload time: " << this->reload_time << std::endl;
     }
 }

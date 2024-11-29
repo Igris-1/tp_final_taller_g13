@@ -107,37 +107,22 @@ duck_DTO Duck::to_DTO() {
     return dto;
 }
 
-void Duck::continue_fire_rate() {
+int Duck::continue_fire_rate() {
     if (!this->has_item()) {
-        return;
+        return 0;
     }
     this->item_in_hands->fire_rate_down();
+
+    if(item_in_hands->is_explosive() && item_in_hands->is_active()){
+        for(int i = 0; i < 10; i++){            
+            this->item_in_hands->fire_rate_down();
+        }
+        if(item_in_hands->exploted()){
+            return 1;
+        }
+    }
+    return 0;
 }
-
-// bool Duck::has_explosive_weapon() {
-//     if (this->item_in_hands == nullptr) {
-//         return false;
-//     }
-//     return this->item_in_hands->is_explosive();
-// }
-
-// bool Duck::has_active_explosive_weapon() {
-//     if (this->item_in_hands == nullptr) {
-//         return false;
-//     }
-//     return this->item_in_hands->is_active();
-// }
-// void Duck::activation_explosive_weapon() {
-//     if (this->weap == nullptr) {
-//         return;
-//     }
-//     this->weapon->activation();
-// }
-
-// bool Duck::already_exploted() {
-//     this->item_in_hands->move_to(this->get_x(), this->get_y());
-//     return this->item_in_hands->exploded();
-// }
 
 int Duck::use_item(int x_direction, int y_direction, bool is_holding) {
     if (!this->has_item()) {

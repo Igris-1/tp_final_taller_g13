@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 #include "../common_src/translator_actions.h"
 
 #include "message.h"

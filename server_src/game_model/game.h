@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "../../common_src/duck_DTO.h"
+#include "../../common_src/DTOs.h"
 #include "../../common_src/game_snapshot_t.h"
 #include "../../configuration_yamls/game_config.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
@@ -57,19 +57,18 @@ typedef struct {
 
     bool crouching = false;
     bool trying_to_stand = false;
-
     bool looking_up = false;
 
 } duck_state;
 
 class Game {
 private:
-    MapGame map;
-    std::map<int, std::shared_ptr<duck_state>> ducks_states;  // tiene el estado de cada pato
-    std::map<int, int> ducks_score;                           // tiene los puntos de cada pato
-    std::vector<std::tuple<int, int>> spawn_positions;  // tiene las posiciones de spawn de armas
-    std::vector<std::tuple<int, int>> spawn_ducks;
-    int actual_round;
+    MapGame map;                                                   // el que sabe que se puede mover y que no              
+    std::map<int, std::shared_ptr<duck_state>> ducks_states;    // tiene el estado de cada pato
+    std::map<int, int> ducks_score;                             // tiene los puntos de cada pato
+    std::vector<std::tuple<int, int>> spawn_positions;          // tiene las posiciones de spawn de armas
+    std::vector<std::tuple<int, int>> spawn_ducks;              // tiene las posiciones de spawn de patos
+    int actual_round; 
     int time_to_respawn;
     bool started_game;
 
@@ -85,7 +84,7 @@ private:
     const int ADD_FACTOR_GRAVITY = 8;
     const int SPEED_OF_GAME = 10;
 
-    // private methods
+    // private methods, internal uses
     void duck_exist(int id);
     void gravity_movement(int id_duck);
     void jump_movement(int id_duck);
@@ -95,8 +94,14 @@ private:
     void load_spawn_ducks(std::vector<std::tuple<int, int, int, int>>& spawns);
     void load_spawn_weapons(std::vector<std::tuple<int, int, int, int>>& spawns);
 
+    // MAP FUNCTIONS
+    void add_invalid_position(Hitbox hitbox);
+    void add_new_platform(Hitbox hitbox);
+    void add_spawn_position(Hitbox hitbox);  // agrega una posicion de spawn de armas
+    void add_spawn_duck(Hitbox hitbox);
+    void add_box(Hitbox hitbox);
+
 public:
-    // Game(int high, int width);
     Game(GameConfig& config);
 
     // DUCK
@@ -136,11 +141,6 @@ public:
     map_structure_t get_map_structure();
 
     // MAP FUNCTIONS
-    void add_invalid_position(Hitbox hitbox);
-    void add_new_platform(Hitbox hitbox);
-    void add_spawn_position(Hitbox hitbox);  // agrega una posicion de spawn de armas
-    void add_spawn_duck(Hitbox hitbox);
-    void add_box(Hitbox hitbox);
     void load_configuration(GameConfig& config);
 
     // game logic

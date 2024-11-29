@@ -11,11 +11,9 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
                                                          bool is_holding_button) {
     std::vector<std::shared_ptr<BulletInterface>> bullets;
     if (this->shot == 0) {
-        std::cout << "No ammo" << std::endl;
         return bullets;
     }
     if (this->fire_rate == 0) {
-        std::cout << "fire AK47" << std::endl;
         bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
                                                    x_direction, y_direction,
                                                    TILE_SIZE * this->scope, this->damage, 8));

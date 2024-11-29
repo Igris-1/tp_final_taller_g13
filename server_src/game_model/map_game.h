@@ -7,7 +7,7 @@
 #include <set>
 #include <vector>
 
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapons_strategy/weapon.h"
 
@@ -43,15 +43,19 @@ private:
 
     const int HEALTH = 20;
 
+    // functions of structures
     bool hitbox_in_range(Hitbox hitbox, bool can_fall);
     bool position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand);
     bool out_of_map(Hitbox hitbox);
     bool not_in_invalid_position(Hitbox hitbox, bool to_stand);
     bool not_in_platforms(Hitbox hitbox, bool to_stand);
     bool not_in_boxes(Hitbox hitbox, bool to_stand);
-    bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
-    // bool can_move_hitbox_without_boxes(Hitbox hitbox, int dx, int dy);
 
+    // functions of movements
+    bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
+    bool approximate_spawn_to_platform(Hitbox& hitbox, bool is_item);
+
+    // internal functions
     bool apply_recoil(std::shared_ptr<Duck> duck, int duck_id);
     bool apply_sliding(std::shared_ptr<Duck> duck, int duck_id);
     bool apply_movement(std::shared_ptr<Duck> duck, int duck_id, int& remaining_dx,
@@ -59,6 +63,9 @@ private:
     void explosive_gravity(std::shared_ptr<Pickable> explosive);
     void inertial_classic_pickable(std::shared_ptr<Pickable> Pickable);
     void inertial_explosive_pickable(std::shared_ptr<Pickable> explosive);
+    void duck_collision_explosive(std::__cxx11::list<std::shared_ptr<Pickable>>::iterator& explosive, bool& banana_flag);
+    void grenade_exploted(std::__cxx11::list<std::shared_ptr<Pickable>>::iterator& explosive);
+    bool bullet_collision_box(std::shared_ptr<Box>& box, std::__cxx11::list<std::shared_ptr<BulletInterface>>::iterator& bullet, const std::map<std::string, weapon_config>& weapons_config);
 
 public:
     explicit MapGame(int width, int height, int health);
@@ -70,7 +77,6 @@ public:
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y);
-    bool approximate_spawn_to_platform(Hitbox& hitbox, bool is_item);
     bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
 
     // DUCKS

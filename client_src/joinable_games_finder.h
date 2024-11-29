@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 #include "../common_src/socket.h"
 
 class JoinableGamesFinder {

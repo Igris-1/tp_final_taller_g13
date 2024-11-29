@@ -1,6 +1,6 @@
 #include "weapon.h"
 
-#include "../../../../common_src/duck_DTO.h"
+#include "../../../../common_src/DTOs.h"
 #include "../../duck.h"
 #include "../../map_game.h"
 

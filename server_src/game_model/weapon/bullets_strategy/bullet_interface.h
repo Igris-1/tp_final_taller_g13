@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../../../../common_src/duck_DTO.h"
+#include "../../../../common_src/DTOs.h"
 #include "../../positionable.h"
 
 typedef enum { BULLET_ID = 1, LASER_ID, PELLET_ID, EXPLOTION_ID } bullet_type;

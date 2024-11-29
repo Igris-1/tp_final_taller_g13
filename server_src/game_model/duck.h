@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "../../common_src/duck_DTO.h"
+#include "../../common_src/DTOs.h"
 #include "weapon/bullets_strategy/bullet_interface.h"
 #include "weapon/weapon_factory.h"
 
@@ -56,7 +56,7 @@ public:
     void add_helmet();
     bool has_item();
 
-    void continue_fire_rate();
+    int continue_fire_rate();
     bool has_explosive_weapon();
     bool has_active_explosive_weapon();
     void activation_explosive_weapon();

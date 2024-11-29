@@ -14,7 +14,7 @@ ducks_config:
 weapon:
   grenade:
     shot: 1
-    damage: 20
+    damage: 35
     recoil: 0
     scope: 7 # distnace of the explosion in tiles
     reload_time: 1500 # time to explode
@@ -31,7 +31,7 @@ weapon:
     hitbox_height: 25
 
   pew_pew_laser:
-    shot: 12
+    shot: 20
     damage: 8
     recoil: 0
     scope: 35 # distnace of shot in tiles
@@ -50,17 +50,17 @@ weapon:
 
   ak_47:
     shot: 50
-    damage: 5
+    damage: 20  
     recoil: 10
     scope: 32 # distnace of shot in tiles
-    reload_time: 6 #time between shots
+    reload_time: 5 #time between shots
     hitbox_width: 48
     hitbox_height: 24
 
   dueling_pistol:
     shot: 1
-    damage: 40
-    recoil: 20
+    damage: 50
+    recoil: 200
     scope: 25 # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 36
@@ -97,7 +97,7 @@ weapon:
     shot: 3
     damage: 50
     recoil: 0
-    scope: 64 # distnace of shot in tiles
+    scope: 90 # distnace of shot in tiles
     reload_time: 10 #time after recharge
     hitbox_width: 33
     hitbox_height: 9

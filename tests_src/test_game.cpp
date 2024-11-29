@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 #include "../server_src/game_model/duck.h"
 #include "../server_src/game_model/game.h"
 

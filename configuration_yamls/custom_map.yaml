@@ -55,16 +55,16 @@ platforms:
   - {x: 42, y: 372, width: 32, height: 32}
   - {x: 9, y: 372, width: 32, height: 32}
 weapons:
-  - {x: 672, y: 114, width: 16, height: 8}
-  - {x: 675, y: 692, width: 16, height: 8}
-  - {x: 677, y: 401, width: 16, height: 8}
-  - {x: 155, y: 93, width: 16, height: 8}
-  - {x: 1185, y: 93, width: 16, height: 8}
-  - {x: 63, y: 696, width: 16, height: 8}
-  - {x: 1284, y: 700, width: 16, height: 8}
-  - {x: 92, y: 359, width: 16, height: 8}
-  - {x: 188, y: 360, width: 16, height: 8}
-  - {x: 1254, y: 358, width: 16, height: 8}
-  - {x: 1148, y: 358, width: 16, height: 8}
-  - {x: 461, y: 469, width: 16, height: 8}
-  - {x: 887, y: 466, width: 16, height: 8}
+  - {x: 672, y: 100, width: 16, height: 8}
+  - {x: 675, y: 680, width: 16, height: 8}
+  - {x: 677, y: 370, width: 16, height: 8}
+  - {x: 155, y: 80, width: 16, height: 8}
+  - {x: 1185, y: 80, width: 16, height: 8}
+  - {x: 63, y: 680, width: 16, height: 8}
+  - {x: 1284, y: 680, width: 16, height: 8}
+  - {x: 92, y: 340, width: 16, height: 8}
+  - {x: 188, y: 350, width: 16, height: 8}
+  - {x: 1254, y: 340, width: 16, height: 8}
+  - {x: 1148, y: 340, width: 16, height: 8}
+  - {x: 461, y: 450, width: 16, height: 8}
+  - {x: 887, y: 450, width: 16, height: 8}

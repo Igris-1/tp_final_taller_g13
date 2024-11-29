@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "duck_DTO.h"
+#include "DTOs.h"
 #include "positionable.h"
 
 class Box: public Positionable {

@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "../common_src/action_t.h"
-#include "../common_src/duck_DTO.h"
+#include "../common_src/DTOs.h"
 #include "../common_src/liberror.h"
 #include "../common_src/socket.h"
 #include "actions/duck_creator.h"

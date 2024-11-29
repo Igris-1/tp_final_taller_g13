@@ -16,13 +16,11 @@ std::vector<std::shared_ptr<BulletInterface>> Sniper::fire(std::shared_ptr<Duck>
         return bullets;
     }
     if (this->reload && !is_holding_button) {
-        std::cout << "Reloading sniper" << std::endl;
         this->fire_rate = this->reload_time;
         this->reload = false;
         return bullets;
     }
     if (this->fire_rate == 0 && !is_holding_button) {
-        std::cout << "fire sniper" << std::endl;
         bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
                                                    x_direction, y_direction,
                                                    TILE_SIZE * this->scope, this->damage, 8));

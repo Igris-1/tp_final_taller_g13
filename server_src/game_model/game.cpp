@@ -1,15 +1,6 @@
 #include "game.h"
-
 #include <algorithm>
-
 #include <unistd.h>
-
-// Game::Game(int height, int width):
-//         map(width, height),
-//         ducks_states(),
-//         time_to_respawn(300),
-//         actual_round(0),
-//         started_game(false) {}
 
 Game::Game(GameConfig& config):
         map(config.get_map_width(), config.get_map_height(), config.get_duck_config().health),
@@ -26,10 +17,7 @@ Game::Game(GameConfig& config):
         ADD_FACTOR_GRAVITY(config.get_duck_config().add_factor_gravity),
         SPEED_OF_GAME(config.get_duck_config().speed_of_game) {}
 
-void Game::duck_exist(int id) {
-    this->map.duck_exist(id);
-    return;
-}
+
 
 void Game::remove_duck(int id) {
     this->map.remove_duck(id);
@@ -128,44 +116,6 @@ void Game::continue_horizontal_movements() {
 
     for (int j = 0; j < (SPEED_OF_GAME * 3); j++) {
         this->map.inertia_weapon();
-    }
-}
-
-void Game::gravity_movement(int id_duck) {
-    for (int i = 0; i < (SPEED_OF_GAME * PRODUCT_FACTOR_GRAVITY) + ADD_FACTOR_GRAVITY; i++) {
-        // this->ducks_states[it->first]->is_falling = this->map.move_duck(it->second, 0,
-        // GRAVITY);
-        if (this->map.move_relative_if_posible(id_duck, 0, GRAVITY)) {
-            this->ducks_states[id_duck]->is_falling = true;
-        } else {
-            this->ducks_states[id_duck]->is_falling = false;
-        }
-    }
-}
-
-void Game::jump_movement(int id_duck) {
-    for (int i = 0; i < (SPEED_OF_GAME * PRODUCT_FACTOR_JUMP) + ADD_FACTOR_JUMP; i++) {
-        if (this->ducks_states[id_duck]->tiles_to_jump > 0) {
-            this->map.move_relative_if_posible(id_duck, 0, JUMP_DIRECTION);
-            this->ducks_states[id_duck]->tiles_to_jump--;
-        }
-        if (this->ducks_states[id_duck]->tiles_to_jump == 0) {
-            this->ducks_states[id_duck]->air_time--;
-        }
-        if (this->ducks_states[id_duck]->tiles_to_jump == 0 &&
-            this->ducks_states[id_duck]->air_time == 0) {
-            this->ducks_states[id_duck]->is_jumping = false;
-            this->ducks_states[id_duck]->is_falling = true;
-        }
-    }
-}
-
-void Game::jump_with_style(int id_duck) {
-    for (int i = 0; i < (SPEED_OF_GAME) + ADD_FACTOR_GRAVITY; i++) {
-        if (this->ducks_states[id_duck]->falling_with_style && i % 2 == 0) {
-            this->ducks_states[id_duck]->is_falling =
-                    this->map.move_relative_if_posible(id_duck, 0, GRAVITY) ? true : false;
-        }
     }
 }
 
@@ -292,15 +242,15 @@ void Game::keep_using_item() {
 }
 
 void Game::add_spawn_duck(Hitbox hitbox) {
-    if (this->map.approximate_spawn_to_platform(hitbox, false)) {
+    // if (this->map.approximate_spawn_to_platform(hitbox, false)) {
         this->spawn_ducks.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
-    }
+    //}
 }
 
 void Game::add_spawn_position(Hitbox hitbox) {
-    if (this->map.approximate_spawn_to_platform(hitbox, true)) {
+    //if (this->map.approximate_spawn_to_platform(hitbox, true)) {
         this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
-    }
+    //}
 }
 
 void Game::stop_duck_item(int id, bool stop_fire) {
@@ -324,20 +274,6 @@ void Game::duck_stops_looking_up(int id, bool stops_looking_up) {
         return;
     }
 }
-
-void Game::add_invalid_position(Hitbox hitbox) {
-    if (!this->map.add_invalid_position(hitbox)) {
-        throw GameError("game can't add invalid position");
-    }
-}
-
-void Game::add_new_platform(Hitbox hitbox) {
-    if (!this->map.add_platform(hitbox)) {
-        throw GameError("game can't add platform");
-    }
-}
-
-void Game::add_box(Hitbox hitbox) { this->map.add_box(hitbox); }
 
 void Game::pick_up_item(int duck_id, bool pick_up) {
     if (!pick_up || !this->map.duck_exist(duck_id) || !this->map.duck_is_alive(duck_id)) {
@@ -416,37 +352,6 @@ void Game::reset_round() {
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {
         this->random_item_spawn(false);
-    }
-}
-
-void Game::load_platforms(std::vector<std::tuple<int, int, int, int>>& spawns) {
-    for (auto& platform: spawns) {
-        this->add_new_platform(
-                Hitbox(std::get<X_POSITION>(platform), std::get<Y_POSITION>(platform),
-                       std::get<WIDTH_POSITION>(platform), std::get<HEIGHT_POSITION>(platform)));
-    }
-}
-
-void Game::load_boxes(std::vector<std::tuple<int, int, int, int>>& spawns) {
-    for (auto& box: spawns) {
-        this->add_box(Hitbox(std::get<X_POSITION>(box), std::get<Y_POSITION>(box),
-                             std::get<WIDTH_POSITION>(box), std::get<HEIGHT_POSITION>(box)));
-    }
-}
-
-void Game::load_spawn_ducks(std::vector<std::tuple<int, int, int, int>>& spawns) {
-    for (auto& duck_spawn: spawns) {
-        this->add_spawn_duck(Hitbox(
-                std::get<X_POSITION>(duck_spawn), std::get<Y_POSITION>(duck_spawn),
-                std::get<WIDTH_POSITION>(duck_spawn), std::get<HEIGHT_POSITION>(duck_spawn)));
-    }
-}
-
-void Game::load_spawn_weapons(std::vector<std::tuple<int, int, int, int>>& spawns) {
-    for (auto& weapon_spawn: spawns) {
-        this->add_spawn_position(Hitbox(
-                std::get<X_POSITION>(weapon_spawn), std::get<Y_POSITION>(weapon_spawn),
-                std::get<WIDTH_POSITION>(weapon_spawn), std::get<HEIGHT_POSITION>(weapon_spawn)));
     }
 }
 
