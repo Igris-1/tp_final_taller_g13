@@ -32,6 +32,8 @@
 #define WIDTH_POSITION 2
 #define HEIGHT_POSITION 3
 
+#define WEAPON_SPAWN_SIZE 40
+
 // factores para el salto y gravedad
 
 // #define TILES_FOR_JUMP 175

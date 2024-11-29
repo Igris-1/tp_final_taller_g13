@@ -24,7 +24,25 @@
 #define GRAVITY 1
 #define JUMP_DIRECTION -1
 
+#define REVERSE_DIRECTION -1
+
+#define PLATFORM_MAXIMUM_DISTANCE 10
+#define PICKABLE_SPAWN_DISTANCE_TO_PLATFORM -8
+#define DUCK_SPAWN_DISTANCE_TO_PLATFORM -2
+
+#define X_POSITION 0
+#define Y_POSITION 1
+
+#define GRENADE_EXPLOTED_ON_HAND 1
+
 #define NOT_OWNER -2
+
+#define SHOOTING_SMALL_WEAPON 1
+#define SHOOTING_BIG_WEAPON 2
+#define SHOOTING_LASER_WEAPON 3
+
+
+#define AIR_TIME_Y_THROW 150
 
 class MapGame {
 private:
@@ -76,7 +94,7 @@ public:
     bool add_invalid_position(Hitbox hitbox);
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
-    bool already_exist_a_pickable(int x, int y);
+    bool already_exist_a_pickable(int x, int y, int width, int height);
     bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
 
     // DUCKS
@@ -86,7 +104,7 @@ public:
     void respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn);
     void remove_duck(int id);
     bool move_relative_if_posible(int duck_id, int dx, int dy);
-    void continue_fire_rate(int id);
+    void continue_fire_rate(int id, int speed_of_game);
     void use_item(int duck_id, bool right_direction, bool is_holding, bool looking_up);
     bool crouch_duck(int id, bool crouch);
     // void keep_using_item(int duck_id, bool right_direction);

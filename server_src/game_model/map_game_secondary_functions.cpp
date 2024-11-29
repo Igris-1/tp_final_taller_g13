@@ -19,11 +19,9 @@ bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand) {
     if (!hitbox_in_range(hitbox, can_fall)) {
         return false;
     }
-    // return not_in_invalid_position(hitbox) && not_in_platforms(hitbox);
-
-    bool uno = not_in_invalid_position(hitbox, to_stand);
-    bool dos = not_in_platforms(hitbox, to_stand);
-    return uno && dos;
+    bool in_invalid_position = not_in_invalid_position(hitbox, to_stand);
+    bool in_platforms = not_in_platforms(hitbox, to_stand);
+    return in_invalid_position && in_platforms;
 }
 bool MapGame::out_of_map(Hitbox hitbox) { return hitbox.get_y() >= this->height; }
 
@@ -55,7 +53,7 @@ bool MapGame::not_in_platforms(Hitbox hitbox, bool to_stand) {
     }
     for (Hitbox platform: this->platforms) {
         while (platform.has_collision_above(hitbox)) {
-            if (!move_relative_if_posible(hitbox, 0, 1)) {
+            if (!move_relative_if_posible(hitbox, NO_DIRECTION, RIGHT_DIRECTION)) {
                 return false;
             }
         }
@@ -92,18 +90,18 @@ bool MapGame::can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall) {
 // internal functions
 bool MapGame::apply_recoil(std::shared_ptr<Duck> duck, int duck_id) {
     Hitbox aux = duck->get_hitbox();
-    aux.move_relative(-(duck->get_x_direction()), 0);
+    aux.move_relative(-(duck->get_x_direction()), NO_DIRECTION);
     if (this->out_of_map(aux)) {
         duck->kill();
         this->ducks_dead[duck_id] = duck;
         return false;
     }
-    if (can_move_hitbox(duck->get_hitbox(), -1 * (duck->get_x_direction()), 0, true) &&
+    if (can_move_hitbox(duck->get_hitbox(), REVERSE_DIRECTION * (duck->get_x_direction()), NO_DIRECTION, true) &&
         this->not_in_boxes(aux, false)) {
-        duck->move_duck_relative(-(duck->get_x_direction()), 0);
-        duck->set_direction(duck->get_x_direction(), 0);
+        duck->move_duck_relative(-(duck->get_x_direction()), NO_DIRECTION);
+        duck->set_direction(duck->get_x_direction(), NO_DIRECTION);
     } else {
-        duck->set_recoil(-1);
+        duck->set_recoil(REVERSE_DIRECTION);
         return false;
     }
     return true;
@@ -111,17 +109,17 @@ bool MapGame::apply_recoil(std::shared_ptr<Duck> duck, int duck_id) {
 
 bool MapGame::apply_sliding(std::shared_ptr<Duck> duck, int duck_id) {
     Hitbox aux = duck->get_hitbox();
-    aux.move_relative(duck->get_x_direction(), 0);
+    aux.move_relative(duck->get_x_direction(), NO_DIRECTION);
     if (this->out_of_map(aux)) {
         duck->kill();
         this->ducks_dead[duck_id] = duck;
         duck->set_sliding(false);
         return false;
     }
-    if (can_move_hitbox(duck->get_hitbox(), duck->get_x_direction(), 0, true) &&
+    if (can_move_hitbox(duck->get_hitbox(), duck->get_x_direction(), NO_DIRECTION, true) &&
         this->not_in_boxes(aux, false)) {
-        duck->move_duck_relative(duck->get_x_direction(), 0);
-        duck->set_direction(duck->get_x_direction(), 0);
+        duck->move_duck_relative(duck->get_x_direction(), NO_DIRECTION);
+        duck->set_direction(duck->get_x_direction(), NO_DIRECTION);
     } else {
         duck->set_sliding(false);
         return false;
@@ -158,11 +156,11 @@ void MapGame::explosive_gravity(std::shared_ptr<Pickable> explosive) {
     (explosive)->air_time_down_y();
     Hitbox& hitbox = (explosive)->get_reference_hitbox();
     if (!(explosive)->is_falling()) {
-        this->move_relative_if_posible(hitbox, 0, JUMP_DIRECTION);
+        this->move_relative_if_posible(hitbox, NO_DIRECTION, JUMP_DIRECTION);
         return;
     }
     if ((explosive)->is_falling()) {
-        this->move_relative_if_posible(hitbox, 0, GRAVITY);
+        this->move_relative_if_posible(hitbox, NO_DIRECTION, GRAVITY);
     }
 }
 
@@ -170,11 +168,11 @@ void MapGame::inertial_classic_pickable(std::shared_ptr<Pickable> pickable) {
     (pickable)->air_time_down_x();
     Hitbox& hitbox = (pickable)->get_reference_hitbox();
     if ((pickable)->is_moving() && (pickable)->get_x_direction() > 0) {
-        this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, 0);
+        this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, NO_DIRECTION);
         return;
     }
     if ((pickable)->is_moving() && (pickable)->get_x_direction() < 0) {
-        this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
+        this->move_relative_if_posible(hitbox, LEFT_DIRECTION, NO_DIRECTION);
     }
 }
 
@@ -182,11 +180,11 @@ void MapGame::inertial_explosive_pickable(std::shared_ptr<Pickable> explosive) {
     (explosive)->air_time_down_x();
     Hitbox& hitbox = (explosive)->get_reference_hitbox();
     if ((explosive)->is_moving() && (explosive)->get_x_direction() > 0) {
-        this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, 0);
+        this->move_relative_if_posible(hitbox, RIGHT_DIRECTION, NO_DIRECTION);
         return;
     }
     if ((explosive)->is_moving() && (explosive)->get_x_direction() < 0) {
-        this->move_relative_if_posible(hitbox, LEFT_DIRECTION, 0);
+        this->move_relative_if_posible(hitbox, LEFT_DIRECTION, NO_DIRECTION);
     }
 }
 

@@ -8,10 +8,16 @@
 
 #include "positionable.h"
 
+#define AIR_TIME_X 300
+#define AIR_TIME_Y 50
+#define NO_AIRE_TIME 0
+#define NO_DIRECTION 0
+
 class BulletInterface;
 
 typedef enum {
-    COWBOY_PISTOL_ID = 1,
+    NO_WEAPON_ID = 0,
+    COWBOY_PISTOL_ID,
     LASER_RIFLE_ID,
     AK_47_ID,
     GRENADE_ID,
@@ -27,19 +33,18 @@ typedef enum {
     ARMOR_ID,
 } ITEM_ID;
 
-
 class Duck;
 
 class Pickable: public Positionable {
 
 protected:
-    int air_time_x = 300;
-    int air_time_y = 50;
+    int air_time_x = AIR_TIME_X;
+    int air_time_y = AIR_TIME_Y;
 
-    int x_direction = 0;
+    int x_direction = NO_DIRECTION;
     bool moving = true;
-
-    int y_direction = 0;
+    
+    int y_direction = NO_DIRECTION;
     bool falling = false;
     std::shared_ptr<Duck> duck;
 

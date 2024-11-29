@@ -233,7 +233,7 @@ void Game::stop_crouch_duck(int id, bool stop_crouch) {
 void Game::keep_using_item() {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
     for (auto& id: ducks_id) {
-        this->map.continue_fire_rate(id);
+        this->map.continue_fire_rate(id, SPEED_OF_GAME);
         if (this->ducks_states[id]->holding_action) {
             this->map.use_item(id, this->ducks_states[id]->facing_direction, true,
                                this->ducks_states[id]->looking_up);
@@ -327,7 +327,7 @@ void Game::random_item_spawn(bool on_game) {
     }
     for (auto& pos: this->spawn_positions) {
         if (this->map.already_exist_a_pickable(std::get<X_POSITION>(pos),
-                                               std::get<Y_POSITION>(pos))) {
+                                               std::get<Y_POSITION>(pos), WEAPON_SPAWN_SIZE, WEAPON_SPAWN_SIZE)) {
             continue;
         } else {
             try {

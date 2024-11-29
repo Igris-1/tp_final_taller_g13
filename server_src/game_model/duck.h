@@ -17,23 +17,30 @@ class Weapon;
 #define DUCK_WIDTH 32
 #define DUCK_HEIGHT 48
 #define DUCK_CROUCH_HEIGHT 36
+#define RESPAWN_TIME 100
+#define SLIDING_COUNTER_INIT 10000
+#define SLIDING_COUNTER 100
+#define RECOIL_COUNTER 0
+#define NO_LIFE 0
+#define NO_DAMAGE 0
+#define NO_RECOIL_CODE -1
+#define NO_RECOIL 0
 
 class Duck: public Positionable, public std::enable_shared_from_this<Duck> {
 private:
-    // cppcheck-suppress unusedStructMember
     int duck_id;
     int health;
     int begin_health;
-    int respawn_time = 100;
+    int respawn_time = RESPAWN_TIME;
     bool has_armor = false;
     bool has_helmet = false;
     int id_weapon;
     int x_direction;
     int y_direction;
     bool is_sliding = false;
-    int sliding_counter = 10000;
+    int sliding_counter = SLIDING_COUNTER_INIT;
     bool suffering_recoil = false;
-    int recoil_counter = 0;
+    int recoil_counter = RECOIL_COUNTER;
     std::shared_ptr<Pickable> item_in_hands;
 
 public:
@@ -56,7 +63,7 @@ public:
     void add_helmet();
     bool has_item();
 
-    int continue_fire_rate();
+    int continue_fire_rate(int speed_of_game);
     bool has_explosive_weapon();
     bool has_active_explosive_weapon();
     void activation_explosive_weapon();

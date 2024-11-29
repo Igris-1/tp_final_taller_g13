@@ -12,7 +12,7 @@ Duck::Duck(int health, int id):
         health(health),
         begin_health(health),
         item_in_hands(nullptr),
-        Positionable(-1, -1, DUCK_WIDTH, DUCK_HEIGHT),
+        Positionable(DEFAULT_X, DEFAULT_Y, DUCK_WIDTH, DUCK_HEIGHT),
         duck_id(id) {
     this->has_armor = false;
     this->has_helmet = false;
@@ -52,7 +52,7 @@ bool Duck::has_item() {
     if (this->item_in_hands == nullptr) {
         return false;
     }
-    return this->item_in_hands->get_id() != 0;
+    return this->item_in_hands->get_id() != NO_WEAPON_ID;
 }
 
 void Duck::add_armor() {
@@ -65,10 +65,10 @@ void Duck::add_helmet() {
     this->item_in_hands = nullptr;
 }
 
-bool Duck::is_alive() { return !(this->health <= 0); }
+bool Duck::is_alive() { return !(this->health <= NO_LIFE); }
 
 void Duck::receive_damage(int damage) {
-    if (damage == 0) {
+    if (damage == NO_DAMAGE) {
         return;
     }
     if (this->has_armor) {
@@ -79,8 +79,8 @@ void Duck::receive_damage(int damage) {
         return;
     }
     this->health -= damage;
-    if (this->health < 0) {
-        this->health = 0;
+    if (this->health < NO_LIFE) {
+        this->health = NO_LIFE;
     }
 }
 
@@ -100,33 +100,33 @@ duck_DTO Duck::to_DTO() {
     dto.armor_equipped = this->has_armor;
     dto.helmet_equipped = this->has_helmet;
     if (item_in_hands == nullptr) {
-        dto.weapon_id = 0;
+        dto.weapon_id = NO_WEAPON_ID;
     } else {
         dto.weapon_id = this->item_in_hands->get_id();
     }
     return dto;
 }
 
-int Duck::continue_fire_rate() {
+int Duck::continue_fire_rate(int speed_of_game) {
     if (!this->has_item()) {
-        return 0;
+        return EXIT_SUCCESS;
     }
     this->item_in_hands->fire_rate_down();
 
     if(item_in_hands->is_explosive() && item_in_hands->is_active()){
-        for(int i = 0; i < 10; i++){            
+        for(int i = 0; i < speed_of_game; i++){            
             this->item_in_hands->fire_rate_down();
         }
         if(item_in_hands->exploted()){
-            return 1;
+            return GRENADE_EXPLOTED_ON_HAND;
         }
     }
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 int Duck::use_item(int x_direction, int y_direction, bool is_holding) {
     if (!this->has_item()) {
-        return 0;
+        return EXIT_SUCCESS;
     }
     this->item_in_hands->set_direction(x_direction, y_direction);
     this->item_in_hands->set_holding(is_holding);
@@ -146,10 +146,10 @@ int Duck::get_respawn_time() { return this->respawn_time; }
 
 void Duck::set_health(int health) {
     this->health = health;
-    this->respawn_time = 100;
+    this->respawn_time = RESPAWN_TIME;
 }
 
-void Duck::kill() { this->health = 0; }
+void Duck::kill() { this->health = NO_LIFE; }
 
 void Duck::set_direction(int step_dx, int step_dy) {
     if (step_dx != 0) {
@@ -172,7 +172,7 @@ void Duck::move_duck_relative(int x, int y) {
         this->sliding_counter--;
         if (this->sliding_counter <= 0) {
             this->is_sliding = false;
-            this->sliding_counter = 100;
+            this->sliding_counter = SLIDING_COUNTER;
         }
         return;
     }
@@ -197,9 +197,9 @@ bool Duck::get_is_sliding() { return this->is_sliding; }
 bool Duck::has_recoil() { return this->suffering_recoil; }
 
 void Duck::set_recoil(int recoil) {
-    if (recoil == -1) {
+    if (recoil == NO_RECOIL_CODE) {
         this->suffering_recoil = false;
-        this->recoil_counter = 0;
+        this->recoil_counter = NO_RECOIL;
         return;
     }
     this->suffering_recoil = true;

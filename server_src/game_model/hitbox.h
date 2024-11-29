@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <set>
+#include <list>
 
 class Hitbox {
 private:
@@ -16,99 +17,37 @@ private:
     int original_DY;
 
 public:
-    Hitbox(int x, int y, int width, int height): x(x), y(y), width(width), height(height) {
-        this->original_DY = height - y;
-    };
+    Hitbox(int x, int y, int width, int height);
 
-    bool has_collision(const int x, const int y) {
-        return (x >= this->x && x <= this->x + this->width && y >= this->y &&
-                y <= this->y + this->height);
-    }
-    bool has_collision(const Hitbox& other) const {
-        return (this->x<other.x + other.width&& this->x + this->width> other.x) &&
-               (this->y<other.y + other.height&& this->y + this->height> other.y);
-    }
+    bool has_collision(const int x, const int y);
 
-    bool has_collision_above(const Hitbox& other) const {
-        // bool horizontal_overlap = (this->x < other.x + other.width) &&
-        //                         (this->x + this->width > other.x);
+    bool has_collision(const Hitbox& other) const;
 
-        // bool above_overlap = (this->y > other.y + other.height) &&
-        //                  (this->y - (this->height - other.height) <= other.y);
+    bool has_collision_above(const Hitbox& other) const;
 
-        // return horizontal_overlap && above_overlap;
-        return (this->y<other.y + other.height&& this->y + this->height> other.y);
-    }
+    Hitbox& operator=(const Hitbox& other);
 
-    Hitbox& operator=(const Hitbox& other) {
-        if (this != &other) {
-            x = other.x;
-            y = other.y;
-            width = other.width;
-            height = other.height;
-        }
-        return *this;
-    }
-    bool operator==(const Hitbox& other) const {
-        return (x == other.x && y == other.y && width == other.width && height == other.height);
-    }
+    bool operator==(const Hitbox& other) const;
 
-    bool operator<(const Hitbox& other) const {
-        if (x != other.x)
-            return x < other.x;
-        if (y != other.y)
-            return y < other.y;
-        if (width != other.width)
-            return width < other.width;
-        return height < other.height;
-    }
+    bool operator<(const Hitbox& other) const;
 
-    bool operator>(const Hitbox& other) const { return other < *this; }
+    bool operator>(const Hitbox& other) const;
 
-    bool operator<=(const Hitbox& other) const { return !(other < *this); }
+    bool operator<=(const Hitbox& other) const;
 
-    bool operator>=(const Hitbox& other) const { return !(*this < other); }
-    void move_relative(int x, int y) {
-        this->x += x;
-        this->y += y;
-    }
-    void move(int x, int y) {
-        this->x = x;
-        this->y = y;
-    }
+    bool operator>=(const Hitbox& other) const;
 
-    int get_x() const { return this->x; }
-    int get_y() const { return this->y; }
-    int get_width() { return this->width; }
-    int get_height() { return this->height; }
+    void move_relative(int x, int y);
 
-    bool change_size(int new_width, int new_height, const std::set<Hitbox>& potential_collisions) {
-        if (new_height > this->height) {
-            // Calculate how much the hitbox would move upwards
-            int height_difference = new_height - this->height;
-            int new_y = this->y - height_difference;
+    void move(int x, int y);
 
-            // Check for collisions with the new size
-            Hitbox new_hitbox = *this;
-            new_hitbox.y = new_y;
-            new_hitbox.height = new_height;
+    int get_x() const;
+    int get_y() const;
+    int get_width();
+    int get_height();
 
-            for (const Hitbox& other: potential_collisions) {
-                if (new_hitbox.has_collision(other)) {
-                    // Collision detected, cancel resizing
-                    return false;
-                }
-            }
-
-            // No collisions, apply the resize
-            this->y = new_y;
-        }
-
-        // Update width and height
-        this->width = new_width;
-        this->height = new_height;
-        return true;
-    }
+    bool change_size(int new_width, int new_height, 
+        const std::set<Hitbox>& potential_collisions, std::list<Hitbox>& boxes);
 };
 
 #endif
