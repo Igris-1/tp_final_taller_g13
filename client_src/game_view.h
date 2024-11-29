@@ -38,7 +38,11 @@ private:
     std::vector<Texture> accessories_sprites;
     std::vector<Texture> duck_looking_up_sprites;
     std::vector<Texture> dead_duck_sprites;
-
+    std::vector<Mix_Music*> background_music;
+    std::vector<Mix_Chunk*> dead_duck_sound_effects;
+    std::vector<Mix_Chunk*> weapon_sound_effects;
+    std::vector<Mix_Chunk*> slipping_sound_effects;
+    
     std::vector<DuckView> duck_views;
     GearView gear_view;
 
@@ -53,6 +57,8 @@ private:
     void add_ducks(game_snapshot_t gs);
     void load_duck_textures();
     void load_music();
+    int random_number(int min, int max);
+    void make_noise(game_snapshot_t gs);
     void load_gear_textures();
     void load_map_textures();
     void show_loading_screen();

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <random>
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
 #define DELAY_AFTER_SCORE 7000
@@ -72,7 +73,7 @@ void GameView::render_endgame_score(score_DTO score) {
     Mix_CloseAudio();
 }
 
-void GameView::show_loading_screen() {
+void GameView::show_loading_screen(){
     Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
 
     renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
@@ -81,7 +82,7 @@ void GameView::show_loading_screen() {
     renderer.Present();
 }
 
-void GameView::load_map_textures() {
+void GameView::load_map_textures(){
     background_sprites.push_back(Texture(renderer, "../assets/sprites/game.png"));
 
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/platform.png"));
@@ -93,7 +94,7 @@ void GameView::load_map_textures() {
     box_sprites.push_back(Texture(renderer, "../assets/sprites/itemBox.png"));
 }
 
-void GameView::load_gear_textures() {
+void GameView::load_gear_textures(){
     gear_sprites.push_back(Texture(renderer, "../assets/sprites/cowboyPistol.png"));
     gear_sprites.push_back(Texture(renderer, "../assets/sprites/laserRifle.png"));
     gear_sprites.push_back(Texture(renderer, "../assets/sprites/ak47.png"));
@@ -119,7 +120,7 @@ void GameView::load_gear_textures() {
     accessories_sprites.push_back(Texture(renderer, "../assets/sprites/armor.png"));
 }
 
-void GameView::load_duck_textures() {
+void GameView::load_duck_textures(){
     Texture duck1Texture(renderer, "../assets/sprites/duck.png");
 
     Texture duck2Texture(renderer, "../assets/sprites/duck.png");
@@ -173,27 +174,76 @@ void GameView::load_duck_textures() {
     wing_sprites.push_back(std::move(wing4Texture));
 }
 
-void GameView::load_music() {
+void GameView::load_music(){
     int a = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-    if (a < 0) {
-        std::cout << "Error al abrir audio" << std::endl;
+    background_music.push_back(Mix_LoadMUS("../assets/music/arcade.mp3"));
+    background_music.push_back(Mix_LoadMUS("../assets/music/fight.mp3"));
+    background_music.push_back(Mix_LoadMUS("../assets/music/hypeUp.mp3"));
+    background_music.push_back(Mix_LoadMUS("../assets/music/funkyDuck.mp3"));
+    
+    Mix_VolumeMusic(5);
+    Mix_PlayMusic(background_music[random_number(0,background_music.size()-1)], -1);
+
+    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/AAA.wav"));
+    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/AUU.wav"));
+    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/my_leg.wav"));
+    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/oof.wav"));
+
+    weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/smallWeapon.wav"));
+    weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/bigWeapon.wav"));
+    weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/laser.wav"));
+    weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/explotion.wav"));
+
+    slipping_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/slipping.wav"));
+    slipping_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/slipping2.wav"));
+}
+
+int GameView::random_number(int min, int max){
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    
+    std::uniform_int_distribution<int> distrib(min, max);
+    
+    return distrib(gen);
+}
+
+void GameView::make_noise(game_snapshot_t gs) {
+
+    if (gs.sounds.death){
+        int channel = Mix_PlayChannel(-1, dead_duck_sound_effects[random_number(0,dead_duck_sound_effects.size()-1)], 0);
+        Mix_Volume(channel, 30);
     }
 
-    Mix_Music* efecto = Mix_LoadMUS("../assets/music/arcade.mp3");
-
-    if (efecto == NULL) {
-        std::cout << "Error al cargar musica" << std::endl;
+    if (gs.sounds.shooting_small_weapon){
+        int channel = Mix_PlayChannel(-1, weapon_sound_effects[0], 0);
+        Mix_Volume(channel, 30);
     }
-    Mix_VolumeMusic(0);
-    Mix_PlayMusic(efecto, -1);
 
-    if (TTF_Init() == -1) {
-        std::cout << "Error al iniciar TTF" << std::endl;
+    if (gs.sounds.shooting_big_weapon){
+        int channel = Mix_PlayChannel(-1, weapon_sound_effects[1], 0);
+        Mix_Volume(channel, 30);
     }
+
+    if (gs.sounds.shooting_laser_weapon){
+        int channel = Mix_PlayChannel(-1, weapon_sound_effects[2], 0);
+        Mix_Volume(channel, 30);
+    }
+
+    if (gs.sounds.explotion){
+        int channel = Mix_PlayChannel(-1, weapon_sound_effects[3], 0);
+        Mix_Volume(channel, 30);
+    }
+
+    if (gs.sounds.duck_sliding){
+        int channel = Mix_PlayChannel(-1, slipping_sound_effects[random_number(0,slipping_sound_effects.size()-1)], 0);
+        Mix_Volume(channel, 30);
+    }
+
+    
 }
 
 void GameView::set_up_game() {
-
+    
     load_duck_textures();
     load_gear_textures();
     load_map_textures();
@@ -205,16 +255,17 @@ void GameView::set_up_game() {
 void GameView::render_game(game_snapshot_t gs) {
     renderer.Clear();
 
-    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no
-                    // siempre. Despues hay que cambiarlo
+    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no siempre. Despues hay que cambiarlo
 
-    // zoom(gs);
+    //zoom(gs);
     render_map();
     render_boxes(gs);
     render_ducks(gs);
     render_bullets(gs);
     render_weapons(gs);
-
+    
+    make_noise(gs);
+    
     renderer.Present();
 }
 
@@ -229,9 +280,7 @@ void GameView::add_ducks(game_snapshot_t gs) {
             int duck_id = static_cast<int>(gs.ducks[i].duck_id);
 
             duck_DTO duck = gs.ducks[i];
-            duck_views.emplace_back(renderer, duck_sprites[duck_id],
-                                    duck_looking_up_sprites[duck_id], dead_duck_sprites[0],
-                                    wing_sprites[duck_id], gear_view);
+            duck_views.emplace_back(renderer, duck_sprites[duck_id], duck_looking_up_sprites[duck_id], dead_duck_sprites[0], wing_sprites[duck_id], gear_view);
         }
     }
 }
@@ -288,14 +337,13 @@ void GameView::zoom(game_snapshot_t gs) {
 
     int ducks_width = x_max - x_min;
     int ducks_height = y_max - y_min;
-
+    
     float scale_factor_x = static_cast<float>(SCREEN_WIDTH) / ducks_width;
     float scale_factor_y = static_cast<float>(SCREEN_HEIGHT) / ducks_height;
     float scale_factor = std::min(scale_factor_x, scale_factor_y);
     scale_factor = std::clamp(scale_factor, 1.0f, 1.2f);
 
-    SDL_Rect viewport =
-            (SDL_Rect){-x / scale_factor, -y / scale_factor, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_Rect viewport = (SDL_Rect){-x/scale_factor, -y/scale_factor, SCREEN_WIDTH, SCREEN_HEIGHT};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
     SDL_RenderSetScale(renderer.Get(), scale_factor, scale_factor);
 }
@@ -334,15 +382,15 @@ void GameView::render_bullets(game_snapshot_t gs) {
                 }
 
                 renderer.Copy(bulletTexture, SDL_Rect{0, 0, 1, 8},
-                              SDL_Rect{bullet.x - dir_x * b_pos, bullet.y - dir_y * b_pos, 1, 8},
-                              angle, NullOpt, bullet.x_direction);
+                                  SDL_Rect{bullet.x - dir_x*b_pos, bullet.y - dir_y*b_pos, 1, 8}, angle, NullOpt,
+                                  bullet.x_direction);
             }
         } else if (bullet_id == 3) {
             renderer.Copy(bulletTexture, SDL_Rect{5, 7, 6, 3},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
         } else if (bullet_id == 4) {
-            renderer.Copy(bulletTexture, SDL_Rect{25 * 8, 2 * 8, 32, 32},
+            renderer.Copy(bulletTexture, SDL_Rect{25*8, 2*8, 32, 32},
                           SDL_Rect{bullet.x, bullet.y, bullet.width, bullet.height}, 0, NullOpt,
                           bullet.x_direction);
         }
@@ -356,7 +404,7 @@ void GameView::render_map() {
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
         renderer.Copy(platform_sprites[0], SDL_Rect{0, 10 * 8, 16, 8},
-                      SDL_Rect{platform.x, platform.y, platform.width, platform.height});
+                      SDL_Rect{platform.x, platform.y, platform.width , platform.height});
     }
 }
 
