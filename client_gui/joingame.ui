@@ -34,7 +34,7 @@
      <x>370</x>
      <y>170</y>
      <width>331</width>
-     <height>32</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -46,29 +46,29 @@ border-image: transparent;</string>
    <property name="geometry">
     <rect>
      <x>370</x>
-     <y>130</y>
-     <width>141</width>
-     <height>27</height>
+     <y>126</y>
+     <width>151</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-background-image: transparent;
+    <string notr="true">background-image: transparent;
 border-image: transparent;
 font: 75 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);</string>
+color: rgb(255, 255, 0);
+background-color: rgb(69, 69, 69);</string>
    </property>
    <property name="text">
-    <string>Select a match</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Select a match&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="musicButton">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>370</y>
+     <y>360</y>
      <width>71</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -87,7 +87,7 @@ border-image: transparent;</string>
      <x>10</x>
      <y>10</y>
      <width>81</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -104,15 +104,15 @@ border-image: transparent;</string>
    <property name="geometry">
     <rect>
      <x>530</x>
-     <y>130</y>
+     <y>126</y>
      <width>171</width>
-     <height>27</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
-
+background-color: rgb(69, 69, 69);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -126,7 +126,7 @@ border-image: transparent;</string>
      <x>600</x>
      <y>230</y>
      <width>101</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -145,7 +145,7 @@ border-image: transparent;</string>
      <x>370</x>
      <y>230</y>
      <width>101</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">

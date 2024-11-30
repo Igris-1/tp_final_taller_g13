@@ -27,7 +27,7 @@ private slots:
 
     void on_mapaUnoButton_clicked();
 
-    void on_mapaDosButton_clicked();
+    void on_playgroundButton_clicked();
 
     void on_maps_activated();
 

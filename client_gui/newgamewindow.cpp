@@ -60,9 +60,9 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     client.run();
 }
 
-void NewGameWindow::on_mapaDosButton_clicked() {
+void NewGameWindow::on_playgroundButton_clicked() {
     // levantare el mapa custom
-    std::cout << "mapaDosButton clicked" << std::endl;
+    std::cout << "playgroundButton clicked" << std::endl;
 }
 
 void NewGameWindow::on_maps_activated() {

@@ -74,7 +74,7 @@ border-image: transparent;</string>
         <property name="styleSheet">
          <string notr="true">font: 75 11pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
-</string>
+background-color: rgb(69, 69, 69);</string>
         </property>
         <property name="text">
          <string>Connect</string>
@@ -97,6 +97,7 @@ color: rgb(255, 255, 0);</string>
         <property name="styleSheet">
          <string notr="true">font: 75 11pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(69, 69, 69);
 </string>
         </property>
         <property name="text">
@@ -111,7 +112,8 @@ color: rgb(255, 255, 0);
         </property>
         <property name="styleSheet">
          <string notr="true">font: 75 11pt &quot;Noto Rashi Hebrew ExtBd&quot;;
-color: rgb(255, 255, 0);</string>
+color: rgb(255, 255, 0);
+background-color: rgb(69, 69, 69);</string>
         </property>
         <property name="text">
          <string>localhost</string>
@@ -158,6 +160,7 @@ color: rgb(255, 255, 0);</string>
         <property name="styleSheet">
          <string notr="true">font: 75 11pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(69, 69, 69);
 </string>
         </property>
         <property name="text">

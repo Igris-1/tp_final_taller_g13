@@ -46,9 +46,9 @@ border-image: transparent;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>369</y>
+      <y>359</y>
       <width>71</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -61,7 +61,7 @@ color: rgb(255, 255, 0);
      <string>Music</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>480</x>
