@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 
 #include "../configuration_yamls/game_config.h"
@@ -12,7 +13,7 @@
 #include "sender_thread.h"
 
 #define LOOP_TIME 40000
-#define AMOUNT_OF_PLAYERS 4
+#define AMOUNT_OF_PLAYERS 2
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
         game(nullptr), gameQueue(gameQueue), clients(clients) {
@@ -123,7 +124,9 @@ void GameThread::run() {
 
         send_snapshots();
         auto end_time = std::chrono::steady_clock::now();
-        auto elapsed_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        auto elapsed_time =
+                std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time)
+                        .count();
         int remaining_time = LOOP_TIME - elapsed_time;
         std::this_thread::sleep_for(std::chrono::microseconds(remaining_time));
     }
