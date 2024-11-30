@@ -17,22 +17,28 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
         return bullets;
     }
     if (this->fire_rate == 0) {
+        
         if(!is_holding_button){
             std::cout << "no se esta manteniendo el boton" << std::endl;
             this->dispersion = 0;
         }
         bullets.push_back(std::make_shared<AKBullet>( duck_trigger->get_id(), x_position, y_position + this->dispersion, 
-                        x_direction , y_direction, TILE_SIZE * this->scope, this->damage,
+                        x_direction , y_direction+dispersion2, TILE_SIZE * this->scope, this->damage,
                         BULLET_SIZE, 0));
 
         if(this->dispersion == 0){
-            this->dispersion = 25;
+            this->dispersion = 5;
+            this->dispersion2 = 0;
         }
-        if(this->dispersion == 25){
-            this->dispersion = -25;
+        else if(this->dispersion == 5){
+            this->dispersion = -15;
         }
-        if(this->dispersion == -25){
+        else if(this->dispersion == -15){
+            this->dispersion = 1;
+        }
+        else if(this->dispersion == 1){
             this->dispersion = 0;
+            this->dispersion2 = -1;
         }
         this->shot--;
         this->fire_rate = this->reload_time;
