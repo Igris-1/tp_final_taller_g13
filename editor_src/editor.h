@@ -26,6 +26,7 @@ private slots:
     void on_exitButton_clicked();
     void on_musicButton_clicked();
     void on_saveButton_clicked();
+    void on_openButton_clicked();
     void on_cleanButton_clicked();
 
     // ITEMS

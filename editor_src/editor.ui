@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>768</height>
+    <width>800</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>10</y>
+      <y>50</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -238,6 +238,28 @@ border-image: transparent;</string>
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="openButton">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>10</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+background-image: transparent;
+border-image: transparent;</string>
+    </property>
+    <property name="text">
+     <string>Open</string>
+    </property>
+   </widget>
    <zorder>cleanButton</zorder>
    <zorder>saveButton</zorder>
    <zorder>exitButton</zorder>
@@ -248,6 +270,7 @@ border-image: transparent;</string>
    <zorder>item_4</zorder>
    <zorder>item_5</zorder>
    <zorder>item_6</zorder>
+   <zorder>openButton</zorder>
   </widget>
  </widget>
  <resources>
