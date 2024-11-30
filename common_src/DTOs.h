@@ -91,6 +91,9 @@ typedef struct sounds_DTO {
     bool shooting_laser_weapon = false;
     bool explotion = false;
     bool duck_sliding = false;
+    bool shotgun_recharging = false;
+    bool sniper_recharging = false;
+    bool duck_struck = false;
 } __attribute__((packed)) sounds_DTO;
 
 

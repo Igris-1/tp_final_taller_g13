@@ -1,6 +1,7 @@
 #include "dueling_pistol.h"
-
 #include "../../duck.h"
+
+#define DUELING_PISTOL_SOUND 2
 
 DuelingPistol::DuelingPistol(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -27,4 +28,12 @@ int DuelingPistol::get_id() { return DUELING_PISTOL_ID; }
 
 int DuelingPistol::recoil_produced() { return this->recoil; }
 
-int DuelingPistol::get_sound() { return 1; }
+int DuelingPistol::get_sound(bool is_holding_button) { 
+    if(this->shot == 0){
+        return NO_WEAPON_SOUND;
+    }
+    if(!is_holding_button){
+        return DUELING_PISTOL_SOUND;
+    }
+    return NO_WEAPON_SOUND; 
+}

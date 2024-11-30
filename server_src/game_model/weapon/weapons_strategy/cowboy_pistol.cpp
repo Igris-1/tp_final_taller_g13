@@ -1,6 +1,7 @@
 #include "cowboy_pistol.h"
 
 #include "../../duck.h"
+#define COWBOY_PISTOL_SOUND 1
 
 CowboyPistol::CowboyPistol(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -28,4 +29,12 @@ int CowboyPistol::get_id() { return COWBOY_PISTOL_ID; }
 
 int CowboyPistol::recoil_produced() { return this->recoil; }
 
-int CowboyPistol::get_sound() { return 1; }
+int CowboyPistol::get_sound(bool is_holding_button) {   
+    if(this->shot == 0){
+    return NO_WEAPON_SOUND;
+    }
+    if(!is_holding_button){
+        return COWBOY_PISTOL_SOUND;
+    }
+    return NO_WEAPON_SOUND;
+ }

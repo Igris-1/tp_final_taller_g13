@@ -37,7 +37,7 @@ public:
     virtual void fire_rate_down();
     virtual int recoil_produced() = 0;
     virtual int get_id() = 0;
-    virtual int get_sound();
+    virtual int get_sound(bool is_holding_button);
     virtual ~WeaponInterface() {}
 };
 

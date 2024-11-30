@@ -10,6 +10,7 @@
 #include "weapon_interface.h"
 
 #define SNIPER_SOUND 2
+#define SNIPER_RECHARGING_SOUND 5
 
 class Sniper: public WeaponInterface {
 private:
@@ -23,7 +24,7 @@ public:
                                                        bool is_holding_button) override;
     int get_id() override;
     int recoil_produced() override;
-    int get_sound() override;
+    int get_sound(bool is_holding_button) override;
     ~Sniper() override {}
 };
 

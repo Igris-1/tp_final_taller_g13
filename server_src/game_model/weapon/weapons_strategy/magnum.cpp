@@ -1,6 +1,7 @@
 #include "magnum.h"
 
 #include "../../duck.h"
+#define MAGNUM_SOUND 2
 
 Magnum::Magnum(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -28,4 +29,12 @@ int Magnum::get_id() { return MAGNUM_ID; }
 
 int Magnum::recoil_produced() { return this->recoil; }
 
-int Magnum::get_sound() { return 1; }
+int Magnum::get_sound(bool is_holding_button) {   
+    if(this->shot == 0){
+    return NO_WEAPON_SOUND;
+    }
+    if(!is_holding_button){
+        return MAGNUM_SOUND;
+    }
+    return NO_WEAPON_SOUND;
+}

@@ -21,9 +21,8 @@ std::vector<std::shared_ptr<BulletInterface>> Sniper::fire(std::shared_ptr<Duck>
         this->reload = false;
         return bullets;
     }
+    bool vertical = true;
     if (this->fire_rate == 0 && !is_holding_button) {
-        bool vertical = true;
-
         if(x_direction * x_direction > y_direction * y_direction){ 
             vertical = false;
         }
@@ -39,4 +38,21 @@ std::vector<std::shared_ptr<BulletInterface>> Sniper::fire(std::shared_ptr<Duck>
 int Sniper::get_id() { return SNIPER_ID; }
 
 int Sniper::recoil_produced() { return this->recoil; }
-int Sniper::get_sound() { return SNIPER_SOUND; }
+
+int Sniper::get_sound(bool is_holding_button) { 
+    
+    if(this->shot == 0 ){
+        std::cout << "sin balas" << std::endl;
+        return NO_WEAPON_SOUND;
+    }
+    if(this->reload && !is_holding_button){
+        std::cout << "recargando" << std::endl;
+        return SNIPER_RECHARGING_SOUND;
+    }
+    if(!is_holding_button){
+        std::cout << "disparando" << std::endl;
+        return SNIPER_SOUND; 
+    }
+    std::cout << "no sound" << std::endl;
+    return NO_WEAPON_SOUND;
+}

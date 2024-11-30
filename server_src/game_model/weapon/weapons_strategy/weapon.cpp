@@ -33,7 +33,7 @@ int Weapon::get_sound() {
     if (this->is_not_a_weapon()) {
         return NO_WEAPON_SOUND;
     }
-    return this->weapon_strategy->get_sound();
+    return this->weapon_strategy->get_sound(this->holding_button);
 }
 
 void Weapon::set_holding(bool holding) {

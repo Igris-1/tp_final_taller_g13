@@ -9,4 +9,4 @@ void WeaponInterface::fire_rate_down() {
     }
 }
 
-int WeaponInterface::get_sound() { return NO_SOUND; }
+int WeaponInterface::get_sound(bool is_holding_button) { return NO_SOUND; }

@@ -20,7 +20,7 @@ public:
                                                        bool is_holding_button) override;
     int get_id() override;
     int recoil_produced() override;
-    int get_sound() override;
+    int get_sound(bool is_holding_button) override;
     ~CowboyPistol() override {}
 };
 

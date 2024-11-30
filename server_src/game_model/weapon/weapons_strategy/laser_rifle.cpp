@@ -1,6 +1,7 @@
 #include "laser_rifle.h"
 
 #include "../../duck.h"
+#define LASER_RIFLE_SOUND 3
 
 LaserRifle::LaserRifle(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -28,4 +29,9 @@ int LaserRifle::get_id() { return LASER_RIFLE_ID; }
 
 int LaserRifle::recoil_produced() { return this->recoil; }
 
-int LaserRifle::get_sound() { return 3; }
+int LaserRifle::get_sound(bool is_holding_button) { 
+    if(this->shot == 0){
+    return NO_WEAPON_SOUND;
+    }
+    return LASER_RIFLE_SOUND;
+}

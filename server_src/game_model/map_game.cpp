@@ -291,6 +291,7 @@ void MapGame::bullets_next_movement(const std::map<std::string, weapon_config>& 
                 if (duck->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(id);
                     duck->receive_damage(damage);
+                    this->set_sound(DUCK_STRUCK);
                     if (!duck->is_alive()) {
                         this->ducks_dead[id] = duck;
                     }
@@ -340,7 +341,7 @@ void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool 
     }
     if (looking_up) {
         sound = this->ducks[duck_id]->use_item(NO_DIRECTION, UP_DIRECTION, is_holding);
-        set_bullet_sound(sound);
+        set_sound(sound);
         return;
     }
     if (right_direction) {
@@ -348,13 +349,16 @@ void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool 
     } else {
         sound = this->ducks[duck_id]->use_item(LEFT_DIRECTION, NO_DIRECTION, is_holding);
     }
-    set_bullet_sound(sound);
+    set_sound(sound);
 }
 
-void MapGame::set_bullet_sound(int sound) {
+void MapGame::set_sound(int sound) {
     this->sounds.shooting_small_weapon = (sound == SHOOTING_SMALL_WEAPON) ? true : false;
     this->sounds.shooting_big_weapon = (sound == SHOOTING_BIG_WEAPON) ? true : false;
     this->sounds.shooting_laser_weapon = (sound == SHOOTING_LASER_WEAPON) ? true : false;
+    this->sounds.shotgun_recharging = (sound == SHOTGUN_RECHARGING) ? true : false;
+    this->sounds.sniper_recharging = (sound == SNIPER_RECHARGING) ? true : false;
+    this->sounds.duck_struck = (sound == DUCK_STRUCK) ? true : false;
 }
 
 bool MapGame::already_exist_a_pickable(int x, int y, int width, int height) {

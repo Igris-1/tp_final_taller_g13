@@ -4,6 +4,7 @@
 
 
 #define BULLET_SIZE 8
+#define AK47_SOUND 2
 
 AK47::AK47(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -48,6 +49,11 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
 
 int AK47::get_id() { return AK_47_ID; }
 
-int AK47::get_sound() { return 2; }
+int AK47::get_sound(bool is_holding_button) {   
+    if(this->shot == 0){
+        return NO_WEAPON_SOUND;
+    }
+    return AK47_SOUND;
+ }
 
 int AK47::recoil_produced() { return this->recoil; }

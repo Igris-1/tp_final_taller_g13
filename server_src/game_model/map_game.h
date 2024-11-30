@@ -40,6 +40,9 @@
 #define SHOOTING_SMALL_WEAPON 1
 #define SHOOTING_BIG_WEAPON 2
 #define SHOOTING_LASER_WEAPON 3
+#define SHOTGUN_RECHARGING 4
+#define SNIPER_RECHARGING 5
+#define DUCK_STRUCK 6
 
 
 #define AIR_TIME_Y_THROW 150
@@ -127,7 +130,7 @@ public:
     std::vector<platform_DTO> get_platforms_DTO();
     std::vector<box_DTO> get_boxes_DTO();
     sounds_DTO get_sounds_DTO();
-    void set_bullet_sound(int sound);
+    void set_sound(int sound);
 
     // MANAGE DUCKS
     std::list<std::shared_ptr<BulletInterface>>& get_bullets_list();
