@@ -40,7 +40,10 @@ int PewPew::get_id() { return PEW_PEW_LASER_ID; }
 int PewPew::recoil_produced() { return this->recoil; }
 int PewPew::get_sound(bool is_holding_button) {  
     if(this->shot == 0){
-    return NO_WEAPON_SOUND;
+        return NO_WEAPON_SOUND;
     }
-    return PEW_PEW_SOUND;
+    if(this->fire_rate == 0){
+        return PEW_PEW_SOUND;
+    }
+    return NO_WEAPON_SOUND;
 }

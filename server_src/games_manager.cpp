@@ -61,7 +61,7 @@ void GamesManager::finish_game(int game_id) {
     throw GamesManagerError("Game not found");
 }
 
-int GamesManager::get_game_counter() { return this->games_counter; }
+int GamesManager::get_game_counter() { return this->games_counter - 1; }
 
 std::list<std::unique_ptr<game_t>>& GamesManager::get_games() { return this->games; }
 

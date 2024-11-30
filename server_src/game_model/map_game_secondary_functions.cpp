@@ -19,22 +19,22 @@ bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand) {
     if (!hitbox_in_range(hitbox, can_fall)) {
         return false;
     }
-    bool in_invalid_position = not_in_invalid_position(hitbox, to_stand);
+    bool in_invalid_position = not_in_weapon_spawn_position(hitbox, to_stand);
     bool in_platforms = not_in_platforms(hitbox, to_stand);
     return in_invalid_position && in_platforms;
 }
 bool MapGame::out_of_map(Hitbox hitbox) { return hitbox.get_y() >= this->height; }
 
-bool MapGame::not_in_invalid_position(Hitbox hitbox, bool to_stand) {
+bool MapGame::not_in_weapon_spawn_position(Hitbox hitbox, bool to_stand) {
     if (!to_stand) {
-        for (Hitbox invalid_position: this->invalid_positions) {
+        for (Hitbox invalid_position: this->weapon_spawn_platforms) {
             if (invalid_position.has_collision(hitbox)) {
                 return false;
             }
         }
         return true;
     }
-    for (Hitbox invalid_position: this->invalid_positions) {
+    for (Hitbox invalid_position: this->weapon_spawn_platforms) {
         if (invalid_position.has_collision_above(hitbox)) {
             return false;
         }

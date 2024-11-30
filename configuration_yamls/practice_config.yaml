@@ -3,8 +3,8 @@ game:
 
 # The speed of the duck in pixels for diferent actions
 ducks_config:
-  health: 50
-  tiles_per_jump: 175 # The number of tiles the duck moves when jumping
+  health: 20
+  tiles_per_jump: 200 # The number of tiles the duck moves when jumping
   product_factor_jump: 2 # speed of the duck when jumping
   add_factor_jump: 3 # linear speed of the duck when jumping
   product_factor_gravity: 2 # speed of the duck when falling
@@ -31,7 +31,7 @@ weapon:
     hitbox_height: 25
 
   pew_pew_laser:
-    shot: 20
+    shot: 100000
     damage: 8
     recoil: 0
     scope: 35 # distnace of shot in tiles
@@ -40,7 +40,7 @@ weapon:
     hitbox_height: 26
 
   laser_rifle:
-    shot: 10
+    shot: 100000
     damage: 15
     recoil: 0
     scope: 62 # distnace of shot in tiles
@@ -49,7 +49,7 @@ weapon:
     hitbox_height: 24
 
   ak_47:
-    shot: 50
+    shot: 100000
     damage: 20  
     recoil: 10
     scope: 32 # distnace of shot in tiles
@@ -58,7 +58,7 @@ weapon:
     hitbox_height: 24
 
   dueling_pistol:
-    shot: 1
+    shot: 100000
     damage: 50
     recoil: 200
     scope: 25 # distnace of shot in tiles
@@ -67,7 +67,7 @@ weapon:
     hitbox_height: 26
 
   cowboy_pistol:
-    shot: 6
+    shot: 100000
     damage: 5
     recoil: 0
     scope: 25  # distnace of shot in tiles
@@ -76,7 +76,7 @@ weapon:
     hitbox_height: 18
 
   magnum:
-    shot: 6
+    shot: 100000
     damage: 7
     recoil: 30
     scope: 30 # distnace of shot in tiles
@@ -85,7 +85,7 @@ weapon:
     hitbox_height: 26
 
   shotgun:
-    shot: 2
+    shot: 100000
     damage: 17
     recoil: 80
     scope: 8 # distnace of shot in tiles
@@ -94,7 +94,7 @@ weapon:
     hitbox_height: 18
 
   sniper:
-    shot: 3
+    shot: 100000
     damage: 50
     recoil: 0
     scope: 100 # distnace of shot in tiles

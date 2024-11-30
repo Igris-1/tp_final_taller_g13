@@ -1,5 +1,5 @@
-#ifndef DUCK_INFO_T_H
-#define DUCK_INFO_T_H
+#ifndef DTOS_H
+#define DTOS_H
 #include <cstdint>
 
 typedef struct duck_DTO {
@@ -57,7 +57,7 @@ typedef struct weapon_DTO {
 
 
 typedef struct score_DTO {
-
+    uint8_t amount_of_ducks = 0;
     uint8_t first_place_id = 0;
     uint8_t second_place_id = 0;
     uint8_t third_place_id = 0;
@@ -82,6 +82,7 @@ typedef struct games_DTO {
     uint8_t max_players;
     uint8_t current_players;
 } __attribute__((packed)) games_DTO;
+
 
 
 typedef struct sounds_DTO {

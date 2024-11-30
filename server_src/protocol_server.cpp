@@ -21,9 +21,9 @@ action_t ProtocolServer::receive_action() {
     try {
         uint8_t code;
         action_t action;
-
         uint16_t action_16bits;
-        connection.recvall(&action_16bits, sizeof(uint16_t), &socket_is_closed);
+        connection.recvall(&action_16bits, TWO_BYTES, &socket_is_closed);
+        action_16bits = ntohs(action_16bits);
         TranslatorActions translator;
         translator.translate_flags(
                 action_16bits, action.left, action.right, action.up, action.down, action.stop_right,
@@ -31,7 +31,7 @@ action_t ProtocolServer::receive_action() {
                 action.unpress_action_button, action.press_pick_up_button,
                 action.press_throw_button, action.press_crouch_button, action.unpress_crouch_button,
                 action.press_look_up_button, action.unpress_look_up_button);
-        connection.recvall(&action.player_id, sizeof(uint8_t), &socket_is_closed);
+        connection.recvall(&action.player_id, ONE_BYTE, &socket_is_closed);
         return action;
     } catch (const LibError& e) {
         socket_is_closed = true;
@@ -41,35 +41,42 @@ action_t ProtocolServer::receive_action() {
 
 int ProtocolServer::receive_number() {
     uint8_t buffer;
-    connection.recvall(&buffer, sizeof(uint8_t), &socket_is_closed);
+    connection.recvall(&buffer, ONE_BYTE, &socket_is_closed);
     return buffer;
 }
 
-/*void ProtocolServer::send_(){
-    uint8_t code2 = 0x05;
-    ss.sendall(&code2, 1, &aux);
-}*/
+void ProtocolServer::send_number(uint8_t& number) {
+    uint8_t buffer = number;
+    connection.sendall(&buffer, ONE_BYTE, &socket_is_closed);
+}
+
+void ProtocolServer::send_long_number(uint16_t& number) {
+    uint16_t buffer = htons(number);
+    connection.sendall(&buffer, TWO_BYTES, &socket_is_closed);
+}
 
 void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
     std::lock_guard<std::mutex> lock(mutex);
-    uint8_t protocol_name = 0x01;
-    connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
-
-    connection.sendall(&game_snapshot.ducks_len, sizeof(uint8_t), &socket_is_closed);
+    uint8_t protocol_name = PROTOCOL_SEND_GAME_INFO;
+    this->send_number(protocol_name);
+    this->send_number(game_snapshot.ducks_len);
     for (uint8_t i = 0; i < game_snapshot.ducks_len; i++) {
+        this->translator_dto.hton_duck_DTO(&game_snapshot.ducks[i]);
         connection.sendall(&game_snapshot.ducks[i], sizeof(duck_DTO), &socket_is_closed);
     }
-
-    connection.sendall(&game_snapshot.bullets_len, sizeof(uint16_t), &socket_is_closed);
+    this->send_long_number(game_snapshot.bullets_len);
     for (uint16_t i = 0; i < game_snapshot.bullets_len; i++) {
+        this->translator_dto.hton_bullet_DTO(&game_snapshot.bullets[i]);
         connection.sendall(&game_snapshot.bullets[i], sizeof(bullet_DTO), &socket_is_closed);
     }
-    connection.sendall(&game_snapshot.weapons_len, sizeof(uint16_t), &socket_is_closed);
+    this->send_long_number(game_snapshot.weapons_len);
     for (uint16_t i = 0; i < game_snapshot.weapons_len; i++) {
+        this->translator_dto.hton_weapon_DTO(&game_snapshot.weapons[i]);
         connection.sendall(&game_snapshot.weapons[i], sizeof(weapon_DTO), &socket_is_closed);
     }
-    connection.sendall(&game_snapshot.boxes_len, sizeof(uint16_t), &socket_is_closed);
+    this->send_long_number(game_snapshot.boxes_len);
     for (uint16_t i = 0; i < game_snapshot.boxes_len; i++) {
+        this->translator_dto.hton_box_DTO(&game_snapshot.boxes[i]);
         connection.sendall(&game_snapshot.boxes[i], sizeof(box_DTO), &socket_is_closed);
     }
     connection.sendall(&game_snapshot.sounds, sizeof(sounds_DTO), &socket_is_closed);
@@ -77,27 +84,30 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
 
 void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
     std::lock_guard<std::mutex> lock(mutex);
-    uint8_t protocol_name = 0x00;
-    connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
-    connection.sendall(&map_structure.width, sizeof(uint16_t), &socket_is_closed);
-    connection.sendall(&map_structure.height, sizeof(uint16_t), &socket_is_closed);
-    connection.sendall(&map_structure.platforms_len, sizeof(uint16_t), &socket_is_closed);
+    uint8_t protocol_name = PROTOCOL_SEND_GAME_START_INFO;
+    this->send_number(protocol_name);
+    this->send_long_number(map_structure.width);
+    this->send_long_number(map_structure.height);
+    this->send_long_number(map_structure.platforms_len);
     for (int i = 0; i < map_structure.platforms_len; i++) {
+        this->translator_dto.hton_platform_DTO(&map_structure.platforms[i]);
         connection.sendall(&map_structure.platforms[i], sizeof(platform_DTO), &socket_is_closed);
     }
 }
 
 void ProtocolServer::sendScore(score_DTO score) {
     std::lock_guard<std::mutex> lock(mutex);
-    uint8_t protocol_name = 0x02;
-    connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
+    uint8_t protocol_name = PROTOCOL_SEND_SCORE;
+    this->send_number(protocol_name);
+    this->translator_dto.hton_score_DTO(&score);
     connection.sendall(&score, sizeof(score_DTO), &socket_is_closed);
 }
 
 void ProtocolServer::sendFinalScore(score_DTO score) {
     std::lock_guard<std::mutex> lock(mutex);
-    uint8_t protocol_name = 0x03;
-    connection.sendall(&protocol_name, sizeof(uint8_t), &socket_is_closed);
+    uint8_t protocol_name = PROTOCOL_SEND_FINAL_SCORE;
+    this->send_number(protocol_name);
+    this->translator_dto.hton_score_DTO(&score);
     connection.sendall(&score, sizeof(score_DTO), &socket_is_closed);
 }
 

@@ -62,16 +62,17 @@ void GameThread::blocking_execute_commands() {
 
 
 void GameThread::run() {
-    GameConfig game_config("../configuration_yamls/custom_map.yaml",
-                           "../configuration_yamls/default_config.yaml");
+    bool is_practice_mode = false;
+
+    GameConfig game_config("../maps/custom_map.yaml",
+                           "../configuration_yamls/practice_config.yaml");
 
     Game aux(game_config);
     this->game = &aux;
     this->game->load_configuration(game_config);
 
     // spawnea armas para el comienzo de la partida
-    this->game->random_item_spawn(false);
-    // int start_flag = 0;
+    this->game->random_item_spawn(false, is_practice_mode);
 
     for (int i = 0; i < AMOUNT_OF_PLAYERS; i++) {
         blocking_execute_commands();
@@ -88,15 +89,14 @@ void GameThread::run() {
         try {
             execute_commands();
 
-
         } catch (const ClosedQueue& e) {
             stop();
         }
 
         this->game->continue_vertical_movements();
         this->game->continue_horizontal_movements();
-        this->game->random_item_spawn(true);
-        // game.respawner(); dejar comentado, si lo descomentas o borras, sos gay.
+        this->game->random_item_spawn(true, is_practice_mode);
+        
         if (this->game->check_if_round_finished()) {
 
             send_snapshots();
@@ -106,12 +106,14 @@ void GameThread::run() {
             this->game->continue_vertical_movements();
             this->game->continue_horizontal_movements();
             send_snapshots();
-            if (this->game->check_if_winner()) {
+            if (this->game->check_if_winner() && !is_practice_mode) {
                 send_endgame_score();
                 this->_is_alive = false;
                 return;
             }
-            this->round_counter--;
+            if(!is_practice_mode){
+                this->round_counter--;
+            }
             if (this->round_counter == 0) {
                 send_game_score();
                 this->round_counter = 5;
@@ -121,7 +123,6 @@ void GameThread::run() {
             std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
             continue;
         }
-
         send_snapshots();
         auto end_time = std::chrono::steady_clock::now();
         auto elapsed_time =

@@ -7,6 +7,8 @@
 #include "../common_src/game_snapshot_t.h"
 #include "../common_src/score_DTO.h"
 #include "../common_src/socket.h"
+#include "../common_src/translator_DTOs.h"
+#include <arpa/inet.h>
 
 #include "message.h"
 
@@ -15,6 +17,9 @@ class ProtocolClient {
 private:
     Socket connection;
     bool socket_is_closed;
+    TranslatorDTOs translator_dto;
+
+    void send_long_number(uint16_t& number);
 
 public:
     explicit ProtocolClient(Socket&& client);
@@ -23,10 +28,8 @@ public:
 
     void send_action(action_t& action);
 
-    void send_number(int number);
-
     bool socket_closed();
-
+    void send_number(int number);
     uint8_t read_number();
 
     void receive_games(int size, Message& message);

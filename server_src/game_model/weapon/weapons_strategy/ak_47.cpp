@@ -53,7 +53,11 @@ int AK47::get_sound(bool is_holding_button) {
     if(this->shot == 0){
         return NO_WEAPON_SOUND;
     }
-    return AK47_SOUND;
+    if(this->fire_rate == 0){
+        return AK47_SOUND;
+    }
+    return NO_WEAPON_SOUND;
+
  }
 
 int AK47::recoil_produced() { return this->recoil; }

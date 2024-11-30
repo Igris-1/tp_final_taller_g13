@@ -96,10 +96,10 @@ private:
     void load_boxes(std::vector<std::tuple<int, int, int, int>>& spawns);
     void load_spawn_ducks(std::vector<std::tuple<int, int, int, int>>& spawns);
     void load_spawn_weapons(std::vector<std::tuple<int, int, int, int>>& spawns);
-    void reset_death_sound();
+   
 
     // MAP FUNCTIONS
-    void add_invalid_position(Hitbox hitbox);
+    void add_weapon_spawn_platform(Hitbox hitbox);
     void add_new_platform(Hitbox hitbox);
     void add_spawn_position(Hitbox hitbox);  // agrega una posicion de spawn de armas
     void add_spawn_duck(Hitbox hitbox);
@@ -110,7 +110,6 @@ public:
 
     // DUCK
     void set_duck_start_position(int id, int x, int y);
-    void respawner();
     void remove_duck(int id);
 
     // RUN
@@ -152,7 +151,8 @@ public:
     void reset_round();
     bool check_if_round_finished();
     bool check_if_winner();
-    void random_item_spawn(bool on_game);
+    void random_item_spawn(bool on_game, bool lineal_spawn);
+    void reset_death_sound();
 };
 
 class GameError: public std::exception {

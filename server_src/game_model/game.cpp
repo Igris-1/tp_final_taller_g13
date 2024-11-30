@@ -68,6 +68,8 @@ score_DTO Game::get_score_DTO() {
 
     std::sort(sorted_ducks.begin(), sorted_ducks.end(),
               [](const auto& a, const auto& b) { return a.second > b.second; });
+    
+    score.amount_of_ducks = static_cast<uint8_t>(sorted_ducks.size());
 
     if (!sorted_ducks.empty()) {
         score.first_place_id = sorted_ducks[0].first;
@@ -87,8 +89,6 @@ score_DTO Game::get_score_DTO() {
     }
     return score;
 }
-
-void Game::respawner() { this->map.respawn_ducks(this->spawn_ducks); }
 
 void Game::continue_horizontal_movements() {
     std::vector<int> ducks_id = this->map.get_live_duck_ids();
@@ -174,8 +174,12 @@ game_snapshot_t Game::get_snapshot() {
     for (auto it = ducks_states.begin(); it != ducks_states.end(); ++it) {
         // if(it->second->is_dea
         if (!this->map.duck_is_alive(it->first) && this->ducks_states[it->first]->do_death_sound) {
+            std::cout << "Duck " << it->first << " is dead" << std::endl;
+            std::cout << "do death sound " << this->ducks_states[it->first]->do_death_sound << std::endl;
             snapshot.sounds.death = true;
             this->ducks_states[it->first]->do_death_sound = false;
+            std::cout << "do death sound ahora es: " << this->ducks_states[it->first]->do_death_sound << std::endl;
+            
             break;
         }
     }
@@ -328,10 +332,14 @@ bool Game::check_if_winner() {
     return false;
 }
 
-void Game::random_item_spawn(bool on_game) {
+void Game::random_item_spawn(bool on_game, bool lineal_spawn) {
     if (on_game && this->time_to_respawn > 0) {
         this->time_to_respawn -= 1;
         return;
+    }
+    std::string mode = "random";
+    if(lineal_spawn){
+        mode = "lineal";
     }
     for (auto& pos: this->spawn_positions) {
         if (this->map.already_exist_a_pickable(std::get<X_POSITION>(pos),
@@ -340,11 +348,11 @@ void Game::random_item_spawn(bool on_game) {
         } else {
             try {
                 this->map.add_item(WeaponFactory::createWeapon(this->map.get_bullets_list(),
-                                                               "random", this->weapons_config),
+                                                               mode, this->weapons_config),
                                    std::get<X_POSITION>(pos), std::get<Y_POSITION>(pos));
             } catch (MapError& e) {
                 std::cerr << e.what() << std::endl;
-                std::cerr << "Error al agregar arma random en posicion ("
+                std::cerr << "Error al agregar arma en modo " << mode << " en posicion ("
                           << std::get<X_POSITION>(pos) << " " << std::get<Y_POSITION>(pos) << ") "
                           << std::endl;
                 continue;
@@ -359,7 +367,7 @@ void Game::reset_round() {
     this->map.clean_map(this->spawn_ducks);
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {
-        this->random_item_spawn(false);
+        this->random_item_spawn(false, false);
     }
 }
 

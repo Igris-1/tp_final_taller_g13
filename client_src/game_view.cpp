@@ -45,18 +45,20 @@ void GameView::render_scoreboard(score_DTO score) {
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score * 8, 8, 8, 8},
                   SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 126, 32, 32}, 0, NullOpt, 0);
+    if(score.amount_of_ducks > 2){
+        renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
+                    SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 170, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
-                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 170, 64, 64}, 0, NullOpt, 0);
+        renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score * 8, 8, 8, 8},
+                    SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 196, 32, 32}, 0, NullOpt, 0);
+        if(score.amount_of_ducks > 3){
+            renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
+                        SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 240, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score * 8, 8, 8, 8},
-                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 196, 32, 32}, 0, NullOpt, 0);
-
-    renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
-                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 240, 64, 64}, 0, NullOpt, 0);
-
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score * 8, 8, 8, 8},
-                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 266, 32, 32}, 0, NullOpt, 0);
+            renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score * 8, 8, 8, 8},
+                        SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 266, 32, 32}, 0, NullOpt, 0);
+        }
+    }
 }
 
 void GameView::render_score(score_DTO score) {
@@ -350,9 +352,6 @@ void GameView::zoom(game_snapshot_t gs) {
     } else if (cam_y > max_cam_y) {
         cam_y = max_cam_y;
     }
-
-    // nemo point
-    std::cout << "cam_x: " << cam_x << " - cam_y: " << cam_y << std::endl;
 
     // Aplicar el zoom
     SDL_RenderSetScale(renderer.Get(), zoom_factor, zoom_factor);

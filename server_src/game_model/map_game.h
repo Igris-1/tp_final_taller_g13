@@ -51,7 +51,7 @@ class MapGame {
 private:
     int height;
     int width;
-    std::set<Hitbox> invalid_positions;
+    std::set<Hitbox> weapon_spawn_platforms;
     std::list<std::shared_ptr<Box>> boxes;
     std::set<Hitbox> platforms;
     std::map<int, std::shared_ptr<Duck>> ducks;
@@ -68,7 +68,7 @@ private:
     bool hitbox_in_range(Hitbox hitbox, bool can_fall);
     bool position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand);
     bool out_of_map(Hitbox hitbox);
-    bool not_in_invalid_position(Hitbox hitbox, bool to_stand);
+    bool not_in_weapon_spawn_position(Hitbox hitbox, bool to_stand);
     bool not_in_platforms(Hitbox hitbox, bool to_stand);
     bool not_in_boxes(Hitbox hitbox, bool to_stand);
 
@@ -94,7 +94,7 @@ public:
     int get_height();
 
     // MAP STRUCTURE
-    bool add_invalid_position(Hitbox hitbox);
+    bool add_weapon_spawn_position(Hitbox hitbox);
     bool add_platform(Hitbox hitbox);
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y, int width, int height);
@@ -128,6 +128,7 @@ public:
     std::vector<duck_DTO> get_duck_DTO_list();
     std::vector<weapon_DTO> get_weapons_DTO_list();
     std::vector<platform_DTO> get_platforms_DTO();
+    std::vector<platform_DTO> get_weapon_spawn_positions_DTO();
     std::vector<box_DTO> get_boxes_DTO();
     sounds_DTO get_sounds_DTO();
     void set_sound(int sound);

@@ -1,14 +1,14 @@
 #include "game.h"
 
-void Game::add_invalid_position(Hitbox hitbox) {
-    if (!this->map.add_invalid_position(hitbox)) {
-        throw GameError("game can't add invalid position");
+void Game::add_weapon_spawn_platform(Hitbox hitbox) {
+    if (!this->map.add_weapon_spawn_position(hitbox)) {
+        throw GameError("no se pudo agregar plataforma de spawn de armas");
     }
 }
 
 void Game::add_new_platform(Hitbox hitbox) {
     if (!this->map.add_platform(hitbox)) {
-        throw GameError("game can't add platform");
+        throw GameError("no se pudo agregar plataforma");
     }
 }
 

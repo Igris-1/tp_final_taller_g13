@@ -85,11 +85,11 @@ bool MapGame::duck_is_alive(int id) {
     return this->ducks[id]->is_alive();
 }
 
-bool MapGame::add_invalid_position(Hitbox hitbox) {
+bool MapGame::add_weapon_spawn_position(Hitbox hitbox) {
     if (!hitbox_in_range(hitbox, false) && not_in_platforms(hitbox, false)) {
         return false;
     }
-    this->invalid_positions.insert(hitbox);
+    this->weapon_spawn_platforms.insert(hitbox);
     return true;
 }
 
@@ -150,7 +150,7 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
 
     return true;
 }
-
+//esta funcion d respawn creo q no la usa nadie
 void MapGame::respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn) {
     int actual_respawn = 0;
     for (auto it = this->ducks_dead.begin(); it != this->ducks_dead.end();) {
@@ -211,6 +211,18 @@ std::vector<platform_DTO> MapGame::get_platforms_DTO() {
     return vector_platforms;
 }
 
+std::vector<platform_DTO> MapGame::get_weapon_spawn_positions_DTO(){
+    std::vector<platform_DTO> vector_platforms;
+    vector_platforms.resize(0);
+    for (Hitbox p: this->weapon_spawn_platforms) {
+        platform_DTO dto = {static_cast<uint16_t>(p.get_x()), static_cast<uint16_t>(p.get_y()),
+                            static_cast<uint16_t>(p.get_width()),
+                            static_cast<uint16_t>(p.get_height())};
+        vector_platforms.push_back(dto);
+    }
+    return vector_platforms;
+}
+
 std::vector<box_DTO> MapGame::get_boxes_DTO() {
     std::vector<box_DTO> vector_boxes(0);
     for (auto& box: this->boxes) {
@@ -250,9 +262,15 @@ void MapGame::gravity_weapon() {
         if ((*it)->is_falling()) {
             this->move_relative_if_posible(hitbox, NO_DIRECTION, GRAVITY);
         }
+        if(out_of_map((*it)->get_hitbox())){
+            pickables.erase(it);
+        }
     }
     for (auto explosive = explosives.begin(); explosive != explosives.end(); ++explosive) {
         this->explosive_gravity(*explosive);
+        if(out_of_map((*explosive)->get_hitbox())){
+            pickables.erase(explosive);
+        }
     }
 }
 
@@ -353,12 +371,12 @@ void MapGame::use_item(int duck_id, bool right_direction, bool is_holding, bool 
 }
 
 void MapGame::set_sound(int sound) {
-    this->sounds.shooting_small_weapon = (sound == SHOOTING_SMALL_WEAPON) ? true : false;
-    this->sounds.shooting_big_weapon = (sound == SHOOTING_BIG_WEAPON) ? true : false;
-    this->sounds.shooting_laser_weapon = (sound == SHOOTING_LASER_WEAPON) ? true : false;
-    this->sounds.shotgun_recharging = (sound == SHOTGUN_RECHARGING) ? true : false;
-    this->sounds.sniper_recharging = (sound == SNIPER_RECHARGING) ? true : false;
-    this->sounds.duck_struck = (sound == DUCK_STRUCK) ? true : false;
+    this->sounds.shooting_small_weapon = (sound == SHOOTING_SMALL_WEAPON) ? true : this->sounds.shooting_small_weapon;
+    this->sounds.shooting_big_weapon = (sound == SHOOTING_BIG_WEAPON) ? true : this->sounds.shooting_big_weapon;
+    this->sounds.shooting_laser_weapon = (sound == SHOOTING_LASER_WEAPON) ? true : this->sounds.shooting_laser_weapon;
+    this->sounds.shotgun_recharging = (sound == SHOTGUN_RECHARGING) ? true : this->sounds.shotgun_recharging;
+    this->sounds.sniper_recharging = (sound == SNIPER_RECHARGING) ? true : this->sounds.sniper_recharging;
+    this->sounds.duck_struck = (sound == DUCK_STRUCK) ? true : this->sounds.duck_struck;
 }
 
 bool MapGame::already_exist_a_pickable(int x, int y, int width, int height) {
