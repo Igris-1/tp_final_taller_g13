@@ -96,7 +96,7 @@ void Editor::on_saveButton_clicked() {
     // Crear QFileDialog con estilos
     QFileDialog saveDialog(this, "Guardar archivo");
     saveDialog.setAcceptMode(QFileDialog::AcceptSave);
-    saveDialog.setDirectory("../configuration_yamls/");
+    saveDialog.setDirectory("../maps/");
     saveDialog.setNameFilter("Archivos YAML (*.yaml)");
     saveDialog.setStyleSheet(
             "QFileDialog { "
@@ -206,12 +206,30 @@ void Editor::on_saveButton_clicked() {
         successBox.setWindowTitle("Guardado exitoso");
         successBox.setText("El archivo se guardó correctamente en:\n" + filePath);
         successBox.setIcon(QMessageBox::Information);
-        successBox.setStyleSheet(
-            "QMessageBox { background-color: #e8f5e9; border: 1px solid #4CAF50; } "
-            "QLabel { font-size: 14px; color: #333; } "
-            "QPushButton { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; } "
-            "QPushButton:hover { background-color: #45a049; }"
-        );
+        successBox.setStyleSheet("QMessageBox QLabel {"
+                            "   background-image: transparent;"
+                            "   border-image: transparent;"
+                            "   color: #000000;"
+                            "}"
+                            "QMessageBox {"
+                            "   background-image: transparent;"
+                            "   border-image: transparent;"
+                            "   background-color: #f0f0f0;"
+                            "   border: 2px solid #000000;"
+                            "   color: #000000;"
+                            "}"
+                            "QPushButton {"
+                            "   background-image: transparent;"
+                            "   border-image: transparent;"
+                            "   background-color: #d9d9d9;"
+                            "   color: #000000;"
+                            "   border: 1px solid #000000;"
+                            "   border-radius: 5px;"
+                            "   padding: 5px;"
+                            "}"
+                            "QPushButton:hover {"
+                            "   background-color: #e6e6e6;"
+                            "}");
         successBox.exec();
     } else {
         // Crear QMessageBox con estilos para error
@@ -335,7 +353,7 @@ void Editor::on_openButton_clicked() {
         int mapHeight = config["map"]["map_height"].as<int>();
 
         // Cambiar las dimensiones del editor
-        this->setFixedSize(mapWidth, mapHeight);
+        this->setMinimumSize(mapWidth, mapHeight);
         std::cout << "Dimensiones del mapa: " << mapWidth << "x" << mapHeight << std::endl;
 
         // Crear objetos: cajas (boxes)
