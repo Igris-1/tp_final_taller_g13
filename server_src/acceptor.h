@@ -11,6 +11,7 @@
 
 #include "games_manager.h"
 #include "list_of_clients_monitor.h"
+#include "lobby.h"
 
 #define ONE_BYTE 1
 #define TWO_BYTES 2
@@ -20,6 +21,7 @@ class Acceptor: public Thread {
 private:
     Socket socket;
     GamesManager& games_manager;
+    std::list<Lobby> lobbies;
     void run() override;
 
 public:
