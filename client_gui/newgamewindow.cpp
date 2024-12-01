@@ -14,6 +14,7 @@
 #define NEW_GAME 0
 #define JOIN_GAME 1
 #define RANDOM_GAME 3
+#define PLAYGROUND 4
 
 
 NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString address, QString port):
@@ -71,6 +72,18 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
 void NewGameWindow::on_playgroundButton_clicked() {
     // levantare el mapa custom
     std::cout << "playgroundButton clicked" << std::endl;
+
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    this->player->stop();
+    Client client(charAddress, charPort, NEW_GAME);
+    client.setLocalPlayers(PLAYER2);
+    client.select_game_mode(PLAYGROUND);
+    this->hide();
+    client.run();
 }
 
 void NewGameWindow::on_maps_activated() {
