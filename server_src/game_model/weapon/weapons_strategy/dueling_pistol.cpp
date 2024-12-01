@@ -2,6 +2,7 @@
 #include "../../duck.h"
 
 #define DUELING_PISTOL_SOUND 2
+#define BULLET_SIZE 8
 
 DuelingPistol::DuelingPistol(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
@@ -17,7 +18,7 @@ std::vector<std::shared_ptr<BulletInterface>> DuelingPistol::fire(
     if (this->fire_rate == 0 && !is_holding_button) {
         bullets.push_back(std::make_shared<Bullet>(duck_trigger->get_id(), x_position, y_position,
                                                    x_direction, y_direction,
-                                                   TILE_SIZE * this->scope, this->damage, 8));
+                                                   TILE_SIZE * this->scope, this->damage, BULLET_SIZE));
         this->shot--;
         this->fire_rate = this->reload_time;
     }

@@ -79,6 +79,7 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
         this->translator_dto.hton_box_DTO(&game_snapshot.boxes[i]);
         connection.sendall(&game_snapshot.boxes[i], sizeof(box_DTO), &socket_is_closed);
     }
+    this->translator_dto.hton_sounds_DTO(&game_snapshot.sounds);
     connection.sendall(&game_snapshot.sounds, sizeof(sounds_DTO), &socket_is_closed);
 }
 
@@ -92,6 +93,11 @@ void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
     for (int i = 0; i < map_structure.platforms_len; i++) {
         this->translator_dto.hton_platform_DTO(&map_structure.platforms[i]);
         connection.sendall(&map_structure.platforms[i], sizeof(platform_DTO), &socket_is_closed);
+    }
+    this->send_long_number(map_structure.spawns_platforms_len);
+    for (int i = 0; i < map_structure.spawns_platforms_len; i++) {
+        this->translator_dto.hton_platform_DTO(&map_structure.spawns_platforms[i]);
+        connection.sendall(&map_structure.spawns_platforms[i], sizeof(platform_DTO), &socket_is_closed);
     }
 }
 

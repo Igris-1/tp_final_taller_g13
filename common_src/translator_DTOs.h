@@ -7,102 +7,132 @@
 
 class TranslatorDTOs {
     private:
+        bool is_little_endian(){
+            uint16_t aux = 0x0b0d;
+            uint8_t* ptr = reinterpret_cast<uint8_t*>(&aux);
+            return ptr[0] == 0x0d;
+        }
 
+        // da vuelta los bytes para que cambie de endianess. osea un 0x123456 pasa a 0x563412
+        void change_endianess(void * dto, size_t size){
+            uint8_t* bytes = static_cast<uint8_t*>(dto);
+            for (size_t i = 0; i < size / 2; ++i) {
+                std::swap(bytes[i], bytes[size - 1 - i]);
+            }
+        }
     public:
         TranslatorDTOs() {}
 
         void ntoh_duck_DTO(duck_DTO *duck_dto){
-            duck_dto->x = ntohs(duck_dto->x);
-            duck_dto->y = ntohs(duck_dto->y);
-            duck_dto->width = ntohs(duck_dto->width);
-            duck_dto->height = ntohs(duck_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(duck_dto, sizeof(duck_DTO));
         }
 
         void hton_duck_DTO(duck_DTO *duck_dto){
-            duck_dto->x = htons(duck_dto->x);
-            duck_dto->y = htons(duck_dto->y);
-            duck_dto->width = htons(duck_dto->width);
-            duck_dto->height = htons(duck_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(duck_dto, sizeof(duck_DTO));
         }
 
         void ntoh_platform_DTO(platform_DTO *platform_dto){
-            platform_dto->x =  ntohs(platform_dto->x);
-            platform_dto->y =  ntohs(platform_dto->y);
-            platform_dto->width =  ntohs(platform_dto->width);
-            platform_dto->height =  ntohs(platform_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(platform_dto, sizeof(platform_DTO));
         }
 
         void hton_platform_DTO(platform_DTO *platform_dto){
-            platform_dto->x =  htons(platform_dto->x);
-            platform_dto->y =  htons(platform_dto->y);
-            platform_dto->width =  htons(platform_dto->width);
-            platform_dto->height =  htons(platform_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(platform_dto, sizeof(platform_DTO));
         }
 
         void ntoh_bullet_DTO(bullet_DTO *bullet_dto){
-            bullet_dto->x = ntohs(bullet_dto->x);
-            bullet_dto->y = ntohs(bullet_dto->y);
-            bullet_dto->width = ntohs(bullet_dto->width);
-            bullet_dto->height = ntohs(bullet_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(bullet_dto, sizeof(bullet_DTO));
         }
 
         void hton_bullet_DTO(bullet_DTO *bullet_dto){
-            bullet_dto->x = htons(bullet_dto->x);
-            bullet_dto->y = htons(bullet_dto->y);
-            bullet_dto->width = htons(bullet_dto->width);
-            bullet_dto->height = htons(bullet_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(bullet_dto, sizeof(bullet_DTO));
         }
 
         void ntoh_weapon_DTO(weapon_DTO *weapon_dto){
-            weapon_dto->x = ntohs(weapon_dto->x);
-            weapon_dto->y = ntohs(weapon_dto->y);
-            weapon_dto->width = ntohs(weapon_dto->width);
-            weapon_dto->height = ntohs(weapon_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(weapon_dto, sizeof(weapon_DTO));
         }
 
         void hton_weapon_DTO(weapon_DTO *weapon_dto){
-            weapon_dto->x = htons(weapon_dto->x);
-            weapon_dto->y = htons(weapon_dto->y);
-            weapon_dto->width = htons(weapon_dto->width);
-            weapon_dto->height = htons(weapon_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(weapon_dto, sizeof(weapon_DTO));
         }
 
         void ntoh_box_DTO(box_DTO *box_dto){
-            box_dto->x = ntohs(box_dto->x);
-            box_dto->y = ntohs(box_dto->y);
-            box_dto->width = ntohs(box_dto->width);
-            box_dto->height = ntohs(box_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(box_dto, sizeof(box_DTO));
         }
 
         void hton_box_DTO(box_DTO *box_dto){
-            box_dto->x = htons(box_dto->x);
-            box_dto->y = htons(box_dto->y);
-            box_dto->width = htons(box_dto->width);
-            box_dto->height = htons(box_dto->height);
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(box_dto, sizeof(box_DTO));
         }
 
-        void ntoh_sound_DTO(sounds_DTO *sound_dto){
-            return;
+        void ntoh_sounds_DTO(sounds_DTO *sound_dto){
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(sound_dto, sizeof(sounds_DTO));
         }
 
-        void hton_sound_DTO(sounds_DTO *sound_dto){
-            return;
+        void hton_sounds_DTO(sounds_DTO *sound_dto){
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(sound_dto, sizeof(sounds_DTO));
         }
 
         void ntoh_games_DTO(games_DTO *games_dto){
-            return;
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(games_dto, sizeof(games_DTO));
         }
 
         void hton_games_DTO(games_DTO *games_dto){
-            return;
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(games_dto, sizeof(games_DTO));
         }
 
         void ntoh_score_DTO(score_DTO *score_dto){
-            return;
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(score_dto, sizeof(score_DTO));
         }
 
         void hton_score_DTO(score_DTO *score_dto){
-            return;
+            if(!this->is_little_endian()){
+                return;
+            }
+            this->change_endianess(score_dto, sizeof(score_DTO));
         }
 };
 

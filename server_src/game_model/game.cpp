@@ -192,6 +192,8 @@ map_structure_t Game::get_map_structure() {
     map_structure.width = this->map.get_width();
     map_structure.platforms = this->map.get_platforms_DTO();
     map_structure.platforms_len = static_cast<uint16_t>(map_structure.platforms.size());
+    map_structure.spawns_platforms = this->map.get_weapon_spawn_positions_DTO();
+    map_structure.spawns_platforms_len = static_cast<uint16_t>(map_structure.spawns_platforms.size());
     return map_structure;
 }
 
@@ -253,15 +255,12 @@ void Game::keep_using_item() {
 }
 
 void Game::add_spawn_duck(Hitbox hitbox) {
-    // if (this->map.approximate_spawn_to_platform(hitbox, false)) {
         this->spawn_ducks.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
-    //}
 }
 
 void Game::add_spawn_position(Hitbox hitbox) {
-    //if (this->map.approximate_spawn_to_platform(hitbox, true)) {
-        this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()));
-    //}
+        this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()-26));
+        this->map.add_weapon_spawn_position(hitbox);
 }
 
 void Game::stop_duck_item(int id, bool stop_fire) {

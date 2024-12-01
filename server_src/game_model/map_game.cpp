@@ -86,7 +86,7 @@ bool MapGame::duck_is_alive(int id) {
 }
 
 bool MapGame::add_weapon_spawn_position(Hitbox hitbox) {
-    if (!hitbox_in_range(hitbox, false) && not_in_platforms(hitbox, false)) {
+    if (!hitbox_in_range(hitbox, false)) {
         return false;
     }
     this->weapon_spawn_platforms.insert(hitbox);
@@ -496,34 +496,34 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) 
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }
 
-bool MapGame::approximate_spawn_to_platform(Hitbox& hitbox, bool is_item) {
-    while (true) {
-        bool collision_found = false;
-        for (auto& platform: this->platforms) {
-            if (platform.has_collision(hitbox)) {
-                collision_found = true;
-                break;
-            }
-        }
+// bool MapGame::approximate_spawn_to_platform(Hitbox& hitbox, bool is_item) {
+//     while (true) {
+//         bool collision_found = false;
+//         for (auto& platform: this->platforms) {
+//             if (platform.has_collision(hitbox)) {
+//                 collision_found = true;
+//                 break;
+//             }
+//         }
 
-        if (!collision_found) {
-            hitbox.move_relative(NO_DIRECTION, GRAVITY);
-        } else {
-            hitbox.move_relative(NO_DIRECTION, JUMP_DIRECTION);
-            break;
-        }
-        if (hitbox.get_y() >= this->height) {
-            hitbox.move(hitbox.get_x(), 0); // si se va de rango, lo mando al principio del mapa
-            return false;
-        }
-    }
-    if (is_item) {
-        hitbox.move_relative(NO_DIRECTION, PICKABLE_SPAWN_DISTANCE_TO_PLATFORM);
-    } else {
-        hitbox.move_relative(NO_DIRECTION, DUCK_SPAWN_DISTANCE_TO_PLATFORM);
-    }
-    return true;
-}
+//         if (!collision_found) {
+//             hitbox.move_relative(NO_DIRECTION, GRAVITY);
+//         } else {
+//             hitbox.move_relative(NO_DIRECTION, JUMP_DIRECTION);
+//             break;
+//         }
+//         if (hitbox.get_y() >= this->height) {
+//             hitbox.move(hitbox.get_x(), 0); // si se va de rango, lo mando al principio del mapa
+//             return false;
+//         }
+//     }
+//     if (is_item) {
+//         hitbox.move_relative(NO_DIRECTION, PICKABLE_SPAWN_DISTANCE_TO_PLATFORM);
+//     } else {
+//         hitbox.move_relative(NO_DIRECTION, DUCK_SPAWN_DISTANCE_TO_PLATFORM);
+//     }
+//     return true;
+// }
 
 sounds_DTO MapGame::get_sounds_DTO() {
     sounds_DTO dto = this->sounds;

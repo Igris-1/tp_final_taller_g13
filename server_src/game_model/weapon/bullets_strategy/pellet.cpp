@@ -2,6 +2,8 @@
 
 #include "../../map_game.h"
 
+#define DISPERSION_PELLET 5 
+
 Pellet::Pellet(int duck_trigger_id, int x, int y, int x_direction, int y_direction,
                int travel_distance, int damage, int size, bool vertical):
         BulletInterface(duck_trigger_id, x, y, x_direction, y_direction, damage, size), vertical(vertical) {
@@ -12,7 +14,7 @@ bool Pellet::next_position_vertical(MapGame& map){
     if (this->moved_vertical == 0) {
         if (map.move_relative_if_posible(this->hitbox, this->x_direction, this->y_direction)) {
             this->travel_distance--;
-            this->moved_vertical = 5;
+            this->moved_vertical = DISPERSION_PELLET;
             return true;
         }
     } else {
@@ -35,7 +37,7 @@ bool Pellet::next_position(MapGame& map) {
     if (this->moved_vertical == 0) {
         if (map.move_relative_if_posible(this->hitbox, this->x_direction, this->y_direction)) {
             this->travel_distance--;
-            this->moved_vertical = 5;
+            this->moved_vertical = DISPERSION_PELLET;
             return true;
         }
     } else {

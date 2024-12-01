@@ -85,6 +85,15 @@ map_structure_t ProtocolClient::receive_map() {
         this->translator_dto.ntoh_platform_DTO(&platform);
         map.platforms[i] = platform;
     }
+    n = read_long_number();
+    platform_DTO platform_spawn;
+    map.spawns_platforms.resize(n);
+    for (int i = 0; i < n; i++) {
+        connection.recvall(&platform_spawn, sizeof(platform_DTO), &socket_is_closed);
+        this->translator_dto.ntoh_platform_DTO(&platform_spawn);
+        map.spawns_platforms[i] = platform_spawn;
+    }
+
     return map;
 }
 
@@ -134,7 +143,7 @@ game_snapshot_t ProtocolClient::read_snapshot() {
     }
     sounds_DTO sounds;
     connection.recvall(&sounds, sizeof(sounds_DTO), &socket_is_closed);
-    this->translator_dto.ntoh_sound_DTO(&sounds);
+    this->translator_dto.ntoh_sounds_DTO(&sounds);
     game_snapshot.sounds = sounds;
 
     return game_snapshot;

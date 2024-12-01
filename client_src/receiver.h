@@ -18,6 +18,7 @@
 #define END_SCORE_CODE 0x03
 #define GAMES_INFO_CODE 0x04
 #define PLAYERS_CODE 0x05
+#define SEND_GAME_PLAYERS 0x06
 
 class Receiver: public Thread {
 private:
@@ -65,31 +66,29 @@ private:
     }
 
     void send_players_and_game_id() {
-        Message message(0x06);
+        Message message(SEND_GAME_PLAYERS);
         queue.push(message);
     }
 
     void run() override {
+        std::map<uint8_t, std::function<void()>> functions = {
+            {MAP_CODE, std::bind(&Receiver::receive_map, this)},
+            {GAME_SNAPSHOT_CODE, std::bind(&Receiver::receive_game_snapshot, this)},
+            {SCORE_CODE, std::bind(&Receiver::receive_score, this)},
+            {END_SCORE_CODE, std::bind(&Receiver::receive_end_score, this)},
+            {GAMES_INFO_CODE, std::bind(&Receiver::receive_game_info, this)},
+            {PLAYERS_CODE, std::bind(&Receiver::send_players, this)},
+            {SEND_GAME_PLAYERS, std::bind(&Receiver::send_players_and_game_id, this)}
+        };
         while (!protocol.socket_closed() && _keep_running) {
             try {
 
                 uint8_t code = protocol.read_number();
-                if (code == MAP_CODE) {
-                    receive_map();
-                } else if (code == GAME_SNAPSHOT_CODE) {
-                    receive_game_snapshot();
-                } else if (code == SCORE_CODE) {
-                    receive_score();
-                } else if (code == END_SCORE_CODE) {
-                    receive_end_score();
-                } else if (code == GAMES_INFO_CODE) {
-                    receive_game_info();
-                } else if (code == PLAYERS_CODE) {
-                    send_players();
-                } else if (code == 0x06) {
-                    send_players_and_game_id();
+                try {
+                    functions[code]();
+                } catch (const std::out_of_range& e) {
+                    std::cerr << "funcion con codigo " << (int)code << " no existe. " << e.what() << std::endl;
                 }
-
                 usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;

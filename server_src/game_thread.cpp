@@ -64,7 +64,7 @@ void GameThread::blocking_execute_commands() {
 void GameThread::run() {
     bool is_practice_mode = false;
 
-    GameConfig game_config("../maps/custom_map.yaml",
+    GameConfig game_config("../maps/practice_map.yaml",
                            "../configuration_yamls/practice_config.yaml");
 
     Game aux(game_config);

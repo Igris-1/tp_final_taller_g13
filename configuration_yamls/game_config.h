@@ -7,6 +7,11 @@
 
 #include "parser_yaml.h"
 
+#define X_POSITION 0
+#define Y_POSITION 1
+#define WIDTH_POSITION 2
+#define HEIGHT_POSITION 3
+
 typedef struct {
     std::string name;
     int shot;

@@ -74,7 +74,6 @@ private:
 
     // functions of movements
     bool can_move_hitbox(Hitbox hitbox, int dx, int dy, bool can_fall);
-    bool approximate_spawn_to_platform(Hitbox& hitbox, bool is_item);
 
     // internal functions
     bool apply_recoil(std::shared_ptr<Duck> duck, int duck_id);
@@ -99,6 +98,7 @@ public:
     bool add_box(Hitbox hitbox);
     bool already_exist_a_pickable(int x, int y, int width, int height);
     bool change_hitbox_size(Hitbox& hitbox, int width, int height, bool to_stand);
+    // bool approximate_spawn_to_platform(Hitbox& hitbox, bool is_item);
 
     // DUCKS
     bool duck_exist(int id);

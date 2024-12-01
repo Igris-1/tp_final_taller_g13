@@ -6,6 +6,11 @@
 #define BULLET_SIZE 8
 #define AK47_SOUND 2
 
+#define NO_DISPERSION 0
+#define POSITIVE_DISPERSION 5
+#define NEGATIVE_DISPERSION -15
+#define Y_DISPERSION 1
+
 AK47::AK47(int shot, int damage, int recoil, int scope, int reload_time):
         WeaponInterface(shot, damage, recoil, scope, reload_time) {}
 
@@ -18,28 +23,27 @@ std::vector<std::shared_ptr<BulletInterface>> AK47::fire(std::shared_ptr<Duck> d
         return bullets;
     }
     if (this->fire_rate == 0) {
-        
         if(!is_holding_button){
-            std::cout << "no se esta manteniendo el boton" << std::endl;
             this->dispersion = 0;
         }
-        bullets.push_back(std::make_shared<AKBullet>( duck_trigger->get_id(), x_position, y_position + this->dispersion, 
+        bullets.push_back(std::make_shared<Bullet>( duck_trigger->get_id(), x_position, y_position + this->dispersion, 
                         x_direction , y_direction+dispersion2, TILE_SIZE * this->scope, this->damage,
-                        BULLET_SIZE, 0));
-
-        if(this->dispersion == 0){
-            this->dispersion = 5;
-            this->dispersion2 = 0;
-        }
-        else if(this->dispersion == 5){
-            this->dispersion = -15;
-        }
-        else if(this->dispersion == -15){
-            this->dispersion = 1;
-        }
-        else if(this->dispersion == 1){
-            this->dispersion = 0;
-            this->dispersion2 = -1;
+                        BULLET_SIZE));
+        switch (this->dispersion) {
+            case NO_DISPERSION:
+                this->dispersion = POSITIVE_DISPERSION;
+                this->dispersion2 = NO_DISPERSION;
+                break;
+            case POSITIVE_DISPERSION:
+                this->dispersion = NEGATIVE_DISPERSION;
+                break;
+            case NEGATIVE_DISPERSION:
+                this->dispersion = Y_DISPERSION;
+                break;
+            case Y_DISPERSION:
+                this->dispersion = NO_DISPERSION;
+                this->dispersion2 = - Y_DISPERSION;
+                break;
         }
         this->shot--;
         this->fire_rate = this->reload_time;

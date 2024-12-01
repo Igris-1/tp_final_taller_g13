@@ -37,6 +37,8 @@ typedef struct map_structure_t {
     uint16_t height;
     uint16_t platforms_len = 0;
     std::vector<platform_DTO> platforms;
+    uint16_t spawns_platforms_len = 0;
+    std::vector<platform_DTO> spawns_platforms;
 } map_structure_t;
 
 //__attribute__((packed))
