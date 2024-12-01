@@ -2,6 +2,8 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QLayout>
+#include <QTimer>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -19,7 +21,6 @@ Editor::Editor(QWidget* parent):
         audioOutput(new QAudioOutput(this)) {
     ui->setupUi(this);
 
-    // Config mediaPlayer
     mediaPlayer->setAudioOutput(audioOutput);
     mediaPlayer->setSource(QUrl("qrc:/assets/music/editor_music.mp3"));
     this->mediaPlayer->setLoops(QMediaPlayer::Infinite);
@@ -27,7 +28,13 @@ Editor::Editor(QWidget* parent):
     mediaPlayer->play();
 }
 
-Editor::~Editor() { delete ui; }
+Editor::~Editor() { 
+    if (mediaPlayer != nullptr)
+        delete mediaPlayer;
+    if (audioOutput != nullptr)
+        delete audioOutput;
+    delete ui; 
+    }
 
 
 void Editor::on_exitButton_clicked() {
@@ -37,7 +44,6 @@ void Editor::on_exitButton_clicked() {
     messageBox.setWindowTitle("Salir");
     messageBox.setText("¿Estás seguro que deseas salir?");
     messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-
     messageBox.setStyleSheet("QMessageBox QLabel {"
                              "   background-image: transparent;"
                              "   border-image: transparent;"
@@ -93,7 +99,6 @@ void Editor::on_musicButton_clicked() {
 void Editor::on_saveButton_clicked() {
     std::cout << "saveButton clicked" << std::endl;
 
-    // Crear QFileDialog con estilos
     QFileDialog saveDialog(this, "Guardar archivo");
     saveDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveDialog.setDirectory("../maps/");
@@ -126,13 +131,10 @@ void Editor::on_saveButton_clicked() {
     );
 
     if (!saveDialog.exec()) {
-        // Crear QMessageBox con estilos si el usuario cancela
         QMessageBox cancelBox(this);
         cancelBox.setWindowTitle("Operación cancelada");
         cancelBox.setText("No se guardó ningún archivo.");
         cancelBox.setIcon(QMessageBox::Information);
-
-        // Aplicar estilos
         cancelBox.setStyleSheet("QMessageBox QLabel {"
                             "   background-image: transparent;"
                             "   border-image: transparent;"
@@ -165,7 +167,6 @@ void Editor::on_saveButton_clicked() {
     QString filePath = saveDialog.selectedFiles().first();
 
     YAML::Emitter out;
-    // Inicia el YAML
     out << YAML::BeginMap;
 
     // Información del mapa
@@ -176,11 +177,11 @@ void Editor::on_saveButton_clicked() {
 
     // Agrupaciones
     QMap<QString, QList<const Structure*>> groupedElements;
-    for (const auto* item: items) {  // `items` es tu lista de estructuras
-        groupedElements[item->getType()].append(item);
+    for (const auto* item: items) {
+        if (item->alive){
+            groupedElements[item->getType()].append(item);
+        }
     }
-
-    std::cout << "groupedElements.size(): " << groupedElements.size() << std::endl;
 
     // Guardar cada grupo
     for (auto it = groupedElements.cbegin(); it != groupedElements.cend(); ++it) {
@@ -191,7 +192,6 @@ void Editor::on_saveButton_clicked() {
         out << YAML::EndSeq;
     }
 
-    // Termina el YAML
     out << YAML::EndMap;
 
     // Escribir en archivo
@@ -201,7 +201,6 @@ void Editor::on_saveButton_clicked() {
         stream << out.c_str();
         file.close();
 
-        // Crear QMessageBox con estilos para éxito
         QMessageBox successBox(this);
         successBox.setWindowTitle("Guardado exitoso");
         successBox.setText("El archivo se guardó correctamente en:\n" + filePath);
@@ -232,7 +231,6 @@ void Editor::on_saveButton_clicked() {
                             "}");
         successBox.exec();
     } else {
-        // Crear QMessageBox con estilos para error
         QMessageBox errorBox(this);
         errorBox.setWindowTitle("Error");
         errorBox.setText("No se pudo guardar el archivo.");
@@ -267,12 +265,12 @@ void Editor::on_saveButton_clicked() {
 
 void Editor::on_openButton_clicked() {
     std::cout << "openButton clicked" << std::endl;
+    this->deleteItems();
 
-    // Crear QFileDialog para abrir archivo
     QFileDialog openDialog(this, "Abrir archivo");
     openDialog.setAcceptMode(QFileDialog::AcceptOpen);
     openDialog.setFileMode(QFileDialog::ExistingFile);
-    openDialog.setDirectory("../configuration_yamls/");
+    openDialog.setDirectory("../maps/");
     openDialog.setNameFilter("Archivos YAML (*.yaml)");
     openDialog.setStyleSheet(
             "QFileDialog { "
@@ -302,13 +300,10 @@ void Editor::on_openButton_clicked() {
     );
 
     if (!openDialog.exec()) {
-        // Crear QMessageBox con estilos si el usuario cancela
         QMessageBox cancelBox(this);
         cancelBox.setWindowTitle("Operación cancelada");
         cancelBox.setText("No se seleccionó ningún archivo.");
         cancelBox.setIcon(QMessageBox::Information);
-
-        // Aplicar estilos
         cancelBox.setStyleSheet("QMessageBox QLabel {"
                             "   background-image: transparent;"
                             "   border-image: transparent;"
@@ -338,25 +333,21 @@ void Editor::on_openButton_clicked() {
         return;
     }
 
-    // Obtener la ruta del archivo seleccionado
     QString filePath = openDialog.selectedFiles().first();
-    std::cout << "Archivo seleccionado: " << filePath.toStdString() << std::endl;
 
     // parser
-
     try {
-        // Parsear el archivo YAML
         YAML::Node config = YAML::LoadFile(filePath.toStdString());
 
-        // Leer las dimensiones del mapa
         int mapWidth = config["map"]["map_width"].as<int>();
         int mapHeight = config["map"]["map_height"].as<int>();
 
-        // Cambiar las dimensiones del editor
-        this->setMinimumSize(mapWidth, mapHeight);
-        std::cout << "Dimensiones del mapa: " << mapWidth << "x" << mapHeight << std::endl;
+        // lo que hay que hacer para que funcione qt...
+        this->resize(mapWidth, mapHeight);
+        this->showFullScreen();
+        this->setWindowFlags(Qt::Window);
+        this->showNormal();
 
-        // Crear objetos: cajas (boxes)
         if (config["boxes"]) {
             for (const auto& box : config["boxes"]) {
                 int x = box["x"].as<int>();
@@ -365,16 +356,14 @@ void Editor::on_openButton_clicked() {
                 int height = box["height"].as<int>();
 
                 Structure* structure = new Structure(this);
-                this->items.push_back(structure);
                 structure->setType("boxes");
                 structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
                 structure->setStyleSheet("border-image: url(:/assets/images/box.png);");
                 structure->show();
-                std::cout << "Caja creada en (" << x << ", " << y << ") con tamaño " << width << "x" << height << std::endl;
+                this->items.push_back(structure);
             }
         }
 
-        // Crear objetos: patos (ducks)
         if (config["ducks"]) {
             for (const auto& duck : config["ducks"]) {
                 int x = duck["x"].as<int>();
@@ -383,16 +372,14 @@ void Editor::on_openButton_clicked() {
                 int height = duck["height"].as<int>();
 
                 Structure* structure = new Structure(this);
-                this->items.push_back(structure);
-                structure->setType("boxes");
+                structure->setType("ducks");
                 structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
                 structure->setStyleSheet("border-image: url(:/assets/images/respawn.png);");
                 structure->show();
-                std::cout << "Pato creado en (" << x << ", " << y << ") con tamaño " << width << "x" << height << std::endl;
+                this->items.push_back(structure);
             }
         }
 
-        // Crear objetos: plataformas (platforms)
         if (config["platforms"]) {
             for (const auto& platform : config["platforms"]) {
                 int x = platform["x"].as<int>();
@@ -401,7 +388,7 @@ void Editor::on_openButton_clicked() {
                 int height = platform["height"].as<int>();
 
                 Structure* structure = new Structure(this);
-                    structure->setType("platforms");
+                structure->setType("platforms");
                 if (width > height) {
                     structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
                     structure->setStyleSheet("border-image: url(:/assets/images/horizontal_wood.png);");
@@ -411,10 +398,8 @@ void Editor::on_openButton_clicked() {
                 }
                 this->items.push_back(structure);
                 structure->show();
-                std::cout << "Plataforma creada en (" << x << ", " << y << ") con tamaño " << width << "x" << height << std::endl;
             }
 
-        // Crear objetos: armas (weapons)
             if (config["weapons"]) {
                 for (const auto& weapon : config["weapons"]) {
                     int x = weapon["x"].as<int>();
@@ -423,33 +408,27 @@ void Editor::on_openButton_clicked() {
                     int height = weapon["height"].as<int>();
 
                     Structure* structure = new Structure(this);
-                    this->items.push_back(structure);
-                    structure->setType("platforms");
+                    structure->setType("weapons");
                     structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
                     structure->setStyleSheet("border-image: url(:/assets/images/gunSpawner.png);");
                     structure->show();
-                    std::cout << "Arma creada en (" << x << ", " << y << ") con tamaño " << width << "x" << height << std::endl;
+                    this->items.push_back(structure);
                 }
             }
         }
-
     } catch (const YAML::Exception& e) {
         QMessageBox::critical(this, "Error", QString("Error al leer el archivo YAML: %1").arg(e.what()));
         std::cerr << "Error al leer el archivo YAML: " << e.what() << std::endl;
     }
 }
 
-
-
 void Editor::on_cleanButton_clicked() {
     std::cout << "cleanButton clicked" << std::endl;
     if (this->items.size() != 0) {
-
         QMessageBox messageBox(this);
         messageBox.setWindowTitle("Limpiar");
         messageBox.setText("¿Estás seguro que deseas limpiar el editor?");
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-
         messageBox.setStyleSheet("QMessageBox QLabel {"
                                  "   background-image: transparent;"
                                  "   border-image: transparent;"
@@ -474,7 +453,6 @@ void Editor::on_cleanButton_clicked() {
                                  "QPushButton:hover {"
                                  "   background-color: #e6e6e6;"
                                  "}");
-
         if (messageBox.exec() == QMessageBox::Yes) {
             this->deleteItems();
         }
@@ -483,70 +461,65 @@ void Editor::on_cleanButton_clicked() {
 
 void Editor::on_item_1_clicked() {
     std::cout << "item_1 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    this->items.push_back(structure);
-    structure->setType("boxes");
-    structure->setGeometry(ui->item_1->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/box.png);");
-    structure->show();
+    setStructure(1);
 }
 
 void Editor::on_item_2_clicked() {
     std::cout << "item_2 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    structure->setType("platforms");
-    this->items.push_back(structure);
-    structure->setGeometry(ui->item_2->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/one_block.png);");
-    structure->show();
+    setStructure(2);
 }
 
 void Editor::on_item_3_clicked() {
     std::cout << "item_3 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    structure->setType("platforms");
-    this->items.push_back(structure);
-    structure->setGeometry(ui->item_3->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/horizontal_wood.png);");
-    structure->show();
+    setStructure(3);
 }
 
 void Editor::on_item_4_clicked() {
     std::cout << "item_4 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    structure->setType("platforms");
-    this->items.push_back(structure);
-    structure->setGeometry(ui->item_4->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/vertical_wood.png);");
-    structure->show();
+    setStructure(4);
 }
 
 void Editor::on_item_5_clicked() {
     std::cout << "item_5 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    structure->setType("ducks");
-    this->items.push_back(structure);
-    structure->setGeometry(ui->item_5->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/respawn.png);");
-    structure->show();
+    setStructure(5);
 }
 
 void Editor::on_item_6_clicked() {
     std::cout << "item_6 clicked" << std::endl;
-
-    Structure* structure = new Structure(this);
-    structure->setType("weapons");
-    this->items.push_back(structure);
-    structure->setGeometry(ui->item_6->geometry());  // Toma la posición original del botón
-    structure->setStyleSheet("border-image: url(:/assets/images/gunSpawner.png);");
-    structure->show();
+    setStructure(6);
 }
 
+void Editor::setStructure(int item) {
+    Structure *structure = new Structure(this);
+
+    if (item == 1) {
+        structure->setType("boxes");
+        structure->setGeometry(ui->item_1->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/box.png);");
+    } else if (item == 2) {
+        structure->setType("platforms");
+        structure->setGeometry(ui->item_2->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/one_block.png);");
+    } else if (item == 3) {
+        structure->setType("platforms");
+        structure->setGeometry(ui->item_3->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/horizontal_wood.png);");
+    } else if (item == 4) {
+        structure->setType("platforms");
+        structure->setGeometry(ui->item_4->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/vertical_wood.png);");
+    } else if (item == 5) {
+        structure->setType("ducks");
+        structure->setGeometry(ui->item_5->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/respawn.png);");
+    } else if (item == 6) {
+        structure->setType("weapons");
+        structure->setGeometry(ui->item_6->geometry());
+        structure->setStyleSheet("border-image: url(:/assets/images/gunSpawner.png);");
+    }
+    this->items.push_back(structure);
+    structure->show();
+}
 
 void Editor::deleteItems() {
     for (auto& item: this->items) {
@@ -556,6 +529,4 @@ void Editor::deleteItems() {
         }
     }
     this->items.clear();
-
-    std::cout << this->items.size() << std::endl;
 }

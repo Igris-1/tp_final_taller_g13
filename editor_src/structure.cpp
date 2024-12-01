@@ -19,16 +19,16 @@ QString Structure::getType() const { return this->type; }
 
 void Structure::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-        dragStartPosition = event->pos();  // Guarda la posición del clic
+        dragStartPosition = event->pos();
     } else if (event->button() == Qt::RightButton) {
         this->alive = false;
-        deleteItem();  // Elimina el botón
+        deleteItem();
     }
 }
 
 void Structure::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
-        move(pos() + event->pos() - dragStartPosition);  // Mueve el botón
+        move(pos() + event->pos() - dragStartPosition);
     }
 }
 

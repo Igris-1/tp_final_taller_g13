@@ -13,6 +13,8 @@ class Structure: public QPushButton {
 public:
     explicit Structure(QWidget* parent = nullptr);
     QString type;
+    bool alive;
+
     ~Structure() = default;
 
     void toYaml(YAML::Emitter& out) const;
@@ -25,7 +27,6 @@ protected:
 
 private:
     QPoint dragStartPosition;
-    bool alive;
 
     void deleteItem();
 };

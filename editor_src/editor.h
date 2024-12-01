@@ -43,6 +43,7 @@ private:
     QAudioOutput* audioOutput;
     std::list<Structure*> items;
 
+    void setStructure(int item);
     void deleteItems();
 };
 
