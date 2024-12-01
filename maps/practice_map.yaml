@@ -1,0 +1,76 @@
+map:
+  map_width: 1364
+  map_height: 763
+boxes:
+  - {x: 760, y: 487, width: 32, height: 32}
+  - {x: 672, y: 486, width: 32, height: 32}
+  - {x: 584, y: 484, width: 32, height: 32}
+  - {x: 884, y: 486, width: 32, height: 32}
+  - {x: 878, y: 267, width: 32, height: 32}
+  - {x: 794, y: 15, width: 32, height: 32}
+ducks:
+  - {x: 792, y: 390, width: 32, height: 51}
+  - {x: 410, y: 391, width: 32, height: 51}
+platforms:
+  - {x: 6, y: 723, width: 131, height: 32}
+  - {x: 665, y: 723, width: 131, height: 32}
+  - {x: 931, y: 723, width: 131, height: 32}
+  - {x: 549, y: 722, width: 131, height: 32}
+  - {x: 798, y: 723, width: 131, height: 32}
+  - {x: 268, y: 724, width: 131, height: 32}
+  - {x: 139, y: 722, width: 131, height: 32}
+  - {x: 762, y: 444, width: 131, height: 32}
+  - {x: 1062, y: 722, width: 131, height: 32}
+  - {x: 892, y: 444, width: 131, height: 32}
+  - {x: 633, y: 445, width: 131, height: 32}
+  - {x: 503, y: 445, width: 131, height: 32}
+  - {x: 1264, y: 730, width: 32, height: 32}
+  - {x: 250, y: 361, width: 32, height: 32}
+  - {x: 463, y: 680, width: 32, height: 32}
+  - {x: 373, y: 445, width: 131, height: 32}
+  - {x: 3, y: 110, width: 131, height: 32}
+  - {x: 1022, y: 444, width: 131, height: 32}
+  - {x: 1153, y: 444, width: 131, height: 32}
+  - {x: 212, y: 231, width: 131, height: 32}
+  - {x: 209, y: 515, width: 131, height: 32}
+  - {x: 72, y: 611, width: 131, height: 32}
+  - {x: 1335, y: 576, width: 32, height: 32}
+  - {x: 1331, y: 307, width: 32, height: 32}
+  - {x: 1093, y: 207, width: 131, height: 32}
+  - {x: 962, y: 206, width: 131, height: 32}
+  - {x: 834, y: 206, width: 131, height: 32}
+  - {x: 654, y: 207, width: 131, height: 32}
+  - {x: 553, y: 208, width: 131, height: 32}
+  - {x: 428, y: 209, width: 131, height: 32}
+weapons:
+  - {x: 1205, y: 414, width: 16, height: 8}
+  - {x: 1151, y: 414, width: 16, height: 8}
+  - {x: 1100, y: 412, width: 16, height: 8}
+  - {x: 1045, y: 414, width: 16, height: 8}
+  - {x: 1270, y: 413, width: 16, height: 8}
+  - {x: 713, y: 415, width: 16, height: 8}
+  - {x: 877, y: 413, width: 16, height: 8}
+  - {x: 929, y: 414, width: 16, height: 8}
+  - {x: 985, y: 415, width: 16, height: 8}
+  - {x: 509, y: 416, width: 16, height: 8}
+  - {x: 647, y: 415, width: 16, height: 8}
+  - {x: 583, y: 415, width: 16, height: 8}
+  - {x: 893, y: 686, width: 16, height: 8}
+  - {x: 1311, y: 540, width: 16, height: 8}
+  - {x: 469, y: 639, width: 16, height: 8}
+  - {x: 582, y: 689, width: 16, height: 8}
+  - {x: 658, y: 685, width: 16, height: 8}
+  - {x: 738, y: 684, width: 16, height: 8}
+  - {x: 809, y: 686, width: 16, height: 8}
+  - {x: 978, y: 692, width: 16, height: 8}
+  - {x: 1052, y: 690, width: 16, height: 8}
+  - {x: 1118, y: 690, width: 16, height: 8}
+  - {x: 1182, y: 687, width: 16, height: 8}
+  - {x: 1146, y: 171, width: 16, height: 8}
+  - {x: 1053, y: 171, width: 16, height: 8}
+  - {x: 971, y: 174, width: 16, height: 8}
+  - {x: 885, y: 174, width: 16, height: 8}
+  - {x: 716, y: 175, width: 16, height: 8}
+  - {x: 633, y: 173, width: 16, height: 8}
+  - {x: 547, y: 170, width: 16, height: 8}
+  - {x: 464, y: 171, width: 16, height: 8}
