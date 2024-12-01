@@ -61,7 +61,7 @@ weapon:
     shot: 100000
     damage: 50
     recoil: 200
-    scope: 25 # distnace of shot in tiles
+    scope: 30 # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 52
     hitbox_height: 26
@@ -70,7 +70,7 @@ weapon:
     shot: 100000
     damage: 5
     recoil: 0
-    scope: 25  # distnace of shot in tiles
+    scope: 30  # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 36
     hitbox_height: 18
@@ -79,7 +79,7 @@ weapon:
     shot: 100000
     damage: 7
     recoil: 30
-    scope: 30 # distnace of shot in tiles
+    scope: 35 # distnace of shot in tiles
     reload_time: 20 #time between shots
     hitbox_width: 52
     hitbox_height: 26
@@ -88,7 +88,7 @@ weapon:
     shot: 100000
     damage: 17
     recoil: 80
-    scope: 8 # distnace of shot in tiles
+    scope: 15 # distnace of shot in tiles
     reload_time: 10 #time after recharge
     hitbox_width: 36
     hitbox_height: 18
