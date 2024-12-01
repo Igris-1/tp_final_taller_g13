@@ -88,6 +88,20 @@ void JoinGame::on_startButton_clicked() {
     }
 }
 
+void JoinGame::on_randomGameButton_clicked() {
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    this->player->stop();
+    Client client(charAddress, charPort, 0);
+    client.setLocalPlayers(localPlayers);
+    client.select_game_mode(3);
+    this->hide();
+    client.run();
+}
+
 void JoinGame::refresh_matches(std::vector<games_DTO> games) {
     if (!games.empty()) {
         ui->matchesBox->clear();

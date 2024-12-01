@@ -158,6 +158,25 @@ border-image: transparent;</string>
     <string>Refrash</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="randomGameButton">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>360</y>
+     <width>341</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
+color: rgb(255, 255, 0);
+background-image: transparent;
+border-image: transparent;</string>
+   </property>
+   <property name="text">
+    <string>Random Game</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="resources.qrc"/>

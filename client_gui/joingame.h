@@ -34,6 +34,8 @@ private slots:
 
     void on_startButton_clicked();
 
+    void on_randomGameButton_clicked();
+
 private:
     Ui::JoinGame* ui;
     QMediaPlayer* player;
