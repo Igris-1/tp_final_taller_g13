@@ -5,8 +5,6 @@
 #include <QDialog>
 #include <QMediaPlayer>
 
-#include "../client_src/client.h"
-
 #include "aboutwindow.h"
 #include "joingame.h"
 #include "newgamewindow.h"

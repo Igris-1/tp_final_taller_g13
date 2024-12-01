@@ -8,13 +8,21 @@
 
 #include "ui_newgamewindow.h"
 
+#define PLAYER1 1
+#define PLAYER2 2
+#define PLAYERS 1
+#define NEW_GAME 0
+#define JOIN_GAME 1
+#define RANDOM_GAME 3
+
+
 NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString address, QString port):
         QDialog(parent),
         ui(new Ui::NewGameWindow),
         player(player),
-        localPlayers(1),
-        map(0),
-        players(1),
+        localPlayers(PLAYER1),
+        map(NEW_GAME),
+        players(PLAYERS),
         address(address),
         port(port) {
     ui->setupUi(this);
@@ -40,9 +48,9 @@ void NewGameWindow::on_selectPlayers_activated() {
 
 void NewGameWindow::on_player2Button_clicked() {
     if (ui->player2Button->isChecked()) {
-        localPlayers = 2;
+        localPlayers = PLAYER2;
     } else {
-        localPlayers = 1;
+        localPlayers = PLAYER1;
     }
 }
 
@@ -53,9 +61,9 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     char* charAddress = byteArrayAddress.data();
 
     this->player->stop();
-    Client client(charAddress, charPort, 0);
+    Client client(charAddress, charPort, NEW_GAME);
     client.setLocalPlayers(localPlayers);
-    client.select_game_mode(0);
+    client.select_game_mode(NEW_GAME);
     this->hide();
     client.run();
 }

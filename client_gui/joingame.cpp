@@ -9,11 +9,18 @@
 
 #include "ui_joingame.h"
 
+#define PLAYER1 1
+#define PLAYER2 2
+#define NEW_GAME 0
+#define JOIN_GAME 1
+#define RANDOM_GAME 3
+
+
 JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QString port):
         QDialog(parent),
         ui(new Ui::JoinGame),
         player(player),
-        localPlayers(1),
+        localPlayers(PLAYER1),
         address(address),
         port(port) {
     ui->setupUi(this);
@@ -48,9 +55,9 @@ void JoinGame::on_musicButton_clicked() {
 
 void JoinGame::on_player2Button_clicked() {
     if (ui->player2Button->isChecked()) {
-        localPlayers = 2;
+        localPlayers = PLAYER2;
     } else {
-        localPlayers = 1;
+        localPlayers = PLAYER1;
     }
 }
 
@@ -82,7 +89,7 @@ void JoinGame::on_startButton_clicked() {
         this->player->stop();
         Client client(charAddress, charPort, selectedGame + 1);
         client.setLocalPlayers(localPlayers);
-        client.select_game_mode(1);
+        client.select_game_mode(JOIN_GAME);
         this->hide();
         client.run();
     }
@@ -95,9 +102,9 @@ void JoinGame::on_randomGameButton_clicked() {
     char* charAddress = byteArrayAddress.data();
 
     this->player->stop();
-    Client client(charAddress, charPort, 0);
+    Client client(charAddress, charPort, NEW_GAME);
     client.setLocalPlayers(localPlayers);
-    client.select_game_mode(3);
+    client.select_game_mode(RANDOM_GAME);
     this->hide();
     client.run();
 }

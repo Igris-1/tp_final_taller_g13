@@ -26,11 +26,20 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
 }
 
 ChooseOptionWindow::~ChooseOptionWindow() {
+    if (this->player != NULL)
+        std::cout << "delete player" << std::endl;
+        delete player;
+    if (this->audioOutput != NULL)
+        std::cout << "delete audioOutput" << std::endl;
+        delete audioOutput;
     if (this->newGameWindow != NULL)
+        std::cout << "delete newGameWindow" << std::endl;
         delete newGameWindow;
     if (this->joinGame != NULL)
+        std::cout << "delete joinGame" << std::endl;
         delete joinGame;
     if (this->aboutWindow != NULL)
+        std::cout << "delete aboutWindow" << std::endl;
         delete aboutWindow;
     delete ui;
 }
