@@ -3,8 +3,8 @@ game:
 
 # The speed of the duck in pixels for diferent actions
 ducks_config:
-  health: 20
-  tiles_per_jump: 200 # The number of tiles the duck moves when jumping
+  health: 50
+  tiles_per_jump: 175 # The number of tiles the duck moves when jumping
   product_factor_jump: 2 # speed of the duck when jumping
   add_factor_jump: 3 # linear speed of the duck when jumping
   product_factor_gravity: 2 # speed of the duck when falling
