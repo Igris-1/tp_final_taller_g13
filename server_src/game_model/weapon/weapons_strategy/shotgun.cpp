@@ -58,17 +58,13 @@ int Shotgun::recoil_produced() { return this->recoil; }
 int Shotgun::get_sound(bool is_holding_button) { 
     
     if(this->shot == 0){
-        std::cout << "sin balas" << std::endl;
         return NO_WEAPON_SOUND;
     }
     if(this->reload && !is_holding_button){
-        std::cout << "recargando" << std::endl;
         return SHOTGUN_RECHARGING_SOUND;
     }
     if(!is_holding_button && this->fire_rate == 0){
-        std::cout << "disparando" << std::endl;
         return SHOTGUN_SOUND; 
     }
-    std::cout << "no sound" << std::endl;
     return NO_WEAPON_SOUND;
 }

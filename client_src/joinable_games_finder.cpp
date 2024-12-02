@@ -2,6 +2,9 @@
 
 #include <cstdint>
 #include <iostream>
+#include <arpa/inet.h>
+#include "../common_src/translator_DTOs.h"
+
 
 #define ONE_BYTE 1
 #define TWO_BYTES 2
@@ -28,11 +31,14 @@ std::vector<games_DTO> JoinableGamesFinder::ask_for_games() {
     }
     uint16_t size = 0;
     this->socket.recvall(&size, TWO_BYTES, &socket_is_closed);
+    size = ntohs(size);
     games.resize(size);
 
+    TranslatorDTOs translator;
     for (int i = 0; i < size; i++) {
         games_DTO game;
         this->socket.recvall(&game, sizeof(games_DTO), &socket_is_closed);
+        translator.ntoh_games_DTO(&game);
         games[i] = game;
     }
     return games;

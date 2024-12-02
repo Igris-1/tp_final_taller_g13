@@ -10,7 +10,7 @@
 #include "../common_src/liberror.h"
 #include "../common_src/translator_actions.h"
 
-#include "DTOs.h"
+#include "../common_src/DTOs.h"
 
 ProtocolServer::ProtocolServer(Socket&& client):
         connection(std::move(client)), socket_is_closed(false) {}

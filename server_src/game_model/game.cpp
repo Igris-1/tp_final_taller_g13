@@ -172,14 +172,9 @@ game_snapshot_t Game::get_snapshot() {
     snapshot.boxes_len = snapshot.boxes.size();
     snapshot.sounds = this->map.get_sounds_DTO();
     for (auto it = ducks_states.begin(); it != ducks_states.end(); ++it) {
-        // if(it->second->is_dea
         if (!this->map.duck_is_alive(it->first) && this->ducks_states[it->first]->do_death_sound) {
-            std::cout << "Duck " << it->first << " is dead" << std::endl;
-            std::cout << "do death sound " << this->ducks_states[it->first]->do_death_sound << std::endl;
             snapshot.sounds.death = true;
             this->ducks_states[it->first]->do_death_sound = false;
-            std::cout << "do death sound ahora es: " << this->ducks_states[it->first]->do_death_sound << std::endl;
-            
             break;
         }
     }

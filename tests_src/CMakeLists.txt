@@ -30,17 +30,10 @@ endif()
 # Agregar todos los archivos de prueba a una lista
 set(TEST_SOURCES
     test_main.cpp
-    test_position.cpp
-    ../server_src/game_model/position.cpp # Asegúrate de que el nombre del archivo sea correcto
-    ../server_src/game_model/duck.cpp
-    ../server_src/game_model/armor.cpp
-    ../server_src/game_model/weapon/weapon.cpp
-    ../server_src/game_model/helmet.cpp
-    ../server_src/game_model/game.cpp
-    ../server_src/game_model/map_game.cpp
-    ../server_src/game_model/positionable.h
-    test_game.cpp
-    test_duck.cpp
+    ../server_src/protocol_server.cpp # Asegúrate de que el nombre del archivo sea correcto
+    ../client_src/protocol_client.cpp
+    ../common_src/socket.cpp
+    test_protocols.cpp
 )
 
 # Crear un ejecutable para las pruebas

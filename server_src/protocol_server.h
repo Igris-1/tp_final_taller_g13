@@ -7,7 +7,7 @@
 #include "../common_src/action_t.h"
 #include "../common_src/socket.h"
 #include <arpa/inet.h>
-#include "game_snapshot_t.h"
+#include "../common_src/game_snapshot_t.h"
 #include "../common_src/translator_DTOs.h"
 
 #define ONE_BYTE 1
