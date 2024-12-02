@@ -45,6 +45,10 @@ void Game::set_duck_start_position(int id, int x, int y) {
     }
 }
 
+void Game::spawns_ducks_on_start_position(){
+    this->map.set_ducks_on_spawn_position(this->spawn_ducks);
+}
+
 std::vector<duck_DTO> Game::get_duck_DTO_list() {
     std::vector<duck_DTO> list_DTO = this->map.get_duck_DTO_list();
     for (auto& it: list_DTO) {
@@ -345,10 +349,6 @@ void Game::random_item_spawn(bool on_game, bool lineal_spawn) {
                                                                mode, this->weapons_config),
                                    std::get<X_POSITION>(pos), std::get<Y_POSITION>(pos));
             } catch (MapError& e) {
-                std::cerr << e.what() << std::endl;
-                std::cerr << "Error al agregar arma en modo " << mode << " en posicion ("
-                          << std::get<X_POSITION>(pos) << " " << std::get<Y_POSITION>(pos) << ") "
-                          << std::endl;
                 continue;
             }
         }
@@ -356,18 +356,18 @@ void Game::random_item_spawn(bool on_game, bool lineal_spawn) {
     this->time_to_respawn = TIME_TO_RESPAWN;
 }
 
-// preguntar por esto
-void Game::reset_round() {
+void Game::reset_round(bool practice_mode) {
     this->map.clean_map(this->spawn_ducks);
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {
-        this->random_item_spawn(false, false);
+        this->random_item_spawn(false, practice_mode);
     }
 }
 
 void Game::load_configuration(GameConfig& config) {
     std::vector<std::tuple<int, int, int, int>> aux_tuple = config.get_item("platforms");
     // platforms
+    std::cout << "llegue" << std::endl;
     this->load_platforms(aux_tuple);
     // boxes
     aux_tuple = config.get_item("boxes");

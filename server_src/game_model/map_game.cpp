@@ -467,7 +467,7 @@ void MapGame::add_item(std::shared_ptr<Pickable> new_weapon, int x, int y) {
 
 std::list<std::shared_ptr<BulletInterface>>& MapGame::get_bullets_list() { return this->bullets; }
 
-void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) {
+void MapGame::set_ducks_on_spawn_position(std::vector<std::tuple<int, int>>& positions_to_respawn){
     int actual_respawn = 0;
     for (auto& [id, duck]: this->ducks) {
         duck->reset();
@@ -487,6 +487,10 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>> positions_to_respawn) 
         }
         actual_respawn++;
     }
+}
+
+void MapGame::clean_map(std::vector<std::tuple<int, int>>& positions_to_respawn) {
+    this->set_ducks_on_spawn_position(positions_to_respawn);
     this->ducks_dead.clear();
     this->bullets.clear();
     this->pickables.clear();

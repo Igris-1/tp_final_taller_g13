@@ -40,7 +40,6 @@ public:
         try {
             this->run();
         } catch (const std::exception& err) {
-            std::cout << "hola" << std::endl;
             std::cerr << "Unexpected exception: " << err.what() << "\n";
         } catch (...) {
             std::cerr << "Unexpected exception: <unknown>\n";
