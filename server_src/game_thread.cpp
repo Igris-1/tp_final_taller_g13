@@ -13,10 +13,10 @@
 #include "sender_thread.h"
 
 #define LOOP_TIME 40000
-#define AMOUNT_OF_PLAYERS 2
 
-GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients):
-        game(nullptr), gameQueue(gameQueue), clients(clients) {
+GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players):
+        game(nullptr), gameQueue(gameQueue), clients(clients), practice_mode(practice_mode){
+    this->max_players = max_players;
     start();
 }
 
@@ -60,25 +60,28 @@ void GameThread::blocking_execute_commands() {
     c_action->execute((*this->game));
 }
 
-
 void GameThread::run() {
-    bool is_practice_mode = false;
+    std::string path_map = "../maps/default_map.yaml";
+    std::string path_config = "../configuration_yamls/default_config.yaml";
+    if(this->practice_mode){
+        path_map = "../maps/practice_map.yaml";
+        path_config = "../configuration_yamls/practice_config.yaml";
+    }
 
-    GameConfig game_config("../maps/practice_map.yaml",
-                           "../configuration_yamls/practice_config.yaml");
+    GameConfig game_config(path_map, path_config);
 
     Game aux(game_config);
     this->game = &aux;
     this->game->load_configuration(game_config);
 
     // spawnea armas para el comienzo de la partida
-    this->game->random_item_spawn(false, is_practice_mode);
+    this->game->random_item_spawn(false, this->practice_mode);
 
-    for (int i = 0; i < AMOUNT_OF_PLAYERS; i++) {
+    for (int i = 0; i < this->max_players; i++) {
         blocking_execute_commands();
     }
 
-    while (this->game->get_duck_DTO_list().size() < AMOUNT_OF_PLAYERS) {
+    while (this->game->get_duck_DTO_list().size() < this->max_players) {
         std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
     }
     send_map();
@@ -95,7 +98,7 @@ void GameThread::run() {
 
         this->game->continue_vertical_movements();
         this->game->continue_horizontal_movements();
-        this->game->random_item_spawn(true, is_practice_mode);
+        this->game->random_item_spawn(true, this->practice_mode);
         
         if (this->game->check_if_round_finished()) {
 
@@ -106,12 +109,12 @@ void GameThread::run() {
             this->game->continue_vertical_movements();
             this->game->continue_horizontal_movements();
             send_snapshots();
-            if (this->game->check_if_winner() && !is_practice_mode) {
+            if (this->game->check_if_winner() && !this->practice_mode) {
                 send_endgame_score();
                 this->_is_alive = false;
                 return;
             }
-            if(!is_practice_mode){
+            if(!this->practice_mode){
                 this->round_counter--;
             }
             if (this->round_counter == 0) {

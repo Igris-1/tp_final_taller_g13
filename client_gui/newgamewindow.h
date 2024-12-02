@@ -21,10 +21,6 @@ private slots:
 
     void on_musicButton_clicked();
 
-    void on_selectPlayers_activated();
-
-    void on_player2Button_clicked();
-
     void on_mapaUnoButton_clicked();
 
     void on_playgroundButton_clicked();
@@ -37,9 +33,8 @@ private:
     Ui::NewGameWindow* ui;
     Client* client;
     QMediaPlayer* player;
-    int localPlayers;
     int map;
-    int players;
+    int gamePlayers;
     QString address;
     QString port;
 };

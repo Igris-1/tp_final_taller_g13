@@ -204,6 +204,9 @@ public:
         // int game_id = std::stoi(input);
         protocol.send_number(game_id);
     }
+    void send_max_players(int max_players_for_game){
+        protocol.send_number(max_players_for_game);
+    }
 
     void send_players() { protocol.send_number(localPlayers); }
 

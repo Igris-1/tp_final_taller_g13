@@ -23,6 +23,8 @@ Client::Client(const char* host, const char* port, uint8_t game_id):
 
 void Client::setLocalPlayers(int players) { localPlayers = players; }
 
+void Client::setMaxPlayers(int max_players) { max_players_for_game = max_players; }
+
 Client::~Client() {}
 
 void Client::select_game_mode(int game_mode) { protocol.send_number(game_mode); }
@@ -74,10 +76,12 @@ void Client::run() {
                     // }
                 } else if (m.get_code() == PLAYERS_CODE) {
                     sender.send_players();
-                } else if (m.get_code() == 0x06) {
+                } else if (m.get_code() == SEND_GAME_PLAYERS) {
                     sender.send_players();
                     sender.send_game_to_join(this->game_to_join);
-                }
+                } else if (m.get_code() == SEND_MAX_PLAYERS) {
+                    sender.send_max_players(max_players_for_game);
+                } 
             }
             usleep(SLEEP_TIME_CLIENT);
         }

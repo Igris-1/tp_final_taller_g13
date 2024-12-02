@@ -19,6 +19,7 @@ private:
     Game* game;
     Queue<std::shared_ptr<Action>>& gameQueue;
     ListOfClientsMonitor& clients;
+    int max_players = 2;
     int round_counter = 5;
     void send_snapshots();
     void send_game_score();
@@ -27,13 +28,14 @@ private:
     void blocking_execute_commands();
     void send_instructions();
     void pickUpBox(const std::string& name, int box_id);
-    // void move_duck(Position& position);
     void execute_commands();
     void run() override;
     void send_initial_info();
 
+    bool practice_mode;
+
 public:
-    explicit GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients);
+    explicit GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players);
 };
 
 #endif

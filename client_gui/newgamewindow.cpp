@@ -10,7 +10,7 @@
 
 #define PLAYER1 1
 #define PLAYER2 2
-#define PLAYERS 1
+#define PLAYERS 2
 #define NEW_GAME 0
 #define JOIN_GAME 1
 #define RANDOM_GAME 3
@@ -21,9 +21,8 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
         QDialog(parent),
         ui(new Ui::NewGameWindow),
         player(player),
-        localPlayers(PLAYER1),
         map(NEW_GAME),
-        players(PLAYERS),
+        gamePlayers(PLAYERS),
         address(address),
         port(port) {
     ui->setupUi(this);
@@ -42,28 +41,25 @@ void NewGameWindow::on_musicButton_clicked() {
     }
 }
 
-void NewGameWindow::on_selectPlayers_activated() {
-    // setear cantidad de jugadores para iniciar la partida
-    std::cout << "selectPlayers clicked" << std::endl;
-}
-
-void NewGameWindow::on_player2Button_clicked() {
-    if (ui->player2Button->isChecked()) {
-        localPlayers = PLAYER2;
-    } else {
-        localPlayers = PLAYER1;
-    }
-}
-
 void NewGameWindow::on_mapaUnoButton_clicked() {
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
+    int localPlayers;
+    if (ui->player2Button->isChecked()) {
+        localPlayers = PLAYER2;
+    } else {
+        localPlayers = PLAYER1;
+    }
+
+    int players = this->ui->selectPlayers->currentIndex() + PLAYERS;
+
     this->player->stop();
     Client client(charAddress, charPort, NEW_GAME);
     client.setLocalPlayers(localPlayers);
+    client.setMaxPlayers(players);
     client.select_game_mode(NEW_GAME);
     this->hide();
     client.run();

@@ -212,11 +212,6 @@ color: rgb(255, 255, 0);</string>
     </property>
     <item>
      <property name="text">
-      <string>1 Player</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
       <string>2 Players</string>
      </property>
     </item>

@@ -19,6 +19,8 @@
 #define GAMES_INFO_CODE 0x04
 #define PLAYERS_CODE 0x05
 #define SEND_GAME_PLAYERS 0x06
+#define FAIL_TO_JOIN 0x07
+#define SEND_MAX_PLAYERS 0x08
 
 class Receiver: public Thread {
 private:
@@ -26,6 +28,7 @@ private:
     Queue<Message>& queue;
 
     void receive_map() {
+        std::cout << "Recibiendo mapa?" << std::endl;
         map_structure_t map = protocol.receive_map();
         Message message(MAP_CODE);
         message.set_map(map);
@@ -66,7 +69,20 @@ private:
     }
 
     void send_players_and_game_id() {
+
+        std::cout << "mandame los players" << std::endl;
         Message message(SEND_GAME_PLAYERS);
+        queue.push(message);
+    }
+
+    void fail_to_join() {
+        std::cout << "No se pudo unir al juego" << std::endl;
+        Message message(FAIL_TO_JOIN);
+        queue.push(message);
+    }
+
+    void send_max_players(){
+        Message message(SEND_MAX_PLAYERS);
         queue.push(message);
     }
 
@@ -78,11 +94,12 @@ private:
             {END_SCORE_CODE, std::bind(&Receiver::receive_end_score, this)},
             {GAMES_INFO_CODE, std::bind(&Receiver::receive_game_info, this)},
             {PLAYERS_CODE, std::bind(&Receiver::send_players, this)},
-            {SEND_GAME_PLAYERS, std::bind(&Receiver::send_players_and_game_id, this)}
+            {SEND_GAME_PLAYERS, std::bind(&Receiver::send_players_and_game_id, this)},
+            {FAIL_TO_JOIN, std::bind(&Receiver::fail_to_join, this)},
+            {SEND_MAX_PLAYERS, std::bind(&Receiver::send_max_players, this)}
         };
         while (!protocol.socket_closed() && _keep_running) {
             try {
-
                 uint8_t code = protocol.read_number();
                 try {
                     functions[code]();
@@ -91,7 +108,7 @@ private:
                 }
                 usleep(SLEEP_TIME);
             } catch (const std::exception& e) {
-                std::cerr << "Exception while in client receiver thread: " << e.what() << std::endl;
+                std::cerr << "Receiver fallo: " << e.what() << std::endl;
             }
         }
     }
