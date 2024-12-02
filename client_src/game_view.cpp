@@ -418,8 +418,16 @@ void GameView::render_map() {
                   SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
-        renderer.Copy(platform_sprites[0], SDL_Rect{0, 10 * 8, 16, 8},
+        if (platform.height>platform.width){
+            renderer.Copy(platform_sprites[2], SDL_Rect{0, 0, 69, 238},
                       SDL_Rect{platform.x, platform.y, platform.width, platform.height});
+        } else if (platform.height<platform.width){
+            renderer.Copy(platform_sprites[1], SDL_Rect{0, 0, 238, 69},
+                      SDL_Rect{platform.x, platform.y, platform.width, platform.height});
+        } else {
+            renderer.Copy(platform_sprites[0], SDL_Rect{0, 0, 109, 109},
+                      SDL_Rect{platform.x, platform.y, platform.width, platform.height});
+        }
     }
 }
 
