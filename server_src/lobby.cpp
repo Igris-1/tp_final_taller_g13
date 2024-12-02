@@ -1,11 +1,18 @@
 #include "lobby.h"
 
+#include <filesystem>
+#include <string>
+
 #define SHUT_DOWN_TWO 2
 #define NEW_GAME 0
 #define JOIN_GAME 1
 #define JOIN_TO_RANDOM_GAME 3
 #define ASK_FOR_GAMES 2
 #define PRACTICE_GAME 4
+#define ASK_FOR_MAPS 5
+
+
+namespace fs = std::filesystem;
 
 Lobby::Lobby(GamesManager& games_manager, Socket&& socket)
     : games_manager(games_manager),
@@ -18,9 +25,10 @@ Lobby::Lobby(GamesManager& games_manager, Socket&& socket)
 void Lobby::run() {
 try {
     std::cout << "Lobby running" << std::endl;  
-    uint8_t buffer;
+    uint8_t buffer = 100;
     bool aux = true;
     socket.recvall(&buffer, ONE_BYTE, &aux);
+    std::cout << "Buffer: " << (int)buffer << std::endl;
     if (buffer == NEW_GAME) {
         std::cout << "Creating new game" << std::endl;
         
@@ -84,6 +92,28 @@ try {
         }
     } else if(buffer == PRACTICE_GAME){
         this->games_manager.add_to_practice_game(std::move(socket));
+    } else if(buffer == ASK_FOR_MAPS){
+        std::cout << "Asking for maps" << std::endl;
+        const fs::path directory_path = "../maps";
+        try {
+            if (fs::exists(directory_path) && fs::is_directory(directory_path)) {
+                for (const auto& entry : fs::directory_iterator(directory_path)) {
+                    std::string path_string = entry.path().string();
+                    std::cout << "Path as string: " << path_string << '\n';
+                    uint8_t size = path_string.size();
+                    socket.sendall(&size, ONE_BYTE, &aux);
+                    socket.sendall(path_string.c_str(), size, &aux);
+                }
+                uint8_t zero = 0;
+                socket.sendall(&zero, ONE_BYTE, &aux);
+            } else {
+                std::cerr << "Path does not exist or is not a directory.\n";
+            }
+        } catch (const fs::filesystem_error& e) {
+            std::cerr << "Filesystem error: " << e.what() << '\n';
+        }
+
+
     }
     std::cout << "Lobby finished" << std::endl;
  }catch (const LibError& e) {
