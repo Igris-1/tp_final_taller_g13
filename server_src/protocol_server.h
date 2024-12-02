@@ -41,21 +41,21 @@ public:
     ProtocolServer(const ProtocolServer&) = delete;
     ProtocolServer& operator=(const ProtocolServer&) = delete;
 
-    action_t receive_action();
+    action_t receive_action(); 
 
-    int receive_number();
+    int receive_number(); 
 
     bool socket_closed();
 
     void shutDown();
 
-    void sendGameInfo(game_snapshot_t game_snapshot);
+    void sendGameInfo(game_snapshot_t game_snapshot); 
 
-    void sendScore(score_DTO score);
+    void sendScore(score_DTO score); 
 
-    void sendFinalScore(score_DTO score);
+    void sendFinalScore(score_DTO score); 
 
-    void sendGameStartInfo(map_structure_t map_structure);
+    void sendGameStartInfo(map_structure_t map_structure); 
 
     ~ProtocolServer();
 };

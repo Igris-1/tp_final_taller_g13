@@ -12,10 +12,14 @@ private:
     Socket socket;
 
     void run() override;
+    void send_number(uint8_t& number);
+    void send__long_number(uint16_t& number);
+    void receive_number(uint8_t& number);
+    void receive__long_number(uint16_t& number);
 
 public:
     Lobby(GamesManager& games_manager, Socket&& socket);
-    void add_client();
+    void creating_game(bool custom_map);
     ~Lobby();
 };
 

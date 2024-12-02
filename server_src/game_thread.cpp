@@ -17,7 +17,7 @@
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players):
         game(nullptr), gameQueue(gameQueue), clients(clients), practice_mode(practice_mode){
     this->max_players = max_players;
-    start();
+    // start();
 }
 
 void GameThread::send_snapshots() {
@@ -60,16 +60,27 @@ void GameThread::blocking_execute_commands() {
     c_action->execute((*this->game));
 }
 
+void GameThread::set_map_name(const std::string& map_name){
+    this->map_name = map_name;
+}
+
 void GameThread::run() {
-    std::string path_map = "../maps/default_map.yaml";
-    std::string path_config = "../configuration_yamls/default_config.yaml";
+    std::string path_map = "../maps/" + this->map_name + ".yaml";
+    std::string path_config = DEFAULT_CONFIG;
+    std::cout << "run" << std::endl;
     if(this->practice_mode){
-        path_map = "../maps/practice_map.yaml";
-        path_config = "../configuration_yamls/practice_config.yaml";
+        std::cout << "Practice mode seteo map" << std::endl;
+        path_map = PRACTICE_MAP;
+        path_config = PRACTICE_CONFIG;
     }
-
+   // try{s
+    std::cout << "run2" << std::endl;
     GameConfig game_config(path_map, path_config);
-
+    //}catch(GameConfigError& e){
+    //     std::cerr << "error en eleccion de mapa: " << e.what() << std::endl;
+    //     return;
+    // }
+    std::cout << "llegue" << std::endl;
     Game aux(game_config);
     this->game = &aux;
     this->game->load_configuration(game_config);

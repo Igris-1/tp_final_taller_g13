@@ -1,6 +1,7 @@
 #include "game_config.h"
 
 GameConfig::GameConfig(const std::string& map_file, const std::string& game_file) {
+    try{
     ParserYAML parser;
     parser.load_files(map_file, game_file);
 
@@ -42,6 +43,9 @@ GameConfig::GameConfig(const std::string& map_file, const std::string& game_file
     this->boxes = parser.get_map_structure("boxes");
     this->ducks_spawn = parser.get_map_structure("ducks");
     this->weapons_spawn = parser.get_map_structure("weapons");
+    } catch (const std::exception& e) {
+        throw GameConfigError(e.what());
+    }
 }
 
 duck_config GameConfig::get_duck_config() { return this->ducks_config; }

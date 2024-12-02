@@ -324,7 +324,7 @@ void GameView::zoom(game_snapshot_t gs) {
     float zoom_factor = std::min(SCREEN_WIDTH / visible_width, SCREEN_HEIGHT / visible_height);
 
     // limit max and min zoom
-    const float max_zoom = 1.6f;
+    const float max_zoom = 2.0f;
     const float min_zoom = 1.0f;
     zoom_factor = std::clamp(zoom_factor, min_zoom, max_zoom);
 

@@ -39,6 +39,8 @@ public:
     explicit GamesManager();
 
     bool add_to_practice_game(Socket&& ss);
+    bool create_game(Socket&& ss, int number_of_players, int max_players, std::string map_name);
+    bool create_new_custom_game(Socket&& ss, int number_of_players, int max_players, std::string map_name);
     bool create_new_game(Socket&& ss, int number_of_players, int max_players);
 
     bool add_client_to_game(int game_id, Socket&& ss, int number_of_players);

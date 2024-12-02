@@ -26,11 +26,7 @@ bool GamesManager::add_client_to_game_without_lock(int game_id, Socket&& ss, int
     return false;
 }
 
-
-
-bool GamesManager::create_new_game(Socket&& ss, int number_of_players, int max_players) {
-    std::lock_guard<std::mutex> lock(this->mutex);
-    // Buscar y limpiar juegos no vivos
+bool GamesManager::create_game(Socket&& ss, int number_of_players, int max_players, std::string map_name){
     for (auto it = this->games.begin(); it != this->games.end();) {
         if (!(*it)->gameThread.is_alive()) {
             (*it)->gameThread.join();
@@ -41,7 +37,22 @@ bool GamesManager::create_new_game(Socket&& ss, int number_of_players, int max_p
     }
     this->games.push_back(std::make_unique<game_t>(this->games_counter, false, max_players)); // true == practice mode
     this->games_counter++;
+    this->games.back()->gameThread.start();
     return this->add_client_to_game_without_lock(this->get_game_counter(), std::move(ss), number_of_players);
+}
+
+bool GamesManager::create_new_custom_game(Socket&& ss, int number_of_players, int max_players, std::string map_name){
+    std::lock_guard<std::mutex> lock(this->mutex);
+    // Buscar y limpiar juegos no vivos
+    return this->create_game(std::move(ss), number_of_players, max_players, map_name);
+}
+
+
+
+
+bool GamesManager::create_new_game(Socket&& ss, int number_of_players, int max_players) {
+    std::lock_guard<std::mutex> lock(this->mutex);
+    return this->create_game(std::move(ss), number_of_players, max_players, "default_map");
 }
 
 bool GamesManager::add_client_to_game(int game_id, Socket&& ss, int number_of_players) {
@@ -61,6 +72,7 @@ bool GamesManager::add_to_practice_game(Socket&& ss){
     }
     this->games.push_back(std::make_unique<game_t>(this->games_counter, true, 2)); // true == practice mode
     this->games_counter++;
+    this->games.back()->gameThread.start();
     return this->add_client_to_game_without_lock(this->get_game_counter(), std::move(ss), 2);
 
 }

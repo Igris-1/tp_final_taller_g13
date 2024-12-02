@@ -14,6 +14,7 @@ class NewGameWindow: public QDialog {
 
 public:
     NewGameWindow(QWidget* parent, QMediaPlayer* player, QString host, QString port);
+    void on_open_new_game();
     ~NewGameWindow();
 
 private slots:

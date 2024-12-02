@@ -21,6 +21,7 @@
 #define SEND_GAME_PLAYERS 0x06
 #define FAIL_TO_JOIN 0x07
 #define SEND_MAX_PLAYERS 0x08
+#define SEND_MAP_NAME 0x09
 
 class Receiver: public Thread {
 private:
@@ -85,6 +86,10 @@ private:
         Message message(SEND_MAX_PLAYERS);
         queue.push(message);
     }
+    void send_map_name(){
+        Message message(SEND_MAP_NAME);
+        queue.push(message);
+    }
 
     void run() override {
         std::map<uint8_t, std::function<void()>> functions = {
@@ -96,7 +101,8 @@ private:
             {PLAYERS_CODE, std::bind(&Receiver::send_players, this)},
             {SEND_GAME_PLAYERS, std::bind(&Receiver::send_players_and_game_id, this)},
             {FAIL_TO_JOIN, std::bind(&Receiver::fail_to_join, this)},
-            {SEND_MAX_PLAYERS, std::bind(&Receiver::send_max_players, this)}
+            {SEND_MAX_PLAYERS, std::bind(&Receiver::send_max_players, this)},
+            {SEND_MAP_NAME, std::bind(&Receiver::send_map_name, this)}
         };
         while (!protocol.socket_closed() && _keep_running) {
             try {

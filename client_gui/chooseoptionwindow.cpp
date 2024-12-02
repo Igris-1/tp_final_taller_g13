@@ -47,6 +47,7 @@ void ChooseOptionWindow::on_joinGameButton_clicked() {
 
 void ChooseOptionWindow::on_newGameButton_clicked() {
     this->hide();
+    this->newGameWindow->on_open_new_game();
     this->newGameWindow->exec();
     this->show();
 }

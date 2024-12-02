@@ -33,6 +33,10 @@ set(TEST_SOURCES
     ../server_src/protocol_server.cpp # Asegúrate de que el nombre del archivo sea correcto
     ../client_src/protocol_client.cpp
     ../common_src/socket.cpp
+    ../common_src/resolver.cpp
+    ../common_src/liberror.cpp
+    ../common_src/resolvererror.cpp
+    ../client_src/message.cpp
     test_protocols.cpp
 )
 

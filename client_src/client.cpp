@@ -33,6 +33,10 @@ void Client::select_game_mode(int game_mode) { protocol.send_number(game_mode); 
 // for refhresh button
 // }
 
+void Client::setMapName(const std::string& map_name){
+    this->map_name = map_name;
+}
+
 void Client::select_game(int game_id) { protocol.send_number(game_id); }
 
 std::vector<games_DTO> Client::get_games_info() { return this->games; }
@@ -72,6 +76,9 @@ void Client::run() {
         }},
         {SEND_MAX_PLAYERS, [&](Message& m) {  
             sender.send_max_players(max_players_for_game);
+        }},
+        {SEND_MAP_NAME, [&](Message& m) {  
+            sender.send_map_name(this->map_name);
         }}
     };
 

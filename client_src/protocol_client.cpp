@@ -145,7 +145,6 @@ game_snapshot_t ProtocolClient::read_snapshot() {
     connection.recvall(&sounds, sizeof(sounds_DTO), &socket_is_closed);
     this->translator_dto.ntoh_sounds_DTO(&sounds);
     game_snapshot.sounds = sounds;
-
     return game_snapshot;
 }
 
@@ -161,6 +160,12 @@ void ProtocolClient::shutDown() {
     if (!socket_is_closed) {
         connection.shutdown(SHUT_DOWN_TWO);
     }
+}
+
+void ProtocolClient::send_string(std::string map_name){
+    uint8_t size = map_name.size();
+    connection.sendall(&size, ONE_BYTE, &socket_is_closed);
+    connection.sendall(map_name.c_str(), size, &socket_is_closed);
 }
 
 ProtocolClient::~ProtocolClient() { connection.close(); }

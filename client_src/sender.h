@@ -208,6 +208,12 @@ public:
         protocol.send_number(max_players_for_game);
     }
 
+    void send_map_name(std::string& map_name){
+        uint8_t size = map_name.size();
+        protocol.send_number(size);
+        protocol.send_string(map_name);
+    }
+
     void send_players() { protocol.send_number(localPlayers); }
 
     ~Sender() override { _is_alive = false; }

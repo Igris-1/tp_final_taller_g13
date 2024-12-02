@@ -13,15 +13,17 @@ std::vector<std::string> UsableMapsFinder::ask_for_maps(){
 
     std::vector<std::string> maps;
 
-    uint8_t num = 2;
+    uint8_t num = 5;
     this->socket.sendall(&num, ONE_BYTE, &socket_is_closed);
     while(num != 0){
         this->socket.recvall(&num, ONE_BYTE, &socket_is_closed);
         if(num == 0){
             break;
         }
-        char buffer [num];
+        char buffer [num+1];
         this->socket.recvall(buffer, num, &socket_is_closed);
+        
+        buffer[num] = '\0';
         std::string map_name(buffer);
         maps.push_back(map_name);
     }

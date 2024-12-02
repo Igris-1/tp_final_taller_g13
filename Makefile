@@ -40,3 +40,7 @@ release: clean
 
 # Limpiar, compilar y ejecutar pruebas
 super: clean all
+
+superTest:
+	make 
+	make test

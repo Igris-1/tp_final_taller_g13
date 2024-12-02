@@ -14,6 +14,10 @@
 #include "client_handler.h"
 #include "list_of_clients_monitor.h"
 
+#define DEFAULT_CONFIG "../configuration_yamls/default_config.yaml"
+#define PRACTICE_MAP "../maps/practice_map.yaml"
+#define PRACTICE_CONFIG "../configuration_yamls/practice_config.yaml"
+
 class GameThread: public Thread {
 private:
     Game* game;
@@ -31,11 +35,13 @@ private:
     void execute_commands();
     void run() override;
     void send_initial_info();
+    std::string map_name = "default_map";
 
     bool practice_mode;
 
 public:
     explicit GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players);
+    void set_map_name(const std::string& map_name);
 };
 
 #endif

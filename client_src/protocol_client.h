@@ -26,21 +26,23 @@ public:
 
     ProtocolClient(ProtocolClient&& protocol) noexcept;
 
-    void send_action(action_t& action);
+    void send_action(action_t& action); 
 
-    bool socket_closed();
-    void send_number(int number);
-    uint8_t read_number();
+    bool socket_closed(); 
+    void send_number(int number); 
+    uint8_t read_number(); 
 
-    void receive_games(int size, Message& message);
+    void receive_games(int size, Message& message); 
 
     uint16_t read_long_number();
 
-    game_snapshot_t read_snapshot();
+    game_snapshot_t read_snapshot(); 
 
-    score_DTO read_score();
+    score_DTO read_score(); 
 
-    map_structure_t receive_map();
+    void send_string(std::string map_name); 
+
+    map_structure_t receive_map(); 
 
     void shutDown();
 

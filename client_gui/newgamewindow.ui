@@ -151,11 +151,6 @@ border-image: transparent;</string>
       <string>MAPS</string>
      </property>
     </item>
-    <item>
-     <property name="text">
-      <string>Mapa 1</string>
-     </property>
-    </item>
    </widget>
    <widget class="QPushButton" name="startButton">
     <property name="geometry">

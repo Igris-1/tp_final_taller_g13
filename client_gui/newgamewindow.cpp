@@ -33,6 +33,22 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
 
 NewGameWindow::~NewGameWindow() { delete ui; }
 
+void NewGameWindow::on_open_new_game() {
+    QByteArray byteArrayPort = port.toUtf8();
+    QByteArray byteArrayAddress = address.toUtf8();
+    char* charPort = byteArrayPort.data();
+    char* charAddress = byteArrayAddress.data();
+
+    UsableMapsFinder dummy2(charAddress, charPort);
+    std::vector<std::string> maps = dummy2.ask_for_maps();
+    std::cout << "maps size: " << maps.size() << std::endl;
+
+    for (auto& map : maps) {
+        QString qstr = QString::fromStdString(map);
+        ui->maps->addItem(qstr);
+    }
+}
+
 void NewGameWindow::on_backButton_clicked() { this->close();}
 
 void NewGameWindow::on_musicButton_clicked() {
@@ -96,10 +112,6 @@ void NewGameWindow::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    UsableMapsFinder dummy2(charAddress, charPort);
-    JoinableGamesFinder dummy(charAddress, charPort); // el joinable games tambn falla el send
-                                                      // no es cosa del codigo d los dummies
-                                                      // es cosa d instanciarlo aca, por algun motivo rompe
     // this->player->stop();
     // Client client(charAddress, charPort, 0);
     // client.setLocalPlayers(localPlayers);

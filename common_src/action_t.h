@@ -1,7 +1,7 @@
 #ifndef ACTION_T_H
 #define ACTION_T_H
 #include <cstdint>
-typedef struct action {  // comento lo q no se usa todavia
+typedef struct {  // comento lo q no se usa todavia
     uint8_t player_id = 0;
     bool left = false;
     bool right = false;

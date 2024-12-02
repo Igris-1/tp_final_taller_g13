@@ -35,12 +35,14 @@ private:
     game_snapshot_t get_snapshot();
     GameView game_view;
     std::vector<games_DTO> games;
+    std::string map_name = "";
 
 public:
     void run();
     Client(const char* host, const char* port, uint8_t game_id);
     void setLocalPlayers(int players);
     void setMaxPlayers(int max_players);
+    void setMapName(const std::string& map_name);
     void select_game_mode(int game_mode);
     // std::vector<int> get_available_games();
     void select_game(int game_id);
