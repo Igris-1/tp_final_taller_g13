@@ -99,6 +99,5 @@ std::shared_ptr<Pickable> WeaponFactory::createWeapon(
     if (weapon_name == "banana") {
         return std::make_shared<Banana>(width, height);
     }
-    std::cout << "Weapon not found: " << weapon_name << std::endl;
     return nullptr;
 }

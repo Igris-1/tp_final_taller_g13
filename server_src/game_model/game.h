@@ -111,6 +111,7 @@ public:
     // DUCK
     void set_duck_start_position(int id, int x, int y);
     void remove_duck(int id);
+    void spawns_ducks_on_start_position();
 
     // RUN
     void run_duck(int duck_id, bool left, bool right);
@@ -148,7 +149,7 @@ public:
 
     // game logic
     void start_game();
-    void reset_round();
+    void reset_round(bool practice_mode);
     bool check_if_round_finished();
     bool check_if_winner();
     void random_item_spawn(bool on_game, bool lineal_spawn);

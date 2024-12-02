@@ -61,32 +61,32 @@ void GameThread::blocking_execute_commands() {
 }
 
 void GameThread::set_map_name(const std::string& map_name){
+    std::cout << "setea mapa: " << map_name << std::endl;
     this->map_name = map_name;
 }
 
 void GameThread::run() {
+    std::cout << "el mapa que llega es: " << this->map_name << std::endl;
     std::string path_map = "../maps/" + this->map_name + ".yaml";
     std::string path_config = DEFAULT_CONFIG;
-    std::cout << "run" << std::endl;
+    std::cout << "osea que el path es: " << path_map << std::endl;
     if(this->practice_mode){
-        std::cout << "Practice mode seteo map" << std::endl;
         path_map = PRACTICE_MAP;
         path_config = PRACTICE_CONFIG;
     }
-   // try{s
     std::cout << "run2" << std::endl;
     GameConfig game_config(path_map, path_config);
-    //}catch(GameConfigError& e){
-    //     std::cerr << "error en eleccion de mapa: " << e.what() << std::endl;
-    //     return;
-    // }
     std::cout << "llegue" << std::endl;
     Game aux(game_config);
     this->game = &aux;
+    std::cout << "llegue2" << std::endl;
+
     this->game->load_configuration(game_config);
+    std::cout << "llegue3" << std::endl;
 
     // spawnea armas para el comienzo de la partida
     this->game->random_item_spawn(false, this->practice_mode);
+    std::cout << "llegue4" << std::endl;
 
     for (int i = 0; i < this->max_players; i++) {
         blocking_execute_commands();
@@ -95,6 +95,7 @@ void GameThread::run() {
     while (this->game->get_duck_DTO_list().size() < this->max_players) {
         std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
     }
+    this->game->spawns_ducks_on_start_position();
     send_map();
 
     while (_keep_running) {
@@ -114,11 +115,11 @@ void GameThread::run() {
         if (this->game->check_if_round_finished()) {
 
             send_snapshots();
-            this->game->continue_vertical_movements();
-            this->game->continue_horizontal_movements();
+            // this->game->continue_vertical_movements();
+            // this->game->continue_horizontal_movements();
             send_snapshots();
-            this->game->continue_vertical_movements();
-            this->game->continue_horizontal_movements();
+            // this->game->continue_vertical_movements();x
+            // this->game->continue_horizontal_movements();
             send_snapshots();
             if (this->game->check_if_winner() && !this->practice_mode) {
                 send_endgame_score();
@@ -133,7 +134,7 @@ void GameThread::run() {
                 this->round_counter = 5;
                 // usleep(1000000);
             }
-            this->game->reset_round();
+            this->game->reset_round(this->practice_mode);
             std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
             continue;
         }

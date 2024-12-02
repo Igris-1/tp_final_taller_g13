@@ -38,8 +38,6 @@ Editor::~Editor() {
 
 
 void Editor::on_exitButton_clicked() {
-    std::cout << "exitButton clicked" << std::endl;
-
     QMessageBox messageBox(this);
     messageBox.setWindowTitle("Salir");
     messageBox.setText("¿Estás seguro que deseas salir?");
@@ -75,8 +73,6 @@ void Editor::on_exitButton_clicked() {
 }
 
 void Editor::on_musicButton_clicked() {
-    std::cout << "musicButton clicked" << std::endl;
-
     if (this->mediaPlayer->playbackState() == QMediaPlayer::PlayingState) {
         this->mediaPlayer->pause();
     } else {
@@ -97,8 +93,6 @@ void Editor::on_musicButton_clicked() {
 #include "yaml-cpp/yaml.h"
 
 void Editor::on_saveButton_clicked() {
-    std::cout << "saveButton clicked" << std::endl;
-
     QFileDialog saveDialog(this, "Guardar archivo");
     saveDialog.setAcceptMode(QFileDialog::AcceptSave);
     saveDialog.setDirectory("../maps/");
@@ -264,7 +258,6 @@ void Editor::on_saveButton_clicked() {
 }
 
 void Editor::on_openButton_clicked() {
-    std::cout << "openButton clicked" << std::endl;
     this->deleteItems();
 
     QFileDialog openDialog(this, "Abrir archivo");
@@ -423,7 +416,6 @@ void Editor::on_openButton_clicked() {
 }
 
 void Editor::on_cleanButton_clicked() {
-    std::cout << "cleanButton clicked" << std::endl;
     if (this->items.size() != 0) {
         QMessageBox messageBox(this);
         messageBox.setWindowTitle("Limpiar");
@@ -460,32 +452,26 @@ void Editor::on_cleanButton_clicked() {
 }
 
 void Editor::on_item_1_clicked() {
-    std::cout << "item_1 clicked" << std::endl;
     setStructure(1);
 }
 
 void Editor::on_item_2_clicked() {
-    std::cout << "item_2 clicked" << std::endl;
     setStructure(2);
 }
 
 void Editor::on_item_3_clicked() {
-    std::cout << "item_3 clicked" << std::endl;
     setStructure(3);
 }
 
 void Editor::on_item_4_clicked() {
-    std::cout << "item_4 clicked" << std::endl;
     setStructure(4);
 }
 
 void Editor::on_item_5_clicked() {
-    std::cout << "item_5 clicked" << std::endl;
     setStructure(5);
 }
 
 void Editor::on_item_6_clicked() {
-    std::cout << "item_6 clicked" << std::endl;
     setStructure(6);
 }
 

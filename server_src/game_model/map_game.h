@@ -138,7 +138,8 @@ public:
     std::vector<int> get_live_duck_ids();
     std::vector<int> get_all_duck_ids();
     int ducks_dead_size();
-    void clean_map(std::vector<std::tuple<int, int>>
+    void set_ducks_on_spawn_position(std::vector<std::tuple<int, int>>& positions_to_respawn);
+    void clean_map(std::vector<std::tuple<int, int>>&
                            positions_to_respawn);  // tiene que recibir donde spawnea en un futuro
 };
 

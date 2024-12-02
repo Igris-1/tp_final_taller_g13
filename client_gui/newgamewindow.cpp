@@ -17,6 +17,7 @@
 #define JOIN_GAME 1
 #define RANDOM_GAME 3
 #define PLAYGROUND 4
+#define NEW_GAME_CUSTOM_MAP 6
 
 
 NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString address, QString port):
@@ -30,7 +31,6 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
     ui->setupUi(this);
 }
 
-
 NewGameWindow::~NewGameWindow() { delete ui; }
 
 void NewGameWindow::on_open_new_game() {
@@ -41,7 +41,8 @@ void NewGameWindow::on_open_new_game() {
 
     UsableMapsFinder dummy2(charAddress, charPort);
     std::vector<std::string> maps = dummy2.ask_for_maps();
-    std::cout << "maps size: " << maps.size() << std::endl;
+
+    this->ui->maps->clear();
 
     for (auto& map : maps) {
         QString qstr = QString::fromStdString(map);
@@ -112,10 +113,20 @@ void NewGameWindow::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    // this->player->stop();
-    // Client client(charAddress, charPort, 0);
-    // client.setLocalPlayers(localPlayers);
-    // client.select_game_mode(0);
-    // this->hide();
-    // client.run();
+    int localPlayers;
+    if (ui->player2Button->isChecked()) {
+        localPlayers = PLAYER2;
+    } else {
+        localPlayers = PLAYER1;
+    }
+
+    this->player->stop();
+    Client client(charAddress, charPort, 0);
+    client.setLocalPlayers(localPlayers);
+    
+    client.setMapName(this->ui->maps->currentText().toStdString());
+    std::cout << "mapa seleccionado: " << this->ui->maps->currentText().toStdString() << std::endl;
+    client.select_game_mode(NEW_GAME_CUSTOM_MAP);
+    this->hide();
+    client.run();
 }

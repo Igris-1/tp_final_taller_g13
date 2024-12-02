@@ -1,6 +1,7 @@
 #ifndef TRANSLATOR_ACTIONS_H
 #define TRANSLATOR_ACTIONS_H
 
+#include <cstdint>
 enum {
     LEFT = 1 << 0,                   // 0b0000000000000001
     RIGHT = 1 << 1,                  // 0b0000000000000010

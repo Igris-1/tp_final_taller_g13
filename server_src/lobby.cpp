@@ -35,6 +35,7 @@ void Lobby::creating_game(bool custom_map){
     std::cout << "Max players: " << (int)maxplayers << std::endl;
     std::cout << "Adding client to game" << std::endl;
     if(!custom_map){
+        std::cout << "Creating new game default map" << std::endl;
         if(!this->games_manager.create_new_game(std::move(socket), buffer, (int)maxplayers)){
             std::cout << "Error creating game" << std::endl;
         }
@@ -47,11 +48,13 @@ void Lobby::creating_game(bool custom_map){
     this->socket.sendall(&code, ONE_BYTE, &aux);
 
     this->socket.recvall(&buffer, ONE_BYTE, &aux);
-
-    char namebuffer [buffer+1];
-    this->socket.recvall(&namebuffer, buffer, &aux);
-    namebuffer[buffer] = '\0';
+    // char namebuffer [buffer+1];
+    std::string namebuffer;
+    namebuffer.resize(buffer);
+    this->socket.recvall(&namebuffer[0], buffer, &aux);
+    // namebuffer[buffer] = '\0';
     map_name = std::string(namebuffer);
+    std::cout << "Map name: " << map_name << std::endl;
     this->games_manager.create_new_custom_game(std::move(socket), buffer, (int)maxplayers, map_name);
 }
 
