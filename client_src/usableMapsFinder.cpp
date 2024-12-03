@@ -27,8 +27,8 @@ std::vector<std::string> UsableMapsFinder::ask_for_maps(){
         std::string map_name(buffer);
         maps.push_back(map_name);
     }
-    for(auto& map: maps){
-        std::cout << map << std::endl;
-    }
+    // for(auto& map: maps){
+    //     std::cout << map << std::endl;
+    // }
     return maps;
 }

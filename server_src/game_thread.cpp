@@ -61,36 +61,26 @@ void GameThread::blocking_execute_commands() {
 }
 
 void GameThread::set_map_name(const std::string& map_name){
-    std::cout << "setea mapa: " << map_name << std::endl;
     this->map_name = map_name;
 }
 
 void GameThread::run() {
-    std::cout << "el mapa que llega es: " << this->map_name << std::endl;
     std::string path_map = "../maps/" + this->map_name + ".yaml";
     std::string path_config = DEFAULT_CONFIG;
-    std::cout << "osea que el path es: " << path_map << std::endl;
-    std::cout << "Map name: " << this->map_name << " (Length: " << this->map_name.size() << ")" << std::endl;
     if(this->practice_mode){
         path_map = PRACTICE_MAP;
         path_config = PRACTICE_CONFIG;
     }
-    std::cout << "run2" << std::endl;
     GameConfig game_config(path_map, path_config);
-    std::cout << "llegue" << std::endl;
     Game aux(game_config);
     this->game = &aux;
-    std::cout << "llegue2" << std::endl;
 
     this->game->load_configuration(game_config);
-    std::cout << "llegue3" << std::endl;
 
     // spawnea armas para el comienzo de la partida
     this->game->random_item_spawn(false, this->practice_mode);
-    std::cout << "llegue4" << std::endl;
 
     for (int i = 0; i < this->max_players; i++) {
-        std::cout << "llegue5: " << i << std::endl;
         blocking_execute_commands();
     }
 
@@ -99,7 +89,6 @@ void GameThread::run() {
     }
     this->game->spawns_ducks_on_start_position();
     send_map();
-    std::cout << "llegue6" << std::endl;
     while (_keep_running) {
         auto start_time = std::chrono::steady_clock::now();
         this->game->keep_using_item();
@@ -109,7 +98,6 @@ void GameThread::run() {
         } catch (const ClosedQueue& e) {
             stop();
         }
-
         this->game->continue_vertical_movements();
         this->game->continue_horizontal_movements();
         this->game->random_item_spawn(true, this->practice_mode);
@@ -117,11 +105,7 @@ void GameThread::run() {
         if (this->game->check_if_round_finished()) {
 
             send_snapshots();
-            // this->game->continue_vertical_movements();
-            // this->game->continue_horizontal_movements();
             send_snapshots();
-            // this->game->continue_vertical_movements();x
-            // this->game->continue_horizontal_movements();
             send_snapshots();
             if (this->game->check_if_winner() && !this->practice_mode) {
                 send_endgame_score();

@@ -140,9 +140,9 @@ TEST(ProtocolTest, SendReceiveMap) {
     std::vector<platform_DTO> platforms;
     std::vector<platform_DTO> spawns_platforms;
     platforms.resize(20);
-    spawns_platforms.resize(0);
+    spawns_platforms.resize(2);
     
-    map_structure_t map = {20, 40, 20, platforms, 0, spawns_platforms};
+    map_structure_t map = {20, 40, 20, platforms, 2, spawns_platforms};
     protocol_server.sendGameStartInfo(map);
 
     uint8_t code = protocol_client.read_number();

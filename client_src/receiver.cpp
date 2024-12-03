@@ -4,7 +4,6 @@
 #include <map> 
 
 void Receiver::receive_map() {
-    std::cout << "Recibiendo mapa?" << std::endl;
     map_structure_t map = protocol.receive_map();
     Message message(MAP_CODE);
     message.set_map(map);
@@ -45,14 +44,11 @@ void Receiver::send_players() {
 }
 
 void Receiver::send_players_and_game_id() {
-
-    std::cout << "mandame los players" << std::endl;
     Message message(SEND_GAME_PLAYERS);
     queue.push(message);
 }
 
 void Receiver::fail_to_join() {
-    std::cout << "No se pudo unir al juego" << std::endl;
     Message message(FAIL_TO_JOIN);
     queue.push(message);
 }

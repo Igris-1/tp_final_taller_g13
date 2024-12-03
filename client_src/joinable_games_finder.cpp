@@ -23,24 +23,19 @@ std::vector<games_DTO> JoinableGamesFinder::ask_for_games() {
     std::vector<games_DTO> games;
 
     uint8_t num = 2;
-    std::cout << "Asking for games" << std::endl;
     this->socket.sendall(&num, ONE_BYTE, &socket_is_closed);
     uint8_t code;
-    std::cout << "waiting for code" << std::endl;
     this->socket.recvall(&code, ONE_BYTE, &socket_is_closed);
     if (code != 0x04) {
         return games;
     }
     uint16_t size = 0;
-    std::cout << "waiting for size" << std::endl;
     this->socket.recvall(&size, TWO_BYTES, &socket_is_closed);
     size = ntohs(size);
     games.resize(size);
-    std::cout << "size: " << size << std::endl;
     TranslatorDTOs translator;
     for (int i = 0; i < size; i++) {
         games_DTO game;
-        std::cout << "waiting for game " << i << std::endl;
         this->socket.recvall(&game, sizeof(games_DTO), &socket_is_closed);
         translator.ntoh_games_DTO(&game);
         games[i] = game;

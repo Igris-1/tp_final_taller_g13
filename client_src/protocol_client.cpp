@@ -86,6 +86,7 @@ map_structure_t ProtocolClient::receive_map() {
         map.platforms[i] = platform;
     }
     n = read_long_number();
+    map.spawns_platforms_len = n;
     platform_DTO platform_spawn;
     map.spawns_platforms.resize(n);
     for (int i = 0; i < n; i++) {
@@ -93,7 +94,6 @@ map_structure_t ProtocolClient::receive_map() {
         this->translator_dto.ntoh_platform_DTO(&platform_spawn);
         map.spawns_platforms[i] = platform_spawn;
     }
-
     return map;
 }
 

@@ -3,6 +3,10 @@
 
 #include "../common_src/thread.h"
 #include "games_manager.h"
+#include <map>
+#include <filesystem>
+#include <string>
+#include <functional>
 
 
 class Lobby : public Thread {
@@ -12,10 +16,10 @@ private:
     Socket socket;
 
     void run() override;
-    void send_number(uint8_t& number);
-    void send__long_number(uint16_t& number);
-    void receive_number(uint8_t& number);
-    void receive__long_number(uint16_t& number);
+    bool join_random_game(bool& is_close);
+    bool join_game(bool& is_close);
+    bool ask_for_games(bool& is_close);
+    bool ask_for_maps(bool& is_close);
 
 public:
     Lobby(GamesManager& games_manager, Socket&& socket);

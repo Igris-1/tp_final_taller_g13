@@ -34,6 +34,7 @@ void Acceptor::run() {
         while (_keep_running) {     
             Socket ss = socket.accept();
             this->lobbies.emplace_back(games_manager, std::move(ss));
+            this->lobbies.back().start();
             for (auto it = this->lobbies.begin(); it != this->lobbies.end();) {
                 if (!(*it).is_alive()) {
                     (*it).join();

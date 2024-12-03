@@ -166,7 +166,7 @@ void Game::reset_death_sound(){
 
 game_snapshot_t Game::get_snapshot() {
     game_snapshot_t snapshot;
-    snapshot.ducks = this->get_duck_DTO_list();  // usar el de this y no el de map
+    snapshot.ducks = this->get_duck_DTO_list();  // usar el de this y no el de map para completar los ducks states
     snapshot.ducks_len = snapshot.ducks.size();
     snapshot.bullets = this->map.get_bullets_DTO_list();
     snapshot.bullets_len = snapshot.bullets.size();
@@ -260,6 +260,7 @@ void Game::add_spawn_duck(Hitbox hitbox) {
 void Game::add_spawn_position(Hitbox hitbox) {
         this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()-26));
         this->map.add_weapon_spawn_position(hitbox);
+        
 }
 
 void Game::stop_duck_item(int id, bool stop_fire) {
@@ -367,7 +368,6 @@ void Game::reset_round(bool practice_mode) {
 void Game::load_configuration(GameConfig& config) {
     std::vector<std::tuple<int, int, int, int>> aux_tuple = config.get_item("platforms");
     // platforms
-    std::cout << "llegue" << std::endl;
     this->load_platforms(aux_tuple);
     // boxes
     aux_tuple = config.get_item("boxes");

@@ -23,7 +23,7 @@ project(DuckGame
 option(CLIENT "Enable / disable client GUI program." ON)
 option(SERVER "Enable / disable server program." ON)
 option(EDITOR "Enable / disable editor program." OFF)
-option(TESTS "Enable / disable tests." OFF)
+option(TESTS "Enable / disable tests." ON)
 
 # Include compiler warnings configuration
 include(cmake/CompilerWarnings.cmake)

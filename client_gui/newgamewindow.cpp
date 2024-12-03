@@ -86,8 +86,6 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
 
 void NewGameWindow::on_playgroundButton_clicked() {
     // levantare el mapa custom
-    std::cout << "playgroundButton clicked" << std::endl;
-
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
@@ -126,7 +124,7 @@ void NewGameWindow::on_startButton_clicked() {
     client.setLocalPlayers(localPlayers);
     client.setMaxPlayers(players);
     client.setMapName(this->ui->maps->currentText().toStdString());
-    std::cout << "mapa seleccionado: " << this->ui->maps->currentText().toStdString() << std::endl;
+    // std::cout << "mapa seleccionado: " << this->ui->maps->currentText().toStdString() << std::endl;
     client.select_game_mode(NEW_GAME_CUSTOM_MAP);
     this->hide();
     client.run();
