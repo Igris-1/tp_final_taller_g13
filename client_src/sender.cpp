@@ -126,7 +126,8 @@ void Sender::map_key_to_action_2(const SDL_Event& e, action_t& action) {
 void Sender::run() {
     try {
         bool quit = false;
-        SDL_Event e;
+        SDL_Event e = {0};
+        last_event = {0};
 
         while (!quit && !protocol.socket_closed() && _keep_running) {
             // Procesar eventos

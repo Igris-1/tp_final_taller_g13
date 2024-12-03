@@ -263,13 +263,11 @@ void GameView::show_loading_screen() {
 void GameView::render_game(game_snapshot_t gs) {
     renderer.Clear();
 
-    add_ducks(gs);  // esto carga las duck views de cada pato y deberia estar al principio, y no
-                    // siempre. Despues hay que cambiarlo
-    std::cout << "Ducks added" << std::endl;
+    add_ducks(gs); 
+
     zoom(gs);
-    std::cout << "Zoomed" << std::endl;
+
     render_map();
-    std::cout << "Map rendered" << std::endl;
     render_boxes(gs);
     render_ducks(gs);
     render_bullets(gs);
@@ -444,5 +442,4 @@ void GameView::render_ducks(game_snapshot_t gs) {
 }
 
 GameView::~GameView() {
-    std::cout << "GameView destroyed" << std::endl;
 }

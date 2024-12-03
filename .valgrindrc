@@ -1,0 +1,6 @@
+--memcheck:leak-check=full
+--show-reachable=yes
+--track-origins=yes
+--error-limit=no
+--log-file=valgrind.log
+--suppressions=qt.supp

@@ -1,0 +1,21 @@
+{
+   Qt Suppression
+   Memcheck:Leak
+   ...
+   obj:/usr/lib//libQt.so*
+   ...
+}
+{
+   QEventLoop Suppression
+   Memcheck:Leak
+   ...
+   fun:QEventLoop::exec
+   ...
+}
+{
+   QThread Suppression
+   Memcheck:Leak
+   ...
+   fun:QThread::start
+   ...
+}
