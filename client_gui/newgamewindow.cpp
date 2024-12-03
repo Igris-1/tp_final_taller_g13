@@ -120,10 +120,11 @@ void NewGameWindow::on_startButton_clicked() {
         localPlayers = PLAYER1;
     }
 
+    int players = this->ui->selectPlayers->currentIndex() + PLAYERS;
     this->player->stop();
     Client client(charAddress, charPort, 0);
     client.setLocalPlayers(localPlayers);
-    
+    client.setMaxPlayers(players);
     client.setMapName(this->ui->maps->currentText().toStdString());
     std::cout << "mapa seleccionado: " << this->ui->maps->currentText().toStdString() << std::endl;
     client.select_game_mode(NEW_GAME_CUSTOM_MAP);

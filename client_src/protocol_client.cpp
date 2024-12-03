@@ -164,7 +164,8 @@ void ProtocolClient::shutDown() {
 
 void ProtocolClient::send_string(std::string map_name){
     uint8_t size = map_name.size();
-    connection.sendall(&size, ONE_BYTE, &socket_is_closed);
+    //connection.sendall(&size, ONE_BYTE, &socket_is_closed);
+    this->send_number(size);
     connection.sendall(map_name.c_str(), size, &socket_is_closed);
 }
 

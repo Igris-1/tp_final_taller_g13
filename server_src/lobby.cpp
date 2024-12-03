@@ -46,12 +46,12 @@ void Lobby::creating_game(bool custom_map){
     std::string map_name;
     code = 0x09;
     this->socket.sendall(&code, ONE_BYTE, &aux);
-
-    this->socket.recvall(&buffer, ONE_BYTE, &aux);
+    uint8_t buffer2;
+    this->socket.recvall(&buffer2, ONE_BYTE, &aux);
     // char namebuffer [buffer+1];
     std::string namebuffer;
-    namebuffer.resize(buffer);
-    this->socket.recvall(&namebuffer[0], buffer, &aux);
+    namebuffer.resize(buffer2);
+    this->socket.recvall(&namebuffer[0], buffer2, &aux);
     // namebuffer[buffer] = '\0';
     map_name = std::string(namebuffer);
     std::cout << "Map name: " << map_name << std::endl;
