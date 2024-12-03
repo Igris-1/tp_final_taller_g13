@@ -19,6 +19,7 @@
 #define PRACTICE_CONFIG "../configuration_yamls/practice_config.yaml"
 #define ROUNDS_PER_CHECK 5
 #define MAX_PLAYERS 2
+#define ROUNDS_AFTER_FINISHED 20
 
 class GameThread: public Thread {
 private:
@@ -27,16 +28,16 @@ private:
     ListOfClientsMonitor& clients;
     int max_players = MAX_PLAYERS;
     int round_counter = 0;
+    int rounds_until_reset = ROUNDS_AFTER_FINISHED;
     void send_snapshots();
     void send_game_score();
     void send_map();
     void send_endgame_score();
     void blocking_execute_commands();
-    void send_instructions();
-    void pickUpBox(const std::string& name, int box_id);
+    //void send_instructions();
     void execute_commands();
     void run() override;
-    void send_initial_info();
+    //void send_initial_info();
     std::string map_name = "default_map";
 
     bool practice_mode;

@@ -315,10 +315,6 @@ bool Game::check_if_round_finished() {
     std::vector<int> ids_ducks = this->map.get_live_duck_ids();
     int dead_ducks = this->map.ducks_dead_size();
     if (ids_ducks.size() <= 1 && dead_ducks > 0) {
-        if (ids_ducks.size() == 1) {
-            this->ducks_score[ids_ducks[0]] += 1;
-        }
-        reset_death_sound();
         return true;
     }
     return false;
@@ -367,6 +363,13 @@ void Game::random_item_spawn(bool on_game, bool lineal_spawn) {
 }
 
 void Game::reset_round(bool practice_mode) {
+    std::vector<int> ids_ducks = this->map.get_live_duck_ids();
+    
+    reset_death_sound();
+    if (ids_ducks.size() == 1) {
+        this->ducks_score[ids_ducks[0]] += 1;
+    }
+
     this->map.clean_map(this->spawn_ducks);
     this->actual_round += 1;
     for (auto& pos: this->spawn_positions) {

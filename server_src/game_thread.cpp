@@ -102,31 +102,33 @@ void GameThread::run() {
         this->game->continue_vertical_movements();
         this->game->continue_horizontal_movements();
         this->game->random_item_spawn(true, this->practice_mode);
-        
+        send_snapshots();
         if (this->game->check_if_round_finished()) {
 
+            /*send_snapshots();
             send_snapshots();
-            send_snapshots();
-            send_snapshots();
-            if(!this->practice_mode){
-                this->round_counter++;
-            }
-            if (this->round_counter == ROUNDS_PER_CHECK) {
-                this->round_counter = 0;
-                if (this->game->check_if_winner() && !this->practice_mode) {
-                    send_endgame_score();
-                    this->_is_alive = false;
-                    return;
+            send_snapshots();*/
+            this->rounds_until_reset--;
+            if(this->rounds_until_reset == 0){
+                this->rounds_until_reset = ROUNDS_AFTER_FINISHED;
+                this->game->reset_round(this->practice_mode);
+                if(!this->practice_mode){
+                    this->round_counter++;
                 }
-                send_game_score();
+                if (this->round_counter == ROUNDS_PER_CHECK) {
+                    this->round_counter = 0;
+                    if (this->game->check_if_winner() && !this->practice_mode) {
+                        send_endgame_score();
+                        this->_is_alive = false;
+                        return;
+                    }
+                    send_game_score();
 
-                std::this_thread::sleep_for(std::chrono::microseconds(SCOREBOARD_TIME));
+                    std::this_thread::sleep_for(std::chrono::microseconds(SCOREBOARD_TIME));
+                }
             }
-            this->game->reset_round(this->practice_mode);
-            
-            continue;
         }
-        send_snapshots();
+        
         auto end_time = std::chrono::steady_clock::now();
         auto elapsed_time =
                 std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time)
