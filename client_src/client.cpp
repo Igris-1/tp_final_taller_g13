@@ -17,7 +17,7 @@
 #define PLAYERS_CODE 0x05
 
 Client::Client(const char* host, const char* port, uint8_t game_id):
-        localPlayers(LOCAL_PLAYERS), protocol(Socket(host, port)), receiver_queue(), game_view() {
+        localPlayers(LOCAL_PLAYERS), protocol(Socket(host, port)), receiver_queue(), waiting_view() {
     game_to_join = game_id;
 }
 
@@ -48,20 +48,22 @@ void Client::run() {
         Sender sender(protocol, localPlayers);
         std::map<int, std::function<void(Message& m)>> actions = {
         {MAP_CODE, [&](Message& m) {
-             map_structure_t map = m.get_map();
-            game_view.add_map(map);
+            map_structure_t map = m.get_map();
+            waiting_view.hide();
+            game_view = std::make_unique<GameView>(map);
+            
         }},
         {GAME_SNAPSHOT_CODE, [&](Message& m) {
             game_snapshot_t gs = m.get_game_snapshot();
-            game_view.render_game(gs);
+            game_view->render_game(gs);
         }},
         {SCORE_CODE, [&](Message& m) {    
             score_DTO score = m.get_score();
-            game_view.render_score(score); 
+            game_view->render_score(score); 
         }},
         {END_SCORE_CODE, [&](Message& m) {    
             score_DTO score = m.get_score();
-            game_view.render_endgame_score(score);
+            game_view->render_endgame_score(score);
         }},
         {GAMES_INFO_CODE, [&](Message& m) {   
             std::string input;

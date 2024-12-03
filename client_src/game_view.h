@@ -27,6 +27,9 @@ private:
     SDL sdl;
     Window window;
     Renderer renderer;
+    int width;
+    int height;
+
     std::vector<Texture> background_sprites;
     std::vector<Texture> platform_sprites;
     std::vector<Texture> duck_sprites;
@@ -61,11 +64,9 @@ private:
     void make_noise(game_snapshot_t gs);
     void load_gear_textures();
     void load_map_textures();
-    void show_loading_screen();
 
 public:
-    GameView();
-    void add_map(map_structure_t map);
+    GameView(map_structure_t map);
     void render_score(score_DTO score);
     void render_endgame_score(score_DTO score);
     void render_game(game_snapshot_t gs);

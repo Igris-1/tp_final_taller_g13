@@ -21,6 +21,7 @@
 #include "protocol_client.h"
 #include "receiver.h"
 #include "sender.h"
+#include "waiting_view.h"
 
 using namespace SDL2pp;
 
@@ -33,7 +34,8 @@ private:
     Queue<Message> receiver_queue;
 
     game_snapshot_t get_snapshot();
-    GameView game_view;
+    std::unique_ptr<GameView> game_view;
+    WaitingView waiting_view;
     std::vector<games_DTO> games;
     std::string map_name = "";
 

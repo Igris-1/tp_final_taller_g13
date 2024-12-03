@@ -4,14 +4,13 @@
 #include <iostream>
 #include <random>
 #include <utility>
-#define SCREEN_WIDTH 1366
-#define SCREEN_HEIGHT 768
 #define DELAY_AFTER_SCORE 7000
 
-GameView::GameView():
+GameView::GameView(map_structure_t map):
         sdl(SDL_INIT_VIDEO),
-        window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-               SCREEN_HEIGHT, SDL_WINDOW_SHOWN),
+        width(map.width),
+        height(map.height), 
+        window("Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,  SDL_WINDOW_SHOWN),
         renderer(window, -1, SDL_RENDERER_ACCELERATED),
         background_sprites(),
         platform_sprites(),
@@ -21,42 +20,41 @@ GameView::GameView():
         bullet_sprites(),
         duck_views(),
         gear_view(renderer, gear_sprites, accessories_sprites) {
+    std::cout << width << " " << height << std::endl;
     set_up_game();
 }
-
-void GameView::add_map(map_structure_t map) { this->map = map; }
 
 void GameView::render_scoreboard(score_DTO score) {
     renderer.SetDrawColor(Color(0, 0, 0, 0));
     renderer.FillRect(
-            SDL_Rect{SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
+            SDL_Rect{width / 4, height / 4, width / 2, height / 2});
 
     renderer.Copy(scoreboard_font[1], SDL_Rect{0, 0, 218, 109},
-                  SDL_Rect{SCREEN_WIDTH * 7 / 16, SCREEN_HEIGHT / 4, 218, 109}, 0, NullOpt, 0);
+                  SDL_Rect{width * 7 / 16, height / 4, 218, 109}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.first_place_id], SDL_Rect{0, 0, 32, 32},
-                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 30, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{width * 3 / 8, height / 3 + 30, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.first_place_score * 8, 8, 8, 8},
-                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 56, 32, 32}, 0, NullOpt, 0);
+                  SDL_Rect{width * 5 / 8, height / 3 + 56, 32, 32}, 0, NullOpt, 0);
 
     renderer.Copy(duck_sprites[score.second_place_id], SDL_Rect{0, 0, 32, 32},
-                  SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 100, 64, 64}, 0, NullOpt, 0);
+                  SDL_Rect{width * 3 / 8, height / 3 + 100, 64, 64}, 0, NullOpt, 0);
 
     renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score * 8, 8, 8, 8},
-                  SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 126, 32, 32}, 0, NullOpt, 0);
+                  SDL_Rect{width * 5 / 8, height / 3 + 126, 32, 32}, 0, NullOpt, 0);
     if(score.amount_of_ducks > 2){
         renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
-                    SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 170, 64, 64}, 0, NullOpt, 0);
+                    SDL_Rect{width * 3 / 8, height / 3 + 170, 64, 64}, 0, NullOpt, 0);
 
         renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score * 8, 8, 8, 8},
-                    SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 196, 32, 32}, 0, NullOpt, 0);
+                    SDL_Rect{width * 5 / 8, height / 3 + 196, 32, 32}, 0, NullOpt, 0);
         if(score.amount_of_ducks > 3){
             renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
-                        SDL_Rect{SCREEN_WIDTH * 3 / 8, SCREEN_HEIGHT / 3 + 240, 64, 64}, 0, NullOpt, 0);
+                        SDL_Rect{width * 3 / 8, height / 3 + 240, 64, 64}, 0, NullOpt, 0);
 
             renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score * 8, 8, 8, 8},
-                        SDL_Rect{SCREEN_WIDTH * 5 / 8, SCREEN_HEIGHT / 3 + 266, 32, 32}, 0, NullOpt, 0);
+                        SDL_Rect{width * 5 / 8, height / 3 + 266, 32, 32}, 0, NullOpt, 0);
         }
     }
 }
@@ -74,15 +72,6 @@ void GameView::render_endgame_score(score_DTO score) {
     SDL_Delay(DELAY_AFTER_SCORE);
     window.Hide();
     Mix_CloseAudio();
-}
-
-void GameView::show_loading_screen() {
-    Texture loging_image(renderer, "../assets/sprites/loading_screen.png");
-
-    renderer.Copy(loging_image, SDL_Rect{0, 0, 1280, 720},
-                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
-
-    renderer.Present();
 }
 
 void GameView::load_map_textures() {
@@ -247,13 +236,10 @@ void GameView::make_noise(game_snapshot_t gs) {
 }
 
 void GameView::set_up_game() {
-
     load_duck_textures();
     load_gear_textures();
     load_map_textures();
     load_music();
-
-    show_loading_screen();
 }
 
 void GameView::render_game(game_snapshot_t gs) {
@@ -321,7 +307,7 @@ void GameView::zoom(game_snapshot_t gs) {
     float visible_height = max_y - min_y;
 
     // zoom factor
-    float zoom_factor = std::min(SCREEN_WIDTH / visible_width, SCREEN_HEIGHT / visible_height);
+    float zoom_factor = std::min(width / visible_width, height / visible_height);
 
     // limit max and min zoom
     const float max_zoom = 2.0f;
@@ -329,16 +315,16 @@ void GameView::zoom(game_snapshot_t gs) {
     zoom_factor = std::clamp(zoom_factor, min_zoom, max_zoom);
 
     // center nemo point
-    float cam_x = (min_x + max_x) / 2.0f - (SCREEN_WIDTH / (2 * zoom_factor));
-    float cam_y = (min_y + max_y) / 2.0f - (SCREEN_HEIGHT / (2 * zoom_factor));
+    float cam_x = (min_x + max_x) / 2.0f - (width / (2 * zoom_factor));
+    float cam_y = (min_y + max_y) / 2.0f - (height / (2 * zoom_factor));
 
     // world dimensions
-    const float world_width = static_cast<float>(SCREEN_WIDTH);
-    const float world_height = static_cast<float>(SCREEN_HEIGHT);
+    const float world_width = static_cast<float>(width);
+    const float world_height = static_cast<float>(height);
 
     // Límites máximos que la cámara puede alcanzar
-    float max_cam_x = world_width - (SCREEN_WIDTH / zoom_factor);
-    float max_cam_y = world_height - (SCREEN_HEIGHT / zoom_factor);
+    float max_cam_x = world_width - (width / zoom_factor);
+    float max_cam_y = world_height - (height / zoom_factor);
 
     // restriction control like Fuck in
     if (cam_x < 0) {
@@ -357,8 +343,8 @@ void GameView::zoom(game_snapshot_t gs) {
     SDL_RenderSetScale(renderer.Get(), zoom_factor, zoom_factor);
 
     // no doy mas la puta madre son 4:30
-    SDL_Rect viewport = {static_cast<int>(-cam_x), static_cast<int>(-cam_y), SCREEN_WIDTH,
-                         SCREEN_HEIGHT};
+    SDL_Rect viewport = {static_cast<int>(-cam_x), static_cast<int>(-cam_y), width,
+                         height};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
 }
 
@@ -415,7 +401,7 @@ void GameView::render_bullets(game_snapshot_t gs) {
 void GameView::render_map() {
     Texture& backgroundTexture = background_sprites[0];
     renderer.Copy(backgroundTexture, SDL_Rect{0, 0, 2425, 1451},
-                  SDL_Rect{0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+                  SDL_Rect{0, 0, width, height});
     for (int i = 0; i < map.platforms_len; i++) {
         platform_DTO platform = map.platforms[i];
         if (platform.height>platform.width){
