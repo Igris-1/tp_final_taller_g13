@@ -13,6 +13,7 @@
 #include "sender_thread.h"
 
 #define LOOP_TIME 40000
+#define SCOREBOARD_TIME 3000000
 
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players):
         game(nullptr), gameQueue(gameQueue), clients(clients), practice_mode(practice_mode){
@@ -108,9 +109,10 @@ void GameThread::run() {
             send_snapshots();
             send_snapshots();
             if(!this->practice_mode){
-                this->round_counter--;
+                this->round_counter++;
             }
-            if (this->round_counter == 0) {
+            if (this->round_counter == ROUNDS_PER_CHECK) {
+                this->round_counter = 0;
                 if (this->game->check_if_winner() && !this->practice_mode) {
                     send_endgame_score();
                     this->_is_alive = false;
@@ -118,11 +120,10 @@ void GameThread::run() {
                 }
                 send_game_score();
 
-                this->round_counter = ROUNDS_PER_CHECK;
-                // usleep(1000000);
+                std::this_thread::sleep_for(std::chrono::microseconds(SCOREBOARD_TIME));
             }
             this->game->reset_round(this->practice_mode);
-            //std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
+            
             continue;
         }
         send_snapshots();

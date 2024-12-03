@@ -24,8 +24,7 @@ void GameView::add_map(map_structure_t map){
     w_height = map.height;
     window.SetSize(w_width, w_height);
     Mix_VolumeMusic(5);
-    int a = Mix_PlayMusic(background_music[random_number(0, background_music.size() - 1)], -1);
-    std::cout << a << std::endl;
+    Mix_PlayMusic(background_music[random_number(0, background_music.size() - 1)], -1);
 }
 
 void GameView::render_scoreboard(score_DTO score) {
@@ -95,7 +94,6 @@ void GameView::render_scoreboard(score_DTO score) {
 void GameView::render_score(score_DTO score) {
     render_scoreboard(score);
     renderer.Present();
-    SDL_Delay(DELAY_AFTER_SCORE);
 }
 
 void GameView::render_endgame_score(score_DTO score) {
@@ -471,11 +469,8 @@ void GameView::render_map() {
                       SDL_Rect{platform.x, platform.y, platform.width, platform.height});
         }
     }
-    //std::cout << map.spawns_platforms_len << std::endl;
     for (int i = 0; i < map.spawns_platforms_len; i++) {
         platform_DTO platform = map.spawns_platforms[i];
-        std::cout << i << std::endl;
-        std::cout << platform.width << " " << platform.height << std::endl;
         renderer.Copy(platform_sprites[3], SDL_Rect{0, 0, 14, 6},
                       SDL_Rect{platform.x, platform.y, platform.width, platform.height});
     }

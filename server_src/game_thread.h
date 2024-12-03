@@ -26,7 +26,7 @@ private:
     Queue<std::shared_ptr<Action>>& gameQueue;
     ListOfClientsMonitor& clients;
     int max_players = MAX_PLAYERS;
-    int round_counter = ROUNDS_PER_CHECK;
+    int round_counter = 0;
     void send_snapshots();
     void send_game_score();
     void send_map();
