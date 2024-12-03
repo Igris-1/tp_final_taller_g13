@@ -24,7 +24,6 @@ NewGameWindow::NewGameWindow(QWidget* parent, QMediaPlayer* player, QString addr
         QDialog(parent),
         ui(new Ui::NewGameWindow),
         player(player),
-        map(NEW_GAME),
         gamePlayers(PLAYERS),
         address(address),
         port(port) {
@@ -82,6 +81,7 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
     client.select_game_mode(NEW_GAME);
     this->hide();
     client.run();
+    this->player->play();
 }
 
 void NewGameWindow::on_playgroundButton_clicked() {
@@ -97,11 +97,7 @@ void NewGameWindow::on_playgroundButton_clicked() {
     client.select_game_mode(PLAYGROUND);
     this->hide();
     client.run();
-}
-
-void NewGameWindow::on_maps_activated() {
-    // setear mapa para iniciar la partida
-    this->map = ui->maps->currentIndex();
+    this->player->play();
 }
 
 void NewGameWindow::on_startButton_clicked() {
@@ -124,8 +120,8 @@ void NewGameWindow::on_startButton_clicked() {
     client.setLocalPlayers(localPlayers);
     client.setMaxPlayers(players);
     client.setMapName(this->ui->maps->currentText().toStdString());
-    // std::cout << "mapa seleccionado: " << this->ui->maps->currentText().toStdString() << std::endl;
     client.select_game_mode(NEW_GAME_CUSTOM_MAP);
     this->hide();
     client.run();
+    this->player->play();
 }

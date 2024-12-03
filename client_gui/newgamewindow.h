@@ -26,15 +26,12 @@ private slots:
 
     void on_playgroundButton_clicked();
 
-    void on_maps_activated();
-
     void on_startButton_clicked();
 
 private:
     Ui::NewGameWindow* ui;
     Client* client;
     QMediaPlayer* player;
-    int map;
     int gamePlayers;
     QString address;
     QString port;

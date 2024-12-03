@@ -120,6 +120,7 @@ void JoinGame::on_startButton_clicked() {
         client.select_game_mode(JOIN_GAME);
         this->hide();
         client.run();
+        this->player->play();
     }
 }
 
@@ -135,6 +136,7 @@ void JoinGame::on_randomGameButton_clicked() {
     client.select_game_mode(RANDOM_GAME);
     this->hide();
     client.run();
+    this->player->play();
 }
 
 void JoinGame::refresh_matches(std::vector<games_DTO> games) {
