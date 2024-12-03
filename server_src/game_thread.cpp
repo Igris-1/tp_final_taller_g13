@@ -107,21 +107,22 @@ void GameThread::run() {
             send_snapshots();
             send_snapshots();
             send_snapshots();
-            if (this->game->check_if_winner() && !this->practice_mode) {
-                send_endgame_score();
-                this->_is_alive = false;
-                return;
-            }
             if(!this->practice_mode){
                 this->round_counter--;
             }
             if (this->round_counter == 0) {
+                if (this->game->check_if_winner() && !this->practice_mode) {
+                    send_endgame_score();
+                    this->_is_alive = false;
+                    return;
+                }
                 send_game_score();
-                this->round_counter = 5;
+
+                this->round_counter = ROUNDS_PER_CHECK;
                 // usleep(1000000);
             }
             this->game->reset_round(this->practice_mode);
-            std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
+            //std::this_thread::sleep_for(std::chrono::microseconds(LOOP_TIME));
             continue;
         }
         send_snapshots();

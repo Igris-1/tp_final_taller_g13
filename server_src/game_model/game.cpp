@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <unistd.h>
 
+#define ROUNDS_TO_WIN 10
+
 Game::Game(GameConfig& config):
         map(config.get_map_width(), config.get_map_height(), config.get_duck_config().health),
         ducks_states(),
@@ -323,12 +325,19 @@ bool Game::check_if_round_finished() {
 }
 
 bool Game::check_if_winner() {
+    int highest_score = 0;
+    int ducks_with_highest_score = 0;
     for (auto it = ducks_score.begin(); it != ducks_score.end(); ++it) {
-        if (it->second == 10) {
-            return true;
+        if (it->second >= ROUNDS_TO_WIN) {
+            if (it->second > highest_score) {
+                highest_score = it->second;
+                ducks_with_highest_score = 1;
+            } else if (it->second == highest_score) {
+                ducks_with_highest_score += 1;
+            }
         }
     }
-    return false;
+    return ducks_with_highest_score == 1;
 }
 
 void Game::random_item_spawn(bool on_game, bool lineal_spawn) {

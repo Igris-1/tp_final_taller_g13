@@ -23,9 +23,15 @@ void GameView::add_map(map_structure_t map){
     w_width = map.width;
     w_height = map.height;
     window.SetSize(w_width, w_height);
+    Mix_VolumeMusic(5);
+    int a = Mix_PlayMusic(background_music[random_number(0, background_music.size() - 1)], -1);
+    std::cout << a << std::endl;
 }
 
 void GameView::render_scoreboard(score_DTO score) {
+    SDL_RenderSetScale(renderer.Get(), 1.0f, 1.0f);
+    SDL_RenderSetViewport(renderer.Get(), nullptr);
+
     renderer.SetDrawColor(Color(0, 0, 0, 0));
     renderer.FillRect(
             SDL_Rect{w_width / 4, w_height / 4, w_width / 2, w_height / 2});
@@ -33,29 +39,55 @@ void GameView::render_scoreboard(score_DTO score) {
     renderer.Copy(scoreboard_font[1], SDL_Rect{0, 0, 218, 109},
                   SDL_Rect{w_width * 7 / 16, w_height / 4, 218, 109}, 0, NullOpt, 0);
 
+    int score_1 = score.first_place_score%10;
+    int score_10 = score.first_place_score/10;
+
     renderer.Copy(duck_sprites[score.first_place_id], SDL_Rect{0, 0, 32, 32},
                   SDL_Rect{w_width * 3 / 8, w_height / 3 + 30, 64, 64}, 0, NullOpt, 0);
+    
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score_10 * 8, 8, 8, 8},
+                  SDL_Rect{w_width * 5 / 8 - 33, w_height / 3 + 56, 32, 32}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.first_place_score * 8, 8, 8, 8},
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score_1 * 8, 8, 8, 8},
                   SDL_Rect{w_width * 5 / 8, w_height / 3 + 56, 32, 32}, 0, NullOpt, 0);
+
+    score_1 = score.second_place_score%10;
+    score_10 = score.second_place_score/10;
 
     renderer.Copy(duck_sprites[score.second_place_id], SDL_Rect{0, 0, 32, 32},
                   SDL_Rect{w_width * 3 / 8, w_height / 3 + 100, 64, 64}, 0, NullOpt, 0);
 
-    renderer.Copy(scoreboard_font[0], SDL_Rect{score.second_place_score * 8, 8, 8, 8},
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score_1 * 8, 8, 8, 8},
                   SDL_Rect{w_width * 5 / 8, w_height / 3 + 126, 32, 32}, 0, NullOpt, 0);
+
+    renderer.Copy(scoreboard_font[0], SDL_Rect{score_10 * 8, 8, 8, 8},
+                  SDL_Rect{w_width * 5 / 8 - 33, w_height / 3 + 126, 32, 32}, 0, NullOpt, 0);
+
     if(score.amount_of_ducks > 2){
+
+        score_1 = score.third_place_score%10;
+        score_10 = score.third_place_score/10;
         renderer.Copy(duck_sprites[score.third_place_id], SDL_Rect{0, 0, 32, 32},
                     SDL_Rect{w_width * 3 / 8, w_height / 3 + 170, 64, 64}, 0, NullOpt, 0);
 
-        renderer.Copy(scoreboard_font[0], SDL_Rect{score.third_place_score * 8, 8, 8, 8},
+        renderer.Copy(scoreboard_font[0], SDL_Rect{score_1 * 8, 8, 8, 8},
                     SDL_Rect{w_width * 5 / 8, w_height / 3 + 196, 32, 32}, 0, NullOpt, 0);
+
+        renderer.Copy(scoreboard_font[0], SDL_Rect{score_10 * 8, 8, 8, 8},
+                    SDL_Rect{w_width * 5 / 8-33, w_height / 3 + 196, 32, 32}, 0, NullOpt, 0);
         if(score.amount_of_ducks > 3){
+
+            score_1 = score.fourth_place_score%10;
+            score_10 = score.fourth_place_score/10;
+
             renderer.Copy(duck_sprites[score.fourth_place_id], SDL_Rect{0, 0, 32, 32},
                         SDL_Rect{w_width * 3 / 8, w_height / 3 + 240, 64, 64}, 0, NullOpt, 0);
 
-            renderer.Copy(scoreboard_font[0], SDL_Rect{score.fourth_place_score * 8, 8, 8, 8},
+            renderer.Copy(scoreboard_font[0], SDL_Rect{score_1 * 8, 8, 8, 8},
                         SDL_Rect{w_width * 5 / 8, w_height / 3 + 266, 32, 32}, 0, NullOpt, 0);
+
+            renderer.Copy(scoreboard_font[0], SDL_Rect{score_10* 8, 8, 8, 8},
+                        SDL_Rect{w_width * 5 / 8-33, w_height / 3 + 266, 32, 32}, 0, NullOpt, 0);
         }
     }
 }
@@ -81,6 +113,7 @@ void GameView::load_map_textures() {
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/one_block.png"));
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/horizontal_wood.png"));
     platform_sprites.push_back(Texture(renderer, "../assets/sprites/vertical_wood.png"));
+    platform_sprites.push_back(Texture(renderer, "../assets/sprites/gunSpawner.png"));
 
     scoreboard_font.push_back(Texture(renderer, "../assets/fonts/moneyFont.png"));
 
@@ -176,13 +209,11 @@ void GameView::load_music() {
     background_music.push_back(Mix_LoadMUS("../assets/music/hypeUp.mp3"));
     background_music.push_back(Mix_LoadMUS("../assets/music/funkyDuck.mp3"));
 
-    Mix_VolumeMusic(5);
-    Mix_PlayMusic(background_music[random_number(0, background_music.size() - 1)], -1);
-
     dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/AAA.wav"));
     dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/AUU.wav"));
-    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/my_leg.wav"));
-    dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/oof.wav"));
+    //dead_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/my_leg.wav"));
+
+    struck_duck_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/oof.wav"));
 
     weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/smallWeapon.wav"));
     weapon_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/bigWeapon.wav"));
@@ -204,9 +235,17 @@ int GameView::random_number(int min, int max) {
 
 void GameView::make_noise(game_snapshot_t gs) {
 
+
     if (gs.sounds.death) {
         int channel = Mix_PlayChannel(
                 -1, dead_duck_sound_effects[random_number(0, dead_duck_sound_effects.size() - 1)],
+                0);
+        Mix_Volume(channel, 30);
+    }
+
+    if (gs.sounds.duck_struck){
+        int channel = Mix_PlayChannel(
+                -1, struck_duck_sound_effects[random_number(0, struck_duck_sound_effects.size() - 1)],
                 0);
         Mix_Volume(channel, 30);
     }
@@ -431,6 +470,14 @@ void GameView::render_map() {
             renderer.Copy(platform_sprites[0], SDL_Rect{0, 0, 109, 109},
                       SDL_Rect{platform.x, platform.y, platform.width, platform.height});
         }
+    }
+    //std::cout << map.spawns_platforms_len << std::endl;
+    for (int i = 0; i < map.spawns_platforms_len; i++) {
+        platform_DTO platform = map.spawns_platforms[i];
+        std::cout << i << std::endl;
+        std::cout << platform.width << " " << platform.height << std::endl;
+        renderer.Copy(platform_sprites[3], SDL_Rect{0, 0, 14, 6},
+                      SDL_Rect{platform.x, platform.y, platform.width, platform.height});
     }
 }
 

@@ -45,6 +45,7 @@ private:
     std::vector<Mix_Chunk*> dead_duck_sound_effects;
     std::vector<Mix_Chunk*> weapon_sound_effects;
     std::vector<Mix_Chunk*> slipping_sound_effects;
+    std::vector<Mix_Chunk*> struck_duck_sound_effects;
     
     std::vector<DuckView> duck_views;
     GearView gear_view;
