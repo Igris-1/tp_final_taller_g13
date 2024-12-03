@@ -2,7 +2,7 @@
 
 ## Requisitos de Instalación
 
-Para correr este programa, es necesario instalar las siguientes dependencias que por el momento **no** se instalan automaticamente:
+Para correr este programa, es necesario instalar las siguientes dependencias que se instalan automaticamente con el instalador, los detalles del instalador en la web.
 - Qt6
 - QtMediaDev
 - SDL2
@@ -12,7 +12,7 @@ Para correr este programa, es necesario instalar las siguientes dependencias que
 ## Instrucciones para Ejecutar
 
 1. Clona el repositorio y navega a la carpeta del proyecto.
-2. Ejecuta `make` para compilar el proyecto.
+2. Ejecuta `make` para compilar el proyecto en modo debug.
 3. Navega a la carpeta `build` y ejecuta los siguientes comandos en terminales separadas:
    
    - Para iniciar el servidor:
@@ -36,7 +36,4 @@ El proyecto se organiza en las siguientes carpetas:
 - `common/`: Contiene el código fuente compartido entre cliente y servidor.
 
 ## Notas Adicionales
-
-- Las partidas actualmente deben ser obligatoriamente de 4 jugadores y las partidas inician automáticamente al ser 4 jugadores.
-- En la ventana de "New Game" de Qt, solo funciona el primer mapa para jugar, el resto son placeholders. El selector de cantidad de jugadores para la partida de la izquierda no hace nada y el checkbox de "LocalPlayer 2" de la derecha hace que haya un segundo jugador localmente.
-
+- [Pagina web del tp](https://igris-1.github.io/duckGametp/)
