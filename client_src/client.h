@@ -34,8 +34,7 @@ private:
     Queue<Message> receiver_queue;
 
     game_snapshot_t get_snapshot();
-    std::unique_ptr<GameView> game_view;
-    WaitingView waiting_view;
+    GameView game_view;
     std::vector<games_DTO> games;
     std::string map_name = "";
 

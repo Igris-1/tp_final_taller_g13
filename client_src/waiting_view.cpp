@@ -7,7 +7,7 @@ WaitingView::WaitingView():
     sdl(SDL_INIT_VIDEO),
     window("Waiting room", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
             SCREEN_HEIGHT, SDL_WINDOW_SHOWN),
-    renderer(window, -1, SDL_RENDERER_ACCELERATED) {
+    renderer(window, 2, SDL_RENDERER_ACCELERATED) {
         show_loading_screen();
     }
 
@@ -24,7 +24,9 @@ void WaitingView::show_loading_screen() {
 }
 
 void WaitingView::hide() {
-    window.Hide();
+
+    renderer.~Renderer();
+    window.~Window();
 }
 
 WaitingView::~WaitingView() {}
