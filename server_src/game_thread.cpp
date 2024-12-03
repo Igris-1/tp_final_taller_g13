@@ -109,10 +109,6 @@ void GameThread::run() {
         this->game->random_item_spawn(true, this->practice_mode);
         send_snapshots();
         if (this->game->check_if_round_finished()) {
-
-            /*send_snapshots();
-            send_snapshots();
-            send_snapshots();*/
             this->rounds_until_reset--;
             if(this->rounds_until_reset == 0){
                 this->rounds_until_reset = ROUNDS_AFTER_FINISHED;
