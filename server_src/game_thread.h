@@ -17,14 +17,16 @@
 #define DEFAULT_CONFIG "../configuration_yamls/default_config.yaml"
 #define PRACTICE_MAP "../maps/practice_map.yaml"
 #define PRACTICE_CONFIG "../configuration_yamls/practice_config.yaml"
+#define ROUNDS_PER_CHECK 5
+#define MAX_PLAYERS 2
 
 class GameThread: public Thread {
 private:
     Game* game;
     Queue<std::shared_ptr<Action>>& gameQueue;
     ListOfClientsMonitor& clients;
-    int max_players = 2;
-    int round_counter = 5;
+    int max_players = MAX_PLAYERS;
+    int round_counter = ROUNDS_PER_CHECK;
     void send_snapshots();
     void send_game_score();
     void send_map();
