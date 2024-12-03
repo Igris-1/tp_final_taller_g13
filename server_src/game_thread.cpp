@@ -70,6 +70,7 @@ void GameThread::run() {
     std::string path_map = "../maps/" + this->map_name + ".yaml";
     std::string path_config = DEFAULT_CONFIG;
     std::cout << "osea que el path es: " << path_map << std::endl;
+    std::cout << "Map name: " << this->map_name << " (Length: " << this->map_name.size() << ")" << std::endl;
     if(this->practice_mode){
         path_map = PRACTICE_MAP;
         path_config = PRACTICE_CONFIG;
@@ -89,6 +90,7 @@ void GameThread::run() {
     std::cout << "llegue4" << std::endl;
 
     for (int i = 0; i < this->max_players; i++) {
+        std::cout << "llegue5: " << i << std::endl;
         blocking_execute_commands();
     }
 
@@ -97,7 +99,7 @@ void GameThread::run() {
     }
     this->game->spawns_ducks_on_start_position();
     send_map();
-
+    std::cout << "llegue6" << std::endl;
     while (_keep_running) {
         auto start_time = std::chrono::steady_clock::now();
         this->game->keep_using_item();

@@ -7,6 +7,7 @@ bool GamesManager::add_client_to_game_without_lock(int game_id, Socket&& ss, int
         if (game->game_id == game_id) {
             int max_players = game->max_players;
             if(game->player_count + number_of_players > max_players){
+                std::cout << "Max players reached" << std::endl; 
                 ss.shutdown(SHUT_DOWN_TWO);
                 ss.close();
                 return false;
@@ -32,10 +33,13 @@ bool GamesManager::create_game(Socket&& ss, int number_of_players, int max_playe
         }
         ++it;
     }
+    std::cout << "EN SERVER number of players: " << number_of_players << std::endl;
+    std::cout << "EN SERVER max players: " << max_players << std::endl;
     this->games.push_back(std::make_unique<game_t>(this->games_counter, false, max_players)); // true == practice mode
     this->games_counter++;
-    this->games.back()->gameThread.start();
     this->games.back()->gameThread.set_map_name(map_name);
+    this->games.back()->gameThread.start();
+    std::cout << "Game created" << std::endl;
     return this->add_client_to_game_without_lock(this->get_game_counter(), std::move(ss), number_of_players);
 }
 
