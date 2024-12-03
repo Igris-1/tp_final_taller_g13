@@ -18,7 +18,6 @@
 GameThread::GameThread(Queue<std::shared_ptr<Action>>& gameQueue, ListOfClientsMonitor& clients, bool practice_mode, int max_players):
         game(nullptr), gameQueue(gameQueue), clients(clients), practice_mode(practice_mode){
     this->max_players = max_players;
-    // start();
 }
 
 void GameThread::send_snapshots() {

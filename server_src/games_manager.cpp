@@ -79,6 +79,8 @@ bool GamesManager::add_client_to_random_game(Socket&& ss, int number_of_players)
     std::lock_guard<std::mutex> lock(this->mutex);
     for (auto& game: this->games) {
         if (game->player_count + number_of_players > game->max_players) {
+            ss.shutdown(SHUT_DOWN_TWO);
+            ss.close();
             return false;
         }
         game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);

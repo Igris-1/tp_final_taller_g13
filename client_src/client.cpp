@@ -37,6 +37,7 @@ void Client::set_client(){
         {END_SCORE_CODE, [&](Message& m, Sender& sender) {    
             score_DTO score = m.get_score();
             game_view.render_endgame_score(score);
+            
         }},
         {GAMES_INFO_CODE, [&](Message& m, Sender& sender) {   
             std::string input;
@@ -250,6 +251,9 @@ void Client::run() {
             if (receiver_queue.try_pop(m)) {
                 if (actions.count(m.get_code())) {
                     actions[m.get_code()](m, sender);
+                    if(m.get_code() == END_SCORE_CODE){
+                        break;
+                    }
                 } else {
                     std::cerr << "Código desconocido: " << m.get_code() << std::endl;
                 }

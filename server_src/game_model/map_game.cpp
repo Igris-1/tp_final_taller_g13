@@ -309,7 +309,9 @@ void MapGame::bullets_next_movement(const std::map<std::string, weapon_config>& 
                 if (duck->get_hitbox().has_collision((*bullet)->get_hitbox())) {
                     int damage = (*bullet)->damage_generated(id);
                     duck->receive_damage(damage);
-                    this->set_sound(DUCK_STRUCK);
+                    if(damage != NO_DAMAGE){
+                        this->set_sound(DUCK_STRUCK);
+                    }
                     if (!duck->is_alive()) {
                         this->ducks_dead[id] = duck;
                     }
