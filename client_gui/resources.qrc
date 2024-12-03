@@ -10,5 +10,7 @@
 
     <file>../assets/images/mapa_1.jpeg</file>
     <file>../assets/images/mapa_2.png</file>
+    <file>../assets/images/clasic_map.png</file>
+    <file>../assets/images/playground.png</file>
   </qresource>
 </RCC>

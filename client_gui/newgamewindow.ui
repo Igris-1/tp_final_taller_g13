@@ -101,7 +101,7 @@ color: rgb(0, 0, 0);
 background-color: rgb(68, 68, 68);
 background-image: transparent;
 border-image: transparent;
-border-image: url(:/assets/images/mapa_1.jpeg);</string>
+border-image: url(:/assets/images/clasic_map.png);</string>
        </property>
        <property name="text">
         <string>CLASIC MAP</string>
@@ -121,7 +121,8 @@ border-image: url(:/assets/images/mapa_1.jpeg);</string>
 color: rgb(0, 0, 0);
 background-color: rgb(68, 68, 68);
 background-image: transparent;
-border-image: transparent;</string>
+border-image: transparent;
+border-image: url(:/assets/images/playground.png);</string>
        </property>
        <property name="text">
         <string>PLAYGROUND</string>
