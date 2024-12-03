@@ -73,7 +73,35 @@ void JoinGame::on_refreshButton_clicked() {
     if (!games.empty()) {
         refresh_matches(games);
     } else {
-        QMessageBox::information(this, "Error", "No games found");
+        QMessageBox msgBox(this);
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setWindowTitle("Error");
+        msgBox.setText("No games found");
+        msgBox.setStyleSheet("QMessageBox QLabel {"
+                                "   background-image: transparent;"
+                                "   border-image: transparent;"
+                                "   color: #000000;"
+                                "}"
+                                "QMessageBox {"
+                                "   background-image: transparent;"
+                                "   border-image: transparent;"
+                                "   background-color: #f0f0f0;"
+                                "   border: 2px solid #000000;"
+                                "   color: #000000;"
+                                "}"
+                                "QPushButton {"
+                                "   background-image: transparent;"
+                                "   border-image: transparent;"
+                                "   background-color: #d9d9d9;"
+                                "   color: #000000;"
+                                "   border: 1px solid #000000;"
+                                "   border-radius: 5px;"
+                                "   padding: 5px;"
+                                "}"
+                                "QPushButton:hover {"
+                                "   background-color: #e6e6e6;"
+                                "}");
+    msgBox.exec();
     }
 }
 

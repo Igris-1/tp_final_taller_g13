@@ -74,6 +74,7 @@ background-color: rgb(69, 69, 69);</string>
    <property name="styleSheet">
     <string notr="true">font: 81 13pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(77, 77, 77);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -93,6 +94,7 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(77, 77, 77);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -132,6 +134,7 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(77, 77, 77);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -151,6 +154,7 @@ border-image: transparent;</string>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(77, 77, 77);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
@@ -163,13 +167,14 @@ border-image: transparent;</string>
     <rect>
      <x>370</x>
      <y>360</y>
-     <width>341</width>
+     <width>331</width>
      <height>41</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">font: 81 14pt &quot;Noto Rashi Hebrew ExtBd&quot;;
 color: rgb(255, 255, 0);
+background-color: rgb(77, 77, 77);
 background-image: transparent;
 border-image: transparent;</string>
    </property>
