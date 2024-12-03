@@ -85,7 +85,6 @@ void NewGameWindow::on_mapaUnoButton_clicked() {
 }
 
 void NewGameWindow::on_playgroundButton_clicked() {
-    // levantare el mapa custom
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();
@@ -101,7 +100,6 @@ void NewGameWindow::on_playgroundButton_clicked() {
 }
 
 void NewGameWindow::on_startButton_clicked() {
-    // levantar el mapa seleccionado
     QByteArray byteArrayPort = port.toUtf8();
     QByteArray byteArrayAddress = address.toUtf8();
     char* charPort = byteArrayPort.data();

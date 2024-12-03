@@ -90,6 +90,12 @@ void GameThread::run() {
     this->game->spawns_ducks_on_start_position();
     send_map();
     while (_keep_running) {
+
+        if(this->game->get_duck_DTO_list().size()<2){
+            send_endgame_score();
+            return;
+        }
+
         auto start_time = std::chrono::steady_clock::now();
         this->game->keep_using_item();
         try {

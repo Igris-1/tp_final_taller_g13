@@ -293,7 +293,6 @@ void GameView::show_loading_screen() {
 
     //Mix_VolumeMusic(5);
     //Mix_PlayMusic(, -1);
-
     renderer.Present();
 }
 
@@ -339,7 +338,6 @@ void GameView::zoom(game_snapshot_t gs) {
     int min_y = gs.ducks[0].y;
     int max_y = gs.ducks[0].y;
 
-    // most distant ducks
     for (int i = 0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
         min_x = std::min(min_x, static_cast<int>(duck.x));
@@ -348,40 +346,31 @@ void GameView::zoom(game_snapshot_t gs) {
         max_y = std::max(max_y, static_cast<int>(duck.y));
     }
 
-    // ducks margins
     const float margin = 150.0f;
 
-    // adjust margins to the screen
     min_x -= margin;
     max_x += margin;
     min_y -= margin;
     max_y += margin;
 
-    // visibles dimension
     float visible_width = max_x - min_x;
     float visible_height = max_y - min_y;
 
-    // zoom factor
     float zoom_factor = std::min(w_width / visible_width, w_height / visible_height);
 
-    // limit max and min zoom
     const float max_zoom = 2.0f;
     const float min_zoom = 1.0f;
     zoom_factor = std::clamp(zoom_factor, min_zoom, max_zoom);
 
-    // center nemo point
     float cam_x = (min_x + max_x) / 2.0f - (w_width / (2 * zoom_factor));
     float cam_y = (min_y + max_y) / 2.0f - (w_height / (2 * zoom_factor));
 
-    // world dimensions
     const float world_width = static_cast<float>(w_width);
     const float world_height = static_cast<float>(w_height);
 
-    // Límites máximos que la cámara puede alcanzar
     float max_cam_x = world_width - (w_width / zoom_factor);
     float max_cam_y = world_height - (w_height / zoom_factor);
 
-    // restriction control like Fuck in
     if (cam_x < 0) {
         cam_x = 0;
     } else if (cam_x > max_cam_x) {
@@ -394,12 +383,8 @@ void GameView::zoom(game_snapshot_t gs) {
         cam_y = max_cam_y;
     }
 
-    // Aplicar el zoom
     SDL_RenderSetScale(renderer.Get(), zoom_factor, zoom_factor);
-
-    // no doy mas la puta madre son 4:30
-    SDL_Rect viewport = {static_cast<int>(-cam_x), static_cast<int>(-cam_y), w_width,
-                         w_height};
+    SDL_Rect viewport = {static_cast<int>(-cam_x), static_cast<int>(-cam_y), w_width, w_height};
     SDL_RenderSetViewport(renderer.Get(), &viewport);
 }
 

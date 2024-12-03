@@ -350,7 +350,7 @@ void Editor::on_openButton_clicked() {
 
                 Structure* structure = new Structure(this);
                 structure->setType("boxes");
-                structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
+                structure->setGeometry(x, y, width, height);
                 structure->setStyleSheet("border-image: url(:/assets/images/box.png);");
                 structure->show();
                 this->items.push_back(structure);
@@ -366,7 +366,7 @@ void Editor::on_openButton_clicked() {
 
                 Structure* structure = new Structure(this);
                 structure->setType("ducks");
-                structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
+                structure->setGeometry(x, y, width, height); 
                 structure->setStyleSheet("border-image: url(:/assets/images/respawn.png);");
                 structure->show();
                 this->items.push_back(structure);
@@ -383,10 +383,10 @@ void Editor::on_openButton_clicked() {
                 Structure* structure = new Structure(this);
                 structure->setType("platforms");
                 if (width > height) {
-                    structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
+                    structure->setGeometry(x, y, width, height); 
                     structure->setStyleSheet("border-image: url(:/assets/images/horizontal_wood.png);");
                 } else {
-                    structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
+                    structure->setGeometry(x, y, width, height);
                     structure->setStyleSheet("border-image: url(:/assets/images/vertical_wood.png);");
                 }
                 this->items.push_back(structure);
@@ -402,7 +402,7 @@ void Editor::on_openButton_clicked() {
 
                     Structure* structure = new Structure(this);
                     structure->setType("weapons");
-                    structure->setGeometry(x, y, width, height);  // Toma la posición original del botón
+                    structure->setGeometry(x, y, width, height);
                     structure->setStyleSheet("border-image: url(:/assets/images/gunSpawner.png);");
                     structure->show();
                     this->items.push_back(structure);

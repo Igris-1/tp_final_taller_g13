@@ -29,7 +29,6 @@ private slots:
     void on_openButton_clicked();
     void on_cleanButton_clicked();
 
-    // ITEMS
     void on_item_1_clicked();
     void on_item_2_clicked();
     void on_item_3_clicked();

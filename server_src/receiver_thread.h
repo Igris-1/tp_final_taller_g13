@@ -13,6 +13,7 @@
 #include "actions/client_action_t.h"
 #include "actions/duck_creator.h"
 #include "actions/player_commands.h"
+#include "actions/i_quit.h"
 
 #include "protocol_server.h"
 
@@ -33,6 +34,13 @@ private:
             } catch (const std::exception& e) {
                 std::cerr << "Exception while in receiver thread: " << e.what() << std::endl;
             }
+        }
+        std::shared_ptr<Action> command = std::make_shared<IQuit>(clientId);
+        try{
+            queue.try_push(command);
+        }
+        catch(const ClosedQueue& e){ 
+            stop();
         }
     }
 
