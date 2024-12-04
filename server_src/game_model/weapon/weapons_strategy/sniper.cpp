@@ -44,7 +44,7 @@ int Sniper::get_sound(bool is_holding_button) {
     if(this->shot == 0 ){
         return NO_WEAPON_SOUND;
     }
-    if(this->reload){
+    if(this->reload && !is_holding_button){
         return SNIPER_RECHARGING_SOUND;
     }
     if(!is_holding_button && this->fire_rate == 0){

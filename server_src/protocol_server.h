@@ -23,7 +23,6 @@ class ProtocolServer {
 private:
     Socket connection;
     bool socket_is_closed;
-    std::mutex mutex;
     TranslatorDTOs translator_dto;
 
     void send_number(uint8_t& number);

@@ -46,33 +46,36 @@ private:
     std::vector<Mix_Chunk*> weapon_sound_effects;
     std::vector<Mix_Chunk*> slipping_sound_effects;
     std::vector<Mix_Chunk*> struck_duck_sound_effects;
+    std::vector<Mix_Chunk*> weapon_recharging_sound_effects;
     
     std::vector<DuckView> duck_views;
     GearView gear_view;
 
     void set_up_game();
     void render_map();
-    void render_ducks(game_snapshot_t gs);
-    void render_bullets(game_snapshot_t gs);
-    void render_weapons(game_snapshot_t gs);
-    void render_scoreboard(score_DTO score);
-    void zoom(game_snapshot_t gs);
-    void render_boxes(game_snapshot_t gs);
-    void add_ducks(game_snapshot_t gs);
+    void render_ducks(game_snapshot_t& gs);
+    void render_bullets(game_snapshot_t& gs);
+    void render_weapons(game_snapshot_t& gs);
+    void render_scoreboard(score_DTO& score);
+    void zoom(game_snapshot_t& gs);
+    void render_boxes(game_snapshot_t& gs);
+    void add_ducks(game_snapshot_t& gs);
     void load_duck_textures();
     void load_music();
     int random_number(int min, int max);
-    void make_noise(game_snapshot_t gs);
+    void make_noise(game_snapshot_t& gs);
     void load_gear_textures();
     void load_map_textures();
     void show_loading_screen();
+    void free_music();
+    void render_duck_scores(int& score_id, int duck_place, int& score_1, int& score_10);
 
 public:
     GameView();
-    void add_map(map_structure_t map);
-    void render_score(score_DTO score);
-    void render_endgame_score(score_DTO score);
-    void render_game(game_snapshot_t gs);
+    void add_map(map_structure_t& map);
+    void render_score(score_DTO& score);
+    void render_endgame_score(score_DTO& score);
+    void render_game(game_snapshot_t& gs);
     ~GameView();
 };
 

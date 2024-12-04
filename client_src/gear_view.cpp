@@ -190,7 +190,7 @@ void GearView::draw_gear(weapon_DTO& weapon) {
     }
 }
 // dibujar gear en las manos del pato
-void GearView::draw_gear_in_hands(int x, int y, int gear, int inclination, int facing_direction) {
+void GearView::draw_gear_in_hands(int x, int y, int &gear, int& inclination, int facing_direction) {
     switch (gear) {
         case 0:
             renderer.Copy(gear_textures[gear], SDL_Rect{0, 0, 22, 11}, SDL_Rect{x, y, 36, 18},
@@ -231,7 +231,7 @@ void GearView::draw_gear_in_hands(int x, int y, int gear, int inclination, int f
     }
 }
 
-void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int inclination, int x, int y,
+void GearView::draw_accessories(duck_DTO& duck, bool& facing_direction, int& inclination, int x, int y,
                                 std::vector<int>* a_f) {
 
     int x_sum_value;
@@ -274,8 +274,8 @@ void GearView::draw_accessories(duck_DTO duck, bool facing_direction, int inclin
 }
 
 // dibujar gear que tiene un pato
-void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck, int inclination,
-                              int x_sum_value, int y_sum_value) {
+void GearView::draw_held_gear(bool& facing_direction, duck_DTO& duck, int& inclination, int x_sum_value,
+                        int y_sum_value) {
     int gear = duck.weapon_id - 1;
     int x = duck.x;
     int y = duck.y;

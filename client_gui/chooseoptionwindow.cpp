@@ -20,7 +20,7 @@ ChooseOptionWindow::ChooseOptionWindow(QWidget* parent, QString address, QString
     player->setAudioOutput(audioOutput);
     player->setSource(QUrl("qrc:/assets/music/complete_menu_song.mp3"));
     this->player->setLoops(QMediaPlayer::Infinite);
-    audioOutput->setVolume(0.4);
+    audioOutput->setVolume(0.2);
     player->play();
 }
 

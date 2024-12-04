@@ -16,36 +16,23 @@
 
 namespace fs = std::filesystem;
 
-Lobby::Lobby(GamesManager& games_manager, Socket&& socket)
+Lobby::Lobby(GamesManager& games_manager, Socket&& ss)
     : games_manager(games_manager),
-      socket(std::move(socket)) {}
+      socket(std::move(ss)),
+      protocol(socket) {}
 
 void Lobby::creating_game(bool custom_map){
-    bool aux = true;
-    uint8_t code2 = 0x05;
-    uint8_t buffer;
-    socket.sendall(&code2, ONE_BYTE, &aux);
-    socket.recvall(&buffer, ONE_BYTE, &aux);
-    uint8_t code = 0x08;
-    uint8_t  maxplayers;
-    socket.sendall(&code, ONE_BYTE, &aux);
-    socket.recvall(&maxplayers, ONE_BYTE, &aux);
+    int number_of_players = protocol.get_players();
+    int max_players = protocol.get_max_players();
+
     if(!custom_map){
-        if(!this->games_manager.create_new_game(std::move(socket), buffer, (int)maxplayers)){
-            std::cout << "Error creating game" << std::endl;
-        }
+        this->games_manager.create_new_game(std::move(socket), number_of_players, max_players);
         return;
     }
-    std::string map_name;
-    code = 0x09;
-    this->socket.sendall(&code, ONE_BYTE, &aux);
-    uint8_t buffer2;
-    this->socket.recvall(&buffer2, ONE_BYTE, &aux);
-    std::string namebuffer;
-    namebuffer.resize(buffer2);
-    this->socket.recvall(&namebuffer[0], buffer2, &aux);
-    map_name = std::string(namebuffer);
-    this->games_manager.create_new_custom_game(std::move(socket), buffer, (int)maxplayers, map_name);
+    std::cout << "Creating custom game" << std::endl;
+    std::string map_name = protocol.receive_map_name();
+    std::cout << "despues de receive map" << std::endl;
+    this->games_manager.create_new_custom_game(std::move(socket), number_of_players, max_players, map_name);
 }
 
 bool Lobby::ask_for_maps(bool& is_close){
@@ -58,12 +45,9 @@ bool Lobby::ask_for_maps(bool& is_close){
                     if (stop_pos != std::string::npos) {
                         relative_path = relative_path.substr(0, stop_pos);
                     }
-                    uint8_t size = relative_path.size();
-                    socket.sendall(&size, ONE_BYTE, &is_close);
-                    socket.sendall(relative_path.c_str(), size, &is_close);
+                    protocol.send_text(relative_path);
                 }
-                uint8_t zero = 0;
-                socket.sendall(&zero, ONE_BYTE, &is_close);
+                protocol.stop_sending_maps();
             } else {
                 return false;
             }
@@ -76,11 +60,8 @@ bool Lobby::ask_for_maps(bool& is_close){
 
 bool Lobby::join_random_game(bool& is_close){
     try {
-            uint8_t code2 = 0x05;
-            socket.sendall(&code2, ONE_BYTE, &is_close);
-            uint8_t buffer2;
-            socket.recvall(&buffer2, ONE_BYTE, &is_close);
-            if(!this->games_manager.add_client_to_random_game(std::move(socket), buffer2)){
+            int number_of_players = protocol.get_players();
+            if(!this->games_manager.add_client_to_random_game(std::move(socket), number_of_players)){
                 std::cout << "Error joining game" << std::endl;
             }
         } catch (const GamesManagerError& e) {
@@ -90,13 +71,9 @@ bool Lobby::join_random_game(bool& is_close){
 }
 
 bool Lobby::join_game(bool& is_close){
-    uint8_t code = 0x06;
-    socket.sendall(&code, ONE_BYTE, &is_close);
-    uint8_t buffer;
-    socket.recvall(&buffer, ONE_BYTE, &is_close);
-    uint8_t buffer2;
-    socket.recvall(&buffer2, ONE_BYTE, &is_close);
-    if(!this->games_manager.add_client_to_game(buffer2, std::move(socket), buffer)){
+    uint8_t number_of_players = protocol.get_players();
+    int game_id = protocol.get_game_id();
+    if(!this->games_manager.add_client_to_game(game_id, std::move(socket), number_of_players)){
         return false;
     }
     return true;
@@ -104,19 +81,14 @@ bool Lobby::join_game(bool& is_close){
 
 bool Lobby::ask_for_games(bool& is_close){
     std::list<std::unique_ptr<game_t>>& games = this->games_manager.get_games();
-    uint16_t size = games.size();
-    uint8_t code = 0x04;
-    socket.sendall(&code, ONE_BYTE, &is_close);
-    size = htons(size);
-    socket.sendall(&size, TWO_BYTES, &is_close);
+    int size = games.size();
+    protocol.send_games_size(size);
     for (auto& game: games) {
         games_DTO game_dto;
         game_dto.game_id = game->game_id;
         game_dto.current_players = game->player_count;
         game_dto.max_players = game->max_players;
-        TranslatorDTOs translator_games;
-        translator_games.hton_games_DTO(&game_dto);
-        socket.sendall(&game_dto, sizeof(games_DTO), &is_close);
+        protocol.send_games(game_dto);
     }
     return true;
 }
@@ -147,9 +119,9 @@ void Lobby::run() {
             {NEW_GAME_CUSTOM, [&](bool& is_close) { creating_game(true); }},
         };
 try {
-    uint8_t key_code = 0;
+    uint8_t key_code;
     bool is_close = false;
-    socket.recvall(&key_code, ONE_BYTE, &is_close);
+    key_code = protocol.receive_key_code();
     if (actions.count(key_code)) {
             actions[key_code](is_close);
         } else {

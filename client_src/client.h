@@ -21,7 +21,6 @@
 #include "protocol_client.h"
 #include "receiver.h"
 #include "sender.h"
-#include "waiting_view.h"
 
 #define MAX_PLAYERS 2
 #define PLAYER_1 0

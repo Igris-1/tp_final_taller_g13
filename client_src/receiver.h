@@ -11,7 +11,6 @@
 #include "message.h"
 #include "protocol_client.h"
 
-#define SLEEP_TIME 2000
 #define MAP_CODE 0x00
 #define GAME_SNAPSHOT_CODE 0x01
 #define SCORE_CODE 0x02

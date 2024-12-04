@@ -56,7 +56,7 @@ void ProtocolServer::send_long_number(uint16_t& number) {
 }
 
 void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
-    std::lock_guard<std::mutex> lock(mutex);
+    
     uint8_t protocol_name = PROTOCOL_SEND_GAME_INFO;
     this->send_number(protocol_name);
     this->send_number(game_snapshot.ducks_len);
@@ -84,7 +84,6 @@ void ProtocolServer::sendGameInfo(game_snapshot_t game_snapshot) {
 }
 
 void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
-    std::lock_guard<std::mutex> lock(mutex);
     uint8_t protocol_name = PROTOCOL_SEND_GAME_START_INFO;
     this->send_number(protocol_name);
     this->send_long_number(map_structure.width);
@@ -102,7 +101,7 @@ void ProtocolServer::sendGameStartInfo(map_structure_t map_structure) {
 }
 
 void ProtocolServer::sendScore(score_DTO score) {
-    std::lock_guard<std::mutex> lock(mutex);
+    
     uint8_t protocol_name = PROTOCOL_SEND_SCORE;
     this->send_number(protocol_name);
     this->translator_dto.hton_score_DTO(&score);
@@ -110,7 +109,7 @@ void ProtocolServer::sendScore(score_DTO score) {
 }
 
 void ProtocolServer::sendFinalScore(score_DTO score) {
-    std::lock_guard<std::mutex> lock(mutex);
+    
     uint8_t protocol_name = PROTOCOL_SEND_FINAL_SCORE;
     this->send_number(protocol_name);
     this->translator_dto.hton_score_DTO(&score);
@@ -133,10 +132,6 @@ ProtocolServer::ProtocolServer(ProtocolServer&& other) noexcept:
 // Move Assignment Operator
 ProtocolServer& ProtocolServer::operator=(ProtocolServer&& other) noexcept {
     if (this != &other) {
-        // Lock the mutexes to ensure thread safety during the move
-        std::lock_guard<std::mutex> lock(mutex);
-        std::lock_guard<std::mutex> other_lock(other.mutex);
-
         // Move resources
         connection = std::move(other.connection);
         socket_is_closed = other.socket_is_closed;

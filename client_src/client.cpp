@@ -47,7 +47,6 @@ void Client::set_client(){
             sender.send_players();
         }},
         {SEND_GAME_PLAYERS, [&](Message& m, Sender& sender) { 
-            sender.send_players();
             sender.send_game_to_join(game_to_join);
         }},
         {SEND_MAX_PLAYERS, [&](Message& m, Sender& sender) {  

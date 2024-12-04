@@ -32,6 +32,7 @@ bool GamesManager::create_game(Socket&& ss, int number_of_players, int max_playe
         }
         ++it;
     }
+    std::cout << "Creating game con map: " << map_name <<std::endl;
     this->games.push_back(std::make_unique<game_t>(this->games_counter, false, max_players)); // true == practice mode
     this->games_counter++;
     this->games.back()->gameThread.set_map_name(map_name);

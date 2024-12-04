@@ -22,7 +22,7 @@ project(DuckGame
 # Options to enable/disable components
 option(CLIENT "Enable / disable client GUI program." ON)
 option(SERVER "Enable / disable server program." ON)
-option(EDITOR "Enable / disable editor program." OFF)
+option(EDITOR "Enable / disable editor program." ON)
 option(TESTS "Enable / disable tests." ON)
 
 # Include compiler warnings configuration
@@ -143,10 +143,10 @@ endif()
 
 
 # ---------------- INSTALL SECTION ----------------
-# set(BIN_INSTALL_DIR "/usr/bin") # ejecutables
-# set(SHARED_DIR "/usr/lib/TPDuckGame") # librerías compartidas
-# set(CONF_INSTALL_DIR "/etc/TPDuckGame") # archivos de configuración
-# set(ASSETS_INSTALL_DIR "/usr/share/TPDuckGame") # assets
+set(BIN_INSTALL_DIR "/usr/bin") # ejecutables
+set(SHARED_DIR "/usr/lib/TPDuckGame") # librerías compartidas
+set(CONF_INSTALL_DIR "/etc/TPDuckGame") # archivos de configuración
+set(ASSETS_INSTALL_DIR "/usr/share/TPDuckGame") # assets
 
 # # Install executables
 # install(TARGETS duckGameServer duckGameClient duckGameEditor 

@@ -83,7 +83,6 @@ void Receiver::run() {
             } catch (const std::out_of_range& e) {
                 std::cerr << "funcion con codigo " << (int)code << " no existe. " << e.what() << std::endl;
             }
-            usleep(SLEEP_TIME);
         } catch (const std::exception& e) {
             std::cerr << "Receiver fallo: " << e.what() << std::endl;
         }

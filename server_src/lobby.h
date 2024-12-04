@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <string>
 #include <functional>
+#include "protocol_lobby.h"
 
 
 class Lobby : public Thread {
@@ -14,6 +15,7 @@ private:
     int lobby_id;
     GamesManager& games_manager;
     Socket socket;
+    ProtocolLobby protocol;
 
     void run() override;
     bool join_random_game(bool& is_close);
