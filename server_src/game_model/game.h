@@ -33,13 +33,8 @@
 #define HEIGHT_POSITION 3
 
 #define WEAPON_SPAWN_SIZE 40
+#define WEAPON_FLYING_SPACE 26
 
-// factores para el salto y gravedad
-
-// #define TILES_FOR_JUMP 175
-// #define PRODUCT_FACTOR_JUMP 2  // estos son re falopas, pero basicamente hace q la gravedad sea
-// mas fuerte #define ADD_FACTOR_JUMP 3 #define PRODUCT_FACTOR_GRAVITY 2 #define ADD_FACTOR_GRAVITY
-// 8
 #define TIME_TO_RESPAWN 300
 
 typedef struct {
@@ -66,7 +61,7 @@ typedef struct {
 
 class Game {
 private:
-    MapGame map;                                                   // el que sabe que se puede mover y que no              
+    MapGame map;            
     std::map<int, std::shared_ptr<duck_state>> ducks_states;    // tiene el estado de cada pato
     std::map<int, int> ducks_score;                             // tiene los puntos de cada pato
     std::vector<std::tuple<int, int>> spawn_positions;          // tiene las posiciones de spawn de armas

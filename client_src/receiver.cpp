@@ -2,6 +2,8 @@
 #include "../common_src/queue.h"
 #include "protocol_client.h"
 #include <map> 
+#include "../common_src/socket.h"
+#include "../common_src/liberror.h"
 
 void Receiver::receive_map() {
     map_structure_t map = protocol.receive_map();
@@ -83,6 +85,8 @@ void Receiver::run() {
             } catch (const std::out_of_range& e) {
                 std::cerr << "funcion con codigo " << (int)code << " no existe. " << e.what() << std::endl;
             }
+        } catch (const LibError& e) {
+            stop();
         } catch (const std::exception& e) {
             std::cerr << "Receiver fallo: " << e.what() << std::endl;
         }

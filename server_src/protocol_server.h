@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <mutex>
 #include <string>
 
 #include "../common_src/action_t.h"
@@ -31,10 +30,8 @@ private:
 public:
     ProtocolServer(Socket&& client);
 
-    // Move Constructor
     ProtocolServer(ProtocolServer&& other) noexcept;
 
-    // Move Assignment Operator
     ProtocolServer& operator=(ProtocolServer&& other) noexcept;
 
     ProtocolServer(const ProtocolServer&) = delete;

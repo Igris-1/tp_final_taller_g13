@@ -112,7 +112,7 @@ void Game::continue_horizontal_movements() {
                 this->map.move_relative_if_posible(id, RIGHT_MOVEMENT, 0);
             }
             this->map.move_relative_if_posible(id, 0,
-                                               0);  // no borrar :], hace q el pato siga patinandose
+                                               0);
         }
     }
     for (int j = 0; j < SPEED_OF_GAME * 4; j++) {
@@ -168,7 +168,7 @@ void Game::reset_death_sound(){
 
 game_snapshot_t Game::get_snapshot() {
     game_snapshot_t snapshot;
-    snapshot.ducks = this->get_duck_DTO_list();  // usar el de this y no el de map para completar los ducks states
+    snapshot.ducks = this->get_duck_DTO_list();
     snapshot.ducks_len = snapshot.ducks.size();
     snapshot.bullets = this->map.get_bullets_DTO_list();
     snapshot.bullets_len = snapshot.bullets.size();
@@ -206,7 +206,7 @@ void Game::jump_duck(int id, bool jump) {
         this->ducks_states[id]->falling_with_style = true;
     }
     if (!this->ducks_states[id]->is_jumping && jump &&
-        !this->ducks_states[id]->is_falling) {  // esto no es suficiente para evitar que vuele
+        !this->ducks_states[id]->is_falling) {
 
         this->ducks_states[id]->is_jumping = true;
         this->ducks_states[id]->tiles_to_jump = TILES_FOR_JUMP;
@@ -260,7 +260,7 @@ void Game::add_spawn_duck(Hitbox hitbox) {
 }
 
 void Game::add_spawn_position(Hitbox hitbox) {
-        this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()-26));
+        this->spawn_positions.push_back(std::make_tuple(hitbox.get_x(), hitbox.get_y()-WEAPON_FLYING_SPACE));
         this->map.add_weapon_spawn_position(hitbox);
         
 }

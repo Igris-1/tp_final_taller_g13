@@ -67,10 +67,10 @@ private:
     void load_gear_textures();
     void load_map_textures();
     void show_loading_screen();
-    void free_music();
     void render_duck_scores(int& score_id, int duck_place, int& score_1, int& score_10);
 
 public:
+    void free_music();
     GameView();
     void add_map(map_structure_t& map);
     void render_score(score_DTO& score);

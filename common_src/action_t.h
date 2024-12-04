@@ -1,7 +1,7 @@
 #ifndef ACTION_T_H
 #define ACTION_T_H
 #include <cstdint>
-typedef struct {  // comento lo q no se usa todavia
+typedef struct {
     uint8_t player_id = 0;
     bool left = false;
     bool right = false;
@@ -19,9 +19,6 @@ typedef struct {  // comento lo q no se usa todavia
     bool unpress_crouch_button = false;
     bool press_look_up_button = false;
     bool unpress_look_up_button = false;
-
-    // bool create_duck = false;
-    // representar con un solo byte
 
 } action_t;
 

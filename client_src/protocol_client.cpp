@@ -10,8 +10,6 @@
 
 #include "message.h"
 
-#define ONE_BYTE 1
-#define TWO_BYTES 2
 #define SHUT_DOWN_TWO 2
 
 
@@ -21,26 +19,60 @@ ProtocolClient::ProtocolClient(Socket&& client):
 ProtocolClient::ProtocolClient(ProtocolClient&& protocol) noexcept:
         connection(std::move(protocol.connection)), socket_is_closed(protocol.socket_is_closed) {}
 
+games_DTO ProtocolClient::receive_games_dto() {
+    TranslatorDTOs translator;
+    games_DTO game;
+    connection.recvall(&game, sizeof(games_DTO), &socket_is_closed);
+    translator.ntoh_games_DTO(&game);
+    return game;
+}
+
+int ProtocolClient::receive_games_size(){
+    uint8_t code;
+    connection.recvall(&code, sizeof(uint8_t), &socket_is_closed);
+
+    uint16_t size = 0;
+    connection.recvall(&size, sizeof(uint16_t), &socket_is_closed);
+    size = ntohs(size);
+    return size;
+}
+
+void ProtocolClient::send_find_map_dummy_id() {
+    uint8_t id = FIND_MAP_DUMMY_ID;
+    connection.sendall(&id, sizeof(uint8_t), &socket_is_closed);
+}
+
+void ProtocolClient::send_join_dummy_id() {
+    uint8_t id = JOIN_DUMMY_ID;
+    connection.sendall(&id, sizeof(uint8_t), &socket_is_closed);
+}
+
 void ProtocolClient::send_number(int number) {
     uint8_t num = static_cast<uint8_t>(number);
-    connection.sendall(&num, ONE_BYTE, &socket_is_closed);
+    connection.sendall(&num, sizeof(uint8_t), &socket_is_closed);
 }
 
 uint8_t ProtocolClient::read_number() {
     uint8_t buffer;
-    connection.recvall(&buffer, ONE_BYTE, &socket_is_closed);
+    connection.recvall(&buffer, sizeof(uint8_t), &socket_is_closed);
     return buffer;
+}
+
+std::string ProtocolClient::receive_map_name(int size) {
+    std::string map_name(size, '\0');
+    connection.recvall(&map_name[0], size, &socket_is_closed);
+    return map_name;
 }
 
 uint16_t ProtocolClient::read_long_number() {
     uint16_t buffer;
-    connection.recvall(&buffer, TWO_BYTES, &socket_is_closed);
+    connection.recvall(&buffer, sizeof(uint16_t), &socket_is_closed);
     return ntohs(buffer);
 }
 
 void ProtocolClient::send_long_number(uint16_t& number){
     uint16_t num = htons(number);
-    connection.sendall(&num, TWO_BYTES, &socket_is_closed);
+    connection.sendall(&num, sizeof(uint16_t), &socket_is_closed);
 }
 
 void ProtocolClient::send_action(action_t& action) {
@@ -164,7 +196,6 @@ void ProtocolClient::shutDown() {
 
 void ProtocolClient::send_string(std::string map_name){
     uint8_t size = map_name.size();
-    //connection.sendall(&size, ONE_BYTE, &socket_is_closed);
     this->send_number(size);
     connection.sendall(map_name.c_str(), size, &socket_is_closed);
 }

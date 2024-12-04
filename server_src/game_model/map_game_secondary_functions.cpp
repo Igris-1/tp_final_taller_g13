@@ -19,7 +19,6 @@ bool MapGame::position_is_valid(Hitbox hitbox, bool can_fall, bool to_stand) {
     if (!hitbox_in_range(hitbox, can_fall)) {
         return false;
     }
-    //bool in_invalid_position = not_in_weapon_spawn_position(hitbox, to_stand);
     bool in_platforms = not_in_platforms(hitbox, to_stand);
     return  in_platforms;
 }

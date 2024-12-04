@@ -122,22 +122,17 @@ void ProtocolServer::shutDown() {
     }
 }
 
-// Move Constructor
 ProtocolServer::ProtocolServer(ProtocolServer&& other) noexcept:
         connection(std::move(other.connection)), socket_is_closed(other.socket_is_closed) {
-    // No need to move the mutex, as std::mutex is not moveable
-    other.socket_is_closed = true;  // Mark the old instance as "closed"
+    other.socket_is_closed = true;
 }
 
-// Move Assignment Operator
 ProtocolServer& ProtocolServer::operator=(ProtocolServer&& other) noexcept {
     if (this != &other) {
-        // Move resources
         connection = std::move(other.connection);
         socket_is_closed = other.socket_is_closed;
 
-        // Reset the source object
-        other.socket_is_closed = true;  // Mark the old instance as "closed"
+        other.socket_is_closed = true;
     }
     return *this;
 }

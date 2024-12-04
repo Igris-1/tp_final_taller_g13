@@ -22,7 +22,7 @@ JoinGame::JoinGame(QWidget* parent, QMediaPlayer* player, QString address, QStri
         player(player),
         localPlayers(PLAYER1),
         address(address),
-        port(port) {
+        port(port){
     ui->setupUi(this);
 }
 
@@ -111,11 +111,12 @@ void JoinGame::on_startButton_clicked() {
     char* charPort = byteArrayPort.data();
     char* charAddress = byteArrayAddress.data();
 
-    int selectedGame = ui->matchesBox->currentIndex();
+    int selectedGame = this->ui->matchesBox->currentIndex();
 
     if (selectedGame > -1) {
+        int game_id = this->games_ids[selectedGame];
         this->player->stop();
-        Client client(charAddress, charPort, selectedGame + 1);
+        Client client(charAddress, charPort, game_id);
         client.setLocalPlayers(localPlayers);
         client.select_game_mode(JOIN_GAME);
         this->hide();
@@ -141,8 +142,10 @@ void JoinGame::on_randomGameButton_clicked() {
 
 void JoinGame::refresh_matches(std::vector<games_DTO> games) {
     if (!games.empty()) {
+        games_ids.clear();
         ui->matchesBox->clear();
         for (const games_DTO& game: games) {
+            games_ids.push_back(game.game_id);
             QString gameInfo = QString("Game ID: %1 | Current Players: %2 | Max Players: %3")
                                        .arg(game.game_id)
                                        .arg(game.current_players)

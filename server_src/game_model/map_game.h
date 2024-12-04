@@ -104,7 +104,6 @@ public:
     bool duck_exist(int id);
     bool set_duck_start_position(int duck_id, int x, int y);
     bool duck_is_alive(int id);
-    void respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn);
     void remove_duck(int id);
     bool move_relative_if_posible(int duck_id, int dx, int dy);
     void continue_fire_rate(int id, int speed_of_game);
@@ -115,7 +114,6 @@ public:
     // BULLETS AND PICKABLE
     void bullets_next_movement(const std::map<std::string, weapon_config>& weapons_config);
     bool move_relative_if_posible(Hitbox& hitbox, int dx, int dy);
-    void ducks_try_pick_up(int id_duck);
     void throw_item(int duck_id, bool right_direction, bool looking_up);
     void ducks_try_throw(int id_duck, bool right_direction);
     void add_item(std::shared_ptr<Pickable> new_weapon, int x, int y);

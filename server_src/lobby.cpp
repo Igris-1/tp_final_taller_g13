@@ -29,9 +29,7 @@ void Lobby::creating_game(bool custom_map){
         this->games_manager.create_new_game(std::move(socket), number_of_players, max_players);
         return;
     }
-    std::cout << "Creating custom game" << std::endl;
     std::string map_name = protocol.receive_map_name();
-    std::cout << "despues de receive map" << std::endl;
     this->games_manager.create_new_custom_game(std::move(socket), number_of_players, max_players, map_name);
 }
 
@@ -60,13 +58,13 @@ bool Lobby::ask_for_maps(bool& is_close){
 
 bool Lobby::join_random_game(bool& is_close){
     try {
-            int number_of_players = protocol.get_players();
-            if(!this->games_manager.add_client_to_random_game(std::move(socket), number_of_players)){
-                std::cout << "Error joining game" << std::endl;
-            }
-        } catch (const GamesManagerError& e) {
-            return false;
+        int number_of_players = protocol.get_players();
+        if(!this->games_manager.add_client_to_random_game(std::move(socket), number_of_players)){
+            std::cerr << "Error joining random game" << std::endl;
         }
+    } catch (const GamesManagerError& e) {
+        return false;
+    }
     return true;
 }
 
@@ -104,7 +102,7 @@ void Lobby::run() {
             }},
             {JOIN_GAME, [&](bool& is_close) {
                 if (!this->join_game(is_close)) {
-                    std::cout << "Error joining game" << std::endl;
+                    std::cerr << "Error joining game" << std::endl;
                 }
             }},
             {ASK_FOR_GAMES, [&](bool& is_close) { this->ask_for_games(is_close); }},

@@ -8,26 +8,20 @@
 #include "DTOs.h"
 
 
-/*
-typedef struct game_snapshot {
-    uint16_t ducks_len;           // 2 bytes
-    //std::vector<duck> ducks;      // Vector que contendrá los ducks
-}game_snapshot_t;
-*/
 
 typedef struct game_snapshot {
 
-    uint8_t ducks_len = 0;        // 1 byte
-    std::vector<duck_DTO> ducks;  // sizeof(ducks) * ducks_len
+    uint8_t ducks_len = 0; 
+    std::vector<duck_DTO> ducks; 
 
-    uint16_t bullets_len = 0;         // 2 bytes
-    std::vector<bullet_DTO> bullets;  // sizeof(bullet) * bullets_len
+    uint16_t bullets_len = 0;
+    std::vector<bullet_DTO> bullets; 
 
-    uint16_t weapons_len = 0;         // 2 bytes
-    std::vector<weapon_DTO> weapons;  // sizeof(item) * items_len
+    uint16_t weapons_len = 0;
+    std::vector<weapon_DTO> weapons;
 
     uint16_t boxes_len = 0;
-    std::vector<box_DTO> boxes;  // 2 bytes
+    std::vector<box_DTO> boxes;
 
     sounds_DTO sounds;
 } game_snapshot_t;
@@ -40,7 +34,5 @@ typedef struct map_structure_t {
     uint16_t spawns_platforms_len = 0;
     std::vector<platform_DTO> spawns_platforms;
 } map_structure_t;
-
-//__attribute__((packed))
 
 #endif  // GAME_SNAPSHOT_T_H

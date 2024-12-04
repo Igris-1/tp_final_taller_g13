@@ -17,30 +17,16 @@ void ListOfClientsMonitor::addClient(Socket&& ss, Queue<std::shared_ptr<Action>>
     Queue<game_snapshot_t> senderQueue;
     this->clientsList.emplace_back(std::move(ss), gameQueue, idCount);
 }
-// cppcheck-suppress passedByValue
 void ListOfClientsMonitor::enqueue_snapshot(game_snapshot_t command) {
     std::lock_guard<std::mutex> lock(mutex);
     for (auto it = clientsList.begin(); it != clientsList.end();) {
         if (it->is_alive()) {
-            // it->push(command);
             ++it;
         } else {
             it = clientsList.erase(it);
         }
     }
 }
-
-// void ListOfClientsMonitor::enqueue_score(score_DTO score){
-//     std::lock_guard<std::mutex> lock(mutex);
-//     for (auto it = clientsList.begin(); it != clientsList.end();) {
-//         if (it->is_alive()) {
-//             it->push_score(score);
-//             ++it;
-//         } else {
-//             it = clientsList.erase(it);
-//         }
-//     }
-// }
 
 void ListOfClientsMonitor::enqueue_instruction(instruction_for_client_t command) {
     std::lock_guard<std::mutex> lock(mutex);

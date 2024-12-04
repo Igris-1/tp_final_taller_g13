@@ -66,10 +66,6 @@ Client::~Client() {}
 
 void Client::select_game_mode(int game_mode) { protocol.send_number(game_mode); }
 
-// std::vector<int> Client::get_available_games() {
-// for refhresh button
-// }
-
 void Client::setMapName(const std::string& map_name){
     this->map_name = map_name;
 }
@@ -265,6 +261,7 @@ void Client::run() {
             int remaining_time = LOOP_TIME - elapsed_time;
             std::this_thread::sleep_for(std::chrono::microseconds(remaining_time));
         }
+        game_view.free_music();
         protocol.shutDown();
 
         receiver.stop();

@@ -114,7 +114,6 @@ bool MapGame::add_platform(Hitbox hitbox) {
         }
     }
     this->platforms.insert(hitbox);
-
     return true;
 }
 
@@ -150,29 +149,7 @@ bool MapGame::move_relative_if_posible(int duck_id, int dx, int dy) {
 
     return true;
 }
-//esta funcion d respawn creo q no la usa nadie
-void MapGame::respawn_ducks(std::vector<std::tuple<int, int>> positions_to_respawn) {
-    int actual_respawn = 0;
-    for (auto it = this->ducks_dead.begin(); it != this->ducks_dead.end();) {
-        if (it->second->get_respawn_time() == 0) {
-            it->second->set_health(HEALTH);
-            if (actual_respawn < positions_to_respawn.size()) {
-                it->second->move_to(std::get<X_POSITION>(positions_to_respawn[actual_respawn]),
-                                    std::get<Y_POSITION>(positions_to_respawn[actual_respawn]));
-            } else {
-                actual_respawn = 0;
-                it->second->move_to(std::get<X_POSITION>(positions_to_respawn[actual_respawn]),
-                                    std::get<Y_POSITION>(positions_to_respawn[actual_respawn]));
-            }
-            actual_respawn++;
-            this->ducks[it->first] = it->second;
-            it = this->ducks_dead.erase(it);
-        } else {
-            it->second->tick_respawn_time();
-            ++it;
-        }
-    }
-}
+
 
 std::vector<int> MapGame::get_live_duck_ids() {
     std::vector<int> live_duck_ids;
@@ -287,7 +264,7 @@ void MapGame::explosives_on_map() {
     for (auto explosive = this->explosives.begin(); explosive != this->explosives.end();) {
         bool banana_flag = false;
         this->duck_collision_explosive(explosive, banana_flag);
-        if (banana_flag) {  // si no hago esto, va a chequear la banana q ya borre con las cosas de abajo                // abajo
+        if (banana_flag) {
             continue;
         }
         if ((*explosive)->exploted()) {
@@ -501,35 +478,6 @@ void MapGame::clean_map(std::vector<std::tuple<int, int>>& positions_to_respawn)
 }
 
 int MapGame::ducks_dead_size() { return this->ducks_dead.size(); }
-
-// bool MapGame::approximate_spawn_to_platform(Hitbox& hitbox, bool is_item) {
-//     while (true) {
-//         bool collision_found = false;
-//         for (auto& platform: this->platforms) {
-//             if (platform.has_collision(hitbox)) {
-//                 collision_found = true;
-//                 break;
-//             }
-//         }
-
-//         if (!collision_found) {
-//             hitbox.move_relative(NO_DIRECTION, GRAVITY);
-//         } else {
-//             hitbox.move_relative(NO_DIRECTION, JUMP_DIRECTION);
-//             break;
-//         }
-//         if (hitbox.get_y() >= this->height) {
-//             hitbox.move(hitbox.get_x(), 0); // si se va de rango, lo mando al principio del mapa
-//             return false;
-//         }
-//     }
-//     if (is_item) {
-//         hitbox.move_relative(NO_DIRECTION, PICKABLE_SPAWN_DISTANCE_TO_PLATFORM);
-//     } else {
-//         hitbox.move_relative(NO_DIRECTION, DUCK_SPAWN_DISTANCE_TO_PLATFORM);
-//     }
-//     return true;
-// }
 
 sounds_DTO MapGame::get_sounds_DTO() {
     sounds_DTO dto = this->sounds;

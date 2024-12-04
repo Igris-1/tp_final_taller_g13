@@ -43,7 +43,7 @@ void DuckView::draw_duck(duck_DTO& duck) {
         facing_direction = false;
     } else if (duck.is_moving_left) {
         facing_direction = true;
-    }  // esto despues hay que cambiarlo por un is_moving y facing_direction
+    }
     if (!duck.is_alive) {
         draw_dead_duck(duck);
     } else if (duck.jumping) {
@@ -72,7 +72,7 @@ SDL_Rect DuckView::createDuckRect(int x, int y, int w, int h) {
 
 void DuckView::draw_dead_duck(duck_DTO& duck) {
     renderer.Copy(duck_dead_texture, SDL_Rect{0, 0, 16, 16},
-                  SDL_Rect{duck.x - 16, duck.y - 16, 32, 32}, 0, NullOpt, facing_direction);
+                  SDL_Rect{duck.x - 16, duck.y + 16, 32, 32}, 0, NullOpt, facing_direction);
 }
 
 void DuckView::draw_jumping_duck(duck_DTO& duck, Texture* current_duck_texture) {
@@ -157,11 +157,7 @@ void DuckView::draw_moving_duck(duck_DTO& duck, Texture* current_duck_texture) {
                 SDL_Rect{walk_frames[walk_frame / 4].x, walk_frames[walk_frame / 4].y, 16, 16},
                 SDL_Rect{duck.x - 6 + facing_direction * 12, duck.y + 9, 32, 32}, 0, NullOpt,
                 facing_direction);
-    } /*if (helmet){
-        renderer.Copy(accessories_sprites[0], SDL_Rect{8, 10, 16, 16},
-                      SDL_Rect{duck.x - 16 + 12 + facing_direction*10, duck.y-16+7, 32, 32}, 0,
-    NullOpt, facing_direction);
-    }*/
+    }
 }
 
 void DuckView::draw_idle_duck(duck_DTO& duck, Texture* current_duck_texture) {

@@ -42,6 +42,7 @@ private:
     int localPlayers;
     QString address;
     QString port;
+    std::vector<int> games_ids;
 
     void refresh_matches(std::vector<games_DTO> games);
 };

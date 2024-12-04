@@ -7,20 +7,10 @@
 
 #include "../common_src/queue.h"
 #include "../common_src/thread.h"
+#include"../common_src/socket.h"
 
 #include "message.h"
 #include "protocol_client.h"
-
-#define MAP_CODE 0x00
-#define GAME_SNAPSHOT_CODE 0x01
-#define SCORE_CODE 0x02
-#define END_SCORE_CODE 0x03
-#define GAMES_INFO_CODE 0x04
-#define PLAYERS_CODE 0x05
-#define SEND_GAME_PLAYERS 0x06
-#define FAIL_TO_JOIN 0x07
-#define SEND_MAX_PLAYERS 0x08
-#define SEND_MAP_NAME 0x09
 
 class Receiver: public Thread {
 private:

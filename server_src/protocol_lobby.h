@@ -27,7 +27,6 @@ class ProtocolLobby {
         ProtocolLobby(Socket& socket);
         ~ProtocolLobby();
 
-        //void creating_game(bool custom_map, uint8_t& buffer, uint8_t& maxplayers ,Socket* socket, std::string& map_name);
 
 
 };

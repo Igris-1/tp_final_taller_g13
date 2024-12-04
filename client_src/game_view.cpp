@@ -89,7 +89,7 @@ void GameView::render_endgame_score(score_DTO& score) {
     renderer.Present();
     SDL_Delay(DELAY_AFTER_SCORE);
     window.Hide();
-    Mix_CloseAudio();
+    free_music();
 }
 
 void GameView::load_map_textures() {
@@ -211,32 +211,52 @@ void GameView::load_music() {
     slipping_sound_effects.push_back(Mix_LoadWAV("../assets/music/sounds/slipping2.wav"));
 }
 
-void GameView::free_music(){
+void GameView::free_music() {
     for (int i = 0; i < background_music.size(); i++) {
-        Mix_FreeMusic(background_music[i]);
+        if (background_music[i]) {
+            Mix_FreeMusic(background_music[i]);
+            background_music[i] = nullptr;
+        }
     }
 
     for (int i = 0; i < dead_duck_sound_effects.size(); i++) {
-        Mix_FreeChunk(dead_duck_sound_effects[i]);
+        if (dead_duck_sound_effects[i]) {
+            Mix_FreeChunk(dead_duck_sound_effects[i]);
+            dead_duck_sound_effects[i] = nullptr;
+        }
     }
 
     for (int i = 0; i < struck_duck_sound_effects.size(); i++) {
-        Mix_FreeChunk(struck_duck_sound_effects[i]);
+        if (struck_duck_sound_effects[i]) {
+            Mix_FreeChunk(struck_duck_sound_effects[i]);
+            struck_duck_sound_effects[i] = nullptr;
+        }
     }
 
     for (int i = 0; i < weapon_sound_effects.size(); i++) {
-        Mix_FreeChunk(weapon_sound_effects[i]);
+        if (weapon_sound_effects[i]) {
+            Mix_FreeChunk(weapon_sound_effects[i]);
+            weapon_sound_effects[i] = nullptr;
+        }
     }
 
     for (int i = 0; i < weapon_recharging_sound_effects.size(); i++) {
-        Mix_FreeChunk(weapon_recharging_sound_effects[i]);
+        if (weapon_recharging_sound_effects[i]) {
+            Mix_FreeChunk(weapon_recharging_sound_effects[i]);
+            weapon_recharging_sound_effects[i] = nullptr;
+        }
     }
 
     for (int i = 0; i < slipping_sound_effects.size(); i++) {
-        Mix_FreeChunk(slipping_sound_effects[i]);
+        if (slipping_sound_effects[i]) {
+            Mix_FreeChunk(slipping_sound_effects[i]);
+            slipping_sound_effects[i] = nullptr;
+        }
     }
+    
     Mix_CloseAudio();
 }
+
 
 int GameView::random_number(int min, int max) {
     std::random_device rd;
@@ -350,17 +370,37 @@ void GameView::add_ducks(game_snapshot_t& gs) {
 }
 
 void GameView::zoom(game_snapshot_t& gs) {
-    int min_x = gs.ducks[0].x;
-    int max_x = gs.ducks[0].x;
-    int min_y = gs.ducks[0].y;
-    int max_y = gs.ducks[0].y;
+    int min_x = 0;
+    int max_x = 0;
+    int min_y = 0;
+    int max_y = 0;
+
+    bool any_duck_alive = false;
 
     for (int i = 0; i < gs.ducks.size(); i++) {
         duck_DTO duck = gs.ducks[i];
-        min_x = std::min(min_x, static_cast<int>(duck.x));
-        max_x = std::max(max_x, static_cast<int>(duck.x));
-        min_y = std::min(min_y, static_cast<int>(duck.y));
-        max_y = std::max(max_y, static_cast<int>(duck.y));
+        if (duck.is_alive){
+            min_x = duck.x;
+            max_x = duck.x;
+            min_y = duck.y;
+            max_y = duck.y;
+            any_duck_alive = true;
+            break;
+        }
+    }
+
+    if (!any_duck_alive){
+        return;
+    }
+
+    for (int i = 0; i < gs.ducks.size(); i++) {
+        duck_DTO duck = gs.ducks[i];
+        if (duck.is_alive){
+            min_x = std::min(min_x, static_cast<int>(duck.x));
+            max_x = std::max(max_x, static_cast<int>(duck.x));
+            min_y = std::min(min_y, static_cast<int>(duck.y));
+            max_y = std::max(max_y, static_cast<int>(duck.y));
+        }
     }
 
     const float margin = 150.0f;

@@ -49,7 +49,6 @@ void ProtocolLobby::send_text(const std::string& text) {
         return;
     }
     uint8_t length = text.size();
-    //uint8_t bits_to_be_send = htons(static_cast<uint16_t>(length));
     socket.sendall(&length, sizeof(uint8_t), &socket_is_closed);
     socket.sendall(text.data(), text.size(), &socket_is_closed);
 }

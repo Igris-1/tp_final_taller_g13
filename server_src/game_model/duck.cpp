@@ -167,7 +167,7 @@ void Duck::set_sliding(bool sliding) { this->is_sliding = sliding; }
 void Duck::move_duck_relative(int x, int y) {
     if (this->is_sliding) {
         this->suffering_recoil =
-                false;  // para q deje de aplicarse recoil si durante el recoil toca una banana
+                false;
         this->hitbox.move_relative(this->x_direction, y);
         this->sliding_counter--;
         if (this->sliding_counter <= 0) {
@@ -177,11 +177,7 @@ void Duck::move_duck_relative(int x, int y) {
         return;
     }
     if (this->suffering_recoil) {
-        // if(this->recoil_counter > 70){
-        //     this->hitbox.move_relative(2*-(this->x_direction), y);
-        // }else{
         this->hitbox.move_relative(-this->x_direction, y);
-        //}
         this->recoil_counter--;
         if (this->recoil_counter <= 0) {
             this->suffering_recoil = false;

@@ -7,9 +7,7 @@ bool GamesManager::add_client_to_game_without_lock(int game_id, Socket&& ss, int
         if (game->game_id == game_id) {
             int max_players = game->max_players;
             if(game->player_count + number_of_players > max_players){
-                ss.shutdown(SHUT_DOWN_TWO);
-                ss.close();
-                return false;
+                continue;
             }
             game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);
             for (int i = 0; i < number_of_players; i++) {
@@ -20,6 +18,8 @@ bool GamesManager::add_client_to_game_without_lock(int game_id, Socket&& ss, int
             return true;
         }
     }
+    ss.shutdown(SHUT_DOWN_TWO);
+    ss.close();
     return false;
 }
 
@@ -32,7 +32,6 @@ bool GamesManager::create_game(Socket&& ss, int number_of_players, int max_playe
         }
         ++it;
     }
-    std::cout << "Creating game con map: " << map_name <<std::endl;
     this->games.push_back(std::make_unique<game_t>(this->games_counter, false, max_players)); // true == practice mode
     this->games_counter++;
     this->games.back()->gameThread.set_map_name(map_name);
@@ -42,7 +41,6 @@ bool GamesManager::create_game(Socket&& ss, int number_of_players, int max_playe
 
 bool GamesManager::create_new_custom_game(Socket&& ss, int number_of_players, int max_players, std::string map_name){
     std::lock_guard<std::mutex> lock(this->mutex);
-    // Buscar y limpiar juegos no vivos
     return this->create_game(std::move(ss), number_of_players, max_players, map_name);
 }
 
@@ -79,10 +77,8 @@ bool GamesManager::add_to_practice_game(Socket&& ss){
 bool GamesManager::add_client_to_random_game(Socket&& ss, int number_of_players) {
     std::lock_guard<std::mutex> lock(this->mutex);
     for (auto& game: this->games) {
-        if (game->player_count + number_of_players > game->max_players) {
-            ss.shutdown(SHUT_DOWN_TWO);
-            ss.close();
-            return false;
+        if (game->player_count + number_of_players > game->max_players) {  
+            continue;
         }
         game->clients.addClient(std::move(ss), game->gameQueue, game->player_count);
         for (int i = 0; i < number_of_players; i++) {
@@ -92,6 +88,8 @@ bool GamesManager::add_client_to_random_game(Socket&& ss, int number_of_players)
         game->player_count += number_of_players;
         return true;
     }
+    ss.shutdown(SHUT_DOWN_TWO);
+    ss.close();
     throw GamesManagerError("Game not found");
 }
 

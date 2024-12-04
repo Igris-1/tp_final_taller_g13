@@ -101,6 +101,7 @@ if (SERVER)
         "server_src/game_model/weapon/*.cpp"
         "server_src/game_model/weapon/bullets_strategy/*.cpp"
         "server_src/game_model/weapon/weapons_strategy/*.cpp"
+        "common_src/*.cpp"
     )
 
     add_executable(${SRV_EXECUTABLE} ${SERVER_SOURCES})

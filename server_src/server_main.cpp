@@ -11,7 +11,7 @@
 int main(int argc, char* argv[]) {
     try {
         if (argc != REQUIRED_ARGC) {
-            std::cout << "Error: invalid arguments" << std::endl;
+            std::cerr << "Error: invalid arguments" << std::endl;
             return ERROR;
         }
         Server server(argv[PORT_ARG]);

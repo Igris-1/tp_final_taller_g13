@@ -67,10 +67,6 @@ TEST(ProtocolTest, SendReceiveSnapshot) {
     game_snapshot_t snapshot = {10, ducks, 5,  bullets, 
                                 2, weapons, 1, boxes, sound};
 
-    // snapshot.ducks.resize(10);
-    // snapshot.bullets.resize(5);
-    // snapshot.weapons.resize(2);
-    // snapshot.boxes.resize(1);
 
     protocol_server.sendGameInfo(snapshot);
     uint8_t code = protocol_client.read_number();

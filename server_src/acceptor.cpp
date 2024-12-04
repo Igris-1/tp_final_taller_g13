@@ -45,6 +45,7 @@ void Acceptor::run() {
     }
         }
     } catch (const LibError& e) {
+        stop();
     }
 }
 
