@@ -138,8 +138,6 @@ endif()
 #  ---------------- TEST SECTION ----------------
 if (TESTS)
     add_subdirectory(tests_src)
-    # target_link_libraries(${EDITOR_EXECUTABLE} PRIVATE common_lib yaml-cpp Qt6::Widgets Qt6::Multimedia)
-
 endif()
 
 
@@ -150,17 +148,17 @@ set(CONF_INSTALL_DIR "/etc/TPDuckGame") # archivos de configuración
 set(ASSETS_INSTALL_DIR "/usr/share/TPDuckGame") # assets
 
 # # Install executables
-# install(TARGETS duckGameServer duckGameClient duckGameEditor 
-#     DESTINATION ${BIN_INSTALL_DIR} 
-#     PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+install(TARGETS duckGameServer duckGameClient duckGameEditor 
+    DESTINATION ${BIN_INSTALL_DIR} 
+    PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
-# # Install common library
-# install(TARGETS common_lib 
-#     DESTINATION ${SHARED_DIR} 
-#     PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+# Install common library
+install(TARGETS common_lib 
+    DESTINATION ${SHARED_DIR} 
+    PERMISSIONS WORLD_READ WORLD_WRITE WORLD_EXECUTE)
 
-# # Install configuration files
-# install(DIRECTORY "configuration_yamls" DESTINATION ${CONF_INSTALL_DIR})
+# Install configuration files
+install(DIRECTORY "configuration_yamls" DESTINATION ${CONF_INSTALL_DIR})
 
-# # Install assets
-# install(DIRECTORY "assets" DESTINATION ${ASSETS_INSTALL_DIR})
+# Install assets
+install(DIRECTORY "assets" DESTINATION ${ASSETS_INSTALL_DIR})
