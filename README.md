@@ -24,6 +24,10 @@ Para correr este programa, es necesario instalar las siguientes dependencias que
      ```sh
      ./duckGameClient
      ```
+   - Para iniciar el editor:
+     ```sh
+     ./duckGameEditor
+     ```
 > El server se puede levantar en cualquier puerto y el cliente por default se autocompleta con puerto 8080 e ip localhost, ambos modificables
 
 ## Estructura del Proyecto
